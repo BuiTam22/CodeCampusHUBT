@@ -1,4 +1,4 @@
-package com.codecampushubt.NCKH2024TQQD.domain;
+package com.codecampushubt.NCKH2024TQQD.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
