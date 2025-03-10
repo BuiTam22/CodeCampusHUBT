@@ -21,8 +21,8 @@ public class RestUser {
 
 
     @GetMapping("/hello")
-    public ArrayList<CourseAchivement> hello() {
-        return (ArrayList<CourseAchivement>) entityManager.createQuery("SELECT u FROM CourseAchivement u", CourseAchivement.class).getResultList();
+    public ArrayList<Comment> hello() {
+        return (ArrayList<Comment>) entityManager.createQuery("SELECT u FROM Comment u", Comment.class).getResultList();
     }
 
 }

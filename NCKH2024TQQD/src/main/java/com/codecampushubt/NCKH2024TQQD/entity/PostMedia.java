@@ -13,9 +13,9 @@ public class PostMedia {
     @Column(name = "MediaID")
     private Long mediaId;
 
-    @ManyToOne
-    @JoinColumn(name = "PostID")
-    private Post post;
+//    @ManyToOne
+//    @JoinColumn(name = "PostID")
+//    private Post post;
 
     @Column(name = "MediaUrl", length = 255, nullable = false)
     private String mediaUrl;

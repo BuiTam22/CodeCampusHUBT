@@ -34,9 +34,9 @@ public class Message {
     @Column(name = "MediaType", length = 20)
     private String mediaType;
 
-    @ManyToOne
-    @JoinColumn(name = "ReplyToMessageID")
-    private Message replyToMessage;
+//    @ManyToOne
+//    @JoinColumn(name = "ReplyToMessageID")
+//    private Message replyToMessage;
 
     @Column(name = "IsEdited")
     private boolean isEdited = false;

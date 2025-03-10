@@ -14,9 +14,9 @@ public class Post {
 //    @Column(name = "PostID")
 //    private Long postId;
 
-    @ManyToOne
-    @JoinColumn(name = "UserID")
-    private User user; // Thay "User" bằng tên entity của bảng Users
+//    @ManyToOne
+//    @JoinColumn(name = "UserID")
+//    private User user; // Thay "User" bằng tên entity của bảng Users
 
     @Column(name = "Content", columnDefinition = "NVARCHAR(MAX)")
     private String content;

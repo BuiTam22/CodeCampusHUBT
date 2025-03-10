@@ -14,13 +14,13 @@ public class PostLike {
     @Column(name = "LikeID")
     private Long likeId;
 
-    @ManyToOne
-    @JoinColumn(name = "PostID")
-    private Post post;
+//    @ManyToOne
+//    @JoinColumn(name = "PostID")
+//    private Post post;
 
-    @ManyToOne
-    @JoinColumn(name = "UserID")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "UserID")
+//    private User user;
 
     @Column(name = "CreatedAt")
     private LocalDateTime createdAt = LocalDateTime.now();
