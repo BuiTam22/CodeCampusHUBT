@@ -14,17 +14,17 @@ public class Comment {
     @Column(name = "CommentID")
     private Long commentId;
 
-    @ManyToOne
-    @JoinColumn(name = "PostID")
-    private Post post;
-
-    @ManyToOne
-    @JoinColumn(name = "UserID")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "ParentCommentID")
-    private Comment parentComment;
+//    @ManyToOne
+//    @JoinColumn(name = "PostID")
+//    private Post post;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "UserID")
+//    private User user;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "ParentCommentID")
+//    private Comment parentComment;
 
     @Column(name = "Content", columnDefinition = "NVARCHAR(MAX)")
     private String content;
