@@ -3,9 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.rest;
 import com.codecampushubt.NCKH2024TQQD.entity.*;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -21,8 +19,14 @@ public class RestUser {
 
 
     @GetMapping("/hello")
-    public ArrayList<Comment> hello() {
-        return (ArrayList<Comment>) entityManager.createQuery("SELECT u FROM Comment u", Comment.class).getResultList();
+    public ArrayList<EssayAnswerAnalysis> hello() {
+
+        return (ArrayList<EssayAnswerAnalysis>) entityManager.createQuery("SELECT u FROM Exam u", EssayAnswerAnalysis.class).getResultList();
+    }
+
+    @PostMapping("/hello1")
+    public void hello1(@RequestBody UserProfile theUser){
+
     }
 
 }
