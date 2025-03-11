@@ -53,45 +53,20 @@ public class Message {
     @Column(name = "DeletedAt")
     private LocalDateTime deletedAt;
 
-//    public Message() {
-//    }
-//
-//    public Message(Conversation conversation, User sender, String content) {
-//        this.conversation = conversation;
-//        this.sender = sender;
-//        this.content = content;
-//    }
-//
-//    // equals, hashCode, and toString methods
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Message message = (Message) o;
-//        return messageId.equals(message.messageId);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return java.util.Objects.hash(messageId);
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "Message{" +
-//                "messageId=" + messageId +
-//                ", conversation=" + conversation +
-//                ", sender=" + sender +
-//                ", type='" + type + '\'' +
-//                ", content='" + content + '\'' +
-//                ", mediaUrl='" + mediaUrl + '\'' +
-//                ", mediaType='" + mediaType + '\'' +
-//                ", replyToMessage=" + replyToMessage +
-//                ", isEdited=" + isEdited +
-//                ", isDeleted=" + isDeleted +
-//                ", createdAt=" + createdAt +
-//                ", updatedAt=" + updatedAt +
-//                ", deletedAt=" + deletedAt +
-//                '}';
-//    }
+    public Message() {
+    }
+
+    public Message(Long messageId, String type, String content, String mediaUrl, String mediaType, Message replyToMessage, boolean isEdited, boolean isDeleted, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        this.messageId = messageId;
+        this.type = type;
+        this.content = content;
+        this.mediaUrl = mediaUrl;
+        this.mediaType = mediaType;
+        this.replyToMessage = replyToMessage;
+        this.isEdited = isEdited;
+        this.isDeleted = isDeleted;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+    }
 }

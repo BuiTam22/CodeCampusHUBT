@@ -14,46 +14,36 @@ public class PostLike {
     @Column(name = "LikeID")
     private Long likeId;
 
-    @ManyToOne
-    @JoinColumn(name = "PostID")
-    private Post post;
-
-    @ManyToOne
-    @JoinColumn(name = "UserID")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "PostID")
+//    private Post post;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "UserID")
+//    private User user;
 
     @Column(name = "CreatedAt")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-//    public PostLike() {
-//    }
-//
-//    public PostLike(Post post, User user) {
-//        this.post = post;
-//        this.user = user;
-//    }
-//
-//    // equals, hashCode, and toString methods
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        PostLike postLike = (PostLike) o;
-//        return likeId.equals(postLike.likeId);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return java.util.Objects.hash(likeId);
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "PostLike{" +
-//                "likeId=" + likeId +
-//                ", post=" + post +
-//                ", user=" + user +
-//                ", createdAt=" + createdAt +
-//                '}';
-//    }
+    public PostLike(Long likeId, LocalDateTime createdAt) {
+        this.likeId = likeId;
+        this.createdAt = createdAt;
+    }
+    public PostLike() {}
+
+    public Long getLikeId() {
+        return likeId;
+    }
+
+    public void setLikeId(Long likeId) {
+        this.likeId = likeId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

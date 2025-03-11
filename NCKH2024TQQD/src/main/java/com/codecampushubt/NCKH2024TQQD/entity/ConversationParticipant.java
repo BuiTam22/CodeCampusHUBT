@@ -40,38 +40,73 @@ public class ConversationParticipant {
     @Column(name = "IsMuted")
     private boolean isMuted = false;
 
-//    public ConversationParticipant() {
-//    }
-//
-//    public ConversationParticipant(Conversation conversation, User user) {
-//        this.conversation = conversation;
-//        this.user = user;
-//    }
-//
-//    // equals, hashCode, and toString methods
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        ConversationParticipant that = (ConversationParticipant) o;
-//        return participantId.equals(that.participantId);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return java.util.Objects.hash(participantId);
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "ConversationParticipant{" +
-//                "participantId=" + participantId +
-//                ", conversation=" + conversation +
-//                ", user=" + user +
-//                ", joinedAt=" + joinedAt +
-//                ", leftAt=" + leftAt +
-//                ", role='" + role + '\'' +
-//                ", lastReadMessageId=" + lastReadMessageId +
-//                ", isAdmin=" + isAdmin +
-//                ",
+    public Long getParticipantId() {
+        return participantId;
+    }
+
+    public void setParticipantId(Long participantId) {
+        this.participantId = participantId;
+    }
+
+    public LocalDateTime getJoinedAt() {
+        return joinedAt;
+    }
+
+    public void setJoinedAt(LocalDateTime joinedAt) {
+        this.joinedAt = joinedAt;
+    }
+
+    public LocalDateTime getLeftAt() {
+        return leftAt;
+    }
+
+    public void setLeftAt(LocalDateTime leftAt) {
+        this.leftAt = leftAt;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Long getLastReadMessageId() {
+        return lastReadMessageId;
+    }
+
+    public void setLastReadMessageId(Long lastReadMessageId) {
+        this.lastReadMessageId = lastReadMessageId;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public boolean isMuted() {
+        return isMuted;
+    }
+
+    public void setMuted(boolean muted) {
+        isMuted = muted;
+    }
+
+
+        public ConversationParticipant() {
+    }
+
+    public ConversationParticipant(Long participantId, LocalDateTime joinedAt, LocalDateTime leftAt, String role, Long lastReadMessageId, boolean isAdmin, boolean isMuted) {
+        this.participantId = participantId;
+        this.joinedAt = joinedAt;
+        this.leftAt = leftAt;
+        this.role = role;
+        this.lastReadMessageId = lastReadMessageId;
+        this.isAdmin = isAdmin;
+        this.isMuted = isMuted;
+    }
 }

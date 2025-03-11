@@ -53,10 +53,119 @@ public class Post {
 
     // Constructors...
 
+
     public Post() {
     }
 
+    public Post(User user, String content, String type, String visibility, String location, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, Integer likesCount, Integer commentsCount, Integer sharesCount, Integer reportsCount) {
+        this.user = user;
+        this.content = content;
+        this.type = type;
+        this.visibility = visibility;
+        this.location = location;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.likesCount = likesCount;
+        this.commentsCount = commentsCount;
+        this.sharesCount = sharesCount;
+        this.reportsCount = reportsCount;
+    }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Integer getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(Integer likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public Integer getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(Integer commentsCount) {
+        this.commentsCount = commentsCount;
+    }
+
+    public Integer getSharesCount() {
+        return sharesCount;
+    }
+
+    public void setSharesCount(Integer sharesCount) {
+        this.sharesCount = sharesCount;
+    }
+
+    public Integer getReportsCount() {
+        return reportsCount;
+    }
+
+    public void setReportsCount(Integer reportsCount) {
+        this.reportsCount = reportsCount;
+    }
     // You can add equals, hashCode, and toString methods as needed
 }

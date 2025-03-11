@@ -1,7 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.entity;
 
-
 import jakarta.persistence.*;
+
 
 import java.time.LocalDateTime;
 
@@ -14,7 +14,7 @@ public class Conversation {
     @Column(name = "ConversationID")
     private Long conversationId;
 
-    @Column(name = "Type", length = 20)
+    @Column(name = "Type")
     private String type = "private";
 
     @Column(name = "Title", length = 255)
@@ -36,38 +36,71 @@ public class Conversation {
     @Column(name = "IsActive")
     private boolean isActive = true;
 
-//    public Conversation() {
-//    }
-//
-//    public Conversation(User createdBy) {
-//        this.createdBy = createdBy;
-//    }
-//
-//    // equals, hashCode, and toString methods
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Conversation that = (Conversation) o;
-//        return conversationId.equals(that.conversationId);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return java.util.Objects.hash(conversationId);
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "Conversation{" +
-//                "conversationId=" + conversationId +
-//                ", type='" + type + '\'' +
-//                ", title='" + title + '\'' +
-//                ", createdBy=" + createdBy +
-//                ", createdAt=" + createdAt +
-//                ", updatedAt=" + updatedAt +
-//                ", lastMessageAt=" + lastMessageAt +
-//                ", isActive=" + isActive +
-//                '}';
-//    }
+    public Conversation(Long conversationId, String type, String title, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime lastMessageAt, boolean isActive) {
+        this.conversationId = conversationId;
+        this.type = type;
+        this.title = title;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.lastMessageAt = lastMessageAt;
+        this.isActive = isActive;
+    }
+    public Conversation() {}
+
+    public Long getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(Long conversationId) {
+        this.conversationId = conversationId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getLastMessageAt() {
+        return lastMessageAt;
+    }
+
+    public void setLastMessageAt(LocalDateTime lastMessageAt) {
+        this.lastMessageAt = lastMessageAt;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+    // Constructors, getters, setters
 }

@@ -111,6 +111,8 @@ public class User {
         this.deletedAt = deletedAt;
     }
 
+
+
     // Getters & Setters...
 
 

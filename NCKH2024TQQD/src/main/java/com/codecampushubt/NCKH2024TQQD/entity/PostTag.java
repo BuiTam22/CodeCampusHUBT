@@ -11,19 +11,26 @@ import java.util.Objects;
 @Table(name = "PostTags")
 //@IdClass(PostTags.PostTagsId.class)
 public class PostTag {
-
+//    ddowij loi 2 khoa chinh
     @Id
-    @ManyToOne
-    @JoinColumn(name = "PostID")
-    private Post post;
+    private int id;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "TagID")
-    private Tag tag;
-
-    @Column(name = "CreatedAt")
-    private LocalDateTime createdAt = LocalDateTime.now();
-
+//    @Column(name = "PostID")
+//    private Long postId;
+//
+//    @Id
+//    @Column(name = "TagID")
+//    private Integer tagId;
+//
+//    @Column(name = "CreatedAt")
+//    private LocalDateTime createdAt = LocalDateTime.now();
+//
+//    @ManyToOne
+//    @JoinColumn(name = "PostID", insertable = false, updatable = false)
+//    private PostTag post;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "TagID", insertable = false, updatable = false)
+//    private Tag tag;
 
 }

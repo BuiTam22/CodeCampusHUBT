@@ -13,9 +13,9 @@ public class PostMedia {
     @Column(name = "MediaID")
     private Long mediaId;
 
-    @ManyToOne
-    @JoinColumn(name = "PostID")
-    private Post post;
+//    @ManyToOne
+//    @JoinColumn(name = "PostID")
+//    private Post post;
 
     @Column(name = "MediaUrl", length = 255, nullable = false)
     private String mediaUrl;
@@ -44,5 +44,87 @@ public class PostMedia {
     public PostMedia() {
     }
 
+    public PostMedia(Long mediaId, String mediaUrl, String mediaType, String thumbnailUrl, Integer size, Integer width, Integer height, Integer duration, LocalDateTime createdAt) {
+        this.mediaId = mediaId;
+        this.mediaUrl = mediaUrl;
+        this.mediaType = mediaType;
+        this.thumbnailUrl = thumbnailUrl;
+        this.size = size;
+        this.width = width;
+        this.height = height;
+        this.duration = duration;
+        this.createdAt = createdAt;
+    }
 
+    public Long getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(Long mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
+
+    public void setMediaUrl(String mediaUrl) {
+        this.mediaUrl = mediaUrl;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
