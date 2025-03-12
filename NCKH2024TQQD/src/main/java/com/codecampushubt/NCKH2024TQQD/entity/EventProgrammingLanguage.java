@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "EventProgrammingLanguages")
-public class EventProgrammingLanguages {
+public class EventProgrammingLanguage {
 
     // Cột EventID kiểu bigint, bắt buộc (nullable = false)
     @Id
@@ -17,11 +17,11 @@ public class EventProgrammingLanguages {
     private String language;
 
     // Constructor mặc định
-    public EventProgrammingLanguages() {
+    public EventProgrammingLanguage() {
     }
 
     // Constructor đầy đủ
-    public EventProgrammingLanguages(Long eventID, String language) {
+    public EventProgrammingLanguage(Long eventID, String language) {
         this.eventID = eventID;
         this.language = language;
     }

@@ -2,12 +2,18 @@
 
 package com.codecampushubt.NCKH2024TQQD.entity;
 
-import jakarta.persistence.*;
-        import java.math.BigDecimal;
+import java.math.BigDecimal;
+
+        import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "EventPrizes")
-public class EventPrizes {
+public class EventPrize {
 
     // Khóa chính, tự động tăng
     @Id
@@ -32,10 +38,10 @@ public class EventPrizes {
     private String description;
 
     // Constructor không tham số
-    public EventPrizes() {}
+    public EventPrize() {}
 
     // Constructor đầy đủ
-    public EventPrizes(Long eventID, Integer rank, BigDecimal prizeAmount, String description) {
+    public EventPrize(Long eventID, Integer rank, BigDecimal prizeAmount, String description) {
         this.eventID = eventID;
         this.rank = rank;
         this.prizeAmount = prizeAmount;

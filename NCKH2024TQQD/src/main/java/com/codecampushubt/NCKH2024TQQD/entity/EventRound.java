@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "EventRounds")
-public class EventRounds {
+public class EventRound {
 
     // RoundID - Khóa chính, không null
     @Id
@@ -43,11 +43,11 @@ public class EventRounds {
     private LocalDateTime endTime;
 
     // Constructor mặc định
-    public EventRounds() {
+    public EventRound() {
     }
 
     // Constructor đầy đủ
-    public EventRounds(Long eventID, String name, Integer duration, Integer problems, String description, LocalDateTime startTime, LocalDateTime endTime) {
+    public EventRound(Long eventID, String name, Integer duration, Integer problems, String description, LocalDateTime startTime, LocalDateTime endTime) {
         this.eventID = eventID;
         this.name = name;
         this.duration = duration;
