@@ -24,5 +24,25 @@ public class CommentLike {
     @Column(name = "CreatedAt")
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public Long getCommentLikeId() {
+        return commentLikeId;
+    }
+
+    public void setCommentLikeId(Long commentLikeId) {
+        this.commentLikeId = commentLikeId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+    public CommentLike() {}
+    public CommentLike(Long commentLikeId, LocalDateTime createdAt) {
+        this.commentLikeId = commentLikeId;
+        this.createdAt = createdAt;
+    }
 
 }

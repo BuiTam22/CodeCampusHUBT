@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "EventAchievements")
-public class EventAchievements {
+public class EventAchievement {
 
     // Khóa chính, tự động tăng
     @Id
@@ -38,10 +38,10 @@ public class EventAchievements {
     private LocalDateTime awardedAt;
 
     // Constructor không tham số
-    public EventAchievements() {}
+    public EventAchievement() {}
 
     // Constructor đầy đủ
-    public EventAchievements(Long eventID, Long userID, Integer position, Integer points, String badgeType, LocalDateTime awardedAt) {
+    public EventAchievement(Long eventID, Long userID, Integer position, Integer points, String badgeType, LocalDateTime awardedAt) {
         this.eventID = eventID;
         this.userID = userID;
         this.position = position;

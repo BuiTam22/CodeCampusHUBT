@@ -27,6 +27,9 @@ public class Storie {
     private LocalDateTime expiresAt;
     private Boolean isDeleted = false;
 
+    protected Storie() {
+    }
+
     public Long getStoryID() {
         return storyID;
     }
@@ -114,4 +117,18 @@ public class Storie {
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
     }
+
+    public Storie(Boolean isDeleted, LocalDateTime expiresAt, LocalDateTime createdAt, String fontStyle, String textContent, String backgroundColor, Integer viewCount, Integer duration, String mediaType, String mediaUrl) {
+        this.isDeleted = isDeleted;
+        this.expiresAt = expiresAt;
+        this.createdAt = createdAt;
+        this.fontStyle = fontStyle;
+        this.textContent = textContent;
+        this.backgroundColor = backgroundColor;
+        this.viewCount = viewCount;
+        this.duration = duration;
+        this.mediaType = mediaType;
+        this.mediaUrl = mediaUrl;
+    }
 }
+

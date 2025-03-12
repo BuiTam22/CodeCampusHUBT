@@ -28,37 +28,36 @@ public class MessageStatus {
     @Column(name = "UpdatedAt")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-//    public MessageStatus() {
-//    }
-//
-//    public MessageStatus(Message message, User user, String status) {
-//        this.message = message;
-//        this.user = user;
-//        this.status = status;
-//    }
-//
-//    // equals, hashCode, and toString methods
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        MessageStatus that = (MessageStatus) o;
-//        return statusId.equals(that.statusId);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return java.util.Objects.hash(statusId);
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "MessageStatus{" +
-//                "statusId=" + statusId +
-//                ", message=" + message +
-//                ", user=" + user +
-//                ", status='" + status + '\'' +
-//                ", updatedAt=" + updatedAt +
-//                '}';
-//    }
+    public MessageStatus() {
+    }
+
+    public MessageStatus(Long statusId, String status, LocalDateTime updatedAt) {
+        this.statusId = statusId;
+        this.status = status;
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
