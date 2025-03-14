@@ -3,12 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "courses")
@@ -31,8 +26,11 @@ public class Course {
     @Column(name = "ShortDescription", length = 500)
     private String shortDescription;
 
-    @Column(name = "InstructorID")
-    private Long instructorId; // Không dùng @ManyToOne để tránh khóa ngoại
+    @ManyToOne
+    @JoinColumn(name = "InstructorID")
+    private User instructor;
+//    @Column(name = "InstructorID")
+//    private Long instructorId; // Không dùng @ManyToOne để tránh khóa ngoại
 
     @Column(name = "Level", length = 20)
     private String level;
@@ -102,15 +100,15 @@ public class Course {
 
 
     //Constructor
-    public Course() {
-    }
+    public Course(){}
 
-    public Course(String title, String slug, String description, String shortDescription, Long instructorId, String level, String category, String subCategory, String language, Integer duration, Integer capacity, Integer enrolledCount, BigDecimal rating, Integer ratingCount, BigDecimal price, BigDecimal discountPrice, String imageUrl, String videoUrl, String requirements, String objectives, String syllabus, String status, Boolean isPublished, LocalDateTime publishedAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+    public Course(Long courseID, String title, String slug, String description, String shortDescription, User instructor, String level, String category, String subCategory, String language, Integer duration, Integer capacity, Integer enrolledCount, BigDecimal rating, Integer ratingCount, BigDecimal price, BigDecimal discountPrice, String imageUrl, String videoUrl, String requirements, String objectives, String syllabus, String status, Boolean isPublished, LocalDateTime publishedAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        this.courseID = courseID;
         this.title = title;
         this.slug = slug;
         this.description = description;
         this.shortDescription = shortDescription;
-        this.instructorId = instructorId;
+        this.instructor = instructor;
         this.level = level;
         this.category = category;
         this.subCategory = subCategory;
@@ -134,228 +132,265 @@ public class Course {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
     }
+//    geter and setter
 
-    //getter and setter
 
-
-    public Long getId() {
+    public Long getCourseID() {
         return courseID;
+    }
+
+    public void setCourseID(Long courseID) {
+        this.courseID = courseID;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getSlug() {
-        return slug;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public Long getInstructorId() {
-        return instructorId;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public Integer getEnrolledCount() {
-        return enrolledCount;
-    }
-
-    public BigDecimal getRating() {
-        return rating;
-    }
-
-    public Integer getRatingCount() {
-        return ratingCount;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public BigDecimal getDiscountPrice() {
-        return discountPrice;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    public String getRequirements() {
-        return requirements;
-    }
-
-    public String getObjectives() {
-        return objectives;
-    }
-
-    public String getSyllabus() {
-        return syllabus;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Boolean getPublished() {
-        return isPublished;
-    }
-
-    public LocalDateTime getPublishedAt() {
-        return publishedAt;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public LocalDateTime getDeletedAt() {
-        return deletedAt;
-    }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSlug() {
+        return slug;
     }
 
     public void setSlug(String slug) {
         this.slug = slug;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
     }
 
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
     }
 
-    public void setInstructorId(Long instructorId) {
-        this.instructorId = instructorId;
+    public User getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(User instructor) {
+        this.instructor = instructor;
+    }
+
+    public String getLevel() {
+        return level;
     }
 
     public void setLevel(String level) {
         this.level = level;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getSubCategory() {
+        return subCategory;
     }
 
     public void setSubCategory(String subCategory) {
         this.subCategory = subCategory;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public Integer getDuration() {
+        return duration;
     }
 
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
+    public Integer getCapacity() {
+        return capacity;
+    }
+
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
+    }
+
+    public Integer getEnrolledCount() {
+        return enrolledCount;
     }
 
     public void setEnrolledCount(Integer enrolledCount) {
         this.enrolledCount = enrolledCount;
     }
 
+    public BigDecimal getRating() {
+        return rating;
+    }
+
     public void setRating(BigDecimal rating) {
         this.rating = rating;
+    }
+
+    public Integer getRatingCount() {
+        return ratingCount;
     }
 
     public void setRatingCount(Integer ratingCount) {
         this.ratingCount = ratingCount;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getDiscountPrice() {
+        return discountPrice;
     }
 
     public void setDiscountPrice(BigDecimal discountPrice) {
         this.discountPrice = discountPrice;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
     }
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
     }
 
+    public String getRequirements() {
+        return requirements;
+    }
+
     public void setRequirements(String requirements) {
         this.requirements = requirements;
+    }
+
+    public String getObjectives() {
+        return objectives;
     }
 
     public void setObjectives(String objectives) {
         this.objectives = objectives;
     }
 
+    public String getSyllabus() {
+        return syllabus;
+    }
+
     public void setSyllabus(String syllabus) {
         this.syllabus = syllabus;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
 
+    public Boolean getPublished() {
+        return isPublished;
+    }
+
     public void setPublished(Boolean published) {
         isPublished = published;
+    }
+
+    public LocalDateTime getPublishedAt() {
+        return publishedAt;
     }
 
     public void setPublishedAt(LocalDateTime publishedAt) {
         this.publishedAt = publishedAt;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseID=" + courseID +
+                ", title='" + title + '\'' +
+                ", slug='" + slug + '\'' +
+                ", description='" + description + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", instructor=" + instructor +
+                ", level='" + level + '\'' +
+                ", category='" + category + '\'' +
+                ", subCategory='" + subCategory + '\'' +
+                ", language='" + language + '\'' +
+                ", duration=" + duration +
+                ", capacity=" + capacity +
+                ", enrolledCount=" + enrolledCount +
+                ", rating=" + rating +
+                ", ratingCount=" + ratingCount +
+                ", price=" + price +
+                ", discountPrice=" + discountPrice +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", videoUrl='" + videoUrl + '\'' +
+                ", requirements='" + requirements + '\'' +
+                ", objectives='" + objectives + '\'' +
+                ", syllabus='" + syllabus + '\'' +
+                ", status='" + status + '\'' +
+                ", isPublished=" + isPublished +
+                ", publishedAt=" + publishedAt +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", deletedAt=" + deletedAt +
+                '}';
     }
 }
 

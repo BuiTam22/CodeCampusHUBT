@@ -13,8 +13,9 @@ public class CourseModule {
     @Column(name = "ModuleID")
     private Long id;
 
-    @Column(name = "CourseID", nullable = false)
-    private Long courseId; // Không dùng @ManyToOne để tránh khóa ngoại
+    @ManyToOne
+    @JoinColumn(name = "CourseID")
+    private Course courseId; // Không dùng @ManyToOne để tránh khóa ngoại
 
     @Column(name = "Title", nullable = false, length = 255)
     private String title;
@@ -41,7 +42,8 @@ public class CourseModule {
     public CourseModule() {
     }
 
-    public CourseModule(Long courseId, String title, String description, Integer orderIndex, Integer duration, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CourseModule(Long id, Course courseId, String title, String description, Integer orderIndex, Integer duration, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.courseId = courseId;
         this.title = title;
         this.description = description;
@@ -52,48 +54,76 @@ public class CourseModule {
         this.updatedAt = updatedAt;
     }
 
-    // Getters and Setters
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Long getCourseId() { return courseId; }
-    public void setCourseId(Long courseId) { this.courseId = courseId; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public Course getCourseId() {
+        return courseId;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setCourseId(Course courseId) {
+        this.courseId = courseId;
+    }
 
-    public Integer getOrderIndex() { return orderIndex; }
-    public void setOrderIndex(Integer orderIndex) { this.orderIndex = orderIndex; }
+    public String getTitle() {
+        return title;
+    }
 
-    public Integer getDuration() { return duration; }
-    public void setDuration(Integer duration) { this.duration = duration; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public Boolean getIsPublished() { return isPublished; }
-    public void setIsPublished(Boolean isPublished) { this.isPublished = isPublished; }
+    public String getDescription() {
+        return description;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    public Integer getOrderIndex() {
+        return orderIndex;
+    }
 
-    // ToString()
+    public void setOrderIndex(Integer orderIndex) {
+        this.orderIndex = orderIndex;
+    }
 
-    @Override
-    public String toString() {
-        return "CourseModule{" +
-                "id=" + id +
-                ", courseId=" + courseId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", orderIndex=" + orderIndex +
-                ", duration=" + duration +
-                ", isPublished=" + isPublished +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public Boolean getPublished() {
+        return isPublished;
+    }
+
+    public void setPublished(Boolean published) {
+        isPublished = published;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
 
