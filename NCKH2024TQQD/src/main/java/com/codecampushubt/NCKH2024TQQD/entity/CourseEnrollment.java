@@ -15,12 +15,14 @@ public class CourseEnrollment {
     public Long enrollmentID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSES
-    @Column(name = "CourseID", nullable = false)
-    public Long courseID;
+    @ManyToOne
+    @JoinColumn(name = "CourseID", nullable = false)
+    public Course courseID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG USERS
-    @Column(name = "UserID", nullable = false)
-    public Long userID;
+    @ManyToOne
+    @JoinColumn(name = "UserID", nullable = false)
+    public User userID;
 
     // TIẾN ĐỘ HỌC TẬP (%)
     @Column(name = "Progress", nullable = false, columnDefinition = "INT DEFAULT 0")
@@ -46,43 +48,14 @@ public class CourseEnrollment {
     public CourseEnrollment() {
     }
 
-    public CourseEnrollment(Long courseID, Long userID, Integer progress, Long lastAccessedLessonID, LocalDateTime enrolledAt, LocalDateTime completedAt, Boolean certificateIssued) {
+    public CourseEnrollment(Long enrollmentID, Course courseID, User userID, Integer progress, Long lastAccessedLessonID, LocalDateTime enrolledAt, LocalDateTime completedAt, Boolean certificateIssued) {
+        this.enrollmentID = enrollmentID;
         this.courseID = courseID;
         this.userID = userID;
         this.progress = progress;
         this.lastAccessedLessonID = lastAccessedLessonID;
         this.enrolledAt = enrolledAt;
         this.completedAt = completedAt;
-        this.certificateIssued = certificateIssued;
-    }
-
-    // Getter, Setter
-
-    public void setCourseID(Long courseID) {
-        this.courseID = courseID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public void setProgress(Integer progress) {
-        this.progress = progress;
-    }
-
-    public void setLastAccessedLessonID(Long lastAccessedLessonID) {
-        this.lastAccessedLessonID = lastAccessedLessonID;
-    }
-
-    public void setEnrolledAt(LocalDateTime enrolledAt) {
-        this.enrolledAt = enrolledAt;
-    }
-
-    public void setCompletedAt(LocalDateTime completedAt) {
-        this.completedAt = completedAt;
-    }
-
-    public void setCertificateIssued(Boolean certificateIssued) {
         this.certificateIssued = certificateIssued;
     }
 
@@ -90,45 +63,63 @@ public class CourseEnrollment {
         return enrollmentID;
     }
 
-    public Long getCourseID() {
+    public void setEnrollmentID(Long enrollmentID) {
+        this.enrollmentID = enrollmentID;
+    }
+
+    public Course getCourseID() {
         return courseID;
     }
 
-    public Long getUserID() {
+    public void setCourseID(Course courseID) {
+        this.courseID = courseID;
+    }
+
+    public User getUserID() {
         return userID;
+    }
+
+    public void setUserID(User userID) {
+        this.userID = userID;
     }
 
     public Integer getProgress() {
         return progress;
     }
 
+    public void setProgress(Integer progress) {
+        this.progress = progress;
+    }
+
     public Long getLastAccessedLessonID() {
         return lastAccessedLessonID;
+    }
+
+    public void setLastAccessedLessonID(Long lastAccessedLessonID) {
+        this.lastAccessedLessonID = lastAccessedLessonID;
     }
 
     public LocalDateTime getEnrolledAt() {
         return enrolledAt;
     }
 
+    public void setEnrolledAt(LocalDateTime enrolledAt) {
+        this.enrolledAt = enrolledAt;
+    }
+
     public LocalDateTime getCompletedAt() {
         return completedAt;
+    }
+
+    public void setCompletedAt(LocalDateTime completedAt) {
+        this.completedAt = completedAt;
     }
 
     public Boolean getCertificateIssued() {
         return certificateIssued;
     }
 
-    @Override
-    public String toString() {
-        return "CourseEnrollment{" +
-                "enrollmentID=" + enrollmentID +
-                ", courseID=" + courseID +
-                ", userID=" + userID +
-                ", progress=" + progress +
-                ", lastAccessedLessonID=" + lastAccessedLessonID +
-                ", enrolledAt=" + enrolledAt +
-                ", completedAt=" + completedAt +
-                ", certificateIssued=" + certificateIssued +
-                '}';
+    public void setCertificateIssued(Boolean certificateIssued) {
+        this.certificateIssued = certificateIssued;
     }
 }
