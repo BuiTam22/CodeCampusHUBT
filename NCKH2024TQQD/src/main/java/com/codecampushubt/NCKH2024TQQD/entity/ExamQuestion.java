@@ -9,9 +9,9 @@ public class ExamQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionID;
-
-    @Column(name = "ExamID", nullable = false)
-    private Long examID;
+    @ManyToOne
+    @JoinColumn(name = "ExamID", nullable = false)
+    private Exam examID;
 
     @Column(name = "Type", nullable = false, length = 50)
     private String type;
@@ -45,7 +45,7 @@ public class ExamQuestion {
     public ExamQuestion() {
     }
 
-    public ExamQuestion(Long examID, String type, String content, int points, Integer orderIndex, String options, String correctAnswer, String explanation, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ExamQuestion(Exam examID, String type, String content, int points, Integer orderIndex, String options, String correctAnswer, String explanation, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.examID = examID;
         this.type = type;
         this.content = content;
@@ -64,11 +64,11 @@ public class ExamQuestion {
         return questionID;
     }
 
-    public Long getExamID() {
+    public Exam getExamID() {
         return examID;
     }
 
-    public void setExamID(Long examID) {
+    public void setExamID(Exam examID) {
         this.examID = examID;
     }
 

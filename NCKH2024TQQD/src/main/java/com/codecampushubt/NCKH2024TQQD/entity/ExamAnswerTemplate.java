@@ -3,12 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ExamAnswerTemplates")
@@ -17,9 +12,9 @@ public class ExamAnswerTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long templateID;
-
-    @Column(name = "ExamID", nullable = false)
-    private Long examID;
+    @ManyToOne
+    @JoinColumn(name = "ExamID", nullable = false)
+    private Exam examID;
 
     @Column(name = "Content", columnDefinition = "NVARCHAR(MAX)")
     private String content;
@@ -29,9 +24,9 @@ public class ExamAnswerTemplate {
 
     @Column(name = "MinimumMatchPercentage", precision = 5, scale = 2)
     private BigDecimal minimumMatchPercentage;
-
-    @Column(name = "CreatedBy", nullable = false)
-    private Long createdBy;
+    @ManyToOne
+    @JoinColumn(name = "CreatedBy", nullable = false)
+    private User createdBy;
 
     @Column(name = "CreatedAt", updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -44,7 +39,7 @@ public class ExamAnswerTemplate {
     public ExamAnswerTemplate() {
     }
 
-    public ExamAnswerTemplate(Long examID, String content, String keywords, BigDecimal minimumMatchPercentage, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ExamAnswerTemplate(Exam examID, String content, String keywords, BigDecimal minimumMatchPercentage, User createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.examID = examID;
         this.content = content;
         this.keywords = keywords;
@@ -60,11 +55,11 @@ public class ExamAnswerTemplate {
         return templateID;
     }
 
-    public Long getExamID() {
+    public Exam getExamID() {
         return examID;
     }
 
-    public void setExamID(Long examID) {
+    public void setExamID(Exam examID) {
         this.examID = examID;
     }
 
@@ -92,11 +87,11 @@ public class ExamAnswerTemplate {
         this.minimumMatchPercentage = minimumMatchPercentage;
     }
 
-    public Long getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 

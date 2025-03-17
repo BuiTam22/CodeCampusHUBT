@@ -14,12 +14,14 @@ public class CodingSubmission {
     public Long submissionID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG CODINGEXERCISES
-    @Column(name = "ExerciseID", nullable = false)
-    public Long exerciseID;
+    @ManyToOne
+    @JoinColumn(name = "ExerciseID", nullable = false)
+    public CodingExercise exerciseID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG USERS
-    @Column(name = "UserID", nullable = false)
-    public Long userID;
+    @ManyToOne
+    @JoinColumn(name = "UserID", nullable = false)
+    public User userID;
 
     // CODE ĐÃ NỘP
     @Column(name = "Code", columnDefinition = "NVARCHAR(MAX)")
@@ -62,7 +64,8 @@ public class CodingSubmission {
     public CodingSubmission() {
     }
 
-    public CodingSubmission(Long exerciseID, Long userID, String code, String language, String status, Integer executionTime, Integer memoryUsed, Integer testCasesPassed, Integer totalTestCases, Integer score, LocalDateTime submittedAt) {
+    public CodingSubmission(Long submissionID, CodingExercise exerciseID, User userID, String code, String language, String status, Integer executionTime, Integer memoryUsed, Integer testCasesPassed, Integer totalTestCases, Integer score, LocalDateTime submittedAt) {
+        this.submissionID = submissionID;
         this.exerciseID = exerciseID;
         this.userID = userID;
         this.code = code;
@@ -80,19 +83,23 @@ public class CodingSubmission {
         return submissionID;
     }
 
-    public Long getExerciseID() {
+    public void setSubmissionID(Long submissionID) {
+        this.submissionID = submissionID;
+    }
+
+    public CodingExercise getExerciseID() {
         return exerciseID;
     }
 
-    public void setExerciseID(Long exerciseID) {
+    public void setExerciseID(CodingExercise exerciseID) {
         this.exerciseID = exerciseID;
     }
 
-    public Long getUserID() {
+    public User getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(User userID) {
         this.userID = userID;
     }
 
@@ -166,23 +173,5 @@ public class CodingSubmission {
 
     public void setSubmittedAt(LocalDateTime submittedAt) {
         this.submittedAt = submittedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "CodingSubmission{" +
-                "submissionID=" + submissionID +
-                ", exerciseID=" + exerciseID +
-                ", userID=" + userID +
-                ", code='" + code + '\'' +
-                ", language='" + language + '\'' +
-                ", status='" + status + '\'' +
-                ", executionTime=" + executionTime +
-                ", memoryUsed=" + memoryUsed +
-                ", testCasesPassed=" + testCasesPassed +
-                ", totalTestCases=" + totalTestCases +
-                ", score=" + score +
-                ", submittedAt=" + submittedAt +
-                '}';
     }
 }

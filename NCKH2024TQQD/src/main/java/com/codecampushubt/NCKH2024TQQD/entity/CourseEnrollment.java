@@ -29,8 +29,9 @@ public class CourseEnrollment {
     public Integer progress;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSELESSONS (BÀI HỌC TRUY CẬP GẦN NHẤT)
-    @Column(name = "LastAccessedLessonID")
-    public Long lastAccessedLessonID;
+    @ManyToOne
+    @JoinColumn(name = "LastAccessedLessonID")
+    public CourseLesson lastAccessedLessonID;
 
     // THỜI ĐIỂM ĐĂNG KÝ
     @Column(name = "EnrolledAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
@@ -48,7 +49,7 @@ public class CourseEnrollment {
     public CourseEnrollment() {
     }
 
-    public CourseEnrollment(Long enrollmentID, Course courseID, User userID, Integer progress, Long lastAccessedLessonID, LocalDateTime enrolledAt, LocalDateTime completedAt, Boolean certificateIssued) {
+    public CourseEnrollment(Long enrollmentID, Course courseID, User userID, Integer progress, CourseLesson lastAccessedLessonID, LocalDateTime enrolledAt, LocalDateTime completedAt, Boolean certificateIssued) {
         this.enrollmentID = enrollmentID;
         this.courseID = courseID;
         this.userID = userID;
@@ -91,11 +92,11 @@ public class CourseEnrollment {
         this.progress = progress;
     }
 
-    public Long getLastAccessedLessonID() {
+    public CourseLesson getLastAccessedLessonID() {
         return lastAccessedLessonID;
     }
 
-    public void setLastAccessedLessonID(Long lastAccessedLessonID) {
+    public void setLastAccessedLessonID(CourseLesson lastAccessedLessonID) {
         this.lastAccessedLessonID = lastAccessedLessonID;
     }
 

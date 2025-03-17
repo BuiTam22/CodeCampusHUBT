@@ -14,12 +14,14 @@ public class LessonProgress {
     public Long progressID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSEENROLLMENTS
-    @Column(name = "EnrollmentID", nullable = false)
-    public Long enrollmentID;
+    @ManyToOne
+    @JoinColumn(name = "EnrollmentID", nullable = false)
+    public CourseEnrollment enrollmentID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSELESSONS
-    @Column(name = "LessonID", nullable = false)
-    public Long lessonID;
+    @ManyToOne
+    @JoinColumn(name = "LessonID", nullable = false)
+    public CourseLesson lessonID;
 
     // TRẠNG THÁI HỌC TẬP (KHÔNG DÙNG ENUM)
     @Column(name = "Status", length = 20)
@@ -41,34 +43,37 @@ public class LessonProgress {
     public LessonProgress() {
     }
 
-    public LessonProgress(Integer lastPosition, Integer timeSpent, LocalDateTime completedAt, String status, Long lessonID, Long enrollmentID) {
-        this.lastPosition = lastPosition;
-        this.timeSpent = timeSpent;
-        this.completedAt = completedAt;
-        this.status = status;
-        this.lessonID = lessonID;
+    public LessonProgress(Long progressID, CourseEnrollment enrollmentID, CourseLesson lessonID, String status, LocalDateTime completedAt, Integer timeSpent, Integer lastPosition) {
+        this.progressID = progressID;
         this.enrollmentID = enrollmentID;
+        this.lessonID = lessonID;
+        this.status = status;
+        this.completedAt = completedAt;
+        this.timeSpent = timeSpent;
+        this.lastPosition = lastPosition;
     }
-
-    // getter & setter
 
     public Long getProgressID() {
         return progressID;
     }
 
-    public Long getEnrollmentID() {
+    public void setProgressID(Long progressID) {
+        this.progressID = progressID;
+    }
+
+    public CourseEnrollment getEnrollmentID() {
         return enrollmentID;
     }
 
-    public void setEnrollmentID(Long enrollmentID) {
+    public void setEnrollmentID(CourseEnrollment enrollmentID) {
         this.enrollmentID = enrollmentID;
     }
 
-    public Long getLessonID() {
+    public CourseLesson getLessonID() {
         return lessonID;
     }
 
-    public void setLessonID(Long lessonID) {
+    public void setLessonID(CourseLesson lessonID) {
         this.lessonID = lessonID;
     }
 
@@ -102,18 +107,5 @@ public class LessonProgress {
 
     public void setLastPosition(Integer lastPosition) {
         this.lastPosition = lastPosition;
-    }
-
-    @Override
-    public String toString() {
-        return "LessonProgress{" +
-                "progressID=" + progressID +
-                ", enrollmentID=" + enrollmentID +
-                ", lessonID=" + lessonID +
-                ", status='" + status + '\'' +
-                ", completedAt=" + completedAt +
-                ", timeSpent=" + timeSpent +
-                ", lastPosition=" + lastPosition +
-                '}';
     }
 }

@@ -12,8 +12,9 @@ public class ExamMonitoringLog {
     @Column(name = "LogID", nullable = false, unique = true)
     private Long logID;
 
-    @Column(name = "ParticipantID", nullable = false)
-    private Long participantID;
+    @ManyToOne
+    @JoinColumn(name = "ParticipantID", nullable = false)
+    private ExamParticipant participantID;
 
     @Column(name = "EventType", nullable = false, length = 50)
     private String eventType;
@@ -29,7 +30,7 @@ public class ExamMonitoringLog {
     public ExamMonitoringLog() {
     }
 
-    public ExamMonitoringLog(Long participantID, String eventType, String eventData, Timestamp timestamp) {
+    public ExamMonitoringLog(ExamParticipant participantID, String eventType, String eventData, Timestamp timestamp) {
         this.participantID = participantID;
         this.eventType = eventType;
         this.eventData = eventData;
@@ -42,11 +43,11 @@ public class ExamMonitoringLog {
         return logID;
     }
 
-    public Long getParticipantID() {
+    public ExamParticipant getParticipantID() {
         return participantID;
     }
 
-    public void setParticipantID(Long participantID) {
+    public void setParticipantID(ExamParticipant participantID) {
         this.participantID = participantID;
     }
 
