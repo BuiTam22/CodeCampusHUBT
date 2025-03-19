@@ -3,7 +3,18 @@ package com.codecampushubt.NCKH2024TQQD.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
+import com.github.slugify.Slugify;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "courses")
@@ -16,6 +27,16 @@ public class Course {
 
     @Column(name = "Title", nullable = false, length = 255)
     private String title;
+
+    // Tạo slug trước khi lưu hoặc cập nhật
+    @PrePersist
+    @PreUpdate
+    public void generateSlug() {
+        // đảm bảo slug luôn giống với title, ngay cả khi title bị thay đổi
+        if (this.slug == null || !this.slug.equals(new Slugify().slugify(this.title))) {
+            this.slug = new Slugify().slugify(this.title);
+        }
+    }
 
     @Column(name = "Slug", unique = true, length = 255)
     private String slug;
@@ -102,10 +123,10 @@ public class Course {
     //Constructor
     public Course(){}
 
-    public Course(Long courseID, String title, String slug, String description, String shortDescription, User instructor, String level, String category, String subCategory, String language, Integer duration, Integer capacity, Integer enrolledCount, BigDecimal rating, Integer ratingCount, BigDecimal price, BigDecimal discountPrice, String imageUrl, String videoUrl, String requirements, String objectives, String syllabus, String status, Boolean isPublished, LocalDateTime publishedAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+    public Course(Long courseID, String title, String description, String shortDescription, User instructor, String level, String category, String subCategory, String language, Integer duration, Integer capacity, Integer enrolledCount, BigDecimal rating, Integer ratingCount, BigDecimal price, BigDecimal discountPrice, String imageUrl, String videoUrl, String requirements, String objectives, String syllabus, String status, Boolean isPublished, LocalDateTime publishedAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.courseID = courseID;
         this.title = title;
-        this.slug = slug;
+        // this.slug = slug;
         this.description = description;
         this.shortDescription = shortDescription;
         this.instructor = instructor;
@@ -155,9 +176,9 @@ public class Course {
         return slug;
     }
 
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
+    // public void setSlug(String slug) {
+    //     this.slug = slug;
+    // }
 
     public String getDescription() {
         return description;
