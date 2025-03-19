@@ -14,8 +14,9 @@ public class CodingExercise {
     public Long exerciseID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSELESSONS
-    @Column(name = "LessonID", nullable = false)
-    public Long lessonID;
+    @ManyToOne
+    @JoinColumn(name = "LessonID", nullable = false)
+    public CourseLesson lessonID;
 
     // TIÊU ĐỀ BÀI TẬP
     @Column(name = "Title", nullable = false, length = 255)
@@ -69,7 +70,8 @@ public class CodingExercise {
     public CodingExercise() {
     }
 
-    public CodingExercise(Long lessonID, String title, String description, String programmingLanguage, String initialCode, String solutionCode, String testCases, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CodingExercise(Long exerciseID, CourseLesson lessonID, String title, String description, String programmingLanguage, String initialCode, String solutionCode, String testCases, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.exerciseID = exerciseID;
         this.lessonID = lessonID;
         this.title = title;
         this.description = description;
@@ -85,18 +87,19 @@ public class CodingExercise {
         this.updatedAt = updatedAt;
     }
 
-
-    // Getter & Setter
-
     public Long getExerciseID() {
         return exerciseID;
     }
 
-    public Long getLessonID() {
+    public void setExerciseID(Long exerciseID) {
+        this.exerciseID = exerciseID;
+    }
+
+    public CourseLesson getLessonID() {
         return lessonID;
     }
 
-    public void setLessonID(Long lessonID) {
+    public void setLessonID(CourseLesson lessonID) {
         this.lessonID = lessonID;
     }
 
@@ -194,26 +197,5 @@ public class CodingExercise {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-
-    @Override
-    public String toString() {
-        return "CodingExercise{" +
-                "exerciseID=" + exerciseID +
-                ", lessonID=" + lessonID +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", programmingLanguage='" + programmingLanguage + '\'' +
-                ", initialCode='" + initialCode + '\'' +
-                ", solutionCode='" + solutionCode + '\'' +
-                ", testCases='" + testCases + '\'' +
-                ", timeLimit=" + timeLimit +
-                ", memoryLimit=" + memoryLimit +
-                ", difficulty='" + difficulty + '\'' +
-                ", points=" + points +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

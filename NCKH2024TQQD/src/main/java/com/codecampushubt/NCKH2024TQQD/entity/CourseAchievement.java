@@ -2,13 +2,9 @@ package com.codecampushubt.NCKH2024TQQD.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "CourseAchievements")
@@ -18,15 +14,20 @@ public class CourseAchievement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AchievementID", nullable = false, updatable = false)
-    public Long achievementID;
+    private Long achievementID;
 
-    // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSES
-    @Column(name = "CourseID", nullable = false)
-    public Long courseID;
+    // Khóa ngoại tham chiếu đến bảng Courses (Many-to-One)
+    @ManyToOne
+    @JoinColumn(name = "CourseID", nullable = false)
+    private Course course;
 
-    // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG USERS
-    @Column(name = "UserID", nullable = false)
-    public Long userID;
+    // Khóa ngoại tham chiếu đến bảng Users (Many-to-One)
+    @ManyToOne
+    @JoinColumn(name = "UserID", nullable = false)
+    private User user;
+
+//    @Column(name = "UserID", nullable = false)
+//    public Long userID;
 
     // THỜI GIAN HOÀN THÀNH KHÓA HỌC (PHÚT)
     @Column(name = "CompletionTime")
@@ -55,9 +56,10 @@ public class CourseAchievement {
     public CourseAchievement() {
     }
 
-    public CourseAchievement(Long courseID, Long userID, Integer completionTime, Integer correctAnswers, Integer totalQuestions, BigDecimal score, String badgeType, LocalDateTime awardedAt) {
-        this.courseID = courseID;
-        this.userID = userID;
+    public CourseAchievement(Long achievementID, Course course, User user, Integer completionTime, Integer correctAnswers, Integer totalQuestions, BigDecimal score, String badgeType, LocalDateTime awardedAt) {
+        this.achievementID = achievementID;
+        this.course = course;
+        this.user = user;
         this.completionTime = completionTime;
         this.correctAnswers = correctAnswers;
         this.totalQuestions = totalQuestions;
@@ -70,20 +72,24 @@ public class CourseAchievement {
         return achievementID;
     }
 
-    public Long getCourseID() {
-        return courseID;
+    public void setAchievementID(Long achievementID) {
+        this.achievementID = achievementID;
     }
 
-    public void setCourseID(Long courseID) {
-        this.courseID = courseID;
+    public Course getCourse() {
+        return course;
     }
 
-    public Long getUserID() {
-        return userID;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getCompletionTime() {
@@ -132,20 +138,5 @@ public class CourseAchievement {
 
     public void setAwardedAt(LocalDateTime awardedAt) {
         this.awardedAt = awardedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "CourseAchievement{" +
-                "achievementID=" + achievementID +
-                ", courseID=" + courseID +
-                ", userID=" + userID +
-                ", completionTime=" + completionTime +
-                ", correctAnswers=" + correctAnswers +
-                ", totalQuestions=" + totalQuestions +
-                ", score=" + score +
-                ", badgeType='" + badgeType + '\'' +
-                ", awardedAt=" + awardedAt +
-                '}';
     }
 }

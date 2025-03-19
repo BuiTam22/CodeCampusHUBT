@@ -13,9 +13,9 @@ public class EssayAnswerAnalysis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AnalysisID", nullable = false, unique = true)
     private Long analysisID;
-
-    @Column(name = "AnswerID", nullable = false)
-    private Long answerID;
+    @ManyToOne
+    @JoinColumn(name = "AnswerID", nullable = false)
+    private ExamAnswer answerID;
 
     @Column(name = "MatchPercentage", precision = 5, scale = 2)
     private BigDecimal matchPercentage;
@@ -48,7 +48,7 @@ public class EssayAnswerAnalysis {
     public EssayAnswerAnalysis() {
     }
 
-    public EssayAnswerAnalysis(Long answerID, BigDecimal matchPercentage, Integer keywordsMatched, Integer totalKeywords, BigDecimal contentSimilarity, BigDecimal grammarScore, Timestamp analyzedAt, Integer autoGradedScore, Integer finalScore, String reviewerComments) {
+    public EssayAnswerAnalysis(ExamAnswer answerID, BigDecimal matchPercentage, Integer keywordsMatched, Integer totalKeywords, BigDecimal contentSimilarity, BigDecimal grammarScore, Timestamp analyzedAt, Integer autoGradedScore, Integer finalScore, String reviewerComments) {
         this.answerID = answerID;
         this.matchPercentage = matchPercentage;
         this.keywordsMatched = keywordsMatched;
@@ -67,11 +67,11 @@ public class EssayAnswerAnalysis {
         return analysisID;
     }
 
-    public Long getAnswerID() {
+    public ExamAnswer getAnswerID() {
         return answerID;
     }
 
-    public void setAnswerID(Long answerID) {
+    public void setAnswerID(ExamAnswer answerID) {
         this.answerID = answerID;
     }
 

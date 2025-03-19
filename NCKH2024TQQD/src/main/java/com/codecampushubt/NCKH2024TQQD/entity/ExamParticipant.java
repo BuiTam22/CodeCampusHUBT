@@ -12,11 +12,13 @@ public class ExamParticipant {
     @Column(name = "ParticipantID", nullable = false, unique = true)
     private Long participantID;
 
-    @Column(name = "ExamID", nullable = false)
-    private Long examID;
+    @ManyToOne
+    @JoinColumn(name = "ExamID", nullable = false)
+    private Exam examID;
 
-    @Column(name = "UserID", nullable = false)
-    private Long userID;
+    @ManyToOne
+    @JoinColumn(name = "UserID", nullable = false)
+    private User userID;
 
     @Column(name = "StartedAt")
     private Timestamp startedAt;
@@ -35,9 +37,9 @@ public class ExamParticipant {
 
     @Column(name = "Feedback", columnDefinition = "NVARCHAR(MAX)")
     private String feedback;
-
-    @Column(name = "ReviewedBy")
-    private Long reviewedBy;
+    @ManyToOne
+    @JoinColumn(name = "ReviewedBy")
+    private User reviewedBy;
 
     @Column(name = "ReviewedAt")
     private Timestamp reviewedAt;
@@ -47,7 +49,7 @@ public class ExamParticipant {
     public ExamParticipant() {
     }
 
-    public ExamParticipant(Long examID, Long userID, Timestamp startedAt, Timestamp completedAt, Integer timeSpent, Integer score, String status, String feedback, Long reviewedBy, Timestamp reviewedAt) {
+    public ExamParticipant(Exam examID, User userID, Timestamp startedAt, Timestamp completedAt, Integer timeSpent, Integer score, String status, String feedback, User reviewedBy, Timestamp reviewedAt) {
         this.examID = examID;
         this.userID = userID;
         this.startedAt = startedAt;
@@ -66,19 +68,19 @@ public class ExamParticipant {
         return participantID;
     }
 
-    public Long getExamID() {
+    public Exam getExamID() {
         return examID;
     }
 
-    public void setExamID(Long examID) {
+    public void setExamID(Exam examID) {
         this.examID = examID;
     }
 
-    public Long getUserID() {
+    public User getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(User userID) {
         this.userID = userID;
     }
 
@@ -130,11 +132,11 @@ public class ExamParticipant {
         this.feedback = feedback;
     }
 
-    public Long getReviewedBy() {
+    public User getReviewedBy() {
         return reviewedBy;
     }
 
-    public void setReviewedBy(Long reviewedBy) {
+    public void setReviewedBy(User reviewedBy) {
         this.reviewedBy = reviewedBy;
     }
 

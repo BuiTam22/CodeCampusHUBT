@@ -10,9 +10,9 @@ public class Exam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long examID;
-
-    @Column(name = "CourseID", nullable = false)
-    private Long courseID;
+    @ManyToOne
+    @JoinColumn(name = "CourseID", nullable = false)
+    private Course courseID;
 
     @Column(name = "Title", nullable = false, length = 255)
     private String title;
@@ -50,8 +50,9 @@ public class Exam {
     @Column(name = "Status", columnDefinition = "VARCHAR(20) DEFAULT 'upcoming'")
     private String status = "upcoming";
 
-    @Column(name = "CreatedBy", nullable = false)
-    private Long createdBy;
+    @ManyToOne
+    @JoinColumn(name = "CreatedBy", nullable = false) // Liên kết đến UserID trong bảng Users
+    private User createdBy;
 
     @Column(name = "CreatedAt", updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -63,7 +64,8 @@ public class Exam {
     public Exam() {
     }
 
-    public Exam(Long courseID, String title, String description, String type, int duration, int totalPoints, int passingScore, LocalDateTime startTime, LocalDateTime endTime, String instructions, boolean allowReview, boolean shuffleQuestions, String status, Long createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Exam(Long examID, Course courseID, String title, String description, String type, int duration, int totalPoints, int passingScore, LocalDateTime startTime, LocalDateTime endTime, String instructions, boolean allowReview, boolean shuffleQuestions, String status, User createdBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.examID = examID;
         this.courseID = courseID;
         this.title = title;
         this.description = description;
@@ -81,17 +83,20 @@ public class Exam {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-//    getter & setter
 
     public Long getExamID() {
         return examID;
     }
 
-    public Long getCourseID() {
+    public void setExamID(Long examID) {
+        this.examID = examID;
+    }
+
+    public Course getCourseID() {
         return courseID;
     }
 
-    public void setCourseID(Long courseID) {
+    public void setCourseID(Course courseID) {
         this.courseID = courseID;
     }
 
@@ -191,11 +196,11 @@ public class Exam {
         this.status = status;
     }
 
-    public Long getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -213,29 +218,6 @@ public class Exam {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "Exam{" +
-                "examID=" + examID +
-                ", courseID=" + courseID +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", type='" + type + '\'' +
-                ", duration=" + duration +
-                ", totalPoints=" + totalPoints +
-                ", passingScore=" + passingScore +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", instructions='" + instructions + '\'' +
-                ", allowReview=" + allowReview +
-                ", shuffleQuestions=" + shuffleQuestions +
-                ", status='" + status + '\'' +
-                ", createdBy=" + createdBy +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }
 

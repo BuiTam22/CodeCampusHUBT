@@ -15,8 +15,9 @@ public class CourseLesson {
     public Long lessonID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSEMODULES
-    @Column(name = "ModuleID", nullable = false)
-    public Long moduleID;
+    @ManyToOne
+    @JoinColumn(name = "ModuleID", nullable = false)
+    public CourseModule moduleID;
 
     // TIÊU ĐỀ BÀI HỌC
     @Column(name = "Title", nullable = false, length = 255)
@@ -67,7 +68,8 @@ public class CourseLesson {
     public CourseLesson() {
     }
 
-    public CourseLesson(Long moduleID, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CourseLesson(Long lessonID, CourseModule moduleID, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.lessonID = lessonID;
         this.moduleID = moduleID;
         this.title = title;
         this.description = description;
@@ -86,118 +88,103 @@ public class CourseLesson {
         return lessonID;
     }
 
-    public Long getModuleID() {
+    public void setLessonID(Long lessonID) {
+        this.lessonID = lessonID;
+    }
+
+    public CourseModule getModuleID() {
         return moduleID;
+    }
+
+    public void setModuleID(CourseModule moduleID) {
+        this.moduleID = moduleID;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public Integer getOrderIndex() {
-        return orderIndex;
-    }
-
-    public Boolean getPreview() {
-        return isPreview;
-    }
-
-    public Boolean getPublished() {
-        return isPublished;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setModuleID(Long moduleID) {
-        this.moduleID = moduleID;
-    }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public void setContent(String content) {
         this.content = content;
     }
 
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
+    }
+
+    public Integer getDuration() {
+        return duration;
     }
 
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
+    public Integer getOrderIndex() {
+        return orderIndex;
+    }
+
     public void setOrderIndex(Integer orderIndex) {
         this.orderIndex = orderIndex;
+    }
+
+    public Boolean getPreview() {
+        return isPreview;
     }
 
     public void setPreview(Boolean preview) {
         isPreview = preview;
     }
 
+    public Boolean getPublished() {
+        return isPublished;
+    }
+
     public void setPublished(Boolean published) {
         isPublished = published;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "CourseLesson{" +
-                "lessonID=" + lessonID +
-                ", moduleID=" + moduleID +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", type='" + type + '\'' +
-                ", content='" + content + '\'' +
-                ", videoUrl='" + videoUrl + '\'' +
-                ", duration=" + duration +
-                ", orderIndex=" + orderIndex +
-                ", isPreview=" + isPreview +
-                ", isPublished=" + isPublished +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

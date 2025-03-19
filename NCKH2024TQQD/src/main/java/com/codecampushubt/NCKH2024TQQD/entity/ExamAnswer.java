@@ -11,12 +11,12 @@ public class ExamAnswer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AnswerID", nullable = false, unique = true)
     private Long answerID;
-
-    @Column(name = "ParticipantID", nullable = false)
-    private Long participantID;
-
-    @Column(name = "QuestionID", nullable = false)
-    private Long questionID;
+    @ManyToOne
+    @JoinColumn(name = "ParticipantID", nullable = false)
+    private ExamParticipant participantID;
+    @ManyToOne
+    @JoinColumn(name = "QuestionID", nullable = false)
+    private ExamQuestion questionID;
 
     @Column(name = "Answer", columnDefinition = "NVARCHAR(MAX)")
     private String answer;
@@ -38,7 +38,7 @@ public class ExamAnswer {
     public ExamAnswer() {
     }
 
-    public ExamAnswer(Long participantID, Long questionID, String answer, Boolean isCorrect, Integer score, String reviewerComments, Timestamp submittedAt) {
+    public ExamAnswer(ExamParticipant participantID, ExamQuestion questionID, String answer, Boolean isCorrect, Integer score, String reviewerComments, Timestamp submittedAt) {
         this.participantID = participantID;
         this.questionID = questionID;
         this.answer = answer;
@@ -54,19 +54,23 @@ public class ExamAnswer {
         return answerID;
     }
 
-    public Long getParticipantID() {
+    public void setAnswerID(Long answerID) {
+        this.answerID = answerID;
+    }
+
+    public ExamParticipant getParticipantID() {
         return participantID;
     }
 
-    public void setParticipantID(Long participantID) {
+    public void setParticipantID(ExamParticipant participantID) {
         this.participantID = participantID;
     }
 
-    public Long getQuestionID() {
+    public ExamQuestion getQuestionID() {
         return questionID;
     }
 
-    public void setQuestionID(Long questionID) {
+    public void setQuestionID(ExamQuestion questionID) {
         this.questionID = questionID;
     }
 
@@ -108,19 +112,5 @@ public class ExamAnswer {
 
     public void setSubmittedAt(Timestamp submittedAt) {
         this.submittedAt = submittedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "ExamAnswer{" +
-                "answerID=" + answerID +
-                ", participantID=" + participantID +
-                ", questionID=" + questionID +
-                ", answer='" + answer + '\'' +
-                ", isCorrect=" + isCorrect +
-                ", score=" + score +
-                ", reviewerComments='" + reviewerComments + '\'' +
-                ", submittedAt=" + submittedAt +
-                '}';
     }
 }
