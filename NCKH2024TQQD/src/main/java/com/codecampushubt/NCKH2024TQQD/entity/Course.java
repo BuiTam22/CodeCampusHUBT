@@ -50,8 +50,6 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "InstructorID")
     private User instructor;
-//    @Column(name = "InstructorID")
-//    private Long instructorId; // Không dùng @ManyToOne để tránh khóa ngoại
 
     @Column(name = "Level", length = 20)
     private String level;
@@ -123,13 +121,13 @@ public class Course {
     //Constructor
     public Course(){}
 
-    public Course(Long courseID, String title, String description, String shortDescription, User instructor, String level, String category, String subCategory, String language, Integer duration, Integer capacity, Integer enrolledCount, BigDecimal rating, Integer ratingCount, BigDecimal price, BigDecimal discountPrice, String imageUrl, String videoUrl, String requirements, String objectives, String syllabus, String status, Boolean isPublished, LocalDateTime publishedAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
-        this.courseID = courseID;
-        this.title = title;
+    public Course(String title, String description, String shortDescription, User instructor, String level, String category, String subCategory, String language, Integer duration, Integer capacity, Integer enrolledCount, BigDecimal rating, Integer ratingCount, BigDecimal price, BigDecimal discountPrice, String imageUrl, String videoUrl, String requirements, String objectives, String syllabus, String status, Boolean isPublished, LocalDateTime publishedAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+//        this.courseID = courseID;
         // this.slug = slug;
+        this.title = title;
         this.description = description;
         this.shortDescription = shortDescription;
-        this.instructor = instructor;
+//        this.instructor = instructor;
         this.level = level;
         this.category = category;
         this.subCategory = subCategory;
