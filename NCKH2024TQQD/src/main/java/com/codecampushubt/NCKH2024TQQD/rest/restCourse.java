@@ -1,14 +1,23 @@
     package com.codecampushubt.NCKH2024TQQD.rest;
 
-    import com.codecampushubt.NCKH2024TQQD.entity.*;
-    import com.codecampushubt.NCKH2024TQQD.service.CourseService;
-    import jakarta.persistence.EntityManager;
-    import jakarta.transaction.Transactional;
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.web.bind.annotation.*;
-
     import java.util.ArrayList;
-    import java.util.List;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.web.bind.annotation.DeleteMapping;
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.PathVariable;
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.codecampushubt.NCKH2024TQQD.entity.Course;
+import com.codecampushubt.NCKH2024TQQD.entity.User;
+import com.codecampushubt.NCKH2024TQQD.service.CourseServices.CourseService;
+
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
     @RequestMapping("/api/course")
     @RestController()
