@@ -5,16 +5,7 @@ import java.time.LocalDateTime;
 
 import com.github.slugify.Slugify;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "courses")
@@ -47,7 +38,7 @@ public class Course {
     @Column(name = "ShortDescription", length = 500)
     private String shortDescription;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "InstructorID")
     private User instructor;
 

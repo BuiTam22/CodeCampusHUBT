@@ -1,4 +1,4 @@
-package com.codecampushubt.NCKH2024TQQD.service;
+package com.codecampushubt.NCKH2024TQQD.service.CourseServices;
 
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 
