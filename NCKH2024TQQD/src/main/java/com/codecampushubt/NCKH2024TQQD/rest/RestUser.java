@@ -23,7 +23,7 @@ public class RestUser {
 //    @GetMapping("/hello")
 //    public ArrayList<User> hello() {
 //
-//        return (ArrayList<User>) entityManager.createQuery("SELECT u FROM User u WHERE u.id = 1", User.class).getResultList();
+//        return (ArrayList<User>) entityManager.createQuery(("SELECT u FROM User u WHERE u.id = 1", User.class).getResultList();
 //    }
 
 //    @GetMapping("/hello1")
@@ -35,6 +35,11 @@ public class RestUser {
     @GetMapping("/basic-info/{id}")
     public ArrayList<UserBasicInfoDTO> getUserBasicInfo(@PathVariable("id") Long theID){
         return userService.getUserBasicInfo(theID);
+    }
+
+    @GetMapping("/find-all")
+    public ArrayList<User> findAll(){
+        return userService.findAll();
     }
 
 }

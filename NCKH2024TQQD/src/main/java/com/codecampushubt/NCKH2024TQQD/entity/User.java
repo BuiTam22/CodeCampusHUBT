@@ -3,6 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -30,8 +31,8 @@ public class User {
     @Column(name = "School", length = 255)
     private String school;
 
-    @Column(name = "Role", nullable = false, length = 20)
-    private String role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserRole> userRoles;
 
     @Column(name = "Status", nullable = false, length = 20)
     private String status;
@@ -85,14 +86,14 @@ public class User {
     public User() {
     }
 
-    public User(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String school, String role, String status, String accountStatus, String image, String bio, String provider, String providerID, Boolean emailVerified, String phoneNumber, String address, String city, String country, String lastLoginIP, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime lastLoginAt, LocalDateTime deletedAt) {
+    public User(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String school, String status, String accountStatus, String image, String bio, String provider, String providerID, Boolean emailVerified, String phoneNumber, String address, String city, String country, String lastLoginIP, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime lastLoginAt, LocalDateTime deletedAt) {
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.school = school;
-        this.role = role;
+//        this.role = role;
         this.status = status;
         this.accountStatus = accountStatus;
         this.image = image;
@@ -142,9 +143,9 @@ public class User {
         return school;
     }
 
-    public String getRole() {
-        return role;
-    }
+//    public String getRole() {
+//        return role;
+//    }
 
     public String getStatus() {
         return status;
@@ -234,9 +235,9 @@ public class User {
         this.school = school;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+//    public void setRole(String role) {
+//        this.role = role;
+//    }
 
     public void setStatus(String status) {
         this.status = status;
@@ -312,7 +313,7 @@ public class User {
                 ", fullName='" + fullName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", school='" + school + '\'' +
-                ", role='" + role + '\'' +
+//                ", role='" + role + '\'' +
                 ", status='" + status + '\'' +
                 ", accountStatus='" + accountStatus + '\'' +
                 ", image='" + image + '\'' +

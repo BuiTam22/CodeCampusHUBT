@@ -15,13 +15,13 @@ import jakarta.transaction.Transactional;
 
 @RequestMapping("/api/course")
 @RestController()
-public class restCourse {
+public class RestCourse {
 
          private CourseService courseService;
          private EntityManager entityManager;
 
          @Autowired
-         public restCourse(CourseService courseService, EntityManager entityManager) {
+         public RestCourse(CourseService courseService, EntityManager entityManager) {
              this.courseService = courseService;
              this.entityManager = entityManager;
          }
