@@ -23,7 +23,7 @@ public class RestUser {
 //    @GetMapping("/hello")
 //    public ArrayList<User> hello() {
 //
-//        return (ArrayList<User>) entityManager.createQuery("SELECT u FROM User u WHERE u.id = 1", User.class).getResultList();
+//        return (ArrayList<User>) entityManager.createQuery(("SELECT u FROM User u WHERE u.id = 1", User.class).getResultList();
 //    }
 
 //    @GetMapping("/hello1")
