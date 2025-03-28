@@ -37,4 +37,9 @@ public class RestUser {
         return userService.getUserBasicInfo(theID);
     }
 
+    @GetMapping("/find-all")
+    public ArrayList<User> findAll(){
+        return userService.findAll();
+    }
+
 }
