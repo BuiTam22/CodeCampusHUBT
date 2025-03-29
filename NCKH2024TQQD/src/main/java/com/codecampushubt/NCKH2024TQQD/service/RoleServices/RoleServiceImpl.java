@@ -1,12 +1,13 @@
-package com.codecampushubt.NCKH2024TQQD.service.RoleService;
-
-import com.codecampushubt.NCKH2024TQQD.dao.RoleRepository;
-import com.codecampushubt.NCKH2024TQQD.entity.Role;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+package com.codecampushubt.NCKH2024TQQD.service.RoleServices;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.codecampushubt.NCKH2024TQQD.dao.RoleRepository;
+import com.codecampushubt.NCKH2024TQQD.entity.Role;
 
 @Service
 public class RoleServiceImpl implements RoleService{
