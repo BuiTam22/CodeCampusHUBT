@@ -1,10 +1,10 @@
-package com.codecampushubt.NCKH2024TQQD.service.RoleService;
+package com.codecampushubt.NCKH2024TQQD.service.RoleServices;
 
-
-import com.codecampushubt.NCKH2024TQQD.entity.Role;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.codecampushubt.NCKH2024TQQD.entity.Role;
 
 public interface RoleService {
     List<Role> findAll();

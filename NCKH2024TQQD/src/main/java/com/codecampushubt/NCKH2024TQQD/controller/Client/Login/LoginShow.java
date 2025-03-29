@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/login")
 public class LoginShow {
     @GetMapping("/show")
-    public String showCourse(){
+    public String showLogin(){
         return "Client/login/show";
     }
 }

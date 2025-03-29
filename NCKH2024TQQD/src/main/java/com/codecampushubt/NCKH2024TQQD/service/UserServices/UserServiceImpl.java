@@ -1,12 +1,14 @@
 package com.codecampushubt.NCKH2024TQQD.service.UserServices;
 
-import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
-import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserBasicInfoDTO;
-import com.codecampushubt.NCKH2024TQQD.entity.User;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserBasicInfoDTO;
+import com.codecampushubt.NCKH2024TQQD.entity.User;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -25,5 +27,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public ArrayList<User> findAll(){
         return (ArrayList<User>) userRepository.findAll();
+    }
+
+    @Override
+    public LoginBasicDTO getLoginBasicDTO(String userName){
+        return (LoginBasicDTO) userRepository.getLoginBasicDTO(userName);
     }
 }
