@@ -1,4 +1,4 @@
-package com.codecampushubt.NCKH2024TQQD.Controller.Admin.Role;
+package com.codecampushubt.NCKH2024TQQD.controller.Admin.Role;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("admin/role")
-public class roleShow {
+public class RoleShow {
     @GetMapping("/show")
     public String showRole(){
         return "Admin/Role/show";

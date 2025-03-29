@@ -1,4 +1,4 @@
-package com.codecampushubt.NCKH2024TQQD.Controller.Admin.Course;
+package com.codecampushubt.NCKH2024TQQD.controller.Admin.Course;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
