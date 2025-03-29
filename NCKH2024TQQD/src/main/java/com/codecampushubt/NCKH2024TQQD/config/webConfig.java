@@ -42,7 +42,7 @@ public class webConfig implements WebMvcConfigurer {
     // Cấu hình đường dẫn cho CSS, JS, Images
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
+        registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
     }
 }

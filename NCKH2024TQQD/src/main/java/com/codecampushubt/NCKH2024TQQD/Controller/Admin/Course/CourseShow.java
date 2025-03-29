@@ -1,15 +1,14 @@
-package com.codecampushubt.NCKH2024TQQD.Controller.Admin.Dashboard;
+package com.codecampushubt.NCKH2024TQQD.Controller.Admin.Course;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("admin/dashboard")
-public class show {
+@RequestMapping("admin/course")
+public class CourseShow {
     @GetMapping("/show")
-    public String showDashboard(){
-        return "dashboard/show";
-
+    public String showCourse(){
+        return "Admin/course/show";
     }
 }
