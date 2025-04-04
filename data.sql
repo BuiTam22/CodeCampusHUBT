@@ -297,6 +297,18 @@ CREATE TABLE CodingExercises (
     CONSTRAINT CHK_Exercise_Difficulty CHECK (Difficulty IN ('easy', 'medium', 'hard', 'expert')) -- Kiểm tra độ khó hợp lệ
 );
 GO
+
+-- tao bang de quan ly testCases de dang hon
+CREATE TABLE ExerciseTestCases (
+    TestCaseID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    ExerciseID BIGINT FOREIGN KEY REFERENCES CodingExercises(ExerciseID),
+    Input NVARCHAR(MAX),
+    ExpectedOutput NVARCHAR(MAX),
+    IsPublic BIT DEFAULT 0, -- để phân biệt test case public/private
+    Score INT DEFAULT 1 -- nếu mỗi test case có điểm riêng
+);
+GO
+
 -- Bảng CodingSubmissions: Lưu trữ bài nộp của học viên
 CREATE TABLE CodingSubmissions (
     SubmissionID BIGINT IDENTITY(1,1) PRIMARY KEY, -- ID tự tăng của bài nộp
@@ -1049,6 +1061,12 @@ ALTER TABLE Users DROP COLUMN role;
 DROP TABLE Backup_UserRoles;
 --------------------------------------Kết thúc Thêm Role, Permission cho User--------------------------------------------------------------
 
+
+--------------------------------------Xóa trường TestCase trong bảng CodingExcercises------------------------------------------------------
+ALTER TABLE CodingExercises DROP COLUMN TestCases
+
+
+--------------------------------------Kết thúc Xóa trường TestCase trong bảng CodingExcercises--------------------------------------------------------------
 
 
 
