@@ -11,55 +11,55 @@ public class CodingExercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ExerciseID", nullable = false, updatable = false)
-    public Long exerciseID;
+    private Long exerciseID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSELESSONS
     @ManyToOne
     @JoinColumn(name = "LessonID", nullable = false)
-    public CourseLesson lessonID;
+    private CourseLesson lessonID;
 
     // TIÊU ĐỀ BÀI TẬP
     @Column(name = "Title", nullable = false, length = 255)
-    public String title;
+    private String title;
 
     // MÔ TẢ CHI TIẾT BÀI TẬP
     @Column(name = "Description", columnDefinition = "NVARCHAR(MAX)")
-    public String description;
+    private String description;
 
     // NGÔN NGỮ LẬP TRÌNH ĐƯỢC SỬ DỤNG
     @Column(name = "ProgrammingLanguage", length = 50)
-    public String programmingLanguage;
+    private String programmingLanguage;
 
     // CODE MẪU BAN ĐẦU
     @Column(name = "InitialCode", columnDefinition = "NVARCHAR(MAX)")
-    public String initialCode;
+    private String initialCode;
 
     // CODE LỜI GIẢI
     @Column(name = "SolutionCode", columnDefinition = "NVARCHAR(MAX)")
-    public String solutionCode;
+    private String solutionCode;
 
     // GIỚI HẠN THỜI GIAN CHẠY (MILI GIÂY)
     @Column(name = "TimeLimit", nullable = false, columnDefinition = "INT DEFAULT 1000")
-    public Integer timeLimit;
+    private Integer timeLimit;
 
     // GIỚI HẠN BỘ NHỚ SỬ DỤNG (MB)
     @Column(name = "MemoryLimit", nullable = false, columnDefinition = "INT DEFAULT 256")
-    public Integer memoryLimit;
+    private Integer memoryLimit;
 
     @Column(name = "Difficulty", nullable = false, length = 20, columnDefinition = "VARCHAR(20) DEFAULT 'medium'")
-    public String difficulty;
+    private String difficulty;
 
     // ĐIỂM CHO BÀI TẬP
     @Column(name = "Points", nullable = false, columnDefinition = "INT DEFAULT 0")
-    public Integer points;
+    private Integer points;
 
     // THỜI ĐIỂM TẠO
     @Column(name = "CreatedAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
-    public LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     // THỜI ĐIỂM CẬP NHẬT
     @Column(name = "UpdatedAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
-    public LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
 
     // Constructor

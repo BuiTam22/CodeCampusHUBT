@@ -20,38 +20,38 @@ public class CourseEnrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EnrollmentID", nullable = false, updatable = false)
-    public Long enrollmentID;
+    private Long enrollmentID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSES
     @ManyToOne
     @JoinColumn(name = "CourseID", nullable = false)
-    public Course courseID;
+    private Course courseID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG USERS
     @ManyToOne
     @JoinColumn(name = "UserID", nullable = false)
-    public User userID;
+    private User userID;
 
     // TIẾN ĐỘ HỌC TẬP (%)
     @Column(name = "Progress", nullable = false, columnDefinition = "INT DEFAULT 0")
-    public Integer progress;
+    private Integer progress;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSELESSONS (BÀI HỌC TRUY CẬP GẦN NHẤT)
     @ManyToOne
     @JoinColumn(name = "LastAccessedLessonID")
-    public CourseLesson lastAccessedLessonID;
+    private CourseLesson lastAccessedLessonID;
 
     // THỜI ĐIỂM ĐĂNG KÝ
     @Column(name = "EnrolledAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
-    public LocalDateTime enrolledAt;
+    private LocalDateTime enrolledAt;
 
     // THỜI ĐIỂM HOÀN THÀNH
     @Column(name = "CompletedAt")
-    public LocalDateTime completedAt;
+    private LocalDateTime completedAt;
 
     // ĐÃ CẤP CHỨNG CHỈ CHƯA (TRUE/FALSE)
     @Column(name = "CertificateIssued", nullable = false, columnDefinition = "BIT DEFAULT 0")
-    public Boolean certificateIssued;
+    private Boolean certificateIssued;
 
     // Constructor
     public CourseEnrollment() {
