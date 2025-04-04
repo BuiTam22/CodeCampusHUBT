@@ -12,56 +12,56 @@ public class CourseLesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LessonID", nullable = false, updatable = false)
-    public Long lessonID;
+    private Long lessonID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSEMODULES
     @ManyToOne
     @JoinColumn(name = "ModuleID", nullable = false)
-    public CourseModule moduleID;
+    private CourseModule moduleID;
 
     // TIÊU ĐỀ BÀI HỌC
     @Column(name = "Title", nullable = false, length = 255)
-    public String title;
+    private String title;
 
     // MÔ TẢ BÀI HỌC
     @Column(name = "Description", columnDefinition = "NVARCHAR(MAX)")
-    public String description;
+    private String description;
 
     // LOẠI BÀI HỌC (VIDEO, TEXT, QUIZ, ASSIGNMENT, CODING)
     @Column(name = "Type", nullable = false, length = 50)
-    public String type;
+    private String type;
 
     // NỘI DUNG CHO BÀI HỌC DẠNG VĂN BẢN
     @Column(name = "Content", columnDefinition = "NVARCHAR(MAX)")
-    public String content;
+    private String content;
 
     // ĐƯỜNG DẪN VIDEO
     @Column(name = "VideoUrl", length = 255)
-    public String videoUrl;
+    private String videoUrl;
 
     // THỜI LƯỢNG (PHÚT)
     @Column(name = "Duration")
-    public Integer duration;
+    private Integer duration;
 
     // THỨ TỰ SẮP XẾP TRONG MODULE
     @Column(name = "OrderIndex", nullable = false)
-    public Integer orderIndex;
+    private Integer orderIndex;
 
     // CÓ CHO PHÉP XEM THỬ KHÔNG (TRUE/FALSE)
     @Column(name = "IsPreview", nullable = false, columnDefinition = "BIT DEFAULT 0")
-    public Boolean isPreview;
+    private Boolean isPreview;
 
     // BÀI HỌC ĐÃ XUẤT BẢN CHƯA (TRUE/FALSE)
     @Column(name = "IsPublished", nullable = false, columnDefinition = "BIT DEFAULT 0")
-    public Boolean isPublished;
+    private Boolean isPublished;
 
     // THỜI ĐIỂM TẠO BÀI HỌC
     @Column(name = "CreatedAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
-    public LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     // THỜI ĐIỂM CẬP NHẬT BÀI HỌC
     @Column(name = "UpdatedAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
-    public LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
 
     // Constructor

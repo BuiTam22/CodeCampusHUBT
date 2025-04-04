@@ -11,33 +11,33 @@ public class LessonProgress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ProgressID", nullable = false, updatable = false)
-    public Long progressID;
+    private Long progressID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSEENROLLMENTS
     @ManyToOne
     @JoinColumn(name = "EnrollmentID", nullable = false)
-    public CourseEnrollment enrollmentID;
+    private CourseEnrollment enrollmentID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSELESSONS
     @ManyToOne
     @JoinColumn(name = "LessonID", nullable = false)
-    public CourseLesson lessonID;
+    private CourseLesson lessonID;
 
     // TRẠNG THÁI HỌC TẬP (KHÔNG DÙNG ENUM)
     @Column(name = "Status", length = 20)
-    public String status;
+    private String status;
 
     // THỜI ĐIỂM HOÀN THÀNH
     @Column(name = "CompletedAt")
-    public LocalDateTime completedAt;
+    private LocalDateTime completedAt;
 
     // THỜI GIAN ĐÃ HỌC (GIÂY)
     @Column(name = "TimeSpent", nullable = false, columnDefinition = "INT DEFAULT 0")
-    public Integer timeSpent;
+    private Integer timeSpent;
 
     // VỊ TRÍ XEM VIDEO GẦN NHẤT
     @Column(name = "LastPosition", nullable = false, columnDefinition = "INT DEFAULT 0")
-    public Integer lastPosition;
+    private Integer lastPosition;
 
     // Constructor
     public LessonProgress() {

@@ -11,53 +11,53 @@ public class CodingSubmission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SubmissionID", nullable = false, updatable = false)
-    public Long submissionID;
+    private Long submissionID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG CODINGEXERCISES
     @ManyToOne
     @JoinColumn(name = "ExerciseID", nullable = false)
-    public CodingExercise exerciseID;
+    private CodingExercise exerciseID;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG USERS
     @ManyToOne
     @JoinColumn(name = "UserID", nullable = false)
-    public User userID;
+    private User userID;
 
     // CODE ĐÃ NỘP
     @Column(name = "Code", columnDefinition = "NVARCHAR(MAX)")
-    public String code;
+    private String code;
 
     // NGÔN NGỮ LẬP TRÌNH SỬ DỤNG
     @Column(name = "Language", length = 50)
-    public String language;
+    private String language;
 
     // TRẠNG THÁI CHẤM BÀI (CHỈ NHẬN GIÁ TRỊ HỢP LỆ)
     @Column(name = "Status", length = 20)
-    public String status;
+    private String status;
 
     // THỜI GIAN CHẠY (MILI GIÂY)
     @Column(name = "ExecutionTime")
-    public Integer executionTime;
+    private Integer executionTime;
 
     // BỘ NHỚ SỬ DỤNG (KB)
     @Column(name = "MemoryUsed")
-    public Integer memoryUsed;
+    private Integer memoryUsed;
 
     // SỐ TEST CASE ĐÃ PASS
     @Column(name = "TestCasesPassed", nullable = false, columnDefinition = "INT DEFAULT 0")
-    public Integer testCasesPassed;
+    private Integer testCasesPassed;
 
     // TỔNG SỐ TEST CASE
     @Column(name = "TotalTestCases", nullable = false, columnDefinition = "INT DEFAULT 0")
-    public Integer totalTestCases;
+    private Integer totalTestCases;
 
     // ĐIỂM ĐẠT ĐƯỢC
     @Column(name = "Score", nullable = false, columnDefinition = "INT DEFAULT 0")
-    public Integer score;
+    private Integer score;
 
     // THỜI ĐIỂM NỘP BÀI
     @Column(name = "SubmittedAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
-    public LocalDateTime submittedAt;
+    private LocalDateTime submittedAt;
 
 
     // Constructor
