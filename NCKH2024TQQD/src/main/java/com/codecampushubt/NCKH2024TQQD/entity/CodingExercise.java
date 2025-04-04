@@ -38,10 +38,6 @@ public class CodingExercise {
     @Column(name = "SolutionCode", columnDefinition = "NVARCHAR(MAX)")
     public String solutionCode;
 
-    // CÁC TEST CASE KIỂM TRA (ĐỊNH DẠNG JSON)
-    @Column(name = "TestCases", columnDefinition = "NVARCHAR(MAX)")
-    public String testCases;
-
     // GIỚI HẠN THỜI GIAN CHẠY (MILI GIÂY)
     @Column(name = "TimeLimit", nullable = false, columnDefinition = "INT DEFAULT 1000")
     public Integer timeLimit;
@@ -70,7 +66,7 @@ public class CodingExercise {
     public CodingExercise() {
     }
 
-    public CodingExercise(Long exerciseID, CourseLesson lessonID, String title, String description, String programmingLanguage, String initialCode, String solutionCode, String testCases, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CodingExercise(Long exerciseID, CourseLesson lessonID, String title, String description, String programmingLanguage, String initialCode, String solutionCode, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.exerciseID = exerciseID;
         this.lessonID = lessonID;
         this.title = title;
@@ -78,7 +74,6 @@ public class CodingExercise {
         this.programmingLanguage = programmingLanguage;
         this.initialCode = initialCode;
         this.solutionCode = solutionCode;
-        this.testCases = testCases;
         this.timeLimit = timeLimit;
         this.memoryLimit = memoryLimit;
         this.difficulty = difficulty;
@@ -143,14 +138,6 @@ public class CodingExercise {
         this.solutionCode = solutionCode;
     }
 
-    public String getTestCases() {
-        return testCases;
-    }
-
-    public void setTestCases(String testCases) {
-        this.testCases = testCases;
-    }
-
     public Integer getTimeLimit() {
         return timeLimit;
     }
@@ -197,5 +184,24 @@ public class CodingExercise {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "CodingExercise{" +
+                "exerciseID=" + exerciseID +
+                ", lessonID=" + lessonID +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", programmingLanguage='" + programmingLanguage + '\'' +
+                ", initialCode='" + initialCode + '\'' +
+                ", solutionCode='" + solutionCode + '\'' +
+                ", timeLimit=" + timeLimit +
+                ", memoryLimit=" + memoryLimit +
+                ", difficulty='" + difficulty + '\'' +
+                ", points=" + points +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
+import com.codecampushubt.NCKH2024TQQD.entity.ExerciseTestCase;
 import com.codecampushubt.NCKH2024TQQD.entity.Permission;
 import com.codecampushubt.NCKH2024TQQD.entity.RolePermission;
 import com.codecampushubt.NCKH2024TQQD.entity.UserRole;
@@ -35,8 +36,8 @@ public class RestTest {
     }
 
     @GetMapping("/ok2")
-    public List<Permission> findList2(){
-        return entityManager.createQuery("SELECT u FROM Permission u", Permission.class).getResultList();
+    public List<ExerciseTestCase> findList2(){
+        return entityManager.createQuery("SELECT u FROM ExerciseTestCase u", ExerciseTestCase.class).getResultList();
     }
 
     @GetMapping("/ok3")
@@ -50,6 +51,4 @@ public class RestTest {
         theToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlhdCI6MTc0MzI2MTk0OSwiZXhwIjoxNzQzMzQ4MzQ5fQ.e6ueNJflrWZVcaQRri12ctyc1_P5cINc0Kio8o7BWJY";
         return jwtService.validateToken(theToken);
     }
-
-
 }
