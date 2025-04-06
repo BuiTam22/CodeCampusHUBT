@@ -15,7 +15,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     })
     .then(response => {
         if (response.ok) {
-            window.location.href = "/problem/";
+            window.location.href = "/problem";
         } else {
             alert("Login failed!");
         }

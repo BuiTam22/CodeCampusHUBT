@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RoleShow {
     @GetMapping("/show")
     public String showRole(){
-        return "Admin/role/show";
+        return "AdminTemplates/role/show";
     }
 }
