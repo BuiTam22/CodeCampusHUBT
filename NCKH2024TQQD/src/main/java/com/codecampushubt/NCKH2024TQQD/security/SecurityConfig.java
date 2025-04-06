@@ -1,31 +1,37 @@
 package com.codecampushubt.NCKH2024TQQD.security;
 
+import com.codecampushubt.NCKH2024TQQD.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final JwtFilter jwtFilter;
+
+    public SecurityConfig(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // Tắt CSRF (nếu không dùng token)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/course/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/course/add").authenticated()  // POST cần xác thực
-                        .anyRequest().authenticated()
-                )
-                .httpBasic(Customizer.withDefaults()) // Dùng Basic Auth
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)); // Bật session là always cho basic auth (tránh phải nhập lại tài khoản sử dụng api)
+                .csrf(csrf -> csrf.disable()) // Thêm dòng này để tắt CSRF
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests()
+                .requestMatchers(
+                        "/api/user/login",
+                        "/login/show",
+                        "/resources/static/**" // Cho phép tất cả tài nguyên static client
+                ).permitAll()
+                .requestMatchers("/admin/**").authenticated() // Chặn truy cập các controller trong /admin/** nếu chưa login
+                .anyRequest().authenticated();
 
         return http.build();
     }
-
 }
