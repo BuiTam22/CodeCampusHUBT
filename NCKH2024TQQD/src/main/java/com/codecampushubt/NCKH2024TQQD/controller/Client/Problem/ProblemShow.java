@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/problem")
 public class ProblemShow {
 //    @GetMapping("/{slug}")
-    @GetMapping("/")
+    @GetMapping("")
     public  String showProblem(){
         return "Client/problem/problem";
     }

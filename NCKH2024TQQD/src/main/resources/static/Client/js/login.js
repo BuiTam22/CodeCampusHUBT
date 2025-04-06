@@ -1,27 +1,24 @@
 document.getElementById("loginForm").addEventListener("submit", function(event) {
-    console.log("ok")
-    event.preventDefault(); // Ngăn chặn form submit theo cách truyền thống
+    event.preventDefault();
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    const apiUrl = `${apiBaseUrl}/api/user/login`; // Lấy API base URL từ Thymeleaf
+    const apiUrl = `${apiBaseUrl}/api/user/login`;
 
-    fetch(apiUrl, { // Gửi dữ liệu đến API backend
+    fetch(apiUrl, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, password }),
+        credentials: "include" // ⚠️ Rất quan trọng để cookie được gửi về!
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-          console.log("Login successful");
-          window.location.href = "/dashboard"; // Chuyển hướng nếu đăng nhập thành công
+    .then(response => {
+        if (response.ok) {
+            window.location.href = "/problem/";
         } else {
-            alert("Login failed!"); // Hiển thị lỗi nếu đăng nhập thất bại
+            alert("Login failed!");
         }
     })
-    .catch(error => console.error("Error:", error));
+    .catch(error => alert("Login failed!"));
 });

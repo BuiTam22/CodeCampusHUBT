@@ -3,16 +3,20 @@ package com.codecampushubt.NCKH2024TQQD.security; // Package chứa class filter
 import com.codecampushubt.NCKH2024TQQD.service.JWTServices.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 
-@Component // Đánh dấu đây là một bean quản lý bởi Spring
-public class JwtFilter extends OncePerRequestFilter { // Lớp filter chạy một lần duy nhất mỗi request
+@Component
+public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
@@ -22,17 +26,35 @@ public class JwtFilter extends OncePerRequestFilter { // Lớp filter chạy m�
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
-        String token = request.getHeader("Authorization"); // Lấy token từ header Authorization
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain) throws ServletException, IOException {
 
-        if (token != null && token.startsWith("Bearer ")) { // Kiểm tra token có định dạng hợp lệ không
-            token = token.substring(7); // Loại bỏ "Bearer " để lấy token thực sự
-            if (jwtService.validateToken(token)) { // Kiểm tra token hợp lệ không
-                String username = jwtService.extractUsername(token); // Lấy username từ token
-                request.setAttribute("username", username); // Đặt username vào request để sử dụng trong controller
+        String token = null;
+
+        // Lấy token từ cookie
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("token".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
             }
         }
-        chain.doFilter(request, response); // Tiếp tục chuỗi filter
+
+        if (token != null && jwtService.validateToken(token)) {
+            String username = jwtService.extractUsername(token);
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(
+                                username, null, Collections.emptyList());
+
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+
+        chain.doFilter(request, response);
     }
+
 }
