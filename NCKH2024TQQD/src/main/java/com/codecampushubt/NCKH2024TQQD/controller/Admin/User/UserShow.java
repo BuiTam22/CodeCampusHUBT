@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserShow {
     @GetMapping("/show")
     public String showUser(){
-        return "Admin/user/show";
+        return "AdminTemplates/user/show";
     }
 }

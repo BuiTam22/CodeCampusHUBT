@@ -10,7 +10,7 @@ public class ProblemShow {
 //    @GetMapping("/{slug}")
     @GetMapping("")
     public  String showProblem(){
-        return "Client/problem/problem";
+        return "ClientTemplates/problem/problem";
     }
     
 }

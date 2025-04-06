@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginShow {
     @GetMapping("/show")
     public String showLogin(){
-        return "Client/login/show";
+        return "ClientTemplates/login/show";
     }
 }
