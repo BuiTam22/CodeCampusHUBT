@@ -1,6 +1,5 @@
 package com.codecampushubt.NCKH2024TQQD.security;
 
-import com.codecampushubt.NCKH2024TQQD.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,16 +20,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Thêm dòng này để tắt CSRF
+                .csrf(csrf -> csrf.disable())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .requestMatchers(
                         "/api/user/login",
                         "/login/show",
-                        "/AdminStatic/**", // Cho phép tất cả tài nguyên static AdminStatic
-                        "/ClientStatic/**" // Cho phép tất cả tài nguyên static ClientStatic
+                        "/AdminStatic/**",
+                        "/ClientStatic/**"
                 ).permitAll()
-                .requestMatchers("/admin/**").authenticated() // Chặn truy cập các controller trong /admin/** nếu chưa login
+                // Cho phép Spring Security xử lý phần chứng thực cơ bản
+                // Phần kiểm tra permissions cụ thể sẽ được xử lý trong JwtFilter
                 .anyRequest().authenticated();
 
         return http.build();

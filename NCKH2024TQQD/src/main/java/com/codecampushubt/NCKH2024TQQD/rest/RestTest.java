@@ -1,17 +1,19 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
-import com.codecampushubt.NCKH2024TQQD.entity.ExerciseTestCase;
-import com.codecampushubt.NCKH2024TQQD.entity.Permission;
-import com.codecampushubt.NCKH2024TQQD.entity.RolePermission;
-import com.codecampushubt.NCKH2024TQQD.entity.UserRole;
-import com.codecampushubt.NCKH2024TQQD.service.JWTServices.JwtService;
-import jakarta.persistence.EntityManager;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.codecampushubt.NCKH2024TQQD.entity.ExerciseTestCase;
+import com.codecampushubt.NCKH2024TQQD.entity.RolePermission;
+import com.codecampushubt.NCKH2024TQQD.entity.UserRole;
+import com.codecampushubt.NCKH2024TQQD.service.JWTServices.JwtService;
+
+import jakarta.persistence.EntityManager;
 
 @RequestMapping("/api/test")
 @RestController()
@@ -50,5 +52,11 @@ public class RestTest {
     public boolean checktoken(String theToken){
         theToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlhdCI6MTc0MzI2MTk0OSwiZXhwIjoxNzQzMzQ4MzQ5fQ.e6ueNJflrWZVcaQRri12ctyc1_P5cINc0Kio8o7BWJY";
         return jwtService.validateToken(theToken);
+    }
+
+    @GetMapping("/ok5")
+    public List<String> extractPermissions( String token){
+        token = "eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNzaW9ucyI6WyIvYWRtaW4vY291cnNlL3Nob3ciLCIvYWRtaW4vcm9sZS9zaG93IiwiL2FkbWluL3VzZXIvc2hvdyIsIi9hcGkvY291cnNlL2FkZCIsIi9hcGkvY291cnNlL2RlbGV0ZS97aWR9IiwiL2FwaS9yb2xlL2ZpbmQtYWxsIiwiL2FwaS91c2VyL2Jhc2ljLWluZm8ve2lkfSIsIi9hcGkvdXNlci9maW5kLWFsbCIsIi9hcGkvdXNlci9sb2dpbiIsIi9sb2dpbi9zaG93Il0sInN1YiI6InRhbWJ1aSIsImlhdCI6MTc0NDAyMTQzMSwiZXhwIjoxNzQ0MTA3ODMxfQ.Kc0Yz6fzvg-gNIaI8KgqZs08pQxluD5-2tqzwF5nRDU";
+        return jwtService.extractPermissions(token);
     }
 }
