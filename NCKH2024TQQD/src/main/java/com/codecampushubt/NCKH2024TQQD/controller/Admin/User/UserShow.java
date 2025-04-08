@@ -12,3 +12,4 @@ public class UserShow {
         return "AdminTemplates/user/show";
     }
 }
+//trar ea ddc json

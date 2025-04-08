@@ -28,7 +28,9 @@ public class SecurityConfig {
                         "/api/user/login",
                         "/login/show",
                         "/AdminStatic/**", // Cho phép tất cả tài nguyên static AdminStatic
-                        "/ClientStatic/**" // Cho phép tất cả tài nguyên static ClientStatic
+                        "/ClientStatic/**" ,// Cho phép tất cả tài nguyên static ClientStatic
+                        "/test-connection",
+                        "/api/course/add"
                 ).permitAll()
                 .requestMatchers("/admin/**").authenticated() // Chặn truy cập các controller trong /admin/** nếu chưa login
                 .anyRequest().authenticated();
