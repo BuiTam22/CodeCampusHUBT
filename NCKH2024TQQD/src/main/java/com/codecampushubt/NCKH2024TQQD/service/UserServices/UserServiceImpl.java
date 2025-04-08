@@ -3,6 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.service.UserServices;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
@@ -32,5 +33,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public LoginBasicDTO getLoginBasicDTO(String userName){
         return (LoginBasicDTO) userRepository.getLoginBasicDTO(userName);
+    }
+
+    @Override
+    public String getFullName(String userName){
+        return userRepository.getFullName(userName);
     }
 }
