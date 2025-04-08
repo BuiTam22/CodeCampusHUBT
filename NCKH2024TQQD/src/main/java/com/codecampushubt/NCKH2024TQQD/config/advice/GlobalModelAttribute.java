@@ -5,12 +5,17 @@ import com.codecampushubt.NCKH2024TQQD.service.UserServices.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class GlobalModelAttribute {
+
+    @Value("${base.url}")
+    private String baseUrl;
+
 
     private final JwtService jwtService;
     private final UserService userService;
@@ -39,6 +44,7 @@ public class GlobalModelAttribute {
             String username = jwtService.extractUsername(token);
             String fullname = userService.getFullName(username);
             model.addAttribute("userFullName", fullname);
+            model.addAttribute("baseUrl", baseUrl);
         }
     }
 }
