@@ -1,12 +1,12 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"><!-- problem-nav.html -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- problem-nav.html -->
 <nav class="problem-nav" th:fragment="problemNav">
     <div class="nav-tabs">
-        <button class="nav-tab active">Bài Tập</button>
-        <button class="nav-tab">Đã nộp</button>
-        <button class="nav-tab">Bảng xếp hạng</button>
-        <button class="nav-tab">Thảo luận</button>
-        <button class="nav-tab">Hướng dẫn</button>
+        <a href="/problem" class="nav-tab active">Bài Tập</a>
+        <a href="/submissions" class="nav-tab">Đã nộp</a>
+        <a href="/leaderboard" class="nav-tab">Bảng xếp hạng</a>
+        <a href="/discussions" class="nav-tab">Thảo luận</a>
+        <a href="/tutorial" class="nav-tab">Hướng dẫn</a>
     </div>
 </nav>
