@@ -1,7 +1,9 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,6 +24,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO(u.userName, u.email, u.password) FROM User u WHERE u.userName = :userName")
     LoginBasicDTO getLoginBasicDTO(@Param("userName") String userName);
 
-
+//    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO(u.userID, u.userName, u.email, r.roleName) " +
+//            "FROM User u " +
+//            "join  UserRole ur on u.userID = ur.user.userID" +
+//            "join Roles r ")
+//    List<UserShowDTO> getAllUsers();
+@Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO(u.userID, u.userName, u.email, r.roleName) " +
+        "FROM User u " +
+        "JOIN UserRole ur ON u.userID = ur.user.userID " +
+        "JOIN Role r ON ur.role.roleID = r.roleID")
+List<UserShowDTO> getAllUsersWithRoles();
 
 }

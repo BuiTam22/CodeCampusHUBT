@@ -1,9 +1,12 @@
 package com.codecampushubt.NCKH2024TQQD.service.UserServices;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserBasicInfoDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.User;
 
 public interface UserService {
@@ -12,4 +15,6 @@ public interface UserService {
     ArrayList<User> findAll();
 
     LoginBasicDTO getLoginBasicDTO(String userName);
+    List<UserShowDTO> getAllUserShowDTO();
+
 }
