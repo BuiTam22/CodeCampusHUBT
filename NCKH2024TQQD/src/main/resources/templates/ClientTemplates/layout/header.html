@@ -2,13 +2,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <header class="header" th:fragment="header">
-    <div class="logo">CodeHubt</div>
-    <div class="header-controls">
-        <button class="header-button">
-            <i class="fas fa-bell"></i> Thông báo
-        </button>
-        <button class="header-button">
-            <i class="fas fa-user"></i> Tâm Bùi
-        </button>
+    <div class="header-content">
+        <div class="logo-container">
+            <div class="logo-main">Code</div>
+            <div class="logo-sub">  Hubt</div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="#" class="nav-item">Luyện tập</a>
+            <a href="#" class="nav-item">Cuộc thi</a>
+            <a href="#" class="nav-item">Blog</a>
+            <a href="#" class="nav-item highlight">Tạp chí</a>
+            <a href="#" class="nav-item">Về chúng tôi</a>
+           
+        </nav>
+
+        <div class="user-controls">
+            <button class="user-button">
+                <i class="fas fa-bell"></i>
+            </button>
+            <div class="user-profile">
+                <span class="username">Tâm Bùi</span>
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
     </div>
 </header>
