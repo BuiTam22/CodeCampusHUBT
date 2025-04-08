@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .requestMatchers(
-                        "/api/user/login",
+                        "/api/user/**",
                         "/login/show",
                         "/AdminStatic/**", // Cho phép tất cả tài nguyên static AdminStatic
                         "/ClientStatic/**" ,// Cho phép tất cả tài nguyên static ClientStatic
