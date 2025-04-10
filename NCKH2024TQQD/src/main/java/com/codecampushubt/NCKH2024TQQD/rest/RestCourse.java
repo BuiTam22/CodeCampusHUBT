@@ -3,6 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,5 +57,11 @@ public class RestCourse {
          @Transactional
          public void deleteCourse(@PathVariable("id") long theId){
              courseService.deleteByid(theId);
+         }
+
+         // lấy ra DTO danh sách Course
+         @GetMapping("/show")
+         public List<CourseShowDTO> getCourseShowDTO(){
+             return courseService.getCourseShowDTO();
          }
     }

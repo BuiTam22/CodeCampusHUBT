@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.service.CourseServices;
 
+import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseRepository;
 import jakarta.transaction.Transactional;
@@ -39,5 +40,10 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     public void deleteByid(long theId) {
         courseRepository.deleteById((long) theId);
+    }
+
+    @Override
+    public List<CourseShowDTO> getCourseShowDTO() {
+        return courseRepository.getCourseShowDTO();
     }
 }
