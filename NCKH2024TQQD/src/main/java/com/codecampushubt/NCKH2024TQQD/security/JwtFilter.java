@@ -55,10 +55,11 @@ public class JwtFilter extends OncePerRequestFilter { // Kế thừa từ OncePe
         if (token != null && jwtService.validateToken(token)) { // Kiểm tra token không null và token hợp lệ
             String username = jwtService.extractUsername(token); // Trích xuất username từ token
             List<String> permissions = jwtService.extractPermissions(token); // Trích xuất danh sách permissions từ token
+            List<String> roles = jwtService.extractRoles(token);
 
             if (username != null) {
                 // Kiểm tra xem người dùng có quyền truy cập vào đường dẫn hiện tại không
-                if (hasPermission(permissions, requestPath)) {
+                if (hasPermission(permissions, requestPath, roles)) {
                     // Tạo đối tượng Authentication cho người dùng
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(
@@ -102,10 +103,21 @@ public class JwtFilter extends OncePerRequestFilter { // Kế thừa từ OncePe
      * @param requestPath Đường dẫn yêu cầu
      * @return true nếu có quyền, false nếu không có quyền
      */
-    private boolean hasPermission(List<String> permissions, String requestPath) {
+    private boolean hasPermission(List<String> permissions, String requestPath, List<String> roles) {
+        // Kiểm tra ADMIN role trước
+        if (roles != null && !roles.isEmpty()) {
+            for (String role : roles) {
+                if (role.equalsIgnoreCase("ADMIN")) {
+                    System.out.println("Admin role found - granting access to: " + requestPath);
+                    return true;
+                }
+            }
+        }
+
         if (permissions == null || permissions.isEmpty()) {
             return false; // Không có permissions nào, không có quyền truy cập
         }
+        System.out.println("ROLE: " + roles);
 
         // Kiểm tra xem requestPath có trong danh sách permissions không
         for (String permittedPath : permissions) { // Duyệt qua từng permission

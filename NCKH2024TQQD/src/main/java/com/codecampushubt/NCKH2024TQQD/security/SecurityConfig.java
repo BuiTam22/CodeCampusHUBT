@@ -31,7 +31,7 @@ public class SecurityConfig {
                 ).permitAll()
                 // Cho phép Spring Security xử lý phần chứng thực cơ bản
                 // Phần kiểm tra permissions cụ thể sẽ được xử lý trong JwtFilter
-                .anyRequest().authenticated();
+                 .anyRequest().permitAll();
 
         return http.build();
     }

@@ -20,11 +20,12 @@ public class JwtServiceImpl implements JwtService{
 ;
 
     // Phương thức tạo token từ username
-    public String generateToken(String username, List<String> permissions) {
+    public String generateToken(String username, List<String> permissions, List<String> role) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("permissions", permissions);
+        claims.put("roles", role);
         return Jwts.builder()
-                .setClaims(claims) // thêm permissions vào claims
+                .setClaims(claims) // thêm permissions và role vào claims
                 .setSubject(username) // Lưu username vào payload
                 .setIssuedAt(new Date()) // Ngày phát hành token
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // Token hết hạn sau 1 ngày
@@ -59,5 +60,11 @@ public class JwtServiceImpl implements JwtService{
     public List<String> extractPermissions(String token) {
         Claims claims = extractClaims(token);
         return (List<String>) claims.get("permissions");
+    }
+
+    // Phương thức lấy roles từ token
+    public List<String> extractRoles(String token){
+        Claims claims = extractClaims(token);
+        return (List<String>) claims.get("roles");
     }
 }
