@@ -2,11 +2,9 @@ package com.codecampushubt.NCKH2024TQQD.rest;
 
 import java.util.List;
 
+import com.codecampushubt.NCKH2024TQQD.service.RoleServices.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.codecampushubt.NCKH2024TQQD.entity.ExerciseTestCase;
 import com.codecampushubt.NCKH2024TQQD.entity.RolePermission;
@@ -20,11 +18,13 @@ import jakarta.persistence.EntityManager;
 public class RestTest {
     private EntityManager entityManager;
     private JwtService jwtService;
+    private RoleService roleService;
 
     @Autowired
-    public RestTest(EntityManager entityManager, JwtService jwtService) {
+    public RestTest(EntityManager entityManager, JwtService jwtService, RoleService roleService) {
         this.entityManager = entityManager;
         this.jwtService = jwtService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/ok")
@@ -48,15 +48,19 @@ public class RestTest {
        return jwtService.extractUsername(theToken);
     }
 
-    @GetMapping("/ok4")
-    public boolean checktoken(String theToken){
-        theToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImlhdCI6MTc0MzI2MTk0OSwiZXhwIjoxNzQzMzQ4MzQ5fQ.e6ueNJflrWZVcaQRri12ctyc1_P5cINc0Kio8o7BWJY";
-        return jwtService.validateToken(theToken);
+    @GetMapping("/ok5")
+    public List<String> getRoleByToken(String theToken){
+        theToken = "eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNzaW9ucyI6WyIvYWRtaW4vY291cnNlL3Nob3ciLCIvYWRtaW4vZGFzaGJvYXJkL3Nob3ciLCIvYWRtaW4vcm9sZS9zaG93IiwiL2FkbWluL3VzZXIvc2hvdyIsIi9hcGkvY291cnNlIiwiL2FwaS9jb3Vyc2UvYWRkIiwiL2FwaS9jb3Vyc2UvZGVsZXRlL3tpZH0iLCIvYXBpL3Blcm1pc3Npb24vdXNlci1wZXJtaXNzaW9uIiwiL2FwaS9yb2xlL2ZpbmQtYWxsIiwiL2FwaS90ZXN0L29rNSIsIi9hcGkvdGVzdC9vazUve3VzZXJOYW1lfSIsIi9hcGkvdXNlci9iYXNpYy1pbmZvL3tpZH0iLCIvYXBpL3VzZXIvZmluZC1hbGwiLCIvYXBpL3VzZXIvZnVsbE5hbWUiLCIvYXBpL3VzZXIvbG9naW4iLCIvY291cnNlL3Nob3ciLCIvbG9naW4vc2hvdyIsIi9wcm9ibGVtIl0sInJvbGVzIjpbIkFETUlOIl0sInN1YiI6InRhbWJ1aSIsImlhdCI6MTc0NDI3MTk2MSwiZXhwIjoxNzQ0MzU4MzYxfQ.RnnuyVSxvjob7MPJF9xGGgqSPTukS1CSNHKPpPqNuyo";
+        return jwtService.extractRoles(theToken);
     }
 
-    @GetMapping("/ok5")
-    public List<String> extractPermissions( String token){
-        token = "eyJhbGciOiJIUzI1NiJ9.eyJwZXJtaXNzaW9ucyI6WyIvYWRtaW4vY291cnNlL3Nob3ciLCIvYWRtaW4vZGFzaGJvYXJkL3Nob3ciLCIvYWRtaW4vcm9sZS9zaG93IiwiL2FkbWluL3VzZXIvc2hvdyIsIi9hcGkvY291cnNlIiwiL2FwaS9jb3Vyc2UvYWRkIiwiL2FwaS9jb3Vyc2UvZGVsZXRlL3tpZH0iLCIvYXBpL3Blcm1pc3Npb24vdXNlci1wZXJtaXNzaW9uIiwiL2FwaS9yb2xlL2ZpbmQtYWxsIiwiL2FwaS90ZXN0L29rNSIsIi9hcGkvdXNlci9iYXNpYy1pbmZvL3tpZH0iLCIvYXBpL3VzZXIvZmluZC1hbGwiLCIvYXBpL3VzZXIvZnVsbE5hbWUiLCIvYXBpL3VzZXIvbG9naW4iLCIvY291cnNlL3Nob3ciLCIvbG9naW4vc2hvdyIsIi9wcm9ibGVtIl0sInN1YiI6InRhbWJ1aSIsImlhdCI6MTc0NDIxNDE0MCwiZXhwIjoxNzQ0MzAwNTQwfQ.MtsMqChzgLT1Kyr86aWJvcGEYyfuN7km0RrEOZ3qdFk";
-        return jwtService.extractPermissions(token);
+    @GetMapping("/ok5/{userName}")
+    public List<String> getRoleByUserName(@PathVariable("userName") String userName){
+
+        return roleService.getRoleNameByUserName(userName);
     }
+
+
+
+
 }
