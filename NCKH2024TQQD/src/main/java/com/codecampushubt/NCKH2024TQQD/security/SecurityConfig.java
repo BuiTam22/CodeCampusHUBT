@@ -24,11 +24,17 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .requestMatchers(
-                        "/api/user/login",
+                        "/api/user/**",
                         "/login/show",
+
+                        "/AdminStatic/**", // Cho phép tất cả tài nguyên static AdminStatic
+                        "/ClientStatic/**" ,// Cho phép tất cả tài nguyên static ClientStatic
+                        "/test-connection",
+                        "/api/course/add",
+
                         "/AdminStatic/**",
                         "/ClientStatic/**"
-                ).permitAll()
+         ).permitAll()
                 // Cho phép Spring Security xử lý phần chứng thực cơ bản
                 // Phần kiểm tra permissions cụ thể sẽ được xử lý trong JwtFilter
                  .anyRequest().permitAll();
