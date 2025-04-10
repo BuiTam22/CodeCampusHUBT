@@ -5,9 +5,10 @@ import io.jsonwebtoken.Claims;
 import java.util.List;
 
 public interface JwtService {
-     String generateToken(String username, List<String> permissions);
+     String generateToken(String username, List<String> permissions, List<String> role);
      Claims extractClaims(String token);
      String extractUsername(String token);
      boolean validateToken(String token);
      List<String> extractPermissions(String token);
+     List<String> extractRoles(String token);
 }
