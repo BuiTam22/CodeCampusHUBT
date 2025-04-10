@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+
     public List<UserShowDTO> getAllUsers() {
         return userRepository.findAll().stream().map(user -> {
             List<String> rolename = user.getUserRoles().stream()
@@ -53,6 +55,11 @@ public class UserServiceImpl implements UserService{
 
         })
                 .collect(Collectors.toList());
+    }
+
+
+    public String getFullName(String userName){
+        return userRepository.getFullName(userName);
     }
 
 }

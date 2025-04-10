@@ -11,4 +11,5 @@ public interface RoleService {
     Optional<Role> findById(int theId);
     Role save(Role theRole);
     void deleteByid(int theId);
+    List<String> getRoleNameByUserName(String theUserName);
 }

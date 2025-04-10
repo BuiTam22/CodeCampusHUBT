@@ -8,6 +8,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserBasicInfoDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.User;
+import org.springframework.data.repository.query.Param;
 
 public interface UserService {
     ArrayList<UserBasicInfoDTO> getUserBasicInfo(Long userID);
@@ -15,6 +16,11 @@ public interface UserService {
     ArrayList<User> findAll();
 
     LoginBasicDTO getLoginBasicDTO(String userName);
+
     List<UserShowDTO> getAllUsers();
+
+
+
+    String getFullName(String userName);
 
 }
