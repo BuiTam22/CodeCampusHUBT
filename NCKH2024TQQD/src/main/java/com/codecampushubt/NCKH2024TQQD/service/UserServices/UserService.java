@@ -15,6 +15,6 @@ public interface UserService {
     ArrayList<User> findAll();
 
     LoginBasicDTO getLoginBasicDTO(String userName);
-    List<UserShowDTO> getAllUserShowDTO();
+    List<UserShowDTO> getAllUsers();
 
 }

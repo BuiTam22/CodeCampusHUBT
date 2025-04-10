@@ -29,10 +29,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //            "join  UserRole ur on u.userID = ur.user.userID" +
 //            "join Roles r ")
 //    List<UserShowDTO> getAllUsers();
-@Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO(u.userID, u.userName, u.email, r.roleName) " +
-        "FROM User u " +
-        "JOIN UserRole ur ON u.userID = ur.user.userID " +
-        "JOIN Role r ON ur.role.roleID = r.roleID")
-List<UserShowDTO> getAllUsersWithRoles();
+//    List<String>
 
 }

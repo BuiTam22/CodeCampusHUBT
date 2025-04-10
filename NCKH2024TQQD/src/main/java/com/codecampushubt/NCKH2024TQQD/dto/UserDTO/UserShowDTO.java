@@ -1,12 +1,14 @@
 package com.codecampushubt.NCKH2024TQQD.dto.UserDTO;
 
+import java.util.List;
+
 public class UserShowDTO {
     private Long UserID ;
     private String UserName ;
     private String Email ;
-    private String UserRole ;
-
-    public UserShowDTO(Long userID, String userName, String email, String userRole) {
+    private List<String> UserRole ;
+    public UserShowDTO() {}
+    public UserShowDTO(Long userID, String userName, String email, List<String> userRole) {
         UserID = userID;
         UserName = userName;
         Email = email;
@@ -37,11 +39,11 @@ public class UserShowDTO {
         Email = email;
     }
 
-    public String getUserRole() {
+    public List<String> getUserRole() {
         return UserRole;
     }
 
-    public void setUserRole(String userRole) {
+    public void setUserRole(List<String> userRole) {
         UserRole = userRole;
     }
 }
