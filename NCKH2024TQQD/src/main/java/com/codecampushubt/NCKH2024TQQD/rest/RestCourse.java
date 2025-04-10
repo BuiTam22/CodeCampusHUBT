@@ -32,7 +32,7 @@ public class RestCourse {
              this.entityManager = entityManager;
          }
 
-         @GetMapping("/")
+         @GetMapping("")
          public List<Course> findAll(){
              return courseService.findAll();
          }

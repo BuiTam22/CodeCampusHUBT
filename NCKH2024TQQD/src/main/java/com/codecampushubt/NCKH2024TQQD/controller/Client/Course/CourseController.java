@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/course")
-public class CourseShow {
+public class CourseController {
 
-    @GetMapping("")
+    @GetMapping("/show")
     public String showCourse(){
         return "ClientTemplates/course/show";
     }
