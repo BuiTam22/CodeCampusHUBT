@@ -15,7 +15,7 @@ public class CourseModule {
 
     @ManyToOne
     @JoinColumn(name = "CourseID")
-    private Course courseId; // Không dùng @ManyToOne để tránh khóa ngoại
+    private Course course; 
 
     @Column(name = "Title", nullable = false, length = 255)
     private String title;
@@ -42,9 +42,9 @@ public class CourseModule {
     public CourseModule() {
     }
 
-    public CourseModule(Long id, Course courseId, String title, String description, Integer orderIndex, Integer duration, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CourseModule(Long id, Course course, String title, String description, Integer orderIndex, Integer duration, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.courseId = courseId;
+        this.course = course;
         this.title = title;
         this.description = description;
         this.orderIndex = orderIndex;
@@ -62,12 +62,12 @@ public class CourseModule {
         this.id = id;
     }
 
-    public Course getCourseId() {
-        return courseId;
+    public Course getcourse() {
+        return course;
     }
 
-    public void setCourseId(Course courseId) {
-        this.courseId = courseId;
+    public void setcourse(Course course) {
+        this.course = course;
     }
 
     public String getTitle() {

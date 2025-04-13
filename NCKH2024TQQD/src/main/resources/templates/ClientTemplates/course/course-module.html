@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CodeHubt</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/style.css}">
+</head>
+
+<body>
+<!-- Header -->
+<div th:replace="~{ClientTemplates/layout/header :: header}"></div>
+
+<!--Filter-->
+<div th:replace="~{ClientTemplates/layout/filter :: filters}"></div>
+
+<div class="content-wrapper">
+    <div class="container">
+        <!-- Phần hiển thị danh sách module -->
+        <div class="lesson-list" th:if="${not #lists.isEmpty(courseModules)}">
+            <div class="lesson-card" th:each="courseModule : ${courseModules}"
+                 th:if="${courseModule.published != null and courseModule.published}">
+                <div class="lesson-header">
+                    <h2 class="lesson-title" th:text="${courseModule.title}">Chương 1: Giới thiệu</h2>
+                    <span class="lesson-duration">
+                        <i class="fas fa-clock"></i>
+                       <span th:text="${courseModule.duration != null ? courseModule.duration + ' phút' : ''}"></span>
+
+                    </span>
+                </div>
+                <p class="lesson-description" th:text="${courseModule.description}">Đây là chương giới thiệu</p>
+                <a th:href="@{/course/show/{moduleId}(moduleId=${courseModule.id})}" class="start-button">
+                    Bắt đầu học <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Hiển thị khi không có dữ liệu -->
+        <div th:unless="${not #lists.isEmpty(courseModules)}" class="empty-state">
+            <p>Không có bài học nào trong khóa học này</p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+
+<script th:src="@{/ClientStatic/js/script.js}"></script>
+</body>
+</html>
