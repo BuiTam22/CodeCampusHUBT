@@ -20,7 +20,9 @@
         <div class="courses-container">
             <div class="courses-grid">
                 <!-- Lặp qua danh sách khóa học -->
-                <div th:each="course : ${courses}" class="course-card">
+                <a th:each="course : ${courses}"
+                   th:href="@{/course/show/{slug}(slug=${course.slug})}"
+                   class="course-card">
                     <!-- Hình ảnh khóa học -->
                     <div class="course-image">
                         <img th:if="${course.imageUrl}" th:src="${course.imageUrl}" alt="Course image">
