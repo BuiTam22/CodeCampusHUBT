@@ -16,8 +16,8 @@ public class CourseLesson {
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSEMODULES
     @ManyToOne
-    @JoinColumn(name = "ModuleID", nullable = false)
-    private CourseModule moduleID;
+    @JoinColumn(name = "moduleID", nullable = false)
+    private CourseModule module;
 
     // TIÊU ĐỀ BÀI HỌC
     @Column(name = "Title", nullable = false, length = 255)
@@ -68,9 +68,9 @@ public class CourseLesson {
     public CourseLesson() {
     }
 
-    public CourseLesson(Long lessonID, CourseModule moduleID, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.lessonID = lessonID;
-        this.moduleID = moduleID;
+        this.module = module;
         this.title = title;
         this.description = description;
         this.type = type;
@@ -92,12 +92,12 @@ public class CourseLesson {
         this.lessonID = lessonID;
     }
 
-    public CourseModule getModuleID() {
-        return moduleID;
+    public CourseModule getModule() {
+        return module;
     }
 
-    public void setModuleID(CourseModule moduleID) {
-        this.moduleID = moduleID;
+    public void setModule(CourseModule module) {
+        this.module = module;
     }
 
     public String getTitle() {
