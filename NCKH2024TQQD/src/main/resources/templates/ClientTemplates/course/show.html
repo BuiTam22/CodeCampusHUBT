@@ -19,7 +19,7 @@
     <div class="container">
         <div class="courses-container">
             <div class="courses-grid">
-                <!-- Lặp qua danh sách khóa học -->
+                <!-- Sửa ở đây - thêm thẻ đóng </a> -->
                 <a th:each="course : ${courses}"
                    th:href="@{/course/show/{slug}(slug=${course.slug})}"
                    class="course-card">
@@ -59,7 +59,7 @@
                             <span th:if="${course.price == 0}" class="free-badge">MIỄN PHÍ</span>
                         </div>
                     </div>
-                </div>
+                </a> <!-- Đây là thẻ đóng bị thiếu -->
             </div>
         </div>
     </div>
