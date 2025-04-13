@@ -30,5 +30,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //            "join Roles r ")
 //    List<UserShowDTO> getAllUsers();
 //    List<String>
+    boolean existsByEmail(String email);
+
 
 }

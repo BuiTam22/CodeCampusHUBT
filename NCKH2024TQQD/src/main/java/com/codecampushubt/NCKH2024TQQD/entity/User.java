@@ -82,6 +82,16 @@ public class User {
     @Column(name = "DeletedAt")
     private LocalDateTime deletedAt;
 
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();  // Gán thời gian hiện tại khi chưa có giá trị
+        }
+        if (updatedAt == null) {
+            updatedAt = LocalDateTime.now();  // Gán thời gian hiện tại khi chưa có giá trị
+        }
+    }
+
     // Constructor
     public User() {
     }
