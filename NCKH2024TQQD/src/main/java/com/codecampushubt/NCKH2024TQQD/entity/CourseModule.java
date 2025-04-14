@@ -44,6 +44,9 @@ public class CourseModule {
     @Column(name = "UpdatedAt", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Column(name = "Slug", nullable = true)
+    private String slug;
+
     // Constructor
     public CourseModule() {
     }
@@ -139,6 +142,22 @@ public class CourseModule {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }
 

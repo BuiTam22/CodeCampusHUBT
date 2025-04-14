@@ -15,4 +15,6 @@ public interface CourseModuleRepository extends JpaRepository<CourseModule, Long
             "WHERE cm.course.slug = :slug")
     List<CourseModuleDTO> getCourseModuleByCourseSlug(@Param("slug") String theSlug);
 
+    boolean existsBySlug(String slug);
+
 }

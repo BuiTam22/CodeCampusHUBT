@@ -5,6 +5,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseModuleDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseRepository;
+import com.github.slugify.Slugify;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,9 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Course save(Course theCourse) {
+        String baseSlug = new Slugify().slugify(theCourse.getTitle());
+        String uniqueSlug = generateUniqueSlug(baseSlug);
+        theCourse.setSlug(uniqueSlug);
         return courseRepository.save(theCourse);
     }
 
@@ -54,5 +58,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseModuleDTO> getCourseModuleByCourseSlug(String theSlug) {
         return courseModuleRepository.getCourseModuleByCourseSlug(theSlug);
+    }
+
+    @Override
+    public String generateUniqueSlug(String baseSlug) {
+        String slug = baseSlug;
+        int counter = 1;
+        while (courseRepository.existsBySlug(slug)) {
+            slug = baseSlug + "-" + counter;
+            counter++;
+        }
+        return slug;
     }
 }

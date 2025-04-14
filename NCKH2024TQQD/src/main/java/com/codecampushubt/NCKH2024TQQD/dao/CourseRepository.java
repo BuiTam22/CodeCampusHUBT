@@ -16,4 +16,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             "FROM Course c")
     List<CourseShowDTO> getCourseShowDTO();
 
+    // Hàm này tương đương: SELECT COUNT(*) > 0 FROM courses WHERE slug = :slug
+    boolean existsBySlug(String slug);
+
+
 }

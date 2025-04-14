@@ -63,6 +63,9 @@ public class CourseLesson {
     @Column(name = "UpdatedAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
     private LocalDateTime updatedAt;
 
+    @Column(name = "Slug", nullable = true)
+    private String slug;
+
 
     // Constructor
     public CourseLesson() {
@@ -186,5 +189,13 @@ public class CourseLesson {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 }
