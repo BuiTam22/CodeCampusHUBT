@@ -18,9 +18,46 @@
 
 <div class="content-wrapper">
     <div class="container">
+        <div class="courses-container">
+            <div class="courses-grid">
+                <a th:each="lesson : ${lessons}"
+                   th:href="@{/lesson/{slug}(slug=${lesson.slug})}"
+                   class="course-card">
 
+                    <!-- Hình ảnh mặc định vì lesson không có image -->
+                    <div class="course-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung bài học -->
+                    <div class="course-content">
+                        <h3 class="course-title" th:text="${lesson.title}"></h3>
+
+                        <div class="course-meta">
+                            <div class="course-instructor">
+                                <i class="fas fa-clock"></i>
+                                <span th:text="${lesson.duration} + ' phút'"></span>
+                            </div>
+                            <div class="course-rating">
+                                <i class="fas fa-eye"></i>
+                                <span th:text="${lesson.preview} ? 'Xem trước' : 'Bài học'"></span>
+                            </div>
+                        </div>
+
+                        <!-- Có thể hiện mô tả nếu muốn -->
+                        <div class="course-pricing">
+                            <span th:text="${lesson.description}"></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+
 
 
 <!-- Footer -->
