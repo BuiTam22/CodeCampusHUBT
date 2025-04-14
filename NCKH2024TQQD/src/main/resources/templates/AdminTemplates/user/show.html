@@ -34,19 +34,88 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4"User</h1>
+                <h1 class="mt-4" > Quản Lý Người Dùng  </h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">User</li>
+                    <li class="breadcrumb-item active">CẦN LẤY ĐƯỢC CÁC QUYỀN và Trả ra đây </li>
                 </ol>
-                <h1>Viết View vào đây</h1>
+                <div class="container mt-5">
+                    <div class="d-flex justify-content-between mb-3 ">
+                        <h3>Table User</h3>
+                        <button onclick="showAddForm()" class="btn btn-primary">Create a user</button>
+                    </div>
+                    <hr/>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>fullName</th>
+                            <th>RoleName</th>
+                        </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+
+                        </tbody>
+                    </table>
+
+                    <div id="userAddForm" style="display: none; margin-top: 20px;">
+                        <h3>Thêm người dùng</h3>
+                        <form>
+                            <label>Tên: <input type="text"></label><br>
+                            <label>Email: <input type="email"></label><br>
+                            <label>Mật khẩu: <input type="password"></label><br>
+                            <label>Quyền:
+                                <select>
+                                    <option value="ADMIN">Quản trị viên</option>
+                                    <option value="USER">Người dùng</option>
+                                </select>
+                            </label><br>
+                            <button type="button" onclick="hideForms()">Đóng</button>
+                        </form>
+                    </div>
+
+                    <!-- Form Chi tiết -->
+                    <div id="userDetailForm" style="display: none; margin-top: 20px;">
+                        <h3>Chi tiết người dùng</h3>
+                        <p>ID: <span id="detailUserId">1</span></p>
+                        <p>Tên: <span id="detailUserName">Tên mẫu</span></p>
+                        <p>Email: <span id="detailEmail">email@example.com</span></p>
+                        <p>Quyền: <span id="detailUserRole">ADMIN</span></p>
+                        <button onclick="hideForms()">Đóng</button>
+                    </div>
+
+                    <!-- Form Sửa -->
+                    <div id="userEditForm" style="display: none; margin-top: 20px;">
+                        <h3>Sửa người dùng</h3>
+                        <form>
+                            <input type="hidden">
+                            <label>Tên: <input type="text"></label><br>
+                            <label>Email: <input type="email"></label><br>
+                            <label>Quyền:
+                                <select>
+                                    <option value="ADMIN">Quản trị viên</option>
+                                    <option value="USER">Người dùng</option>
+                                </select>
+                            </label><br>
+                            <button type="button" onclick="hideForms()">Đóng</button>
+                        </form>
+                    </div>
+
+
+
+                </div>
+
+
             </div>
         </main>
 
         <!-- Footer -->
-        <div th:replace="AdminTemplates/layout/footer :: footer"></div>
+        <div th:replace="~{AdminTemplates/layout/footer :: footer}"></div>
     </div>
 </div>
 
+
+<script th:src="@{/AdminStatic/js/userShow.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script th:src="@{/AdminStatic/js/scripts.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

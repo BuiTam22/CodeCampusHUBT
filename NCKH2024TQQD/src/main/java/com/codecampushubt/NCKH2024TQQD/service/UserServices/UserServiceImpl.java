@@ -1,7 +1,11 @@
 package com.codecampushubt.NCKH2024TQQD.service.UserServices;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -36,7 +40,26 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+
+    public List<UserShowDTO> getAllUsers() {
+        return userRepository.findAll().stream().map(user -> {
+            List<String> rolename = user.getUserRoles().stream()
+                    .map(userRole -> userRole.getRole().getRoleName())
+                    .collect(Collectors.toList());
+            return new UserShowDTO(
+                    user.getUserId(),
+                    user.getuserName(),
+                    user.getEmail(),
+                    rolename
+            );
+
+        })
+                .collect(Collectors.toList());
+    }
+
+
     public String getFullName(String userName){
         return userRepository.getFullName(userName);
     }
+
 }

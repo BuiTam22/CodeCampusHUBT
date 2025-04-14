@@ -1070,6 +1070,53 @@ ALTER TABLE CodingExercises DROP COLUMN TestCases
 
 
 
+-------------------------------------Thêm slug cho các bảng CourseModule, CoueseLesseon, CodingExercise---------------------------------------------------
+
+ALTER TABLE [dbo].[CourseModules]
+    ADD [Slug]  NVARCHAR(255) NULL
+GO
+
+-- Bước 1: Xoá index cũ (nếu tồn tại)
+DROP INDEX IX_CourseModules_Slug_NotNull ON [dbo].[CourseModules];
+GO
+
+-- Bước 2: Tạo lại chỉ mục UNIQUE có điều kiện
+CREATE UNIQUE INDEX IX_CourseModules_Slug_NotNull
+ON [dbo].[CourseModules] ([Slug])
+WHERE [Slug] IS NOT NULL;
+GO
+
+
+ALTER TABLE [dbo].[CourseLessons]
+    ADD [Slug]  NVARCHAR(255) NULL
+GO
+
+-- Bước 1: Xoá index cũ (nếu tồn tại)
+DROP INDEX IX_CourseLessons_Slug_NotNull ON [dbo].[CourseLessons];
+GO
+
+-- Bước 2: Tạo lại chỉ mục UNIQUE có điều kiện
+CREATE UNIQUE INDEX IX_CourseLessons_Slug_NotNull
+ON [dbo].[CourseLessons] ([Slug])
+WHERE [Slug] IS NOT NULL;
+GO
+
+
+
+ALTER TABLE [dbo].[CodingExercises]
+    ADD [Slug] NVARCHAR(255) NULL;
+GO
+
+DROP INDEX IF EXISTS IX_CodingExercises_Slug_NotNull ON [dbo].[CodingExercises];
+GO
+
+CREATE UNIQUE INDEX IX_CodingExercises_Slug_NotNull
+ON [dbo].[CodingExercises] ([Slug])
+WHERE [Slug] IS NOT NULL;
+GO
+
+
+-------------------------------------------Kết thúc----------------------------------------------------------------------------------------
 
 
 

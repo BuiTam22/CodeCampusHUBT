@@ -11,4 +11,6 @@ public class UserShow {
     public String showUser(){
         return "AdminTemplates/user/show";
     }
+
 }
+//trar ea ddc json+

@@ -205,21 +205,6 @@ body {
 }
 
 
-/* Thêm vào phần CSS của header */
-.nav-item.active {
-    color: #3498db !important;
-    font-weight: 600;
-}
-
-.nav-item.active::after {
-    width: 100% !important;
-}
-
-/* Riêng cho trang chủ */
-.nav-item[href='/'].active {
-    color: #3498db !important;
-}
-
 /* Footer Styles */
 .footer {
     background: #1e1e1e;
@@ -348,7 +333,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-top: 10px; /* Bù trừ cho header cố định */
+    margin-top: 120px; /* Bù trừ cho header cố định */
 }
 
 .main-nav {
@@ -417,18 +402,16 @@ body {
 }
 
 .course-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
+    cursor: pointer; /* Thêm dòng này */
     background: white;
     border-radius: 8px;
+    overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    transition: transform 0.2s ease;
 }
 
 .course-card:hover {
     transform: translateY(-5px);
-    text-decoration: none;
 }
 
 .course-image {
@@ -538,7 +521,7 @@ body {
     flex-wrap: wrap;
 }
 
-  
+
   .search-box {
     flex: 1;
     padding: 10px 15px;
@@ -547,7 +530,7 @@ body {
     border-radius: 10px;
     max-width: 300px;
   }
-  
+
   .dropdown {
     padding: 10px;
     font-size: 14px;
@@ -557,73 +540,3 @@ body {
     cursor: pointer;
   }
   /* end filter */
-
-/*css cho courseModule*/
-.lesson-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 2rem 0;
-}
-
-.lesson-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
-}
-
-.lesson-card:hover {
-    transform: translateY(-2px);
-}
-
-.lesson-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.lesson-title {
-    font-size: 1.25rem;
-    color: #2d3748;
-    margin: 0;
-}
-
-.lesson-duration {
-    font-size: 0.875rem;
-    color: #718096;
-}
-
-.lesson-description {
-    color: #4a5568;
-    margin-bottom: 1rem;
-}
-
-.start-button {
-    background: #4299e1;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    text-decoration: none;
-    display: inline-block;
-    transition: background 0.2s;
-}
-
-.start-button:hover {
-    background: #3182ce;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 2rem;
-    color: #718096;
-}
-
-@media (max-width: 768px) {
-    .lesson-card {
-        margin: 0 1rem;
-    }
-}
-/*ket thuc css cho courseModule*/

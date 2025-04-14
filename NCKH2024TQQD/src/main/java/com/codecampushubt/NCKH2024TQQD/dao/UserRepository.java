@@ -1,7 +1,9 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // truy vấn 3 trường để so sánh login
     @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO(u.userName, u.email, u.password) FROM User u WHERE u.userName = :userName")
     LoginBasicDTO getLoginBasicDTO(@Param("userName") String userName);
+
 
     @Query("SELECT DISTINCT u.fullName FROM User u WHERE u.userName = :userName")
     String getFullName(@Param("userName") String userName);

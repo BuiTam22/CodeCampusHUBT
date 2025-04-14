@@ -112,6 +112,13 @@ public class User {
         this.deletedAt = deletedAt;
     }
 
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
     // Getters & Setters...
 
 

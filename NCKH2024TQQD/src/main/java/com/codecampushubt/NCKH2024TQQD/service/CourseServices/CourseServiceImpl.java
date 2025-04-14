@@ -1,7 +1,11 @@
 package com.codecampushubt.NCKH2024TQQD.service.CourseServices;
 
+import com.codecampushubt.NCKH2024TQQD.dao.CourseModuleRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseModuleDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseRepository;
+import com.github.slugify.Slugify;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +16,12 @@ import java.util.Optional;
 @Service
 public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
+    private final CourseModuleRepository courseModuleRepository;
 
     @Autowired
-    public CourseServiceImpl(CourseRepository theCourseRepository) {
+    public CourseServiceImpl(CourseRepository theCourseRepository, CourseModuleRepository courseModuleRepository) {
         this.courseRepository = theCourseRepository;
+        this.courseModuleRepository = courseModuleRepository;
     }
 
     @Override
@@ -32,6 +38,9 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Course save(Course theCourse) {
+        String baseSlug = new Slugify().slugify(theCourse.getTitle());
+        String uniqueSlug = generateUniqueSlug(baseSlug);
+        theCourse.setSlug(uniqueSlug);
         return courseRepository.save(theCourse);
     }
 
@@ -39,5 +48,26 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     public void deleteByid(long theId) {
         courseRepository.deleteById((long) theId);
+    }
+
+    @Override
+    public List<CourseShowDTO> getCourseShowDTO() {
+        return courseRepository.getCourseShowDTO();
+    }
+
+    @Override
+    public List<CourseModuleDTO> getCourseModuleByCourseSlug(String theSlug) {
+        return courseModuleRepository.getCourseModuleByCourseSlug(theSlug);
+    }
+
+    @Override
+    public String generateUniqueSlug(String baseSlug) {
+        String slug = baseSlug;
+        int counter = 1;
+        while (courseRepository.existsBySlug(slug)) {
+            slug = baseSlug + "-" + counter;
+            counter++;
+        }
+        return slug;
     }
 }
