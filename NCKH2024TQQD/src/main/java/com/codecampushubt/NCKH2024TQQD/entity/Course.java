@@ -20,14 +20,14 @@ public class Course {
     private String title;
 
     // Tạo slug trước khi lưu hoặc cập nhật
-    @PrePersist
-    @PreUpdate
-    public void generateSlug() {
-        // đảm bảo slug luôn giống với title, ngay cả khi title bị thay đổi
-        if (this.slug == null || !this.slug.equals(new Slugify().slugify(this.title))) {
-            this.slug = new Slugify().slugify(this.title);
-        }
-    }
+//    @PrePersist
+//    @PreUpdate
+//    public void generateSlug() {
+//        // đảm bảo slug luôn giống với title, ngay cả khi title bị thay đổi
+//        if (this.slug == null || !this.slug.equals(new Slugify().slugify(this.title))) {
+//            this.slug = new Slugify().slugify(this.title);
+//        }
+//    }
 
     @Column(name = "Slug", unique = true, length = 255)
     private String slug;
@@ -165,9 +165,9 @@ public class Course {
         return slug;
     }
 
-    // public void setSlug(String slug) {
-    //     this.slug = slug;
-    // }
+     public void setSlug(String slug) {
+         this.slug = slug;
+     }
 
     public String getDescription() {
         return description;

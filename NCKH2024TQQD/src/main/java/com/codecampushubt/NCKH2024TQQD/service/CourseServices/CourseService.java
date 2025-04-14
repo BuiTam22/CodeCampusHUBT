@@ -13,4 +13,5 @@ public interface CourseService {
     void deleteByid(long theId);
     List<CourseShowDTO> getCourseShowDTO();
     List<CourseModuleDTO> getCourseModuleByCourseSlug(String theSlug);
+    String generateUniqueSlug(String baseSlug);
 }
