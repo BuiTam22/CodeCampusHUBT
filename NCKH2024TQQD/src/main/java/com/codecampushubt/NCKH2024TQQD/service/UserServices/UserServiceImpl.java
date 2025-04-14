@@ -80,6 +80,9 @@ public class UserServiceImpl implements UserService{
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new UsernameNotFoundException("Email đã tồn tại");
         }
+        if (userRepository.findByUserName(dto.getUserName()).isPresent()) {
+            throw new RuntimeException("Tên người dùng đã tồn tại");
+        }
 
         // Khởi tạo user
         User user = new User();

@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,6 +32,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    List<UserShowDTO> getAllUsers();
 //    List<String>
     boolean existsByEmail(String email);
+    Optional<User> findByUserName(String userName);
 
 
 }
