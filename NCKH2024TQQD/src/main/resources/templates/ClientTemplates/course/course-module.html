@@ -30,7 +30,7 @@
                     </span>
                 </div>
                 <p class="lesson-description" th:text="${courseModule.description}">Đây là chương giới thiệu</p>
-                <a th:href="@{/course/show/{moduleId}(moduleId=${courseModule.id})}" class="start-button">
+                <a th:href="@{/course/{moduleId}(moduleId=${courseModule.id})}" class="start-button">
                     Bắt đầu học <i class="fas fa-arrow-right"></i>
                 </a>
             </div>

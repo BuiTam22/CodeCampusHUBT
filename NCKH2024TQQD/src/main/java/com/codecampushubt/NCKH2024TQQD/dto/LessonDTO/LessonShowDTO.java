@@ -12,8 +12,9 @@ public class LessonShowDTO {
     private Integer orderIndex;
     private Boolean isPreview;
     private Boolean isPublished;
+    private String slug;
 
-    public LessonShowDTO(Long lessonID, Long moduleID, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished) {
+    public LessonShowDTO(Long lessonID, Long moduleID, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, String slug) {
         this.lessonID = lessonID;
         this.moduleID = moduleID;
         this.title = title;
@@ -25,6 +26,11 @@ public class LessonShowDTO {
         this.orderIndex = orderIndex;
         this.isPreview = isPreview;
         this.isPublished = isPublished;
+        this.slug = slug;
+    }
+
+    public String getSlug() {
+        return slug;
     }
 
     public Long getLessonID() {

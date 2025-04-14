@@ -1,15 +1,33 @@
 package com.codecampushubt.NCKH2024TQQD.controller.Client.Lesson;
 
+import com.codecampushubt.NCKH2024TQQD.dao.LessonRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/practice")
 public class LessonCommon {
+    private final LessonRepository lessonRepository;
 
-    @GetMapping("/show")
-    public String returnLessonCommon(){
+    @Autowired
+    public LessonCommon(LessonRepository lessonRepository) {
+        this.lessonRepository = lessonRepository;
+    }
+
+
+    @GetMapping("")
+    public String returnLessonCommon(Model model, HttpServletRequest request){
+        // lấy moduleID là 3 cố định vì đây là lấy ra module common chứa các lessoncommon
+        List<LessonShowDTO> lessons = lessonRepository.getLessonShowDTO(3L);
+        model.addAttribute("lessons" , lessons);
+        model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/lesson/show-common";
     }
 }

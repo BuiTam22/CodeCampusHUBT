@@ -13,7 +13,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     @Query("""
     SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO(
     cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
-    cl.videoUrl, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished)
+    cl.videoUrl, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
     FROM CourseLesson cl
     WHERE cl.module.id = :moduleID
     """)

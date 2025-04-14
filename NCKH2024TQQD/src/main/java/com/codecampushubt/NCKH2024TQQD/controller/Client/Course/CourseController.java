@@ -4,6 +4,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseModuleDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.service.CourseServices.CourseService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,17 +26,19 @@ public class CourseController {
     }
 
 
-    @GetMapping("/show")
-    public String showCourse(Model model){
+    @GetMapping("")
+    public String showCourse(Model model, HttpServletRequest request){
         List<CourseShowDTO> courses = courseService.getCourseShowDTO();
         model.addAttribute("courses", courses);
+        model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/course/show";
     }
 
-    @GetMapping("/show/{slug}")
-    public String showDetailCourse(@PathVariable("slug") String theSlug,Model model){
+    @GetMapping("/{slug}")
+    public String showDetailCourse(@PathVariable("slug") String theSlug,Model model, HttpServletRequest request){
         List<CourseModuleDTO> courseModules = courseService.getCourseModuleByCourseSlug(theSlug);
         model.addAttribute("courseModules", courseModules);
+        model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/course/course-module";
     }
 

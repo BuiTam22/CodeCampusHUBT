@@ -205,6 +205,21 @@ body {
 }
 
 
+/* Thêm vào phần CSS của header */
+.nav-item.active {
+    color: #3498db !important;
+    font-weight: 600;
+}
+
+.nav-item.active::after {
+    width: 100% !important;
+}
+
+/* Riêng cho trang chủ */
+.nav-item[href='/'].active {
+    color: #3498db !important;
+}
+
 /* Footer Styles */
 .footer {
     background: #1e1e1e;

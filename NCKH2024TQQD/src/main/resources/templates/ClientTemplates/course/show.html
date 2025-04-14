@@ -21,7 +21,7 @@
             <div class="courses-grid">
                 <!-- Sửa ở đây - thêm thẻ đóng </a> -->
                 <a th:each="course : ${courses}"
-                   th:href="@{/course/show/{slug}(slug=${course.slug})}"
+                   th:href="@{/course/{slug}(slug=${course.slug})}"
                    class="course-card">
                     <!-- Hình ảnh khóa học -->
                     <div class="course-image">
