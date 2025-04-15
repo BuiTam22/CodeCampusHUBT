@@ -1043,7 +1043,7 @@ WHERE parent_object_id = OBJECT_ID('Users')
 AND parent_column_id = COLUMNPROPERTY(OBJECT_ID('Users'), 'role', 'ColumnId');
 
 --Xóa ràng buộc Role: Default Constraint (LƯU Ý: Default Constraint có thể khác nhau ở các máy, đây là tham số phải chạy câu lệnh ở trên để tìm)
-ALTER TABLE Users DROP CONSTRAINT DF__Users__Role__267ABA7A;
+ALTER TABLE Users DROP CONSTRAINT DF__Users__Role__07020F21;
 
 --Xem tên ràng buộc Check Constraint của trường Role
 SELECT name 
