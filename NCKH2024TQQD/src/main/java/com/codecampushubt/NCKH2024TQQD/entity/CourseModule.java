@@ -71,10 +71,6 @@ public class CourseModule {
         this.moduleID = moduleID;
     }
 
-    public Course getcourse() {
-        return course;
-    }
-
 
     public List<CourseLesson> getLessons() {
         return lessons;
