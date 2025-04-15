@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+:root{
+ --font:'inria serif', 'serif';
+}
 * {
     box-sizing: border-box;
     margin: 0;
@@ -5,7 +9,7 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family:var(--font);
     background-color: #f3f3f3;
     display: flex;
     flex-direction: column;
@@ -628,146 +632,81 @@ body {
 }*/
 /*ket thuc css cho courseModule*/
 /*inner-bottom*/
-.header-bottom{
-    height:300px;
-    background: linear-gradient(to bottom, #F8F7FE, #A1A9FA);
-    padding-left:50px;
+.header-bottom {
+  height: 300px;
+  background: linear-gradient(to bottom, #f8f7fe, #a1a9fa);
+  text-align: center;
+}
+.header-bottom .inner-title {
+  font-size: 60px;
+  font-weight: 900;
+  text-align: center;
+  }
+
+.header-bottom .inner-desc {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.header-bottom .inner-rating {
+  display: flex;
+  justify-content: center;
+}
+.header-bottom .star-rating {
+  display: flex;
+  justify-content: center;
+  margin-right: 20px;
+}
+.header-bottom .number-rating {
+  margin-right: 5px;
+}
+.header-bottom .star-rating i {
+  color: #ff8f3c;
+}
+.inner-dev {
+  display: flex;
+  margin-top: 30px;
+  align-items: center;
+  justify-content: center;
+}
+.header-bottom .inner-dev .inner-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+.header-bottom .inner-image img {
+  width: 100%;
+  height: 100%;
+  border-radius:50% ;
+}
+/*end inner-bottom  */
+/* nav */
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  list-style: none;
+  background-color: #f4f4f4;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.nav a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background 0.3s;
 }
 
-.header-bottom .inner-title{
-    font-size:30px;
-    font-weight:900;
+.nav a:hover {
+  background-color: blue;
 }
-.header-bottom .inner-desc{
-    margin-bottom:30px;
+section {
+  height: 100vh;
+  padding: 50px;
+  border-bottom: 1px solid #ccc;
 }
-.header-bottom .inner-rating{
-display:flex;
-}
-.header-bottom .star-rating{
-display:flex;
-align-item:center;
-justify-content:center;
-margin-right:20px;
-}
-.header-bottom .number-rating{
-margin-right:5px;
-}
-.header-bottom .star-rating i{
-color:#FF8F3C;
-}
+/*end  nav */
 /*end inner-bottom*/
 
-/*ket thuc css cho courseModule*/
-
-
-/*css cho exercises-list show*/
-a.exercise-card {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-a.exercise-card:hover {
-    text-decoration: none;
-}
-
-.lesson-header {
-    padding: 2rem 0;
-    border-bottom: 2px solid #e0e0e0;
-    margin-bottom: 2rem;
-}
-
-.exercise-list {
-    display: grid;
-    gap: 1.5rem;
-}
-
-.exercise-card {
-    background: white;
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
-    border-left: 4px solid;
-}
-
-.exercise-card:hover {
-    transform: translateY(-3px);
-}
-
-.exercise-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: #2d3748;
-}
-
-.exercise-desc {
-    color: #718096;
-    margin-bottom: 1rem;
-}
-
-.meta-container {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-}
-
-.difficulty.easy {
-    background: #e6f4ea;
-    color: #0f9d58;
-    border-color: #0f9d58;
-}
-
-.difficulty.medium {
-    background: #fff3e0;
-    color: #f57c00;
-    border-color: #f57c00;
-}
-
-.language {
-    background: #e8f0fe;
-    color: #1967d2;
-}
-
-.points {
-    background: #f6f9fe;
-    color: #6b7280;
-}
-
-.fa-code {
-    color: #4a5568;
-}
-
-.fa-star {
-    color: #f59e0b;
-}
-
-
-
-/* Thêm style cho thông báo */
-.empty-state {
-    text-align: center;
-    padding: 4rem;
-    color: #718096;
-    border: 2px dashed #e2e8f0;
-    border-radius: 10px;
-    margin: 2rem 0;
-}
-
-.empty-state i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #cbd5e0;
-}
