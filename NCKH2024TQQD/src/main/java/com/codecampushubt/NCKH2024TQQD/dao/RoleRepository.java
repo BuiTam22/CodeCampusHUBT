@@ -7,11 +7,16 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+import java.util.Optional;
+
 public interface RoleRepository extends JpaRepository<Role, Integer> {
+    Optional<Role> findByRoleName(String roleName);
+
     @Query("SELECT DISTINCT r.roleName " +
             "FROM User u " +
             "JOIN u.userRoles ur " +
             "JOIN ur.role r " +
             "WHERE u.userName = :userName")
     List<String> getRoleNameByUserName(@Param("userName") String userName);
+
 }

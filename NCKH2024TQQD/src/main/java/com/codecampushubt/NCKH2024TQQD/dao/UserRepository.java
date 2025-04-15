@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,9 +26,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     LoginBasicDTO getLoginBasicDTO(@Param("userName") String userName);
 
 
+//    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO(u.userID, u.userName, u.email, r.roleName) " +
+//            "FROM User u " +
+//            "join  UserRole ur on u.userID = ur.user.userID" +
+//            "join Roles r ")
+//    List<UserShowDTO> getAllUsers();
+//    List<String>
+    boolean existsByEmail(String email);
+    Optional<User> findByUserName(String userName);
+
+
     @Query("SELECT DISTINCT u.fullName FROM User u WHERE u.userName = :userName")
     String getFullName(@Param("userName") String userName);
-
 
 
 
