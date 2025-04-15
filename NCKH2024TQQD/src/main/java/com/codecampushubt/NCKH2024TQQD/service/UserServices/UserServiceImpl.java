@@ -1,13 +1,30 @@
 package com.codecampushubt.NCKH2024TQQD.service.UserServices;
 
 import java.security.PublicKey;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.codecampushubt.NCKH2024TQQD.dao.RoleRepository;
+import com.codecampushubt.NCKH2024TQQD.dao.UserRoleRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
+import com.codecampushubt.NCKH2024TQQD.entity.Role;
+import com.codecampushubt.NCKH2024TQQD.entity.UserRole;
+import com.codecampushubt.NCKH2024TQQD.entity.UserRoleId;
+import com.codecampushubt.NCKH2024TQQD.util.BCryptPasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+=======
 import org.springframework.data.repository.query.Param;
+>>>>>>> f600ba484dde0d7c1a1cb8e376314f7d0831e5c5
 import org.springframework.stereotype.Service;
 
 import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
@@ -18,10 +35,17 @@ import com.codecampushubt.NCKH2024TQQD.entity.User;
 @Service
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRoleRepository userRoleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository , RoleRepository roleRepository , PasswordEncoder passwordEncoder , UserRoleRepository userRoleRepository) {
+
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -56,10 +80,55 @@ public class UserServiceImpl implements UserService{
         })
                 .collect(Collectors.toList());
     }
+    @Override
+    public User addUser(UserCreateDTO dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new UsernameNotFoundException("Email đã tồn tại");
+        }
+        if (userRepository.findByUserName(dto.getUserName()).isPresent()) {
+            throw new RuntimeException("Tên người dùng đã tồn tại");
+        }
 
+<<<<<<< HEAD
+        // Khởi tạo user
+        User user = new User();
+        user.setuserName(dto.getUserName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setFullName(dto.getFullName());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setAddress(dto.getAddress());
+        user.setStatus("ACTIVE");
+        user.setAccountStatus("ACTIVE");
+        user.setProvider("LOCAL");
+        user.setEmailVerified(false);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+
+        // Lưu user trước để có ID
+        User savedUser = userRepository.save(user);
+
+        // Tìm Role
+        Role role = roleRepository.findByRoleName(dto.getRoleName())
+                .orElseThrow(() -> new RuntimeException("Role không tồn tại: " + dto.getRoleName()));
+
+        // Tạo UserRoleId và UserRole
+        UserRoleId userRoleId = new UserRoleId(savedUser.getUserId(), role.getRoleID());
+
+        UserRole userRole = new UserRole();
+        userRole.setId(userRoleId);
+        userRole.setUser(savedUser);
+        userRole.setRole(role);
+
+        userRoleRepository.save(userRole);
+
+        return savedUser;
+    }
+=======
 
     public String getFullName(String userName){
         return userRepository.getFullName(userName);
     }
 
+>>>>>>> f600ba484dde0d7c1a1cb8e376314f7d0831e5c5
 }

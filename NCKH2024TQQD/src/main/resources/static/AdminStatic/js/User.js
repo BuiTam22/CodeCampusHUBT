@@ -69,3 +69,66 @@ function showEditForm(id, name, email, role) {
     form.querySelector("select").value = role;
     form.style.display = "block";
 }
+
+
+// thêm người DÙng
+document.getElementById("addUserForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    const data = {
+        userName: formData.get("userName"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+        fullName: formData.get("fullName"),
+        dateOfBirth: formData.get("dateOfBirth"),
+        phoneNumber: formData.get("phoneNumber"),
+        address: formData.get("address"),
+        roleName: formData.get("roleName") // nếu form chỉ chọn 1 quyền
+    };
+
+    fetch("/admin/api/user/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => {
+            if (res.ok) {
+                alert("Thêm thành công!");
+                document.getElementById("userAddForm").style.display = "none";
+            } else {
+                return res.text().then(errorMessage => {
+                    alert("Lỗi từ server: " + errorMessage);
+                    console.error("Chi tiết lỗi:", errorMessage);
+                });
+            }
+        })
+        .catch(error => {
+            alert("Lỗi khi gọi API: " + error.message);
+            console.error("Lỗi mạng hoặc lỗi khác:", error);
+        });
+});
+
+
+//end thêm người dùng
+
+//upload hình ảnh
+async function uploadImage(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload/image", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+    document.getElementById("avatarUrl").value = data.url;
+    document.getElementById("preview").src = data.url;
+    document.getElementById("preview").style.display = "block";
+}
+
+//end upluad hình ảnh
