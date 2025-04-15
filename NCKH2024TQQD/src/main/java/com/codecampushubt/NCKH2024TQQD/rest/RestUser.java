@@ -6,6 +6,7 @@ import com.codecampushubt.NCKH2024TQQD.entity.*;
 import com.codecampushubt.NCKH2024TQQD.service.UserServices.*;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -40,6 +41,11 @@ public class RestUser {
     @GetMapping("/find-all")
     public ArrayList<User> findAll(){
         return userService.findAll();
+    }
+
+    @GetMapping("/fullName")
+    public String getFullName(String userName){
+        return userService.getFullName("tambui");
     }
 
 }

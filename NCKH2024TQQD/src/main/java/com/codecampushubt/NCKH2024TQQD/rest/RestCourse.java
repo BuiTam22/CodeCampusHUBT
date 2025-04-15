@@ -3,14 +3,10 @@ package com.codecampushubt.NCKH2024TQQD.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseModuleDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.entity.User;
@@ -32,7 +28,7 @@ public class RestCourse {
              this.entityManager = entityManager;
          }
 
-         @GetMapping("/")
+         @GetMapping("")
          public List<Course> findAll(){
              return courseService.findAll();
          }
@@ -57,4 +53,16 @@ public class RestCourse {
          public void deleteCourse(@PathVariable("id") long theId){
              courseService.deleteByid(theId);
          }
+
+         // lấy ra DTO danh sách Course
+         @GetMapping("/show")
+         public List<CourseShowDTO> getCourseShowDTO(){
+             return courseService.getCourseShowDTO();
+         }
+
+        @GetMapping("/show/{slug}")
+        public List<CourseModuleDTO> getCourseModuleByCourseSlug(@PathVariable("slug") String theSlug){
+            return courseService.getCourseModuleByCourseSlug(theSlug);
+        }
+
     }

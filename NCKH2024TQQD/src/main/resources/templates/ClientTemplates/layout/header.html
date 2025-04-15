@@ -2,13 +2,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <header class="header" th:fragment="header">
-    <div class="logo">CodeHubt</div>
-    <div class="header-controls">
-        <button class="header-button">
-            <i class="fas fa-bell"></i> Thông báo
-        </button>
-        <button class="header-button">
-            <i class="fas fa-user"></i> Tâm Bùi
-        </button>
+    <div class="header-content">
+        <a th:href="@{/}" class="logo-container nav-item">
+            <div class="logo-main">Code</div>
+            <div class="logo-sub">Hubt</div>
+        </a>
+
+        <nav class="main-nav">
+            <a th:href="@{/course}"
+               th:classappend="${activePage != null and activePage.startsWith('/course')} ? 'active'"
+               class="nav-item">Khóa học</a>
+
+            <a th:href="@{/practice}"
+               th:classappend="${activePage != null and activePage.startsWith('/practice')} ? 'active'"
+               class="nav-item">Luyện tập</a>
+
+            <a th:href="@{/contest}"
+               th:classappend="${activePage != null and activePage.startsWith('/contest')} ? 'active'"
+               class="nav-item">Cuộc thi</a>
+
+            <a th:href="@{/blog}"
+               th:classappend="${activePage != null and activePage.startsWith('/blog')} ? 'active'"
+               class="nav-item">Blog</a>
+
+            <a th:href="@{/magazine}"
+               th:classappend="${activePage != null and activePage.startsWith('/magazine')} ? 'active'"
+               class="nav-item">Tạp chí</a>
+
+            <a th:href="@{/about}"
+               th:classappend="${activePage != null and activePage.equals('/about')} ? 'active'"
+               class="nav-item">Về chúng tôi</a>
+        </nav>
+
+
+
+        <div class="user-controls">
+            <button class="user-button">
+                <i class="fas fa-bell"></i>
+            </button>
+            <div class="user-profile">
+                <span class="username" th:text="${userFullName}">Guest</span>
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
     </div>
 </header>

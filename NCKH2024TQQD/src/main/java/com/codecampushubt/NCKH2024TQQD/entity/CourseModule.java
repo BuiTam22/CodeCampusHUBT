@@ -3,6 +3,8 @@ package com.codecampushubt.NCKH2024TQQD.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "CourseModules")
@@ -11,11 +13,15 @@ public class CourseModule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ModuleID")
-    private Long id;
+    private Long moduleID;
 
     @ManyToOne
     @JoinColumn(name = "CourseID")
-    private Course courseId; // Không dùng @ManyToOne để tránh khóa ngoại
+    private Course course;
+
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CourseLesson> lessons = new ArrayList<>();
+
 
     @Column(name = "Title", nullable = false, length = 255)
     private String title;
@@ -38,13 +44,16 @@ public class CourseModule {
     @Column(name = "UpdatedAt", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Column(name = "Slug", nullable = true)
+    private String slug;
+
     // Constructor
     public CourseModule() {
     }
 
-    public CourseModule(Long id, Course courseId, String title, String description, Integer orderIndex, Integer duration, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.courseId = courseId;
+    public CourseModule(Long moduleID, Course course, String title, String description, Integer orderIndex, Integer duration, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.moduleID = moduleID;
+        this.course = course;
         this.title = title;
         this.description = description;
         this.orderIndex = orderIndex;
@@ -54,21 +63,30 @@ public class CourseModule {
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
-        return id;
+    public Long getModuleID() {
+        return moduleID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long moduleID) {
+        this.moduleID = moduleID;
     }
 
-    public Course getCourseId() {
-        return courseId;
+    public Course getcourse() {
+        return course;
     }
 
-    public void setCourseId(Course courseId) {
-        this.courseId = courseId;
+    public void setcourse(Course course) {
+        this.course = course;
     }
+
+    public List<CourseLesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<CourseLesson> lessons) {
+        this.lessons = lessons;
+    }
+
 
     public String getTitle() {
         return title;
@@ -124,6 +142,22 @@ public class CourseModule {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }
 
