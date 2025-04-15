@@ -18,13 +18,11 @@ import com.codecampushubt.NCKH2024TQQD.entity.UserRole;
 import com.codecampushubt.NCKH2024TQQD.entity.UserRoleId;
 import com.codecampushubt.NCKH2024TQQD.util.BCryptPasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-=======
 import org.springframework.data.repository.query.Param;
->>>>>>> f600ba484dde0d7c1a1cb8e376314f7d0831e5c5
+
 import org.springframework.stereotype.Service;
 
 import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
@@ -89,7 +87,7 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("Tên người dùng đã tồn tại");
         }
 
-<<<<<<< HEAD
+
         // Khởi tạo user
         User user = new User();
         user.setuserName(dto.getUserName());
@@ -124,11 +122,11 @@ public class UserServiceImpl implements UserService{
 
         return savedUser;
     }
-=======
+
 
     public String getFullName(String userName){
         return userRepository.getFullName(userName);
     }
 
->>>>>>> f600ba484dde0d7c1a1cb8e376314f7d0831e5c5
+
 }
