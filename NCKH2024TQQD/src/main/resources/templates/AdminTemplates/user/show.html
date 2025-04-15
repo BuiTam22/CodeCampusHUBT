@@ -61,14 +61,37 @@
                     <div id="userAddForm" style="display: none; margin-top: 20px;">
                         <h3>Thêm người dùng</h3>
                         <form id="addUserForm">
-                            <label>Tên Tài Khoản : <input type="text" name="userName" required pattern="[a-z0-9]+" title="Chỉ viết thường không dấu, không khoảng trắng"></label><br>
-                            <label>Email: <input type="email" name="email" required></label><br>
-                            <label>Mật khẩu: <input type="password" name="password" required></label><br>
-                            <label>Họ Và Tên : <input type="text" name="fullName" required ></label>
-                            <label>Sinh Nhật : <input type="date" name="dateOfBirth"  ></label>
-                            <label>Số Điện Thoại : <input type="text" name="phoneNumber"  ></label>
-                            <label>Địa Chỉ  : <input type="text" name="address"  ></label>
+                            <label>Tên Tài Khoản :
+                                <input type="text" name="userName" required pattern="[a-z0-9]+" title="Chỉ viết thường không dấu, không khoảng trắng">
+                                <small class="hint">(Chỉ dùng chữ thường và số, không dấu, không khoảng trắng)</small>
+                            </label>
 
+                            <label>Email:
+                                <input type="email" name="email" required>
+                            </label>
+
+                            <label>Mật khẩu:
+                                <div class="password-container">
+                                    <input type="password" name="password" required>
+                                    <button type="button" class="toggle-password">👁️</button>
+                                </div>
+                            </label>
+
+                            <label>Họ Và Tên :
+                                <input type="text" name="fullName" required>
+                            </label>
+
+                            <label>Sinh Nhật :
+                                <input type="date" name="dateOfBirth">
+                            </label>
+
+                            <label>Số Điện Thoại :
+                                <input type="text" name="phoneNumber">
+                            </label>
+
+                            <label>Địa Chỉ :
+                                <input type="text" name="address">
+                            </label>
 
                             <label>Quyền:
                                 <select name="roleName">
@@ -76,9 +99,12 @@
                                     <option value="STUDENT">STUDENT</option>
                                     <option value="TEACHER">TEACHER</option>
                                 </select>
-                            </label><br>
-                            <button type="button" onclick="hideForms()">Đóng</button>
-                            <button type="submit">Thêm Người Dùng </button>
+                            </label>
+
+                            <div class="button-group">
+                                <button type="button" onclick="hideForms()">Đóng</button>
+                                <button type="submit">Thêm Người Dùng</button>
+                            </div>
                         </form>
                     </div>
 
