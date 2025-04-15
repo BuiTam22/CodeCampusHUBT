@@ -21,7 +21,7 @@
         <div class="courses-container">
             <div class="courses-grid">
                 <a th:each="lesson : ${lessons}"
-                   th:href="@{/lesson/{slug}(slug=${lesson.slug})}"
+                   th:href="@{practice/lesson/{slug}(slug=${lesson.slug})}"
                    class="course-card">
 
                     <!-- Hình ảnh mặc định vì lesson không có image -->

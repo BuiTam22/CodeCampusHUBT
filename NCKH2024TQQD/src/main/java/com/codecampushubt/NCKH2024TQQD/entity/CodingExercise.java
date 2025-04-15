@@ -16,7 +16,7 @@ public class CodingExercise {
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG COURSELESSONS
     @ManyToOne
     @JoinColumn(name = "LessonID", nullable = false)
-    private CourseLesson lessonID;
+    private CourseLesson lesson;
 
     // TIÊU ĐỀ BÀI TẬP
     @Column(name = "Title", nullable = false, length = 255)
@@ -61,14 +61,16 @@ public class CodingExercise {
     @Column(name = "UpdatedAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
     private LocalDateTime updatedAt;
 
+    @Column(name = "Slug", nullable = true)
+    private String slug;
+
 
     // Constructor
     public CodingExercise() {
     }
 
-    public CodingExercise(Long exerciseID, CourseLesson lessonID, String title, String description, String programmingLanguage, String initialCode, String solutionCode, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.exerciseID = exerciseID;
-        this.lessonID = lessonID;
+    public CodingExercise(CourseLesson lesson, String title, String description, String programmingLanguage, String initialCode, String solutionCode, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, LocalDateTime createdAt, LocalDateTime updatedAt, String slug) {
+        this.lesson = lesson;
         this.title = title;
         this.description = description;
         this.programmingLanguage = programmingLanguage;
@@ -80,6 +82,7 @@ public class CodingExercise {
         this.points = points;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.slug = slug;
     }
 
     public Long getExerciseID() {
@@ -90,12 +93,12 @@ public class CodingExercise {
         this.exerciseID = exerciseID;
     }
 
-    public CourseLesson getLessonID() {
-        return lessonID;
+    public CourseLesson getLesson() {
+        return lesson;
     }
 
-    public void setLessonID(CourseLesson lessonID) {
-        this.lessonID = lessonID;
+    public void setLessonI(CourseLesson lesson) {
+        this.lesson = lesson;
     }
 
     public String getTitle() {
@@ -186,11 +189,23 @@ public class CodingExercise {
         this.updatedAt = updatedAt;
     }
 
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public void setLesson(CourseLesson lesson) {
+        this.lesson = lesson;
+    }
+
     @Override
     public String toString() {
         return "CodingExercise{" +
                 "exerciseID=" + exerciseID +
-                ", lessonID=" + lessonID +
+                ", lesson=" + lesson +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", programmingLanguage='" + programmingLanguage + '\'' +
