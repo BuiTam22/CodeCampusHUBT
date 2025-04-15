@@ -641,6 +641,7 @@ body {
   font-size: 60px;
   font-weight: 900;
   text-align: center;
+   margin-top:60px;
   }
 
 .header-bottom .inner-desc {
@@ -708,5 +709,4 @@ section {
   border-bottom: 1px solid #ccc;
 }
 /*end  nav */
-/*end inner-bottom*/
 
