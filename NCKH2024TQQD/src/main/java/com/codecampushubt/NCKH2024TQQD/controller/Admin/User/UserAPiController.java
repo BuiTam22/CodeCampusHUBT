@@ -1,18 +1,21 @@
 package com.codecampushubt.NCKH2024TQQD.controller.Admin.User;
 
+import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
+import com.codecampushubt.NCKH2024TQQD.entity.User;
 import com.codecampushubt.NCKH2024TQQD.service.UserServices.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("admin/api/user")
+@RequestMapping("/admin/api/user")
 public class UserAPiController {
     private final UserService userService;
+
+
     public UserAPiController(UserService userService) {
         this.userService = userService;
     }
@@ -22,4 +25,17 @@ public class UserAPiController {
         return ResponseEntity.ok(users);
 
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> createUser(@RequestBody UserCreateDTO dto) {
+//        System.out.println(user);
+        try {
+            userService.addUser(dto); // Gọi phương thức thêm người dùng từ UserService
+            System.out.println(dto);
+            return ResponseEntity.ok("Thêm người dùng thành công!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); // Trả lỗi nếu có vấn đề
+        }
+    }
+
 }
