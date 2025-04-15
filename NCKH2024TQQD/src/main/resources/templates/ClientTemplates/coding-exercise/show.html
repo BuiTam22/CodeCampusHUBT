@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CodeHub - Bài tập</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/style.css}">
+
+</head>
+
+<body>
+<!-- Header -->
+<div th:replace="~{ClientTemplates/layout/header :: header}"></div>
+
+<div class="content-wrapper">
+    <div class="container">
+        <!-- Lesson Title -->
+        <div class="lesson-header" th:if="${not #lists.isEmpty(exercises)}">
+            <h1 th:text="${exercises[0].lessonTitle}">C++ cơ bản</h1>
+        </div>
+
+        <!-- Exercise List -->
+        <div class="exercise-list">
+            <a th:each="exercise : ${exercises}"
+               class="exercise-card"
+               th:href="@{/practice/lesson/problem/{slug}(slug=${exercise.slug})}">
+
+                <h3 class="exercise-title" th:text="${exercise.title}">Kiểu dữ liệu int</h3>
+                <p class="exercise-desc" th:text="${exercise.description}">Tìm x</p>
+
+                <div class="meta-container">
+                    <div class="meta-item difficulty" th:classappend="${exercise.difficulty}">
+                        <i class="fas fa-signal"></i>
+                        <span th:text="${exercise.difficulty.substring(0,1).toUpperCase() + exercise.difficulty.substring(1)}">Easy</span>
+                    </div>
+
+                    <div class="meta-item language">
+                        <i class="fas fa-code"></i>
+                        <span th:text="${exercise.programLanguage}">Java</span>
+                    </div>
+
+                    <div class="meta-item points">
+                        <i class="fas fa-star"></i>
+                        <span th:text="${exercise.points} + ' điểm'">10 điểm</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Empty state -->
+            <div class="empty-state" th:if="${#lists.isEmpty(exercises)}">
+                <i class="fas fa-book-open"></i>
+                <h3>Chưa có bài tập nào trong chương này</h3>
+                <p>Hãy quay lại sau nhé!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+
+<script th:src="@{/ClientStatic/js/script.js}"></script>
+</body>
+</html>
