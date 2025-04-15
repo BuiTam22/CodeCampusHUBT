@@ -1,5 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.config;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,10 +46,20 @@ public class WebConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    // Cấu hình đường dẫn cho CSS, JS, Images
-    // @Override
-    // public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    //     registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
-    //     registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
-    // }
+    @Bean
+    public Cloudinary cloudinary() {
+        return new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", "drpgpdon8",               // Cloud của bạn
+                "api_key", "639578697263119",            // API Key
+                "api_secret", "KlwqQYCkPdLEYRb--s8wdowp5Jk", // API Secret
+                "secure", true
+        ));
+
+        // Cấu hình đường dẫn cho CSS, JS, Images
+        // @Override
+        // public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //     registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
+        //     registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
+        // }
+    }
 }

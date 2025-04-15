@@ -114,3 +114,21 @@ document.getElementById("addUserForm").addEventListener("submit", function (even
 
 
 //end thêm người dùng
+
+//upload hình ảnh
+async function uploadImage(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload/image", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+    document.getElementById("avatarUrl").value = data.url;
+    document.getElementById("preview").src = data.url;
+    document.getElementById("preview").style.display = "block";
+}
+
+//end upluad hình ảnh

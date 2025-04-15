@@ -95,19 +95,56 @@
                     <!-- Form Sửa -->
                     <div id="userEditForm" style="display: none; margin-top: 20px;">
                         <h3>Sửa người dùng</h3>
-                        <form>
-                            <input type="hidden">
-                            <label>Tên: <input type="text"></label><br>
-                            <label>Email: <input type="email"></label><br>
+                        <form id="editUserForm">
+                            <input type="hidden" name="userId">
+
+                            <label>Tên Tài Khoản:
+                                <input type="text" name="userName" required pattern="[a-z0-9]+" title="Chỉ viết thường không dấu, không khoảng trắng">
+                            </label><br>
+
+                            <label>Email:
+                                <input type="email" name="email" required>
+                            </label><br>
+
+                            <label>Mật khẩu mới (nếu đổi):
+                                <input type="password" name="password">
+                            </label><br>
+
+                            <label>Họ và Tên:
+                                <input type="text" name="fullName" required>
+                            </label>
+
+                            <label>Sinh Nhật:
+                                <input type="date" name="dateOfBirth">
+                            </label>
+
+                            <label>Số Điện Thoại:
+                                <input type="text" name="phoneNumber">
+                            </label>
+
+                            <label>Địa Chỉ:
+                                <input type="text" name="address">
+                            </label>
+
+                            <label>Ảnh đại diện:
+                                <input type="file" name="file" accept="image/*" onchange="uploadImage(this.files[0])">
+                            </label>
+                            <img id="preview" style="max-width: 150px; display: none; margin-top: 10px;"><br>
+                            <input type="hidden" name="avatarUrl" id="avatarUrl">
+
                             <label>Quyền:
-                                <select>
-                                    <option value="ADMIN">Quản trị viên</option>
-                                    <option value="USER">Người dùng</option>
+                                <select name="roleName">
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="STUDENT">STUDENT</option>
+                                    <option value="TEACHER">TEACHER</option>
                                 </select>
                             </label><br>
+
                             <button type="button" onclick="hideForms()">Đóng</button>
+                            <button type="submit">Cập nhật người dùng</button>
                         </form>
                     </div>
+
 
 
 
