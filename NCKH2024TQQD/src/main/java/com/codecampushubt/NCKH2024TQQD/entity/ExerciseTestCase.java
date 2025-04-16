@@ -1,14 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ExerciseTestCases")
@@ -18,7 +10,7 @@ public class ExerciseTestCase {
     @Column(name = "TestCaseID", nullable = false, updatable = false)
     private Long testCaseID;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ExerciseID")
     private CodingExercise codingExercise;
 
@@ -73,13 +65,9 @@ public class ExerciseTestCase {
         this.expectedOutput = expectedOutput;
     }
 
-    public Boolean getPublic() {
-        return isPublic;
-    }
+    public Boolean getIsPublic() { return isPublic; }
 
-    public void setPublic(Boolean aPublic) {
-        isPublic = aPublic;
-    }
+    public void setIsPublic(Boolean isPublic) { this.isPublic = isPublic; }
 
     public Integer getScore() {
         return score;

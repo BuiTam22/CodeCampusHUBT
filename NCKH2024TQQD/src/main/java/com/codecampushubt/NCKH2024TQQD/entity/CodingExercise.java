@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "CodingExercises")
@@ -17,6 +18,10 @@ public class CodingExercise {
     @ManyToOne
     @JoinColumn(name = "LessonID", nullable = false)
     private CourseLesson lesson;
+
+    //Khóa link sang list<ExerciseTestcases>
+    @OneToMany(mappedBy = "codingExercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ExerciseTestCase> exerciseTestCases;
 
     // TIÊU ĐỀ BÀI TẬP
     @Column(name = "Title", nullable = false, length = 255)
@@ -85,6 +90,14 @@ public class CodingExercise {
         this.slug = slug;
     }
 
+    public Set<ExerciseTestCase> getExerciseTestCases() {
+        return exerciseTestCases;
+    }
+
+    public void setExerciseTestCases(Set<ExerciseTestCase> exerciseTestCases) {
+        this.exerciseTestCases = exerciseTestCases;
+    }
+
     public Long getExerciseID() {
         return exerciseID;
     }
@@ -97,9 +110,6 @@ public class CodingExercise {
         return lesson;
     }
 
-    public void setLessonI(CourseLesson lesson) {
-        this.lesson = lesson;
-    }
 
     public String getTitle() {
         return title;
