@@ -18,6 +18,7 @@ import java.util.Map;
 public class Restuploadimage {
     @Autowired
     private CloudinaryService cloudinaryService;
+
     @PostMapping("/upload")
     public ResponseEntity<Map<String,String>> uploadFile(@RequestParam("file")MultipartFile file) throws IOException {
             String imageUrl =cloudinaryService.uploadImage(file);
