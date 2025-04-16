@@ -16,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("admin/api")
 public class Restuploadimage {
+
     @Autowired
     private CloudinaryService cloudinaryService;
     @PostMapping("/upload")
