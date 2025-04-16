@@ -11242,3 +11242,114 @@ body {
     font-size: 0.75rem;
     border-radius: 0.375rem !important;
 }
+/* CSS tổng thể */
+    #addUserForm {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 25px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Tiêu đề form */
+    #addUserForm::before {
+        content: "Thêm người dùng";
+        display: block;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Các label và input */
+    #addUserForm label {
+        display: block;
+        margin-bottom: 15px;
+        color: #34495e;
+        font-weight: 500;
+    }
+
+    #addUserForm input[type="text"],
+    #addUserForm input[type="email"],
+    #addUserForm input[type="password"],
+    #addUserForm input[type="date"],
+    #addUserForm select {
+        width: 100%;
+        padding: 10px 12px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+    }
+
+    #addUserForm input:focus,
+    #addUserForm select:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* Hiển thị lỗi validation */
+    #addUserForm input:invalid {
+        border-color: #e74c3c;
+    }
+
+    #addUserForm input:invalid:focus {
+        box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+    }
+
+    /* Password field với toggle */
+    .password-container {
+        position: relative;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 35px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #7f8c8d;
+    }
+
+    /* Nút bấm */
+    #addUserForm button {
+        padding: 10px 20px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    #addUserForm button[type="submit"] {
+        background-color: #2ecc71;
+        color: white;
+    }
+
+    #addUserForm button[type="submit"]:hover {
+        background-color: #27ae60;
+    }
+
+    #addUserForm button[type="button"] {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    #addUserForm button[type="button"]:hover {
+        background-color: #c0392b;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        #addUserForm {
+            padding: 15px;
+        }
+    }

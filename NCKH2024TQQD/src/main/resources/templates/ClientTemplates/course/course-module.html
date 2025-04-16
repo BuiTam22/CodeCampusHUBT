@@ -4,48 +4,93 @@
 <head>
     <meta charset="UTF-8">
     <title>CodeHubt</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/ClientStatic/css/style.css}">
 </head>
 
 <body>
 <!-- Header -->
 <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
-
-<!--Filter-->
-<div th:replace="~{ClientTemplates/layout/filter :: filters}"></div>
-
-<div class="content-wrapper">
-    <div class="container">
-        <!-- Phần hiển thị danh sách module -->
-        <div class="lesson-list" th:if="${not #lists.isEmpty(courseModules)}">
-            <div class="lesson-card" th:each="courseModule : ${courseModules}"
-                 th:if="${courseModule.published != null and courseModule.published}">
-                <div class="lesson-header">
-                    <h2 class="lesson-title" th:text="${courseModule.title}">Chương 1: Giới thiệu</h2>
-                    <span class="lesson-duration">
-                        <i class="fas fa-clock"></i>
-                       <span th:text="${courseModule.duration != null ? courseModule.duration + ' phút' : ''}"></span>
-
-                    </span>
-                </div>
-                <p class="lesson-description" th:text="${courseModule.description}">Đây là chương giới thiệu</p>
-                <a th:href="@{/course/{moduleId}(moduleId=${courseModule.id})}" class="start-button">
-                    Bắt đầu học <i class="fas fa-arrow-right"></i>
-                </a>
+<div class="header-bottom">
+    <h1 class="inner-title">Java cơ bản</h1>
+    <div class="inner-desc">This course covers the basics of Java programming.</div>
+    <div class="inner-rating">
+        <div class="star-rating">
+            <div class="number-rating">5.0</div>
+            <div class="star">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
             </div>
         </div>
-
-        <!-- Hiển thị khi không có dữ liệu -->
-        <div th:unless="${not #lists.isEmpty(courseModules)}" class="empty-state">
-            <p>Không có bài học nào trong khóa học này</p>
+        <div class="sum-rating">
+            120 đánh giá
+        </div>
+    </div>
+    <div class="inner-dev">
+        <div class="inner-image">
+            <img src="https://th.bing.com/th/id/OIP.jl3dFoX1fcADXwrul0BJLwHaE8?w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="">
+        </div>
+        <div class="inner-instructorUserName">
+            tambui
         </div>
     </div>
 </div>
+<ul class="nav">
+    <li><a href="#section1">Tổng Quan</a></li>
+    <li><a href="#section2">Lộ Trình</a></li>
+    <li><a href="#section3">Chi Tiết</a></li>
+    <li><a href="#section4">Đăng Ký</a></li>
+</ul>
+<section id="section1">
+
+</section>
+
+<section id="section2">
+
+</section>
+
+<section id="section3">
+
+</section>
+<section id="section4">
+
+</section>
+<!--<div class="content-wrapper">-->
+<!--    <div class="container">-->
+<!--        &lt;!&ndash; Phần hiển thị danh sách module &ndash;&gt;-->
+<!--        <div class="lesson-list" th:if="${not #lists.isEmpty(courseModules)}">-->
+<!--            <div class="lesson-card" th:each="courseModule : ${courseModules}"-->
+<!--                 th:if="${courseModule.published != null and courseModule.published}">-->
+<!--                <div class="lesson-header">-->
+<!--                    <h2 class="lesson-title" th:text="${courseModule.title}">Chương 1: Giới thiệu</h2>-->
+<!--                    <span class="lesson-duration">-->
+<!--                        <i class="fas fa-clock"></i>-->
+<!--                       <span th:text="${courseModule.duration != null ? courseModule.duration + ' phút' : ''}"></span>-->
+
+<!--                    </span>-->
+<!--                </div>-->
+<!--                <p class="lesson-description" th:text="${courseModule.description}">Đây là chương giới thiệu</p>-->
+<!--                <a th:href="@{/course/{moduleId}(moduleId=${courseModule.id})}" class="start-button">-->
+<!--                    Bắt đầu học <i class="fas fa-arrow-right"></i>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Hiển thị khi không có dữ liệu &ndash;&gt;-->
+<!--        <div th:unless="${not #lists.isEmpty(courseModules)}" class="empty-state">-->
+<!--            <p>Không có bài học nào trong khóa học này</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <!-- Footer -->
 <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
-
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 <script th:src="@{/ClientStatic/js/script.js}"></script>
 </body>
 </html>

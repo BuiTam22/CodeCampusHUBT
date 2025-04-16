@@ -30,6 +30,11 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -118,6 +123,7 @@
 			<artifactId>cloudinary-http44</artifactId>
 			<version>1.36.0</version>
 		</dependency>
+
 
 
 	</dependencies>

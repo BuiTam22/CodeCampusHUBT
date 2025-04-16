@@ -25,6 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO(u.userName, u.email, u.password) FROM User u WHERE u.userName = :userName")
     LoginBasicDTO getLoginBasicDTO(@Param("userName") String userName);
 
+
 //    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO(u.userID, u.userName, u.email, r.roleName) " +
 //            "FROM User u " +
 //            "join  UserRole ur on u.userID = ur.user.userID" +
@@ -33,6 +34,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    List<String>
     boolean existsByEmail(String email);
     Optional<User> findByUserName(String userName);
+
 
     @Query("SELECT DISTINCT u.fullName FROM User u WHERE u.userName = :userName")
     String getFullName(@Param("userName") String userName);
