@@ -3,9 +3,12 @@ package com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO;
 public class JudgeRequestDTO {
     private String sourceCode;
     private String language;
-    private String exerciseID;
+    private Long exerciseID;
 
-    public JudgeRequestDTO(String sourceCode, String language, String exerciseID) {
+    public JudgeRequestDTO() {
+    }
+
+    public JudgeRequestDTO(String sourceCode, String language, Long exerciseID) {
         this.sourceCode = sourceCode;
         this.language = language;
         this.exerciseID = exerciseID;
@@ -27,11 +30,11 @@ public class JudgeRequestDTO {
         this.language = language;
     }
 
-    public String getExerciseID() {
+    public Long getExerciseID() {
         return exerciseID;
     }
 
-    public void setExerciseID(String exerciseID) {
+    public void setExerciseID(Long exerciseID) {
         this.exerciseID = exerciseID;
     }
 }
