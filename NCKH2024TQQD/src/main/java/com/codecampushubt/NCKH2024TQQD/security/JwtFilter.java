@@ -113,11 +113,11 @@ public class JwtFilter extends OncePerRequestFilter { // Kế thừa từ OncePe
                 }
             }
         }
-        System.out.println(roles);
+//        System.out.println(roles);
         if (permissions == null || permissions.isEmpty()) {
             return false; // Không có permissions nào, không có quyền truy cập
         }
-        System.out.println("ROLE: " + roles);
+//        System.out.println("ROLE: " + roles);
 
         // Kiểm tra xem requestPath có trong danh sách permissions không
         for (String permittedPath : permissions) { // Duyệt qua từng permission

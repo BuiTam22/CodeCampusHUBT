@@ -15,14 +15,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("admin/api")
-<<<<<<< HEAD:NCKH2024TQQD/src/main/java/com/codecampushubt/NCKH2024TQQD/rest/Restuploadimage.java
-public class Restuploadimage {
-
-=======
 public class RestUploadImage {
->>>>>>> a7ec13d4f0cd7c72c38a21a682fa57608b50e484:NCKH2024TQQD/src/main/java/com/codecampushubt/NCKH2024TQQD/rest/RestUploadImage.java
     @Autowired
     private CloudinaryService cloudinaryService;
+
     @PostMapping("/upload")
     public ResponseEntity<Map<String,String>> uploadFile(@RequestParam("file")MultipartFile file) throws IOException {
             String imageUrl =cloudinaryService.uploadImage(file);
