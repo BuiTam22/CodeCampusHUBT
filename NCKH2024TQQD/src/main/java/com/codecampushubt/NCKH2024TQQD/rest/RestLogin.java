@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class RestLogin {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO request,    HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO request, HttpServletResponse response, CsrfToken csrfToken) {
         LoginBasicDTO user = userService.getLoginBasicDTO(request.getUsername());
 
         if (user == null || !bCryptPasswordUtil.passwordMatches(request.getPassword(), user.getPassword())) {
@@ -58,7 +59,7 @@ public class RestLogin {
 
         response.setHeader("Set-Cookie", cookie.toString());
 
-        return ResponseEntity.ok("Login successful");
+        return ResponseEntity.ok("Login successful" + cookie.toString());
     }
 
 }

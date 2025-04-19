@@ -331,7 +331,8 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-top: 10px; /* Bù trừ cho header cố định */
+    margin-top: 10px;
+    /* Bù trừ cho header cố định */
 }
 
 .main-nav {
@@ -650,7 +651,7 @@ a.exercise-card:hover {
     background: white;
     border-radius: 10px;
     padding: 1.5rem;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
     border-left: 4px solid;
 }
@@ -733,6 +734,3 @@ a.exercise-card:hover {
     margin-bottom: 1rem;
     color: #cbd5e0;
 }
-
-
-

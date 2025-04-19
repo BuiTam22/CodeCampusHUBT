@@ -88,6 +88,7 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("Tên người dùng đã tồn tại");
         }
 
+
         // Khởi tạo user
         User user = new User();
         user.setuserName(dto.getUserName());
@@ -123,8 +124,10 @@ public class UserServiceImpl implements UserService{
         return savedUser;
     }
 
+
     public String getFullName(String userName){
         return userRepository.getFullName(userName);
     }
+
 
 }

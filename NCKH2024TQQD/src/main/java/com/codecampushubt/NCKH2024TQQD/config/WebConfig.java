@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.config;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.codecampushubt.NCKH2024TQQD.config.advice.CloudinaryProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +16,11 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    private final CloudinaryProperties cloudinaryProperties;
+
+    public WebConfig (CloudinaryProperties cloudinaryProperties) {
+        this.cloudinaryProperties = cloudinaryProperties;
+    }
     @Bean
     public ITemplateResolver templateResolver() {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
@@ -46,14 +52,15 @@ public class WebConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+   @Bean
     public Cloudinary cloudinary() {
         return new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "drpgpdon8",               // Cloud của bạn
-                "api_key", "639578697263119",            // API Key
-                "api_secret", "KlwqQYCkPdLEYRb--s8wdowp5Jk", // API Secret
-                "secure", true
+           "cloud_name", cloudinaryProperties.getCloudName(),
+                "api_key",cloudinaryProperties.getApiKey(),
+                "api_secret" , cloudinaryProperties.getApiSecret(),
+                "secure",true
         ));
+   }
 
         // Cấu hình đường dẫn cho CSS, JS, Images
         // @Override
@@ -61,5 +68,5 @@ public class WebConfig implements WebMvcConfigurer {
         //     registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
         //     registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
         // }
-    }
+
 }
