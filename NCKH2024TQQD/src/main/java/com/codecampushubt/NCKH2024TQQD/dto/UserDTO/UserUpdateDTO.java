@@ -1,16 +1,21 @@
 package com.codecampushubt.NCKH2024TQQD.dto.UserDTO;
+import org.springframework.web.multipart.MultipartFile;
+import java.time.LocalDate;
+import java.util.List;
 
-public class UserCreateDTO {
+public class UserUpdateDTO {
     private String userName;
     private String email;
     private String password;
     private String fullName;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phoneNumber;
     private String address;
-    private String roleName;
+    private String image;       // trùng tên với entity
+    private List<String> roleName;
+    public UserUpdateDTO() {}
 
-    public UserCreateDTO(String userName, String email, String password, String fullName, String dateOfBirth, String phoneNumber, String address, String roleName) {
+    public UserUpdateDTO(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String phoneNumber, String address, String image, List<String> roleName) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -18,6 +23,7 @@ public class UserCreateDTO {
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.image = image;
         this.roleName = roleName;
     }
 
@@ -53,11 +59,11 @@ public class UserCreateDTO {
         this.fullName = fullName;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -77,25 +83,36 @@ public class UserCreateDTO {
         this.address = address;
     }
 
-    public String getRoleName() {
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public List<String> getRoleName() {
         return roleName;
     }
 
-    public void setRoleName(String roleName) {
+    public void setRoleName(List<String> roleName) {
         this.roleName = roleName;
     }
 
     @Override
     public String toString() {
-        return "UserCreateDTO{" +
+        return "UserUpdateDTO{" +
                 "userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address='" + address + '\'' +
+                ", image='" + image + '\'' +
                 ", roleName='" + roleName + '\'' +
                 '}';
     }
 }
+
+

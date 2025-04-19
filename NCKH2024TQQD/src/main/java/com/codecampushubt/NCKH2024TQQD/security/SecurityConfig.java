@@ -12,9 +12,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final UserContextFilter userContextFilter;
 
-    public SecurityConfig(JwtFilter jwtFilter) {
+    public SecurityConfig(JwtFilter jwtFilter, UserContextFilter userContextFilter) {
         this.jwtFilter = jwtFilter;
+        this.userContextFilter = userContextFilter;
     }
 
     @Bean
@@ -22,6 +24,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(userContextFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .requestMatchers(
                         "/api/user/**",
