@@ -1,6 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.dto.UserDTO;
 import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
+import java.util.List;
 
 public class UserUpdateDTO {
     private String userName;
@@ -9,20 +10,21 @@ public class UserUpdateDTO {
     private String fullName;
     private LocalDate dateOfBirth;
     private String phoneNumber;
-    private String Address;
+    private String address;
     private String image;       // trùng tên với entity
-    private String roleName;
+    private List<String> roleName;
     public UserUpdateDTO() {}
-    public UserUpdateDTO(String roleName, String image, String address, String phoneNumber, LocalDate dateOfBirth, String fullName, String password, String email, String userName) {
-        this.roleName = roleName;
-        this.image = image;
-        Address = address;
-        this.phoneNumber = phoneNumber;
-        this.dateOfBirth = dateOfBirth;
-        this.fullName = fullName;
-        this.password = password;
-        this.email = email;
+
+    public UserUpdateDTO(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String phoneNumber, String address, String image, List<String> roleName) {
         this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.image = image;
+        this.roleName = roleName;
     }
 
     public String getUserName() {
@@ -74,11 +76,11 @@ public class UserUpdateDTO {
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public void setAddress(String address) {
-        Address = address;
+        this.address = address;
     }
 
     public String getImage() {
@@ -89,11 +91,11 @@ public class UserUpdateDTO {
         this.image = image;
     }
 
-    public String getRoleName() {
+    public List<String> getRoleName() {
         return roleName;
     }
 
-    public void setRoleName(String roleName) {
+    public void setRoleName(List<String> roleName) {
         this.roleName = roleName;
     }
 
@@ -106,7 +108,7 @@ public class UserUpdateDTO {
                 ", fullName='" + fullName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", Address='" + Address + '\'' +
+                ", address='" + address + '\'' +
                 ", image='" + image + '\'' +
                 ", roleName='" + roleName + '\'' +
                 '}';

@@ -22,6 +22,8 @@ public interface UserService {
 
     User addUser(UserCreateDTO dto);
 
+    UserUpdateDTO  getUserUpdateDTOById(Long userID);
+
 
 
     String getFullName(String userName);

@@ -14,7 +14,7 @@ fetch('http://localhost:3000/admin/api/user/show')
                         <td>${user.userRole}</td>
                         <td>
                         <button class="btn btn-success" onclick="showDetailForm(${user.userID}, '${user.userName}', '${user.email}', '${user.userRole}')">Chi tiết</button>
-                        <button class="btn btn-warning mx-2" onclick="showEditForm(${user.userID}, '${user.userName}', '${user.email}', '${user.userRole}')">Sửa</button>
+                        <button class="btn btn-warning mx-2" onclick="showEditForm(${user.userID}, '${user.userName}', '${user.email}', '${user.userRole}',${user.fullName})">Sửa</button>
                         <button class="btn btn-danger">  Xóa </button>
                         </td>
                     </tr>
@@ -60,13 +60,14 @@ function showDetailForm(id, name, email, role) {
     document.getElementById("userDetailForm").style.display = "block";
 }
 
-function showEditForm(id, name, email, role, fullName) {
+function showEditForm(id, name, email, role  ,fullName) {
     hideForms();
     const form = document.getElementById("userEditForm");
     form.querySelector("input[type='hidden']").value = id;
     form.querySelector("input[type='text']").value = name;
     form.querySelector("input[type='email']").value = email;
     form.querySelector("input[type='fullName']").value = fullName;
+
 
     form.querySelector("select").value = role;
     form.style.display = "block";

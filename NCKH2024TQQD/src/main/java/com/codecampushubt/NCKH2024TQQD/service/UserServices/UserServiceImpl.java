@@ -21,6 +21,7 @@ import com.codecampushubt.NCKH2024TQQD.entity.UserRoleId;
 import com.codecampushubt.NCKH2024TQQD.service.Cloudinary.CloudinaryService;
 import com.codecampushubt.NCKH2024TQQD.util.BCryptPasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -142,6 +143,31 @@ public class UserServiceImpl implements UserService {
         return userRepository.getFullName(userName);
     }
     //    update user ------------------------------------------------------------------------------------
+  @Override
+  public UserUpdateDTO getUserUpdateDTOById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Khong Tim Thay User"));
+        List<String> roles = user.getUserRoles().stream()
+                .map(userRole -> userRole.getRole().getRoleName())
+                .collect(Collectors.toList());
+        return new UserUpdateDTO(
+                user.getuserName(),             // userName
+                user.getEmail(),                // email
+                "",                             // password (để trống khi hiển thị form)
+                user.getFullName(),             // fullName
+                user.getDateOfBirth(),          // dateOfBirth
+                user.getPhoneNumber(),          // phoneNumber
+                user.getAddress(),              // address
+                user.getImage(),                // image (lưu URL ảnh)
+                roles
+
+
+        );
+  }
+
+
+
+
 
 //    end update user ---------------------------------------------------------------------------------------
 

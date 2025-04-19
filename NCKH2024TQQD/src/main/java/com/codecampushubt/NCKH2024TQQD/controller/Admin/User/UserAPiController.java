@@ -46,5 +46,10 @@ public class UserAPiController {
 //        userService.updateUser(userID, dto);
         return ResponseEntity.ok("Cập Nhật Thành Công ");
     }
+    @GetMapping("/showUpdate/{userID}")
+    public ResponseEntity<UserUpdateDTO> getUserUpdateDTOById(@PathVariable Long userID) {
+        UserUpdateDTO dto = userService.getUserUpdateDTOById(userID);
+        return ResponseEntity.ok(dto);
+    }
 
 }
