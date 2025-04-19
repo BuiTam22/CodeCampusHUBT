@@ -1,26 +1,33 @@
 package com.codecampushubt.NCKH2024TQQD.service.JudgeServices;
 
+import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.JudgeRequestDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.JudgeRunResponseDTO;
 import com.codecampushubt.NCKH2024TQQD.util.CodeExecutionUtil;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class JudgeServiceImpl {
+@Service
+public class JudgeServiceImpl implements JudgeService{
     public JudgeRunResponseDTO runUserCode(JudgeRequestDTO request) {
         // Tạo tên thư mục tạm dựa theo username, ID bài và thời gian để đảm bảo không trùng lặp
-        String folderName = "test";
+        String userName = UserContext.getUsername();
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+        String folderName = userName + "-ex" + request.getExerciseID() + "-" + timestamp;
 
         // Tạo đường dẫn đến thư mục gốc tạm (ví dụ: temp_code/username-ex1-run123456789)
         Path workingDir = Paths.get("Code_Dir", folderName);;
 
         try {
             // Kiểm tra và tạo thư mục gốc temp_code nếu chưa tồn tại
-            Path tempCodeDir = Paths.get("temp_code");
+            Path tempCodeDir = Paths.get("Code_Dir");
             if (!Files.exists(tempCodeDir)) {
                 Files.createDirectories(tempCodeDir);  // Tạo thư mục temp_code nếu không có
             }
@@ -53,7 +60,7 @@ public class JudgeServiceImpl {
         } finally {
             // Dọn dẹp thư mục
             try {
-                CodeExecutionUtil.deleteDirectoryRecursively(workingDir);
+//                CodeExecutionUtil.deleteDirectoryRecursively(workingDir);
             } catch (Exception e) {
                 // Ignore cleanup errors
             }
