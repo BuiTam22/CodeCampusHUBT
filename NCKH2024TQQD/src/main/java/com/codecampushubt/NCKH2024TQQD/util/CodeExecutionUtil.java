@@ -1,7 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.util;
 
 import java.io.IOException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -12,29 +11,39 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class dùng để biên dịch, thực thi code, và quản lý file tạm
+ */
 public class CodeExecutionUtil {
 
-    // Hàm thực thi lệnh shell (ví dụ: javac Main.java hoặc java Main)
+    /**
+     * Thực thi 1 lệnh command-line trong thư mục chỉ định.
+     *
+     * @param command Danh sách chuỗi đại diện cho lệnh cần thực thi (ví dụ: ["javac", "Main.java"])
+     * @param workingDir Thư mục làm việc nơi command sẽ được thực thi
+     * @return Output của command sau khi chạy xong
+     * @throws IOException Nếu có lỗi I/O
+     * @throws InterruptedException Nếu tiến trình bị ngắt
+     */
     public static String runCommand(List<String> command, File workingDir) throws IOException, InterruptedException {
         ProcessBuilder builder = new ProcessBuilder(command);
-        builder.directory(workingDir);
-        builder.redirectErrorStream(true);
-        Process process = builder.start();
+        builder.directory(workingDir); // Thiết lập thư mục làm việc
+        builder.redirectErrorStream(true); // Gộp cả stderr và stdout
+        Process process = builder.start(); // Bắt đầu tiến trình
 
-        // Thêm timeout
-        if (!process.waitFor(10, TimeUnit.SECONDS)) {  // Timeout sau 10 giây
-            process.destroyForcibly();
+        // Đặt timeout để tránh treo tiến trình quá lâu
+        if (!process.waitFor(10, TimeUnit.SECONDS)) {
+            process.destroyForcibly(); // Dừng tiến trình nếu quá thời gian
             throw new RuntimeException("Process timeout after 10 seconds");
         }
 
+        // Đọc output từ tiến trình
         String output;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             output = reader.lines().collect(Collectors.joining("\n"));
         }
 
-//        int exitCode = process.waitFor();
-
-        // Trả về output dù lỗi hay không
+        // Nếu exit code khác 0 (lỗi), ném ra ngoại lệ CompilationException kèm output
         if (process.exitValue() != 0) {
             throw new CompilationException("Command failed: " + String.join(" ", command) + "\nOutput: " + output);
         }
@@ -42,29 +51,35 @@ public class CodeExecutionUtil {
         return output;
     }
 
-    // Hàm xoá toàn bộ thư mục và file con bên trong
+    /**
+     * Xóa toàn bộ thư mục và các file con bên trong nó.
+     *
+     * @param path Đường dẫn tới thư mục cần xóa
+     */
     public static void deleteDirectoryRecursively(Path path) {
         try {
             if (Files.exists(path)) {
-                // Walk ngược lại (xoá file trước, thư mục sau)
+                // Duyệt từ dưới lên (xoá file trước rồi thư mục)
                 Files.walk(path)
                         .sorted(Comparator.reverseOrder())
                         .map(Path::toFile)
                         .forEach(File::delete);
             }
         } catch (IOException e) {
-            // Bắt và log lỗi
             e.printStackTrace();
-            throw new RuntimeException("Error while deleting files", e); // Ném lại exception nếu cần
+            throw new RuntimeException("Error while deleting files", e);
         }
     }
 
-    // Tạo exception class riêng để xử lý lỗi biên dịch
+    /**
+     * Exception đại diện cho lỗi biên dịch code.
+     */
     public static class CompilationException extends RuntimeException {
         private final String output;
 
         public CompilationException(String message) {
             super(message);
+            // Lấy phần output từ thông báo lỗi nếu có
             if (message.contains("Output: ")) {
                 this.output = message.substring(message.indexOf("Output: ") + 8);
             } else {
@@ -77,5 +92,3 @@ public class CodeExecutionUtil {
         }
     }
 }
-
-
