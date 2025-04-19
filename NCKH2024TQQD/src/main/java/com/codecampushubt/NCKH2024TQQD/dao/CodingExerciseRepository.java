@@ -1,6 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDetailDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.CodingExercise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,12 @@ public interface CodingExerciseRepository extends JpaRepository<CodingExercise, 
             WHERE ce.lesson.slug = :theSlug
             """)
     List<CodingExerciseDTO> getCodingExerciseDTOByLessonSlug(@Param("theSlug") String theSlug);
+
+    @Query("""
+            SELECT new com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDetailDTO
+            (ce.exerciseID, null, ce.title, ce.description, ce.programmingLanguage, ce.initialCode, ce.timeLimit, ce.memoryLimit, ce.difficulty, ce.points, ce.slug)
+            FROM CodingExercise ce
+            WHERE ce.slug = :theSlug
+            """)
+    CodingExerciseDetailDTO getCodingExerciseDetailDTOByExerciseSlug(@Param("theSlug") String theSlug);
 }

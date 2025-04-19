@@ -48,8 +48,8 @@
                         <thead>
                         <tr>
                             <th>ID</th>
+                            <th>UserName</th>
                             <th>Email</th>
-                            <th>fullName</th>
                             <th>RoleName</th>
                         </tr>
                         </thead>
@@ -121,7 +121,7 @@
                     <!-- Form Sửa -->
                     <div id="userEditForm" style="display: none; margin-top: 20px;">
                         <h3>Sửa người dùng</h3>
-                        <form id="editUserForm">
+                        <form id="editUserForm" enctype="multipart/form-data">
                             <input type="hidden" name="userId">
 
                             <label>Tên Tài Khoản:
@@ -133,7 +133,7 @@
                             </label><br>
 
                             <label>Mật khẩu mới (nếu đổi):
-                                <input type="password" name="password">
+                                <input type="password" name="password" required>
                             </label><br>
 
                             <label>Họ và Tên:
@@ -141,7 +141,7 @@
                             </label>
 
                             <label>Sinh Nhật:
-                                <input type="date" name="dateOfBirth">
+                                <input type="date" name="dateOfBirth" >
                             </label>
 
                             <label>Số Điện Thoại:
@@ -153,7 +153,7 @@
                             </label>
 
                             <label>Ảnh đại diện:
-                                <input type="file" name="file" accept="image/*" onchange="uploadImage(this.files[0])">
+                                <input type="file" id="file" name="file"><br><br>
                             </label>
                             <img id="preview" style="max-width: 150px; display: none; margin-top: 10px;"><br>
                             <input type="hidden" name="avatarUrl" id="avatarUrl">
