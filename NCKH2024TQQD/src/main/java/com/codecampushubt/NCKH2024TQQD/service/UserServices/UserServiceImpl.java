@@ -9,13 +9,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.cloudinary.Cloudinary;
 import com.codecampushubt.NCKH2024TQQD.dao.RoleRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.UserRoleRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserUpdateDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.Role;
 import com.codecampushubt.NCKH2024TQQD.entity.UserRole;
 import com.codecampushubt.NCKH2024TQQD.entity.UserRoleId;
+import com.codecampushubt.NCKH2024TQQD.service.Cloudinary.CloudinaryService;
 import com.codecampushubt.NCKH2024TQQD.util.BCryptPasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,14 +40,21 @@ public class UserServiceImpl implements UserService{
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRoleRepository userRoleRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository , RoleRepository roleRepository , PasswordEncoder passwordEncoder , UserRoleRepository userRoleRepository) {
+    public UserServiceImpl(UserRepository userRepository ,
+                           RoleRepository roleRepository ,
+                           PasswordEncoder passwordEncoder ,
+                           UserRoleRepository userRoleRepository,
+                           CloudinaryService cloudinaryService
+    ) {
 
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRoleRepository = userRoleRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
@@ -61,9 +71,8 @@ public class UserServiceImpl implements UserService{
     public LoginBasicDTO getLoginBasicDTO(String userName){
         return (LoginBasicDTO) userRepository.getLoginBasicDTO(userName);
     }
-
+//show user
     @Override
-
     public List<UserShowDTO> getAllUsers() {
         return userRepository.findAll().stream().map(user -> {
             List<String> rolename = user.getUserRoles().stream()
@@ -79,6 +88,8 @@ public class UserServiceImpl implements UserService{
         })
                 .collect(Collectors.toList());
     }
+//    end show user
+//    create user
     @Override
     public User addUser(UserCreateDTO dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
@@ -124,10 +135,39 @@ public class UserServiceImpl implements UserService{
         return savedUser;
     }
 
+//end create user
+
 
     public String getFullName(String userName){
         return userRepository.getFullName(userName);
     }
 
+//    update user
+    @Override
+    public void updateUser(Long userID, UserUpdateDTO dto) {
+        User user = userRepository.findById(userID).orElseThrow(() -> new RuntimeException("Người Dùng Không Tồn Taij"));
+        user.setuserName(dto.getUserName());
+        user.setEmail(dto.getEmail());
+        user.setFullName(dto.getFullName());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setAddress(dto.getAddress());
+        user.setDateOfBirth(dto.getDateOfBirth());
+        if (dto.getPassword() != null && dto.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+        if ( dto.getImage() != null && dto.getImage().isEmpty()) {
+            try {
+                String imageUrl = cloudinaryService.uploadImage(dto.getImage());
+                user.setImage(imageUrl);
 
+            }catch (Exception e) {
+                throw new RuntimeException(e + " lỗi tải ảnh ");
+
+            }
+        }
+        userRepository.save(user);
+
+
+    }
+//    end update user
 }

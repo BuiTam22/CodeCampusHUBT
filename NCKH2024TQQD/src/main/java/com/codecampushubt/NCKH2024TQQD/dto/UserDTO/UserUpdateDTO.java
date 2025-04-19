@@ -1,14 +1,18 @@
 package com.codecampushubt.NCKH2024TQQD.dto.UserDTO;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
+
 public class UserUpdateDTO {
     private String userName;
     private String email;
     private String password;
     private String fullName;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phoneNumber;
     private String address;
-    private String image;
+    private MultipartFile image;
     private String roleName;
     public UserUpdateDTO() {}
 
@@ -44,11 +48,11 @@ public class UserUpdateDTO {
         this.fullName = fullName;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -68,11 +72,11 @@ public class UserUpdateDTO {
         this.address = address;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 
@@ -84,7 +88,7 @@ public class UserUpdateDTO {
         this.roleName = roleName;
     }
 
-    public UserUpdateDTO(String userName, String email, String password, String fullName, String dateOfBirth, String phoneNumber, String address, String image, String roleName) {
+    public UserUpdateDTO(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String phoneNumber, String address, MultipartFile image, String roleName) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -100,4 +104,18 @@ public class UserUpdateDTO {
 
     }
 
+    @Override
+    public String toString() {
+        return "UserUpdateDTO{" +
+                "userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", image=" + image +
+                ", roleName='" + roleName + '\'' +
+                '}';
+    }
 }
