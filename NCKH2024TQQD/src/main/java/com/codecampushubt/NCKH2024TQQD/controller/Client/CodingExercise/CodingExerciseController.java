@@ -1,6 +1,8 @@
 package com.codecampushubt.NCKH2024TQQD.controller.Client.CodingExercise;
 
+import ch.qos.logback.core.model.processor.PhaseIndicator;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDetailDTO;
 import com.codecampushubt.NCKH2024TQQD.service.CodingExerciseServices.CodingExerciseService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +31,14 @@ public class CodingExerciseController {
         model.addAttribute("exercises", exercises);
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/coding-exercise/show";
+    }
+
+    @GetMapping("/problem/{slug}")
+    public String showExerciseDetailBySlug(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
+        CodingExerciseDetailDTO exercise = codingExerciseService.getCodingExerciseDetailDTOByExerciseSlug(theSlug);
+        model.addAttribute("exercise", exercise);
+        model.addAttribute("activePage", request.getRequestURI());
+        return "ClientTemplates/coding-exercise/problem";
+
     }
 }

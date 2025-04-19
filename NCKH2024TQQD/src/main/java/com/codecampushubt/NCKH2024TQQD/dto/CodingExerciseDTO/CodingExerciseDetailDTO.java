@@ -1,12 +1,13 @@
 package com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO;
 
+import com.codecampushubt.NCKH2024TQQD.dto.ExerciseTestCasesDTO.ExerciseTestCasesDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.ExerciseTestCase;
 
 import java.util.Set;
 
 public class CodingExerciseDetailDTO {
     private Long exerciseID;
-    private Set<ExerciseTestCase> exerciseTestCases;
+    private Set<ExerciseTestCasesDTO> exerciseTestCases;
     private String title;
     private String description;
     private String programmingLanguage;
@@ -17,7 +18,7 @@ public class CodingExerciseDetailDTO {
     private Integer points;
     private String slug;
 
-    public CodingExerciseDetailDTO(Long exerciseID, Set<ExerciseTestCase> exerciseTestCases, String title, String description, String programmingLanguage, String initialCode, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, String slug) {
+    public CodingExerciseDetailDTO(Long exerciseID, Set<ExerciseTestCasesDTO> exerciseTestCases, String title, String description, String programmingLanguage, String initialCode, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, String slug) {
         this.exerciseID = exerciseID;
         this.exerciseTestCases = exerciseTestCases;
         this.title = title;
@@ -35,7 +36,7 @@ public class CodingExerciseDetailDTO {
         return exerciseID;
     }
 
-    public Set<ExerciseTestCase> getExerciseTestCases() {
+    public Set<ExerciseTestCasesDTO> getExerciseTestCases() {
         return exerciseTestCases;
     }
 
@@ -73,5 +74,9 @@ public class CodingExerciseDetailDTO {
 
     public String getSlug() {
         return slug;
+    }
+
+    public void setExerciseTestCases(Set<ExerciseTestCasesDTO> exerciseTestCases) {
+        this.exerciseTestCases = exerciseTestCases;
     }
 }
