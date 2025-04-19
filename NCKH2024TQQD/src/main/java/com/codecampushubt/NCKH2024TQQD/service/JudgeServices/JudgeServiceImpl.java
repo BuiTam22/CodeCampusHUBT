@@ -3,7 +3,6 @@ package com.codecampushubt.NCKH2024TQQD.service.JudgeServices;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.JudgeRequestDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.JudgeRunResponseDTO;
 import com.codecampushubt.NCKH2024TQQD.util.CodeExecutionUtil;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,8 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-@Service
-public class JudgeServiceImpl implements JudgeService{
+public class JudgeServiceImpl {
     public JudgeRunResponseDTO runUserCode(JudgeRequestDTO request) {
         // Tạo tên thư mục tạm dựa theo username, ID bài và thời gian để đảm bảo không trùng lặp
         String folderName = "test";
