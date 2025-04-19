@@ -1,4 +1,5 @@
-fetch('http://localhost:3000/admin/api/user/show')
+const apiShow = `${apiBaseUrl}/admin/api/user/show`;
+fetch(apiShow)
 
     .then(response => response.json())
     .then(data => {
