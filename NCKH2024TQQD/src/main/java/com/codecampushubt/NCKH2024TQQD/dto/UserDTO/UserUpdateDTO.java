@@ -1,7 +1,5 @@
 package com.codecampushubt.NCKH2024TQQD.dto.UserDTO;
-
 import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDate;
 
 public class UserUpdateDTO {
@@ -11,10 +9,21 @@ public class UserUpdateDTO {
     private String fullName;
     private LocalDate dateOfBirth;
     private String phoneNumber;
-    private String address;
-    private MultipartFile image;
+    private String Address;
+    private String image;       // trùng tên với entity
     private String roleName;
     public UserUpdateDTO() {}
+    public UserUpdateDTO(String roleName, String image, String address, String phoneNumber, LocalDate dateOfBirth, String fullName, String password, String email, String userName) {
+        this.roleName = roleName;
+        this.image = image;
+        Address = address;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.fullName = fullName;
+        this.password = password;
+        this.email = email;
+        this.userName = userName;
+    }
 
     public String getUserName() {
         return userName;
@@ -65,18 +74,18 @@ public class UserUpdateDTO {
     }
 
     public String getAddress() {
-        return address;
+        return Address;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        Address = address;
     }
 
-    public MultipartFile getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -88,22 +97,6 @@ public class UserUpdateDTO {
         this.roleName = roleName;
     }
 
-    public UserUpdateDTO(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String phoneNumber, String address, MultipartFile image, String roleName) {
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.fullName = fullName;
-        this.dateOfBirth = dateOfBirth;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.image = image;
-        this.roleName = roleName;
-
-
-
-
-    }
-
     @Override
     public String toString() {
         return "UserUpdateDTO{" +
@@ -113,9 +106,11 @@ public class UserUpdateDTO {
                 ", fullName='" + fullName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", image=" + image +
+                ", Address='" + Address + '\'' +
+                ", image='" + image + '\'' +
                 ", roleName='" + roleName + '\'' +
                 '}';
     }
 }
+
+

@@ -35,7 +35,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserBasicInfoDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.User;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -43,9 +43,9 @@ public class UserServiceImpl implements UserService{
     private final CloudinaryService cloudinaryService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository ,
-                           RoleRepository roleRepository ,
-                           PasswordEncoder passwordEncoder ,
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder,
                            UserRoleRepository userRoleRepository,
                            CloudinaryService cloudinaryService
     ) {
@@ -63,32 +63,34 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ArrayList<User> findAll(){
+    public ArrayList<User> findAll() {
         return (ArrayList<User>) userRepository.findAll();
     }
 
     @Override
-    public LoginBasicDTO getLoginBasicDTO(String userName){
+    public LoginBasicDTO getLoginBasicDTO(String userName) {
         return (LoginBasicDTO) userRepository.getLoginBasicDTO(userName);
     }
-//show user
+
+    //show user
     @Override
     public List<UserShowDTO> getAllUsers() {
         return userRepository.findAll().stream().map(user -> {
-            List<String> rolename = user.getUserRoles().stream()
-                    .map(userRole -> userRole.getRole().getRoleName())
-                    .collect(Collectors.toList());
-            return new UserShowDTO(
-                    user.getUserId(),
-                    user.getuserName(),
-                    user.getEmail(),
-                    rolename
-            );
+                    List<String> rolename = user.getUserRoles().stream()
+                            .map(userRole -> userRole.getRole().getRoleName())
+                            .collect(Collectors.toList());
+                    return new UserShowDTO(
+                            user.getUserId(),
+                            user.getuserName(),
+                            user.getEmail(),
+                            rolename
+                    );
 
-        })
+                })
                 .collect(Collectors.toList());
     }
-//    end show user
+
+    //    end show user
 //    create user
     @Override
     public User addUser(UserCreateDTO dto) {
@@ -136,38 +138,11 @@ public class UserServiceImpl implements UserService{
     }
 
 //end create user
-
-
-    public String getFullName(String userName){
+    public String getFullName(String userName) {
         return userRepository.getFullName(userName);
     }
+    //    update user ------------------------------------------------------------------------------------
 
-//    update user
-    @Override
-    public void updateUser(Long userID, UserUpdateDTO dto) {
-        User user = userRepository.findById(userID).orElseThrow(() -> new RuntimeException("Người Dùng Không Tồn Taij"));
-        user.setuserName(dto.getUserName());
-        user.setEmail(dto.getEmail());
-        user.setFullName(dto.getFullName());
-        user.setPhoneNumber(dto.getPhoneNumber());
-        user.setAddress(dto.getAddress());
-        user.setDateOfBirth(dto.getDateOfBirth());
-        if (dto.getPassword() != null && dto.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        }
-        if ( dto.getImage() != null && dto.getImage().isEmpty()) {
-            try {
-                String imageUrl = cloudinaryService.uploadImage(dto.getImage());
-                user.setImage(imageUrl);
+//    end update user ---------------------------------------------------------------------------------------
 
-            }catch (Exception e) {
-                throw new RuntimeException(e + " lỗi tải ảnh ");
-
-            }
-        }
-        userRepository.save(user);
-
-
-    }
-//    end update user
 }

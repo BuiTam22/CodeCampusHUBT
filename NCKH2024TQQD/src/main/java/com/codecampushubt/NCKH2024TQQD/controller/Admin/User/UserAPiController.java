@@ -40,10 +40,10 @@ public class UserAPiController {
     }
     @PostMapping("/update/{userID}")
     public ResponseEntity<?> updateUser(@ModelAttribute UserUpdateDTO dto, @PathVariable long userID) {
-        System.out.println("đã vào controller");
-        System.out.println(userID);
-        System.out.println(dto);
-        userService.updateUser(userID, dto);
+//        System.out.println("đã vào controller");
+//        System.out.println(userID);
+//        System.out.println(dto);
+//        userService.updateUser(userID, dto);
         return ResponseEntity.ok("Cập Nhật Thành Công ");
     }
 

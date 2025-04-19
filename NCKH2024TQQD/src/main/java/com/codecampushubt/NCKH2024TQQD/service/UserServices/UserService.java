@@ -19,12 +19,11 @@ public interface UserService {
     LoginBasicDTO getLoginBasicDTO(String userName);
 
     List<UserShowDTO> getAllUsers();
-//    User createUser(User user);
+
     User addUser(UserCreateDTO dto);
 
 
 
     String getFullName(String userName);
-    void updateUser(Long userID, UserUpdateDTO dto);
 
 }

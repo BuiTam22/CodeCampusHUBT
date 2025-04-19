@@ -60,12 +60,14 @@ function showDetailForm(id, name, email, role) {
     document.getElementById("userDetailForm").style.display = "block";
 }
 
-function showEditForm(id, name, email, role) {
+function showEditForm(id, name, email, role, fullName) {
     hideForms();
     const form = document.getElementById("userEditForm");
     form.querySelector("input[type='hidden']").value = id;
     form.querySelector("input[type='text']").value = name;
     form.querySelector("input[type='email']").value = email;
+    form.querySelector("input[type='fullName']").value = fullName;
+
     form.querySelector("select").value = role;
     form.style.display = "block";
 }
