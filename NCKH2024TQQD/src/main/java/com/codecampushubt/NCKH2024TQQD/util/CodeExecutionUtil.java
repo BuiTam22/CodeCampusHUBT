@@ -1,9 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.util;
 
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -50,6 +47,46 @@ public class CodeExecutionUtil {
 
         return output;
     }
+
+    /**
+     * Thực thi 1 lệnh command-line trong thư mục chỉ định và truyền input vào chương trình.
+     *
+     * @param command Danh sách chuỗi đại diện cho lệnh cần thực thi (ví dụ: ["java", "Main"])
+     * @param input Chuỗi input sẽ được truyền vào tiến trình qua stdin (System.in)
+     * @param workingDir Thư mục làm việc nơi command sẽ được thực thi
+     * @return Output của chương trình sau khi chạy xong
+     * @throws IOException Nếu có lỗi I/O
+     * @throws InterruptedException Nếu tiến trình bị ngắt
+     */
+    public static String runCommandWithInput(List<String> command, String input, File workingDir)
+            throws IOException, InterruptedException {
+
+        // Khởi tạo tiến trình với command được cung cấp
+        ProcessBuilder builder = new ProcessBuilder(command);
+        builder.directory(workingDir); // Thiết lập thư mục làm việc
+        builder.redirectErrorStream(true); // Gộp cả stderr và stdout
+
+        // Bắt đầu tiến trình
+        Process process = builder.start();
+
+        // Gửi input vào tiến trình thông qua stdin
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) {
+            writer.write(input);    // Ghi input vào tiến trình
+            writer.flush();         // Đảm bảo dữ liệu được đẩy đi ngay lập tức
+        }
+
+        // Đọc kết quả output từ stdout
+        String output;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            output = reader.lines().collect(Collectors.joining("\n")); // Gom tất cả dòng thành chuỗi kết quả
+        }
+
+        // Đợi tiến trình kết thúc (có thể dùng thêm timeout nếu muốn an toàn hơn)
+        process.waitFor();
+
+        return output;
+    }
+
 
     /**
      * Xóa toàn bộ thư mục và các file con bên trong nó.
