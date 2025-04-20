@@ -63,8 +63,11 @@
                 </div>
                 <div class="code-area">
                     <div class="line-numbers" id="lineNumbers"></div>
-                    <textarea class="code-editor" id="editor" spellcheck="false"
-                              placeholder="// Viết Code vào đây" th:text="${exercise.initialCode}"></textarea>
+                    <textarea class="code-editor" id="editor"
+                              spellcheck="false"
+                              placeholder="// Viết Code vào đây"
+                              th:text="${exercise.initialCode}"
+                              th:attr="data-exercise-id=${exercise.exerciseID}"></textarea>
                 </div>
             </div>
         </div>
@@ -93,6 +96,8 @@
     <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 
     <script th:src="@{/ClientStatic/js/script.js}"></script>
+    <script th:src="@{/ClientStatic/js/handle-run-code.js}"></script>
+
 </body>
 
 </html>

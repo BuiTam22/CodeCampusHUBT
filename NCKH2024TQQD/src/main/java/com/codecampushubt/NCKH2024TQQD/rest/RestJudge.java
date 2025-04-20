@@ -30,6 +30,7 @@ public class RestJudge {
 //        String message = "";
 //        JudgeRunResponseDTO resuilt = new JudgeRunResponseDTO(output, status, message);
 //        return resuilt;
+
         return  judgeService.runUserCode(request);
 
     }

@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // TODO: Lấy exerciseID từ data-* attribute hoặc biến Thymeleaf
         //const exerciseID = /*[[${exercise.id}]]*/ 0; // Nếu dùng Thymeleaf, truyền như sau:
-        const exerciseID = document.getElementById('editor').dataset.exerciseId;
+        const exerciseID = parseInt(document.getElementById('editor').dataset.exerciseId);
 
         try {
             const response = await fetch("/api/judge/run", {
