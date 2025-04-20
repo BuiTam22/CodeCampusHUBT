@@ -37,6 +37,8 @@ public class CourseController {
     @GetMapping("/{slug}")
     public String showDetailCourse(@PathVariable("slug") String theSlug,Model model, HttpServletRequest request){
         List<CourseModuleDTO> courseModules = courseService.getCourseModuleByCourseSlug(theSlug);
+        List<CourseShowDTO> courses = courseService.getCourseShowDTO();
+        model.addAttribute("courses", courses);
         model.addAttribute("courseModules", courseModules);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/course/course-module";
