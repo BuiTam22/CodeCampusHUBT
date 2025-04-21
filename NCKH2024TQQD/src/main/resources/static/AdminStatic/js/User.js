@@ -14,8 +14,8 @@ fetch(apiShow)
                         <td>${user.email}</td>
                         <td>${user.userRole}</td>
                         <td>
-                        <button class="btn btn-success" onclick="showDetailForm(${user.userID}, '${user.userName}', '${user.email}', '${user.userRole}')">Chi tiết</button>
-                        <button class="btn btn-warning mx-2" onclick="showEditForm(${user.userID}, '${user.userName}', '${user.email}', '${user.userRole}',${user.fullName})">Sửa</button>
+                        <button class="btn btn-success" onclick="showDetailFormOnly(${user.userID}, '${user.userName}', '${user.email}', '${user.userRole}')">Chi tiết</button>
+                        <button class="btn btn-warning mx-2" onclick="showEditFormOnly(${user.userID})">Sửa</button>
                         <button class="btn btn-danger">  Xóa </button>
                         </td>
                     </tr>
@@ -27,54 +27,36 @@ fetch(apiShow)
         console.error("Lỗi khi lấy danh sách user:", error);
     });
 
-
-//an hien form
-    function hideForms() {
+// ẩn hiện form
+function hideAllForms() {
     document.getElementById("userAddForm").style.display = "none";
     document.getElementById("userDetailForm").style.display = "none";
     document.getElementById("userEditForm").style.display = "none";
+    document.getElementById("userList").style.display = "none";
 }
 
-    function showAddForm() {
-    hideForms();
+function showUserList() {
+    hideAllForms();
+    document.getElementById("userList").style.display = "block";
+}
+
+function showAddFormOnly() {
+    hideAllForms();
     document.getElementById("userAddForm").style.display = "block";
 }
 
-    function showDetailForm() {
-    hideForms();
+function showDetailFormOnly() {
+    hideAllForms();
     document.getElementById("userDetailForm").style.display = "block";
 }
 
-    function showEditForm() {
-    hideForms();
+function showEditFormOnly() {
+    hideAllForms();
     document.getElementById("userEditForm").style.display = "block";
 }
 
-//end an hien form
 
-function showDetailForm(id, name, email, role) {
-    hideForms();
-    document.getElementById("detailUserId").innerText = id;
-    document.getElementById("detailUserName").innerText = name;
-    document.getElementById("detailEmail").innerText = email;
-    document.getElementById("detailUserRole").innerText = role;
-    document.getElementById("userDetailForm").style.display = "block";
-}
-
-function showEditForm(id, name, email, role  ,fullName) {
-    hideForms();
-    const form = document.getElementById("userEditForm");
-    form.querySelector("input[type='hidden']").value = id;
-    form.querySelector("input[type='text']").value = name;
-    form.querySelector("input[type='email']").value = email;
-    form.querySelector("input[type='fullName']").value = fullName;
-
-
-    form.querySelector("select").value = role;
-    form.style.display = "block";
-}
-
-
+// ẩn hiện form
 // thêm người DÙng
 document.getElementById("addUserForm").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -116,7 +98,6 @@ document.getElementById("addUserForm").addEventListener("submit", function (even
         });
 });
 
-
 //end thêm người dùng
 
 //upload hình ảnh
@@ -138,6 +119,95 @@ async function uploadImage(file) {
 //end upluad hình ảnh
 
 //update người dùng
+
+// show edit form
+document.getElementById("image").addEventListener("change",function (){
+    const file = this.file[0];
+    if (file){
+        const reader = new FileReader()
+        reader.onload = function (e){
+            const preview = document.getElementById("preview");
+            preview.src = e.target.result;
+            preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    }
+});
+// Hiển thị form sửa người dùng và đổ dữ liệu vào form
+async function showEditFormOnly(userId) {
+    try {
+        const response = await fetch(`/admin/api/user/showUpdate/${userId}`);
+
+        // Kiểm tra xem API có trả về thành công không
+
+
+        const user = await response.json();
+        // console.log("User Data:", user); // Kiểm tra dữ liệu người dùng
+
+        // Ẩn form danh sách và hiển thị form sửa
+        hideAllForms()// Ẩn các form khác
+        document.getElementById("userEditForm").style.display = "block"; // Hiển thị form sửa
+
+        // Điền dữ liệu vào form
+        const form = document.forms["editUserForm"];
+        form.userId.value = user.userId;
+        form.userName.value = user.userName;
+        form.email.value = user.email;
+        form.fullName.value = user.fullName || "";
+        form.dateOfBirth.value = user.dateOfBirth || "";
+        form.phoneNumber.value = user.phoneNumber || "";
+        form.address.value = user.address || "";
+
+        const allRoles = ["ADMIN", "STUDENT", "TEACHER"]; // Các quyền có sẵn
+        const checkboxContainer = document.getElementById("roleCheckboxes");
+        checkboxContainer.innerHTML = ""; // Xóa các checkbox cũ
+
+// Kiểm tra và lấy quyền từ API trả về
+        const userRoles = Array.isArray(user.roleName) ? user.roleName : [];
+
+// Kiểm tra dữ liệu
+//         console.log("Quyền của user (mảng):", userRoles);
+
+// Tạo checkbox cho mỗi quyền
+        allRoles.forEach(role => {
+            const label = document.createElement("label");
+            label.style.display = "block";
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name = "roleNames"; // để backend nhận nhiều quyền
+            checkbox.value = role;
+
+            // Tích sẵn nếu user đang có quyền này
+            if (userRoles.includes(role)) {
+                checkbox.checked = true;
+            }
+
+            label.appendChild(checkbox);
+            label.append(" " + role);
+            checkboxContainer.appendChild(label);
+        });
+
+
+
+
+
+
+        // Hiển thị ảnh đại diện nếu có
+        const preview = document.getElementById("preview");
+        if (user.image) {
+            preview.src = user.image; // Đặt src của ảnh bằng URL từ Cloudinary
+            preview.style.display = "block"; // Hiển thị ảnh
+        }
+
+    } catch (error) {
+
+
+    }
+}
+
+
+// end edit form
 document.getElementById('editUserForm').addEventListener('submit', function(event) {
     event.preventDefault();  // Prevent form from submitting normally
 
@@ -174,14 +244,12 @@ document.getElementById('editUserForm').addEventListener('submit', function(even
             hideForms();
         })
         .catch(error => {
-            console.error('Error:', error);
+
             alert('Error updating user!');
         });
 });
 
-// Hàm để ẩn form khi bấm "Đóng"
-function hideForms() {
-    document.getElementById('userEditForm').style.display = 'none';
-}
+
+
 
 //end update nguời dùng
