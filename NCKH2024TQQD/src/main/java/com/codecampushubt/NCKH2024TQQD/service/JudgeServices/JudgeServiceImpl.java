@@ -179,7 +179,7 @@ public class JudgeServiceImpl implements JudgeService{
         } finally {
             // Dọn dẹp thư mục
             try {
-                CodeExecutionUtil.deleteDirectoryRecursively(workingDir);
+//                CodeExecutionUtil.deleteDirectoryRecursively(workingDir);
             } catch (Exception e) {
                 // Ignore cleanup errors
             }
