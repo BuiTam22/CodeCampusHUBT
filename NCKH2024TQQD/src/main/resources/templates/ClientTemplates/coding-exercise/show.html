@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>CodeHubt - Bài tập</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/ClientStatic/css/style.css}">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/Practice.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}">
@@ -14,54 +14,146 @@
 <body>
 <!-- Header -->
 <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
-
-<div class="content-wrapper">
-    <div class="container">
-        <!-- Lesson Title -->
-        <div class="lesson-header" th:if="${not #lists.isEmpty(exercises)}">
-            <h1 th:text="${exercises[0].lessonTitle}">C++ cơ bản</h1>
+<div class="page-wrapper">
+    <div class="section-one">
+        <div class="inner-wrap">
+            <div class="inner-title">C++</div>
         </div>
-
-        <!-- Exercise List -->
-        <div class="exercise-list">
-            <a th:each="exercise : ${exercises}"
-               class="exercise-card"
-               th:href="@{/practice/lesson/problem/{slug}(slug=${exercise.slug})}">
-
-                <h3 class="exercise-title" th:text="${exercise.title}">Kiểu dữ liệu int</h3>
-                <p class="exercise-desc" th:text="${exercise.description}">Tìm x</p>
-
-                <div class="meta-container">
-                    <div class="meta-item difficulty" th:classappend="${exercise.difficulty}">
-                        <i class="fas fa-signal"></i>
-                        <span th:text="${exercise.difficulty.substring(0,1).toUpperCase() + exercise.difficulty.substring(1)}">Easy</span>
+    </div>
+    <div class="section-two">
+        <div class="container">
+            <div class="inner-wrap">
+                <div class="inner-list">
+                    <div class="inner-box">
+                        <div class="inner-content">
+                            <h3 class="inner-title">Say "Hello World!" With C++</h3>
+                            <p>
+                                <span>Easy</span>.C++(Basic).Max Score:5,Success Rate:98.61%
+                            </p>
+                            <p>Practice printing to stdout.</p>
+                        </div>
+                        <div class="inner-right">
+                            <div class="inner-icon"><i class="fa-solid fa-star"></i></div>
+                            <a href=""
+                            ><div class="button button-one">SolveChallenge</div></a
+                            >
+                        </div>
                     </div>
-
-                    <div class="meta-item language">
-                        <i class="fas fa-code"></i>
-                        <span th:text="${exercise.programLanguage}">Java</span>
+                    <div class="inner-box">
+                        <div class="inner-content">
+                            <h3 class="inner-title">Input and Output</h3>
+                            <p>
+                                <span>Easy</span>.C++(Basic).Max Score:5,Success Rate:93.88%
+                            </p>
+                            <p>Practice printing to stdout.</p>
+                        </div>
+                        <div class="inner-right">
+                            <div class="inner-icon"><i class="fa-solid fa-star"></i></div>
+                            <a href=""
+                            ><div class="button button-one">SolveChallenge</div></a
+                            >
+                        </div>
                     </div>
-
-                    <div class="meta-item points">
-                        <i class="fas fa-star"></i>
-                        <span th:text="${exercise.points} + ' điểm'">10 điểm</span>
+                    <div class="inner-box">
+                        <div class="inner-content">
+                            <h3 class="inner-title">Basic Data Types</h3>
+                            <p>
+                                <span>Easy</span>.C++(Basic).Max Score:5,Success Rate:80.71%
+                            </p>
+                            <p>Practice printing to stdout.</p>
+                        </div>
+                        <div class="inner-right">
+                            <div class="inner-icon"><i class="fa-solid fa-star"></i></div>
+                            <a href=""
+                            ><div class="button button-one">SolveChallenge</div></a
+                            >
+                        </div>
                     </div>
                 </div>
-            </a>
+                <div class="inner-right">
+                    <div class="inner-status">
+                        <h2 class="inner-title">STATUS</h2>
+                        <div class="status-checkbox">
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Solved</span>
+                            </label>
 
-            <!-- Empty state -->
-            <div class="empty-state" th:if="${#lists.isEmpty(exercises)}">
-                <i class="fas fa-book-open"></i>
-                <h3>Chưa có bài tập nào trong chương này</h3>
-                <p>Hãy quay lại sau nhé!</p>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Unsolved</span>
+                            </label>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+                    <div class="inner-status">
+                        <h2 class="inner-title">Skill</h2>
+                        <div class="status-checkbox">
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">C++ (Intermediate)</span>
+                            </label>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+                    <div class="inner-status">
+                        <h2 class="inner-title">DIFFICULTY</h2>
+                        <div class="status-checkbox">
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Easy</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Medium</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Hard</span>
+                            </label>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+                    <div class="inner-status">
+                        <h2 class="inner-title">SUBDOMAINS</h2>
+                        <div class="status-checkbox">
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Introduction</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Strings</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Classes</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">STL</span>
+                            </label>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 <!-- Footer -->
 <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 
 <script th:src="@{/ClientStatic/js/script.js}"></script>
+</div>
 </body>
 </html>
