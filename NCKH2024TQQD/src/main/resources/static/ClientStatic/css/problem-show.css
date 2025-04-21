@@ -540,3 +540,138 @@ body {
     cursor: pointer;
   }
   /* end filter */
+
+/* Test Cases Container */
+.test-cases {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin: 20px 0;
+    padding: 25px;
+}
+
+/* Test Result Header */
+.test-cases h3 {
+    color: #2d3436;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.8rem;
+}
+
+/* Result Summary */
+.test-result {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e9ecef;
+}
+
+.test-result p {
+    margin: 0.8rem 0;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.test-result strong {
+    color: #495057;
+    min-width: 120px;
+    display: inline-block;
+}
+
+.test-result span {
+    color: #212529;
+    font-weight: 500;
+}
+
+/* Status Badges */
+#resultStatus {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+#resultStatus[data-status="accepted"] {
+    background: #d4edda;
+    color: #155724;
+}
+
+#resultStatus[data-status="failed"] {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Test Case Details */
+.test-case-detail {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 1rem 0;
+    transition: all 0.2s ease;
+}
+
+.test-case-detail:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.test-case-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.test-case-status {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.passed {
+    background: #e6ffed;
+    color: #1f7d45;
+}
+
+.failed {
+    background: #ffeef0;
+    color: #cf222e;
+}
+
+.test-case-details pre {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 8px 0;
+    white-space: pre-wrap;
+    border: 1px solid #eee;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .test-result p {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .test-result strong {
+        min-width: auto;
+    }
+
+    .test-case-detail {
+        padding: 0.8rem;
+    }
+}
+
+/* END Test Cases Container */
+
