@@ -73,6 +73,17 @@ public class UserServiceImpl implements UserService {
         return (LoginBasicDTO) userRepository.getLoginBasicDTO(userName);
     }
 
+
+    @Override
+    public Long findUserIDByUserName(String userName) {
+        return userRepository.getUserIDByUserName(userName);
+    }
+
+    @Override
+    public User getUserEntityByID(Long userID) {
+        return userRepository.getUserEntityByID(userID);
+    }
+
     //show user
     @Override
     public List<UserShowDTO> getAllUsers() {
@@ -142,6 +153,7 @@ public class UserServiceImpl implements UserService {
     public String getFullName(String userName) {
         return userRepository.getFullName(userName);
     }
+
     //    update user ------------------------------------------------------------------------------------
   @Override
   public UserUpdateDTO getUserUpdateDTOById(Long id) {

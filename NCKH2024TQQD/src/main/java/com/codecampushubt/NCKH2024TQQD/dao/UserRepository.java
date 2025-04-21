@@ -39,6 +39,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT DISTINCT u.fullName FROM User u WHERE u.userName = :userName")
     String getFullName(@Param("userName") String userName);
 
+    @Query("SELECT u.userID FROM User u WHERE u.userName = :userName")
+    Long getUserIDByUserName(@Param("userName") String userName);
+
+    @Query("SELECT u FROM User u WHERE u.userID = :userID")
+    User getUserEntityByID(@Param("userID") Long userID);
+
+
 
 
 

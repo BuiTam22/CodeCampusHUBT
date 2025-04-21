@@ -28,4 +28,8 @@ public interface CodingExerciseRepository extends JpaRepository<CodingExercise, 
             WHERE ce.slug = :theSlug
             """)
     CodingExerciseDetailDTO getCodingExerciseDetailDTOByExerciseSlug(@Param("theSlug") String theSlug);
+
+    @Query("SELECT ce FROM CodingExercise ce WHERE ce.exerciseID = :exerciseID")
+    CodingExercise getExerciseEntityByID(@Param("exerciseID") Long exerciseID);
+
 }
