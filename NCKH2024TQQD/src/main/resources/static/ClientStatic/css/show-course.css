@@ -1,3 +1,19 @@
+/*chung cho cả trang*/
+body {
+    font-family:var(--font);
+    background-color: #EFEFEF;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+        width: 100%;
+        max-width: 1000px;
+        margin-left: 50px;
+        background-color: #ffff;
+}
+/*hết*/
 /*inner-bottom*/
 .header-bottom {
   background: linear-gradient(to bottom, #f8f7fe, #a1a9fa);
