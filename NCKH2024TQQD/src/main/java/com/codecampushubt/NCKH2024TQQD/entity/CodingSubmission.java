@@ -16,12 +16,12 @@ public class CodingSubmission {
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG CODINGEXERCISES
     @ManyToOne
     @JoinColumn(name = "ExerciseID", nullable = false)
-    private CodingExercise exerciseID;
+    private CodingExercise exercise;
 
     // KHÓA NGOẠI THAM CHIẾU ĐẾN BẢNG USERS
     @ManyToOne
     @JoinColumn(name = "UserID", nullable = false)
-    private User userID;
+    private User user;
 
     // CODE ĐÃ NỘP
     @Column(name = "Code", columnDefinition = "NVARCHAR(MAX)")
@@ -56,7 +56,7 @@ public class CodingSubmission {
     private Integer score;
 
     // THỜI ĐIỂM NỘP BÀI
-    @Column(name = "SubmittedAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
+    @Column(name = "SubmittedAt", nullable = true, columnDefinition = "DATETIME DEFAULT GETDATE()")
     private LocalDateTime submittedAt;
 
 
@@ -64,10 +64,10 @@ public class CodingSubmission {
     public CodingSubmission() {
     }
 
-    public CodingSubmission(Long submissionID, CodingExercise exerciseID, User userID, String code, String language, String status, Integer executionTime, Integer memoryUsed, Integer testCasesPassed, Integer totalTestCases, Integer score, LocalDateTime submittedAt) {
+    public CodingSubmission(Long submissionID, CodingExercise exercise, User user, String code, String language, String status, Integer executionTime, Integer memoryUsed, Integer testCasesPassed, Integer totalTestCases, Integer score, LocalDateTime submittedAt) {
         this.submissionID = submissionID;
-        this.exerciseID = exerciseID;
-        this.userID = userID;
+        this.exercise = exercise;
+        this.user = user;
         this.code = code;
         this.language = language;
         this.status = status;
@@ -87,20 +87,20 @@ public class CodingSubmission {
         this.submissionID = submissionID;
     }
 
-    public CodingExercise getExerciseID() {
-        return exerciseID;
+    public CodingExercise getExercise() {
+        return exercise;
     }
 
-    public void setExerciseID(CodingExercise exerciseID) {
-        this.exerciseID = exerciseID;
+    public void setExercise(CodingExercise exercise) {
+        this.exercise = exercise;
     }
 
-    public User getUserID() {
-        return userID;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserID(User userID) {
-        this.userID = userID;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getCode() {
@@ -173,5 +173,23 @@ public class CodingSubmission {
 
     public void setSubmittedAt(LocalDateTime submittedAt) {
         this.submittedAt = submittedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "CodingSubmission{" +
+                "submissionID=" + submissionID +
+                ", exercise=" + exercise +
+                ", user=" + user +
+                ", code='" + code + '\'' +
+                ", language='" + language + '\'' +
+                ", status='" + status + '\'' +
+                ", executionTime=" + executionTime +
+                ", memoryUsed=" + memoryUsed +
+                ", testCasesPassed=" + testCasesPassed +
+                ", totalTestCases=" + totalTestCases +
+                ", score=" + score +
+                ", submittedAt=" + submittedAt +
+                '}';
     }
 }

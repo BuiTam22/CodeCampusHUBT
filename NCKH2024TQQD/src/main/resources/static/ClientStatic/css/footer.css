@@ -20,12 +20,13 @@
     font-size: 14px;
     margin: 0 10px;
 }
-
 .page-wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100vh; /* Chiều cao tối thiểu bằng chiều cao của màn hình */
 }
+
+/* Phần nội dung chiếm toàn bộ không gian còn lại */
 .content-wrapper {
     flex: 1;
 }

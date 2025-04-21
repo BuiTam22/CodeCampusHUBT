@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>CodeHub - Bài tập</title>
+    <title>CodeHubt - Bài tập</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/ClientStatic/css/style.css}">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/Practice.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}">
@@ -14,54 +14,137 @@
 <body>
 <!-- Header -->
 <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
-
-<div class="content-wrapper">
-    <div class="container">
-        <!-- Lesson Title -->
-        <div class="lesson-header" th:if="${not #lists.isEmpty(exercises)}">
-            <h1 th:text="${exercises[0].lessonTitle}">C++ cơ bản</h1>
-        </div>
-
-        <!-- Exercise List -->
-        <div class="exercise-list">
-            <a th:each="exercise : ${exercises}"
-               class="exercise-card"
-               th:href="@{/practice/lesson/problem/{slug}(slug=${exercise.slug})}">
-
-                <h3 class="exercise-title" th:text="${exercise.title}">Kiểu dữ liệu int</h3>
-                <p class="exercise-desc" th:text="${exercise.description}">Tìm x</p>
-
-                <div class="meta-container">
-                    <div class="meta-item difficulty" th:classappend="${exercise.difficulty}">
-                        <i class="fas fa-signal"></i>
-                        <span th:text="${exercise.difficulty.substring(0,1).toUpperCase() + exercise.difficulty.substring(1)}">Easy</span>
-                    </div>
-
-                    <div class="meta-item language">
-                        <i class="fas fa-code"></i>
-                        <span th:text="${exercise.programLanguage}">Java</span>
-                    </div>
-
-                    <div class="meta-item points">
-                        <i class="fas fa-star"></i>
-                        <span th:text="${exercise.points} + ' điểm'">10 điểm</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Empty state -->
-            <div class="empty-state" th:if="${#lists.isEmpty(exercises)}">
-                <i class="fas fa-book-open"></i>
-                <h3>Chưa có bài tập nào trong chương này</h3>
-                <p>Hãy quay lại sau nhé!</p>
+<div class="page-wrapper">
+    <div class="section-one">
+        <div class="inner-wrap">
+            <!-- Nếu có exercise thì hiển thị lessonTitle -->
+            <div class="inner-title" th:if="${exercises != null and !#lists.isEmpty(exercises)}"
+                 th:text="${exercises[0].lessonTitle}">
+                Tên bài học
+            </div>
+            <!-- Nếu không có bài tập -->
+            <div class="inner-title" th:if="${exercises == null or #lists.isEmpty(exercises)}">
+                Không có bài tập nào
             </div>
         </div>
     </div>
+
+    <div class="section-two">
+        <div class="container">
+            <div class="inner-wrap">
+                <div class="inner-list">
+                    <!-- Hiển thị danh sách bài tập nếu có -->
+                    <div class="inner-box" th:each="exercise : ${exercises}">
+                        <div class="inner-content">
+                            <h3 class="inner-title" th:text="${exercise.title}">Tiêu đề bài tập</h3>
+                            <p>
+                                <span th:text="${exercise.difficulty}">Độ khó</span>.
+                                <span th:text="${exercise.programLanguage}">Ngôn ngữ</span>.
+                                Max Score:<span th:text="${exercise.points}">0</span>
+                            </p>
+                            <p th:text="${exercise.description}">Mô tả bài tập</p>
+                        </div>
+                        <div class="inner-right">
+                            <div class="inner-icon"><i class="fa-solid fa-star"></i></div>
+                            <a th:href="@{'/practice/lesson/problem/' + ${exercise.slug}}">
+                                <div class="button button-one">SolveChallenge</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Thông báo nếu không có bài tập -->
+                    <div th:if="${exercises == null or #lists.isEmpty(exercises)}">
+                        <p style="padding: 16px; font-size: 1.2rem;">Không tìm thấy bài tập nào.</p>
+                    </div>
+                </div>
+
+                <!-- Bộ lọc giữ nguyên -->
+                <div class="inner-right">
+                    <div class="inner-status">
+                        <h2 class="inner-title">STATUS</h2>
+                        <div class="status-checkbox">
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Solved</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Unsolved</span>
+                            </label>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+
+                    <div class="inner-status">
+                        <h2 class="inner-title">Skill</h2>
+                        <div class="status-checkbox">
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">C++ (Intermediate)</span>
+                            </label>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+
+                    <div class="inner-status">
+                        <h2 class="inner-title">DIFFICULTY</h2>
+                        <div class="status-checkbox">
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Easy</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Medium</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Hard</span>
+                            </label>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+
+                    <div class="inner-status">
+                        <h2 class="inner-title">SUBDOMAINS</h2>
+                        <div class="status-checkbox">
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Introduction</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Strings</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Classes</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">STL</span>
+                            </label>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+    <script th:src="@{/ClientStatic/js/script.js}"></script>
 </div>
-
-<!-- Footer -->
-<div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
-
-<script th:src="@{/ClientStatic/js/script.js}"></script>
 </body>
 </html>

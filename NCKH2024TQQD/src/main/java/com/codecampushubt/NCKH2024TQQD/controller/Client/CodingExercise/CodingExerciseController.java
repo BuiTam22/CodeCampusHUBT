@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,6 +29,7 @@ public class CodingExerciseController {
     @GetMapping("/{lesson-slug}")
     public String showCodingExerciseByLessonSlug(@PathVariable("lesson-slug") String theSlug, Model model, HttpServletRequest request){
         List<CodingExerciseDTO> exercises = codingExerciseService.getCodingExerciseDTOByLessonSlug(theSlug);
+        exercises = exercises != null ? exercises : new ArrayList<>();
         model.addAttribute("exercises", exercises);
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/coding-exercise/show";

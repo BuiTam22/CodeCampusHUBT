@@ -3,13 +3,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const codeEditor = document.getElementById("editor");
     const languageSelector = document.querySelector(".language-selector");
 
+    const testCase = document.querySelector(".test-cases");
+
+    // Ẩn test cases ban đầu
+    testCase.style.display = "none";
+
     runButton.addEventListener("click", async () => {
         const sourceCode = codeEditor.value;
         const language = languageSelector.value;
-
-        // TODO: Lấy exerciseID từ data-* attribute hoặc biến Thymeleaf
-        //const exerciseID = /*[[${exercise.id}]]*/ 0; // Nếu dùng Thymeleaf, truyền như sau:
-        const exerciseID = document.getElementById('editor').dataset.exerciseId;
+        const exerciseID = parseInt(codeEditor.dataset.exerciseId);
 
         try {
             const response = await fetch("/api/judge/run", {
@@ -30,9 +32,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const result = await response.json();
 
-            // TODO: Hiển thị kết quả ở đâu đó trên trang, ví dụ console
+            // Hiện test cases sau khi chạy xong
+            testCase.style.display = "block";
+
             console.log("Kết quả chạy thử:", result);
-            alert("Kết quả: " + result.output || result.message);
+            alert("Kết quả: " + (result.output || result.message));
 
         } catch (error) {
             console.error("Lỗi:", error);

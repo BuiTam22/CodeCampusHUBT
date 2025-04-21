@@ -16,6 +16,7 @@ ul{
     padding: 0;
     margin: 0;
 }
+/*
 body {
     font-family:var(--font);
     background-color: #EFEFEF;
@@ -26,8 +27,8 @@ body {
 
 .container {
         width: 100%;
-        max-width: 1200px;
-        margin-left: auto;
-        margin-right: auto;
+        max-width: 1000px;
+        margin-left: 50px;
         background-color: #ffff;
 }
+*/

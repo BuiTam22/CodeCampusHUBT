@@ -6,16 +6,18 @@
     <title>CodeHubt</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/style.css}">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}">
 </head>
 
 <body>
+<div class="page-wrapper">
 <!-- Header -->
 <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
 
 <!--Filter-->
 <div th:replace="~{ClientTemplates/layout/filter :: filters}"></div>
-
-
 <div class="content-wrapper">
     <div class="container">
         <div class="courses-container">
@@ -57,13 +59,11 @@
     </div>
 </div>
 
-
-
-
 <!-- Footer -->
 <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 
 <script th:src="@{/ClientStatic/js/script.js}"></script>
+</div>
 </body>
 
 </html>
