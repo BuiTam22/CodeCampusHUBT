@@ -36,6 +36,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserBasicInfoDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.User;
 
 @Service
+
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -128,7 +129,9 @@ public class UserServiceImpl implements UserService {
         user.setEmailVerified(false);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
-
+        if (dto.getDateOfBirth() != null) {
+            user.setDateOfBirth(dto.getDateOfBirth());
+        }
         // Lưu user trước để có ID
         User savedUser = userRepository.save(user);
 
@@ -155,6 +158,7 @@ public class UserServiceImpl implements UserService {
     }
 
     //    update user ------------------------------------------------------------------------------------
+//    show
   @Override
   public UserUpdateDTO getUserUpdateDTOById(Long id) {
         User user = userRepository.findById(id)
@@ -163,6 +167,7 @@ public class UserServiceImpl implements UserService {
                 .map(userRole -> userRole.getRole().getRoleName())
                 .collect(Collectors.toList());
         return new UserUpdateDTO(
+                user.getUserId(),
                 user.getuserName(),             // userName
                 user.getEmail(),                // email
                 "",                             // password (để trống khi hiển thị form)
@@ -176,6 +181,67 @@ public class UserServiceImpl implements UserService {
 
         );
   }
+
+//  end show
+@Override
+public User updateUser(Long userId, UserUpdateDTO dto) {
+    System.out.println(dto);
+    System.out.println(userId);
+
+    // Tìm người dùng theo userId
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+
+    // Cập nhật các trường thông tin của người dùng từ DTO
+    user.setuserName(dto.getUserName());
+    user.setEmail(dto.getEmail());
+    user.setFullName(dto.getFullName());
+    user.setDateOfBirth(dto.getDateOfBirth());
+    user.setPhoneNumber(dto.getPhoneNumber());
+    user.setAddress(dto.getAddress());
+
+    // Cập nhật ảnh đại diện nếu có
+    if (dto.getImage() != null && !dto.getImage().isEmpty()) {
+        user.setImage(dto.getImage());
+    }
+
+    // Cập nhật vai trò (roles)
+    if (dto.getRoleName() != null && !dto.getRoleName().isEmpty()) {
+        // Xóa hết các quyền cũ của người dùng
+        userRoleRepository.deleteByUserId(userId);
+
+        // Lấy danh sách Role từ tên (roleName) gửi lên từ frontend
+        List<Role> roles = roleRepository.findByRoleNames(dto.getRoleName());
+        System.out.println(roles);
+
+        // Tạo UserRole mới với các Role được chọn
+        for (Role role : roles) {
+            UserRole userRole = new UserRole();
+            userRole.setUser(user);
+            userRole.setRole(role);
+            userRole.setAssignedAt(LocalDateTime.now());
+
+            UserRoleId userRoleId = new UserRoleId();
+            userRoleId.setUserId(user.getUserId().longValue()); // nếu userID là Long
+            userRoleId.setRoleId(role.getRoleID()); // đảm bảo dùng đúng getter
+
+            userRole.setId(userRoleId); // 👉 dòng quan trọng!
+
+            userRoleRepository.save(userRole);
+        }
+
+    }
+
+    // Lưu thông tin người dùng sau khi cập nhật
+    return userRepository.save(user);
+}
+
+
+
+
+
+
+
 
 
 

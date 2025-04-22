@@ -105,7 +105,7 @@ async function uploadImage(file) {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("/api/upload/image", {
+    const res = await fetch("/admin/api/upload", {
         method: "POST",
         body: formData
     });
@@ -142,6 +142,7 @@ async function showEditFormOnly(userId) {
 
 
         const user = await response.json();
+        console.log(user)
         // console.log("User Data:", user); // Kiểm tra dữ liệu người dùng
 
         // Ẩn form danh sách và hiển thị form sửa
@@ -157,6 +158,8 @@ async function showEditFormOnly(userId) {
         form.dateOfBirth.value = user.dateOfBirth || "";
         form.phoneNumber.value = user.phoneNumber || "";
         form.address.value = user.address || "";
+
+        console.log(form)
 
         const allRoles = ["ADMIN", "STUDENT", "TEACHER"]; // Các quyền có sẵn
         const checkboxContainer = document.getElementById("roleCheckboxes");
@@ -206,49 +209,90 @@ async function showEditFormOnly(userId) {
     }
 }
 
-
-// end edit form
-document.getElementById('editUserForm').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent form from submitting normally
-
-    // Lấy thông tin từ form
-    var formData = new FormData();
-    formData.append('userName', document.querySelector('[name="userName"]').value);
-    formData.append('email', document.querySelector('[name="email"]').value);
-    formData.append('password', document.querySelector('[name="password"]').value);
-    formData.append('fullName', document.querySelector('[name="fullName"]').value);
-    formData.append('dateOfBirth', document.querySelector('[name="dateOfBirth"]').value);
-    formData.append('phoneNumber', document.querySelector('[name="phoneNumber"]').value);
-    formData.append('address', document.querySelector('[name="address"]').value);
-    formData.append('roleName', document.querySelector('[name="roleName"]').value);
-
-    // Nếu có file ảnh, thêm vào formData
-    var fileInput = document.querySelector('[name="file"]');
-    if (fileInput.files.length > 0) {
-        formData.append('file', fileInput.files[0]);
+// end show edit fom
+// update
+async function submitEditForm() {
+    const form = document.forms["editUserForm"];
+    const userId = form.userId.value;
+    console.log(userId)
+    // Kiểm tra userId hợp lệ
+    if (!userId) {
+        alert("User ID không hợp lệ!");
+        return;
     }
 
-    // Lấy userId từ input hidden và thêm vào formData
-    var userId = document.querySelector('[name="userId"]').value;
-    formData.append('userId', userId);
+    // Lấy ảnh nếu có
+    const file = form.image.files[0];
+    let imageUrl = document.getElementById("preview").src;
 
-    // Gửi dữ liệu đến backend
-    fetch(`http://localhost:3000/admin/api/user/update/${userId}`,  {
-        method: 'POST',
-        body: formData,
-    })
-        .then(response => response.text())  // Nếu server trả về chuỗi
-        .then(data => {
-            alert('User updated successfully!');
-            // Đóng form sau khi cập nhật thành công
-            hideForms();
-        })
-        .catch(error => {
+    // Nếu có file ảnh mới, upload lên server
+    if (file) {
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
 
-            alert('Error updating user!');
+            const res = await fetch("/admin/api/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            if (!res.ok) {
+                const error = await res.text();
+                alert("Lỗi khi tải ảnh lên: " + error);
+                return;
+            }
+
+            const data = await res.json();
+            imageUrl = data.url;
+        } catch (error) {
+            alert("Lỗi khi upload ảnh: " + error.message);
+            return;
+        }
+    }
+
+    // Lấy danh sách role đã chọn
+    const roleNames = Array.from(document.querySelectorAll("#roleCheckboxes input[type='checkbox']:checked"))
+        .map(cb => cb.value);
+
+    // Tạo DTO gửi lên backend
+    const userUpdateDTO = {
+        userName: form.userName.value,
+        email: form.email.value,
+        fullName: form.fullName.value,
+        dateOfBirth: form.dateOfBirth.value,
+        phoneNumber: form.phoneNumber.value,
+        address: form.address.value,
+        image: imageUrl,
+        roleName: roleNames
+    };
+    console.log(userUpdateDTO)
+
+    try {
+        const res = await fetch(`/admin/api/user/update/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userUpdateDTO)
         });
-});
 
+        if (res.ok) {
+            alert("Cập nhật thành công!");
+            showUserList(); // Hiển thị lại danh sách user
+        } else {
+            const error = await res.text();
+            alert("Lỗi khi cập nhật: " + error);
+        }
+    } catch (err) {
+        alert("Lỗi kết nối server: " + err.message);
+    }
+}
+
+
+
+
+
+// end edit form
 
 
 
