@@ -48,6 +48,9 @@ body {
   border-radius: 10px;
   margin-bottom: 10px;
 }
+.section-two .inner-wrap .inner-box .inner-content {
+  width: 70%;
+}
 .section-two .inner-wrap .inner-box .inner-right {
   display: flex;
   justify-content: center;
@@ -55,7 +58,7 @@ body {
 }
 .section-two .inner-wrap .inner-box .inner-right .inner-icon {
   color: #fff;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 .section-two .inner-wrap .inner-box .inner-title {
   color: #fff;
