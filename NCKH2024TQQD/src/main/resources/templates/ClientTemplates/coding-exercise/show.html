@@ -17,59 +17,48 @@
 <div class="page-wrapper">
     <div class="section-one">
         <div class="inner-wrap">
-            <div class="inner-title">C++</div>
+            <!-- Nếu có exercise thì hiển thị lessonTitle -->
+            <div class="inner-title" th:if="${exercises != null and !#lists.isEmpty(exercises)}"
+                 th:text="${exercises[0].lessonTitle}">
+                Tên bài học
+            </div>
+            <!-- Nếu không có bài tập -->
+            <div class="inner-title" th:if="${exercises == null or #lists.isEmpty(exercises)}">
+                Không có bài tập nào
+            </div>
         </div>
     </div>
+
     <div class="section-two">
         <div class="container">
             <div class="inner-wrap">
                 <div class="inner-list">
-                    <div class="inner-box">
+                    <!-- Hiển thị danh sách bài tập nếu có -->
+                    <div class="inner-box" th:each="exercise : ${exercises}">
                         <div class="inner-content">
-                            <h3 class="inner-title">Say "Hello World!" With C++</h3>
+                            <h3 class="inner-title" th:text="${exercise.title}">Tiêu đề bài tập</h3>
                             <p>
-                                <span>Easy</span>.C++(Basic).Max Score:5,Success Rate:98.61%
+                                <span th:text="${exercise.difficulty}">Độ khó</span>.
+                                <span th:text="${exercise.programLanguage}">Ngôn ngữ</span>.
+                                Max Score:<span th:text="${exercise.points}">0</span>
                             </p>
-                            <p>Practice printing to stdout.</p>
+                            <p th:text="${exercise.description}">Mô tả bài tập</p>
                         </div>
                         <div class="inner-right">
                             <div class="inner-icon"><i class="fa-solid fa-star"></i></div>
-                            <a href=""
-                            ><div class="button button-one">SolveChallenge</div></a
-                            >
+                            <a th:href="@{'/practice/lesson/problem/' + ${exercise.slug}}">
+                                <div class="button button-one">SolveChallenge</div>
+                            </a>
                         </div>
                     </div>
-                    <div class="inner-box">
-                        <div class="inner-content">
-                            <h3 class="inner-title">Input and Output</h3>
-                            <p>
-                                <span>Easy</span>.C++(Basic).Max Score:5,Success Rate:93.88%
-                            </p>
-                            <p>Practice printing to stdout.</p>
-                        </div>
-                        <div class="inner-right">
-                            <div class="inner-icon"><i class="fa-solid fa-star"></i></div>
-                            <a href=""
-                            ><div class="button button-one">SolveChallenge</div></a
-                            >
-                        </div>
-                    </div>
-                    <div class="inner-box">
-                        <div class="inner-content">
-                            <h3 class="inner-title">Basic Data Types</h3>
-                            <p>
-                                <span>Easy</span>.C++(Basic).Max Score:5,Success Rate:80.71%
-                            </p>
-                            <p>Practice printing to stdout.</p>
-                        </div>
-                        <div class="inner-right">
-                            <div class="inner-icon"><i class="fa-solid fa-star"></i></div>
-                            <a href=""
-                            ><div class="button button-one">SolveChallenge</div></a
-                            >
-                        </div>
+
+                    <!-- Thông báo nếu không có bài tập -->
+                    <div th:if="${exercises == null or #lists.isEmpty(exercises)}">
+                        <p style="padding: 16px; font-size: 1.2rem;">Không tìm thấy bài tập nào.</p>
                     </div>
                 </div>
+
+                <!-- Bộ lọc giữ nguyên -->
                 <div class="inner-right">
                     <div class="inner-status">
                         <h2 class="inner-title">STATUS</h2>
@@ -79,7 +68,6 @@
                                 <span class="checkmark"></span>
                                 <span class="label-text">Solved</span>
                             </label>
-
                             <label class="checkbox-container">
                                 <input type="checkbox" />
                                 <span class="checkmark"></span>
@@ -88,6 +76,7 @@
                         </div>
                         <div class="line"></div>
                     </div>
+
                     <div class="inner-status">
                         <h2 class="inner-title">Skill</h2>
                         <div class="status-checkbox">
@@ -99,6 +88,7 @@
                         </div>
                         <div class="line"></div>
                     </div>
+
                     <div class="inner-status">
                         <h2 class="inner-title">DIFFICULTY</h2>
                         <div class="status-checkbox">
@@ -120,6 +110,7 @@
                         </div>
                         <div class="line"></div>
                     </div>
+
                     <div class="inner-status">
                         <h2 class="inner-title">SUBDOMAINS</h2>
                         <div class="status-checkbox">
@@ -150,10 +141,10 @@
             </div>
         </div>
     </div>
-<!-- Footer -->
-<div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 
-<script th:src="@{/ClientStatic/js/script.js}"></script>
+    <!-- Footer -->
+    <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+    <script th:src="@{/ClientStatic/js/script.js}"></script>
 </div>
 </body>
 </html>

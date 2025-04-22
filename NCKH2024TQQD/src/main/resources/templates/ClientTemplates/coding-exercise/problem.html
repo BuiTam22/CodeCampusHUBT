@@ -75,15 +75,17 @@
 
     <!-- Test Cases -->
     <div class="test-cases">
-<!--        <h3>Test Cases</h3>-->
-<!--        <div class="test-case">-->
-<!--            <div class="test-case-header">Trường hợp thử nghiệm 1</div>-->
-<!--            <div class="test-case-status passed">✓ Qua</div>-->
-<!--        </div>-->
-<!--        <div class="test-case">-->
-<!--            <div class="test-case-header">Trường hợp thử nghiệm 2</div>-->
-<!--            <div class="test-case-status failed">✗ Không qua</div>-->
-<!--        </div>-->
+        <!-- Test Cases Result -->
+        <div class="test-result" id="testResultContainer" style="display: none;">
+            <h3>Kết quả nộp bài</h3>
+            <p><strong>Ngôn ngữ:</strong> <span id="resultLanguage"></span></p>
+            <p><strong>Trạng thái:</strong> <span id="resultStatus"></span></p>
+            <p><strong>Số test case qua:</strong> <span id="resultPassed"></span>/<span id="resultTotal"></span></p>
+            <p><strong>Điểm:</strong> <span id="resultScore"></span></p>
+
+<!--            <h4>Chi tiết test case</h4>-->
+<!--            <div id="testCaseDetails"></div>-->
+        </div>
     </div>
 
     <!-- Buttons -->
@@ -97,6 +99,7 @@
 
     <script th:src="@{/ClientStatic/js/script.js}"></script>
     <script th:src="@{/ClientStatic/js/handle-run-code.js}"></script>
+    <script th:src="@{/ClientStatic/js/handle-submit-code.js}"></script>
 
 </body>
 
