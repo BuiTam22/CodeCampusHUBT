@@ -46,4 +46,14 @@ public class UserShowDTO {
     public void setUserRole(List<String> userRole) {
         UserRole = userRole;
     }
+
+    @Override
+    public String toString() {
+        return "UserShowDTO{" +
+                "UserID=" + UserID +
+                ", UserName='" + UserName + '\'' +
+                ", Email='" + Email + '\'' +
+                ", UserRole=" + UserRole +
+                '}';
+    }
 }

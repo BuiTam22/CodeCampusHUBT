@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class UserUpdateDTO {
+    private Long UserId;
     private String userName;
     private String email;
     private String password;
@@ -15,7 +16,8 @@ public class UserUpdateDTO {
     private List<String> roleName;
     public UserUpdateDTO() {}
 
-    public UserUpdateDTO(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String phoneNumber, String address, String image, List<String> roleName) {
+    public UserUpdateDTO(Long userId, String userName, String email, String password, String fullName, LocalDate dateOfBirth, String phoneNumber, String address, String image, List<String> roleName) {
+        UserId = userId;
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -25,6 +27,14 @@ public class UserUpdateDTO {
         this.address = address;
         this.image = image;
         this.roleName = roleName;
+    }
+
+    public Long getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(Long userId) {
+        UserId = userId;
     }
 
     public String getUserName() {
@@ -102,7 +112,8 @@ public class UserUpdateDTO {
     @Override
     public String toString() {
         return "UserUpdateDTO{" +
-                "userName='" + userName + '\'' +
+                "UserID=" + UserId +
+                ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", fullName='" + fullName + '\'' +
@@ -110,7 +121,7 @@ public class UserUpdateDTO {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address='" + address + '\'' +
                 ", image='" + image + '\'' +
-                ", roleName='" + roleName + '\'' +
+                ", roleName=" + roleName +
                 '}';
     }
 }
