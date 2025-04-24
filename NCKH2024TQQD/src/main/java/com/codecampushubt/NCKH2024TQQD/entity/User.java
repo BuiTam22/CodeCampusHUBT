@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.entity;
 
+import com.codecampushubt.NCKH2024TQQD._enum.Admin.User.AccountStatus;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,9 +37,9 @@ public class User {
 
     @Column(name = "Status", nullable = false, length = 20)
     private String status;
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "AccountStatus", nullable = false, length = 20)
-    private String accountStatus;
+    private AccountStatus accountStatus;
 
     @Column(name = "Image", length = 255)
     private String image;
@@ -96,7 +97,7 @@ public class User {
     public User() {
     }
 
-    public User(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String school, String status, String accountStatus, String image, String bio, String provider, String providerID, Boolean emailVerified, String phoneNumber, String address, String city, String country, String lastLoginIP, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime lastLoginAt, LocalDateTime deletedAt) {
+    public User(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String school, String status, AccountStatus accountStatus, String image, String bio, String provider, String providerID, Boolean emailVerified, String phoneNumber, String address, String city, String country, String lastLoginIP, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime lastLoginAt, LocalDateTime deletedAt) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -168,7 +169,7 @@ public class User {
         return status;
     }
 
-    public String getAccountStatus() {
+    public AccountStatus getAccountStatus() {
         return accountStatus;
     }
 
@@ -260,7 +261,7 @@ public class User {
         this.status = status;
     }
 
-    public void setAccountStatus(String accountStatus) {
+    public void setAccountStatus(AccountStatus accountStatus) {
         this.accountStatus = accountStatus;
     }
 

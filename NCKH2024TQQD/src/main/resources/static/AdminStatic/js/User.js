@@ -16,7 +16,8 @@ fetch(apiShow)
                         <td>
                         <button class="btn btn-success" onclick="showDetailFormOnly(${user.userID}, '${user.userName}', '${user.email}', '${user.userRole}')">Chi tiết</button>
                         <button class="btn btn-warning mx-2" onclick="showEditFormOnly(${user.userID})">Sửa</button>
-                        <button class="btn btn-danger">  Xóa </button>
+                        <button class="btn btn-danger " onclick="softDeleteUser(${user.userID})">Xóa</button>
+
                         </td>
                     </tr>
                 `;
@@ -84,6 +85,7 @@ document.getElementById("addUserForm").addEventListener("submit", function (even
         .then(res => {
             if (res.ok) {
                 alert("Thêm thành công!");
+                location.reload()
                 document.getElementById("userAddForm").style.display = "none";
             } else {
                 return res.text().then(errorMessage => {
@@ -142,7 +144,7 @@ async function showEditFormOnly(userId) {
 
 
         const user = await response.json();
-        console.log(user)
+        // console.log(user)
         // console.log("User Data:", user); // Kiểm tra dữ liệu người dùng
 
         // Ẩn form danh sách và hiển thị form sửa
@@ -159,7 +161,7 @@ async function showEditFormOnly(userId) {
         form.phoneNumber.value = user.phoneNumber || "";
         form.address.value = user.address || "";
 
-        console.log(form)
+        // console.log(form)
 
         const allRoles = ["ADMIN", "STUDENT", "TEACHER"]; // Các quyền có sẵn
         const checkboxContainer = document.getElementById("roleCheckboxes");
@@ -212,9 +214,10 @@ async function showEditFormOnly(userId) {
 // end show edit fom
 // update
 async function submitEditForm() {
+    const btn = document.getElementById("submitBtn");
     const form = document.forms["editUserForm"];
     const userId = form.userId.value;
-    console.log(userId)
+    // console.log(userId)
     // Kiểm tra userId hợp lệ
     if (!userId) {
         alert("User ID không hợp lệ!");
@@ -265,7 +268,7 @@ async function submitEditForm() {
         image: imageUrl,
         roleName: roleNames
     };
-    console.log(userUpdateDTO)
+    // console.log(userUpdateDTO)
 
     try {
         const res = await fetch(`/admin/api/user/update/${userId}`, {
@@ -278,6 +281,7 @@ async function submitEditForm() {
 
         if (res.ok) {
             alert("Cập nhật thành công!");
+            location.reload()
             showUserList(); // Hiển thị lại danh sách user
         } else {
             const error = await res.text();
@@ -297,3 +301,33 @@ async function submitEditForm() {
 
 
 //end update nguời dùng
+
+
+//xóa mềm
+
+
+
+function softDeleteUser(userId) {
+    if (confirm("Bạn có chắc muốn xóa người dùng này không?")) {
+        const a = "/admin/api/user/delete/${userId}"
+        console.log(userId , a)
+        fetch(`/admin/api/user/delete/${userId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Đã xóa người dùng (mềm) thành công!");
+                    location.reload()
+                    // Có thể load lại danh sách người dùng nếu muốn:
+                    // loadUserList();
+                } else {
+                    alert("Xóa thất bại!");
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi khi gọi API:", error);
+                alert("Đã xảy ra lỗi!");
+            });
+    }
+}
+//Xóa Cứng
