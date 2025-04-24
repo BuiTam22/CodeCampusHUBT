@@ -33,5 +33,9 @@ public interface UserService {
 
     User getUserEntityByID(Long userID);
 
+//    List<User> findAllActiveUsers();
+
+    User softDeleteUser(Long userID);
+
 
 }
