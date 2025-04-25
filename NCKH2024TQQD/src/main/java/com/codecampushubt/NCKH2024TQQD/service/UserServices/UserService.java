@@ -9,6 +9,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserUpdateDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 
 public interface UserService {
@@ -34,6 +35,7 @@ public interface UserService {
     User getUserEntityByID(Long userID);
 
 //    List<User> findAllActiveUsers();
+    Page<UserShowDTO> getAllUsers(int page, int size);
 
     User softDeleteUser(Long userID);
 

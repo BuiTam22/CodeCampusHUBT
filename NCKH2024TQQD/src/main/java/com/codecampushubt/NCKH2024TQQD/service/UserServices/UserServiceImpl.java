@@ -22,6 +22,10 @@ import com.codecampushubt.NCKH2024TQQD.entity.UserRoleId;
 import com.codecampushubt.NCKH2024TQQD.service.Cloudinary.CloudinaryService;
 import com.codecampushubt.NCKH2024TQQD.util.BCryptPasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -253,5 +257,24 @@ public User updateUser(Long userId, UserUpdateDTO dto) {
     }
 
     // end    xóa mềm ---------------------------------------------------------------------------------------
+
+
+    @Override
+    public Page<UserShowDTO> getAllUsers(int page, int size) {
+        // Tạo Pageable cho phân trang, sắp xếp theo ID giảm dần
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        // Lấy dữ liệu từ repository, chỉ lấy user không bị xóa
+        Page<User> userPage = userRepository.findAllByAccountStatusNot("DELETED", pageable);
+
+        // Chuyển đổi từ Page<User> thành Page<UserListDTO>
+        return userPage.map(user -> {
+            UserShowDTO dto = new UserShowDTO();
+            dto.setUserID(user.getUserId());
+            dto.setUserName(user.getuserName());
+            dto.setEmail(user.getEmail());
+            return dto;
+        });
+    }
 
 }
