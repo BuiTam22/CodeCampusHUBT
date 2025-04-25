@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.cloudinary.Cloudinary;
+import com.codecampushubt.NCKH2024TQQD._enum.Admin.User.AccountStatus;
 import com.codecampushubt.NCKH2024TQQD.dao.RoleRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.UserRoleRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
@@ -36,6 +37,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserBasicInfoDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.User;
 
 @Service
+
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -87,20 +89,21 @@ public class UserServiceImpl implements UserService {
     //show user
     @Override
     public List<UserShowDTO> getAllUsers() {
-        return userRepository.findAll().stream().map(user -> {
+        return userRepository.findAllActiveUsers().stream()  // Chỉ lấy người dùng có trạng thái ACTIVE
+                .map(user -> {
                     List<String> rolename = user.getUserRoles().stream()
                             .map(userRole -> userRole.getRole().getRoleName())
                             .collect(Collectors.toList());
                     return new UserShowDTO(
                             user.getUserId(),
-                            user.getuserName(),
+                            user.getuserName(),  // Lưu ý là phương thức getter phải đúng chính tả (getUserName() thay vì getuserName())
                             user.getEmail(),
                             rolename
                     );
-
                 })
                 .collect(Collectors.toList());
     }
+
 
     //    end show user
 //    create user
@@ -123,12 +126,14 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setAddress(dto.getAddress());
         user.setStatus("ACTIVE");
-        user.setAccountStatus("ACTIVE");
+        user.setAccountStatus(AccountStatus.ACTIVE);
         user.setProvider("LOCAL");
         user.setEmailVerified(false);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
-
+        if (dto.getDateOfBirth() != null) {
+            user.setDateOfBirth(dto.getDateOfBirth());
+        }
         // Lưu user trước để có ID
         User savedUser = userRepository.save(user);
 
@@ -155,6 +160,7 @@ public class UserServiceImpl implements UserService {
     }
 
     //    update user ------------------------------------------------------------------------------------
+//    show
   @Override
   public UserUpdateDTO getUserUpdateDTOById(Long id) {
         User user = userRepository.findById(id)
@@ -163,6 +169,7 @@ public class UserServiceImpl implements UserService {
                 .map(userRole -> userRole.getRole().getRoleName())
                 .collect(Collectors.toList());
         return new UserUpdateDTO(
+                user.getUserId(),
                 user.getuserName(),             // userName
                 user.getEmail(),                // email
                 "",                             // password (để trống khi hiển thị form)
@@ -177,10 +184,74 @@ public class UserServiceImpl implements UserService {
         );
   }
 
+//  end show
+@Override
+public User updateUser(Long userId, UserUpdateDTO dto) {
+//    System.out.println(dto);
+//    System.out.println(userId);
 
+    // Tìm người dùng theo userId
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
 
+    // Cập nhật các trường thông tin của người dùng từ DTO
+    user.setuserName(dto.getUserName());
+    user.setEmail(dto.getEmail());
+    user.setFullName(dto.getFullName());
+    user.setDateOfBirth(dto.getDateOfBirth());
+    user.setPhoneNumber(dto.getPhoneNumber());
+    user.setAddress(dto.getAddress());
 
+    // Cập nhật ảnh đại diện nếu có
+    if (dto.getImage() != null && !dto.getImage().isEmpty()) {
+        user.setImage(dto.getImage());
+    }
+
+    // Cập nhật vai trò (roles)
+    if (dto.getRoleName() != null && !dto.getRoleName().isEmpty()) {
+        // Xóa hết các quyền cũ của người dùng
+        userRoleRepository.deleteByUserId(userId);
+
+        // Lấy danh sách Role từ tên (roleName) gửi lên từ frontend
+        List<Role> roles = roleRepository.findByRoleNames(dto.getRoleName());
+//        System.out.println(roles);
+
+        // Tạo UserRole mới với các Role được chọn
+        for (Role role : roles) {
+            UserRole userRole = new UserRole();
+            userRole.setUser(user);
+            userRole.setRole(role);
+            userRole.setAssignedAt(LocalDateTime.now());
+
+            UserRoleId userRoleId = new UserRoleId();
+            userRoleId.setUserId(user.getUserId().longValue()); // nếu userID là Long
+            userRoleId.setRoleId(role.getRoleID()); // đảm bảo dùng đúng getter
+
+            userRole.setId(userRoleId); // 👉 dòng quan trọng!
+
+            userRoleRepository.save(userRole);
+        }
+
+    }
+
+    // Lưu thông tin người dùng sau khi cập nhật
+    return userRepository.save(user);
+}
 
 //    end update user ---------------------------------------------------------------------------------------
+
+//    xóa mềm ---------------------------------------------------------------------------------------
+    @Override
+    public User softDeleteUser(Long userid){
+        System.out.println(userid);
+        User user = userRepository.findById(userid).orElseThrow(() -> new RuntimeException("Khong Tim Thay User"));
+        user.setAccountStatus(AccountStatus.DELETED);
+        User UpdatedUser = userRepository.save(user);
+
+        return UpdatedUser;
+
+    }
+
+    // end    xóa mềm ---------------------------------------------------------------------------------------
 
 }

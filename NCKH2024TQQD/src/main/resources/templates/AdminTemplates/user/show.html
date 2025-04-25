@@ -41,22 +41,25 @@
                 <div class="container mt-5">
                     <div class="d-flex justify-content-between mb-3 ">
                         <h3>Table User</h3>
-                        <button onclick="showAddForm()" class="btn btn-primary">Create a user</button>
+                        <button onclick="showAddFormOnly()" class="btn btn-primary">Create a user</button>
                     </div>
                     <hr/>
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>UserName</th>
-                            <th>Email</th>
-                            <th>RoleName</th>
-                        </tr>
-                        </thead>
-                        <tbody id="userTableBody">
+                    <div id="userList" style="display: block;" >
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>UserName</th>
+                                <th>Email</th>
+                                <th>RoleName</th>
+                            </tr>
+                            </thead>
+                            <tbody id="userTableBody">
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+
 
                     <div id="userAddForm" style="display: none; margin-top: 20px;">
                         <h3>Thêm người dùng</h3>
@@ -102,7 +105,7 @@
                             </label>
 
                             <div class="button-group">
-                                <button type="button" onclick="hideForms()">Đóng</button>
+                                <button type="button" onclick="showUserList()">Đóng</button>
                                 <button type="submit">Thêm Người Dùng</button>
                             </div>
                         </form>
@@ -115,61 +118,36 @@
                         <p>Tên: <span id="detailUserName">Tên mẫu</span></p>
                         <p>Email: <span id="detailEmail">email@example.com</span></p>
                         <p>Quyền: <span id="detailUserRole">ADMIN</span></p>
-                        <button onclick="hideForms()">Đóng</button>
+                        <button onclick="showUserList()">Đóng</button>
                     </div>
 
                     <!-- Form Sửa -->
                     <div id="userEditForm" style="display: none; margin-top: 20px;">
                         <h3>Sửa người dùng</h3>
-                        <form id="editUserForm" enctype="multipart/form-data">
+                        <form id="editUserForm" name="editUserForm" enctype="multipart/form-data">
                             <input type="hidden" name="userId">
+                            <input type="text" name="userName" placeholder="Username">
+                            <input type="email" name="email" placeholder="Email">
+                            <input type="text" name="fullName" placeholder="Họ tên đầy đủ">
+                            <input type="date" name="dateOfBirth">
+                            <input type="text" name="phoneNumber" placeholder="Số điện thoại">
+                            <input type="text" name="address" placeholder="Địa chỉ">
 
-                            <label>Tên Tài Khoản:
-                                <input type="text" name="userName" required pattern="[a-z0-9]+" title="Chỉ viết thường không dấu, không khoảng trắng">
-                            </label><br>
+                            <!-- File ảnh -->
+                            <label for="image">Ảnh đại diện:</label>
+                            <input type="file" name="image" id="image">
 
-                            <label>Email:
-                                <input type="email" name="email" required>
-                            </label><br>
+                            <!-- Nhiều quyền -->
+                            <div id="roleCheckboxes">
+                                <!-- Checkboxes sẽ được thêm ở đây bằng JS -->
+                            </div>
+                            <img id="preview" style="display:none; width:100px;" />
+                            <button type="button" onclick="submitEditForm()">Lưu</button>
+                            <button onclick="showUserList()">Đóng</button>
 
-                            <label>Mật khẩu mới (nếu đổi):
-                                <input type="password" name="password" required>
-                            </label><br>
-
-                            <label>Họ và Tên:
-                                <input type="text" name="fullName" required>
-                            </label>
-
-                            <label>Sinh Nhật:
-                                <input type="date" name="dateOfBirth" >
-                            </label>
-
-                            <label>Số Điện Thoại:
-                                <input type="text" name="phoneNumber">
-                            </label>
-
-                            <label>Địa Chỉ:
-                                <input type="text" name="address">
-                            </label>
-
-                            <label>Ảnh đại diện:
-                                <input type="file" id="file" name="file"><br><br>
-                            </label>
-                            <img id="preview" style="max-width: 150px; display: none; margin-top: 10px;"><br>
-                            <input type="hidden" name="avatarUrl" id="avatarUrl">
-
-                            <label>Quyền:
-                                <select name="roleName">
-                                    <option value="ADMIN">ADMIN</option>
-                                    <option value="STUDENT">STUDENT</option>
-                                    <option value="TEACHER">TEACHER</option>
-                                </select>
-                            </label><br>
-
-                            <button type="button" onclick="hideForms()">Đóng</button>
-                            <button type="submit">Cập nhật người dùng</button>
                         </form>
                     </div>
+
 
 
 
@@ -195,9 +173,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script th:src="@{/AdminStatic/js/scripts.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<script th:src="@{/AdminStatic/js/chart-area-demo.js}"></script>
-<script th:src="@{/AdminStatic/js/chart-bar-demo.js}"></script>
+<!--<script th:src="@{/AdminStatic/js/chart-area-demo.js}"></script>-->
+<!--<script th:src="@{/AdminStatic/js/chart-bar-demo.js}"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script  th:src="@{/AdminStatic/js/datatables-simple-demo.js}"></script>
+<!--<script  th:src="@{/AdminStatic/js/datatables-simple-demo.js}"></script>-->
 </body>
 </html>

@@ -24,10 +24,18 @@ public interface UserService {
 
     UserUpdateDTO  getUserUpdateDTOById(Long userID);
 
+
+    User updateUser(Long userId, UserUpdateDTO dto);
+
     String getFullName(String userName);
 
     Long findUserIDByUserName(String userName);
 
     User getUserEntityByID(Long userID);
+
+//    List<User> findAllActiveUsers();
+
+    User softDeleteUser(Long userID);
+
 
 }

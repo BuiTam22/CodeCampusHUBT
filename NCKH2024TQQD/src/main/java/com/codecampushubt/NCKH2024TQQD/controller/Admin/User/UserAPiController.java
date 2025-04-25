@@ -32,24 +32,38 @@ public class UserAPiController {
 //        System.out.println(user);
         try {
             userService.addUser(dto); // Gọi phương thức thêm người dùng từ UserService
-            System.out.println(dto);
+//            System.out.println(dto);
             return ResponseEntity.ok("Thêm người dùng thành công!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage()); // Trả lỗi nếu có vấn đề
         }
     }
-    @PostMapping("/update/{userID}")
-    public ResponseEntity<?> updateUser(@ModelAttribute UserUpdateDTO dto, @PathVariable long userID) {
-//        System.out.println("đã vào controller");
-//        System.out.println(userID);
-//        System.out.println(dto);
-//        userService.updateUser(userID, dto);
-        return ResponseEntity.ok("Cập Nhật Thành Công ");
+    @PutMapping("/update/{userID}")
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdateDTO dto, @PathVariable long userID) {
+        try {
+//            System.out.println(dto);
+//            System.out.println(userID);
+//            System.out.println("đã vào controller");
+//            System.out.println(dto);
+            // Gọi service để cập nhật người dùng
+            userService.updateUser(userID, dto);
+            return ResponseEntity.ok("Cập nhật người dùng thành công!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Lỗi: " + e.getMessage());
+        }
     }
+
     @GetMapping("/showUpdate/{userID}")
     public ResponseEntity<UserUpdateDTO> getUserUpdateDTOById(@PathVariable Long userID) {
         UserUpdateDTO dto = userService.getUserUpdateDTOById(userID);
         return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+        System.out.println(userId);
+        User deleteUser = userService.softDeleteUser(userId);
+        return ResponseEntity.ok("deleteUser");
     }
 
 }

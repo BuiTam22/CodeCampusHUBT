@@ -45,6 +45,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.userID = :userID")
     User getUserEntityByID(@Param("userID") Long userID);
 
+    // Lấy tất cả người dùng có trạng thái ACTIVE
+    @Query("SELECT u FROM User u WHERE u.accountStatus = 'ACTIVE'")
+    List<User> findAllActiveUsers();
+
+    // Tìm người dùng có trạng thái ACTIVE theo id
+    @Query("SELECT u FROM User u WHERE u.id = :userId AND u.accountStatus = 'ACTIVE'")
+    Optional<User> findActiveUserById(Long userId);
+
+
+
 
 
 

@@ -1,16 +1,18 @@
 package com.codecampushubt.NCKH2024TQQD.dto.UserDTO;
 
+import java.time.LocalDate;
+
 public class UserCreateDTO {
     private String userName;
     private String email;
     private String password;
     private String fullName;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phoneNumber;
     private String address;
     private String roleName;
 
-    public UserCreateDTO(String userName, String email, String password, String fullName, String dateOfBirth, String phoneNumber, String address, String roleName) {
+    public UserCreateDTO(String userName, String email, String password, String fullName, LocalDate dateOfBirth, String phoneNumber, String address, String roleName) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -53,11 +55,11 @@ public class UserCreateDTO {
         this.fullName = fullName;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
