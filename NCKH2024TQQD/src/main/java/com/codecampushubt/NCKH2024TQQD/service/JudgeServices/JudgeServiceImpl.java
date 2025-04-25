@@ -6,7 +6,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.JudgeRunResponseDTO
 import com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission.CodingSubmissionResponseDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.ExerciseTestCasesDTO.ExerciseTestCasesDTO;
 import com.codecampushubt.NCKH2024TQQD.service.UserServices.UserService;
-import com.codecampushubt.NCKH2024TQQD.util.CodeExecutionUtil;
+import com.codecampushubt.NCKH2024TQQD.util.DockerCodeExecutionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +16,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Set;
 
 @Service
-public class JudgeServiceImpl implements JudgeService{
+public class JudgeServiceImpl implements JudgeService {
     private final UserService userService;
 
     @Autowired
     public JudgeServiceImpl(UserService userService) {
         this.userService = userService;
     }
+
     @Override
     public JudgeRunResponseDTO runUserCode(JudgeRequestDTO request, Set<ExerciseTestCasesDTO> exerciseTestCases) {
         String userName = UserContext.getUsername();
@@ -36,40 +36,39 @@ public class JudgeServiceImpl implements JudgeService{
         Path workingDir = Paths.get("Code_Dir", folderName);
 
         try {
-            // tạo folder lưu code tạm Code_Dir nếu chưa tồn tại
+            // Tạo folder lưu code tạm Code_Dir nếu chưa tồn tại
             Files.createDirectories(Paths.get("Code_Dir"));
             Files.createDirectories(workingDir);
 
-            // tạo và ghi file Main.java
+            // Tạo và ghi file Main.java
             Path sourceFile = workingDir.resolve("Main.java");
             Files.writeString(sourceFile, request.getSourceCode());
 
-            // Biên dịch
-            CodeExecutionUtil.runCommand(List.of("javac", "Main.java"), workingDir.toFile());
+            // Biên dịch sử dụng Docker
+            DockerCodeExecutionUtil.compileJavaInContainer(workingDir);
 
-            // tạo output để trả về alert kết quả testcase bên client
+            // Tạo output để trả về alert kết quả testcase bên client
             StringBuilder output = new StringBuilder();
 
-            // kiểm tra xem bài tập có thể tescase không, nếu không có thì không cần nhập testcase
-            if(exerciseTestCases.isEmpty()){
-                output.append(CodeExecutionUtil.runCommand(List.of("java", "Main"), workingDir.toFile()));
+            // Kiểm tra xem bài tập có test case không, nếu không có thì không cần nhập testcase
+            if (exerciseTestCases.isEmpty()) {
+                output.append(DockerCodeExecutionUtil.runJavaInContainer(workingDir, ""));
             }
 
             boolean allPassed = true;
 
             for (ExerciseTestCasesDTO testCase : exerciseTestCases) {
-                // bỏ qua test case ẩn (pulic = false)
+                // Bỏ qua test case ẩn (public = false)
                 if (!testCase.getPublic())
                     continue;
 
-                // Chạy với input của testcase public
-                String outputRun = CodeExecutionUtil.runCommandWithInput(
-                        List.of("java", "Main"),
-                        testCase.getInput(),
-                        workingDir.toFile()
+                // Chạy với input của testcase public trong Docker
+                String outputRun = DockerCodeExecutionUtil.runJavaInContainer(
+                        workingDir,
+                        testCase.getInput()
                 );
 
-                // So sánh outut thực tế và output mong đợi
+                // So sánh output thực tế và output mong đợi
                 String expected = testCase.getExpectedOutput().trim();
                 String actual = outputRun.trim();
 
@@ -90,16 +89,16 @@ public class JudgeServiceImpl implements JudgeService{
 
         } catch (IOException | InterruptedException e) {
             return new JudgeRunResponseDTO("", "ERROR", e.getMessage());
-        } catch (CodeExecutionUtil.CompilationException e) {
-            return new JudgeRunResponseDTO(e.getOutput(), "COMPILATION_ERROR", "Compilation failed");
+        } catch (DockerCodeExecutionUtil.CompilationException e) {
+            return new JudgeRunResponseDTO(e.getOutput(), "COMPILATION_ERROR", "Lỗi biên dịch");
         } catch (RuntimeException e) {
             return new JudgeRunResponseDTO("", "ERROR", e.getMessage());
         } finally {
             // Dọn dẹp thư mục
             try {
-                CodeExecutionUtil.deleteDirectoryRecursively(workingDir);
+                DockerCodeExecutionUtil.deleteDirectoryRecursively(workingDir);
             } catch (Exception e) {
-                // Ignore cleanup errors
+                // Bỏ qua lỗi khi dọn dẹp
             }
         }
     }
@@ -113,38 +112,37 @@ public class JudgeServiceImpl implements JudgeService{
         Path workingDir = Paths.get("Code_Dir", folderName);
 
         try {
-            // tạo folder lưu code tạm Code_Dir nếu chưa tồn tại
+            // Tạo folder lưu code tạm Code_Dir nếu chưa tồn tại
             Files.createDirectories(Paths.get("Code_Dir"));
             Files.createDirectories(workingDir);
 
-            // tạo và ghi file Main.java
+            // Tạo và ghi file Main.java
             Path sourceFile = workingDir.resolve("Main.java");
             Files.writeString(sourceFile, request.getSourceCode());
 
-            // Biên dịch
-            CodeExecutionUtil.runCommand(List.of("javac", "Main.java"), workingDir.toFile());
+            // Biên dịch sử dụng Docker
+            DockerCodeExecutionUtil.compileJavaInContainer(workingDir);
 
-            // tạo output để trả về alert kết quả testcase bên client
+            // Tạo output để trả về alert kết quả testcase bên client
             StringBuilder output = new StringBuilder();
 
-            // kiểm tra xem bài tập có thể tescase không, nếu không có thì không cần nhập testcase
-            if(exerciseTestCases.isEmpty()){
-                output.append(CodeExecutionUtil.runCommand(List.of("java", "Main"), workingDir.toFile()));
+            // Kiểm tra xem bài tập có test case không, nếu không có thì không cần nhập testcase
+            if (exerciseTestCases.isEmpty()) {
+                output.append(DockerCodeExecutionUtil.runJavaInContainer(workingDir, ""));
             }
 
             boolean allPassed = true;
 
-            Integer testCasePassed= 0;
+            Integer testCasePassed = 0;
             Integer totalScore = 0;
             for (ExerciseTestCasesDTO testCase : exerciseTestCases) {
-
-                String outputRun = CodeExecutionUtil.runCommandWithInput(
-                        List.of("java", "Main"),
-                        testCase.getInput(),
-                        workingDir.toFile()
+                // Chạy với input của testcase trong Docker
+                String outputRun = DockerCodeExecutionUtil.runJavaInContainer(
+                        workingDir,
+                        testCase.getInput()
                 );
 
-                // So sánh outut thực tế và output mong đợi
+                // So sánh output thực tế và output mong đợi
                 String expected = testCase.getExpectedOutput().trim();
                 String actual = outputRun.trim();
 
@@ -157,7 +155,6 @@ public class JudgeServiceImpl implements JudgeService{
                     totalScore += testCase.getScore();
                 }
 
-
                 // Ghi nhận kết quả từng test case
                 output.append("Test case: \n")
                         .append("Input:\n").append(testCase.getInput()).append("\n")
@@ -167,23 +164,25 @@ public class JudgeServiceImpl implements JudgeService{
             }
 
             String status = allPassed ? "accepted" : "wrong_answer";
-            return new CodingSubmissionResponseDTO(null, userService.findUserIDByUserName(userName), request.getSourceCode(), request.getLanguage(), status, testCasePassed, exerciseTestCases.size(), totalScore);
+            return new CodingSubmissionResponseDTO(null, userService.findUserIDByUserName(userName), request.getSourceCode(),
+                    request.getLanguage(), status, testCasePassed, exerciseTestCases.size(), totalScore);
 
         } catch (IOException | InterruptedException e) {
-            return new CodingSubmissionResponseDTO(null, userService.findUserIDByUserName(userName), request.getSourceCode(), request.getLanguage(), "wrong_answer", null, exerciseTestCases.size(), null);
-        } catch (CodeExecutionUtil.CompilationException e) {
-            return new CodingSubmissionResponseDTO(null, userService.findUserIDByUserName(userName), request.getSourceCode(), request.getLanguage(), "wrong_answer", null, exerciseTestCases.size(), null);
-
+            return new CodingSubmissionResponseDTO(null, userService.findUserIDByUserName(userName), request.getSourceCode(),
+                    request.getLanguage(), "wrong_answer", null, exerciseTestCases.size(), null);
+        } catch (DockerCodeExecutionUtil.CompilationException e) {
+            return new CodingSubmissionResponseDTO(null, userService.findUserIDByUserName(userName), request.getSourceCode(),
+                    request.getLanguage(), "wrong_answer", null, exerciseTestCases.size(), null);
         } catch (RuntimeException e) {
-            return new CodingSubmissionResponseDTO(null, userService.findUserIDByUserName(userName), request.getSourceCode(), request.getLanguage(), "wrong_answer", null, exerciseTestCases.size(), null);
+            return new CodingSubmissionResponseDTO(null, userService.findUserIDByUserName(userName), request.getSourceCode(),
+                    request.getLanguage(), "wrong_answer", null, exerciseTestCases.size(), null);
         } finally {
             // Dọn dẹp thư mục
             try {
-//                CodeExecutionUtil.deleteDirectoryRecursively(workingDir);
+                DockerCodeExecutionUtil.deleteDirectoryRecursively(workingDir);
             } catch (Exception e) {
-                // Ignore cleanup errors
+                // Bỏ qua lỗi khi dọn dẹp
             }
         }
     }
-
 }
