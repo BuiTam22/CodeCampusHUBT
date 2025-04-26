@@ -15,7 +15,7 @@
     <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
 
     <!-- Problem Navigation -->
-    <div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav}"></div>
+    <div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav(exercise=${exercise})}"></div>
 
     <div class="content-wrapper">
         <div class="container">
