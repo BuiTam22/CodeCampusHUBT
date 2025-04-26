@@ -8,6 +8,7 @@
 .section-two .row > [class*="col-"] {
   margin-bottom: 30px;
 }
+
 .section-four .row > [class*="col-"] {
   margin-bottom: 50px;
 }
@@ -19,6 +20,7 @@
   text-align: center;
   margin-bottom: 30px;
 }
+
 /* button */
 .button {
   padding: 15px 40px;
@@ -292,6 +294,7 @@
   cursor: pointer;
 }
 /* end section three */
+
 /* section four */
 .section-four {
   padding: 100px 0;
@@ -414,3 +417,4 @@
   color: #001c66;
 }
 /* end section six */
+
