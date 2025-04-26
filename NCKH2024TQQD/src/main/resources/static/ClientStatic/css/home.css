@@ -8,7 +8,19 @@
 .section-two .row > [class*="col-"] {
   margin-bottom: 30px;
 }
+
+.section-four .row > [class*="col-"] {
+  margin-bottom: 50px;
+}
 /* end */
+.box-head {
+  font-size: 50px;
+  color: #001c66;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 /* button */
 .button {
   padding: 15px 40px;
@@ -282,3 +294,127 @@
   cursor: pointer;
 }
 /* end section three */
+
+/* section four */
+.section-four {
+  padding: 100px 0;
+  background-color: #f6fcff;
+}
+.section-four .inner-box {
+  background-color: #fff;
+  padding: 30px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
+    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
+    0 8px 16px rgba(0, 0, 0, 0.11);
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+.section-four .inner-box:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+.section-four .inner-box img {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-four .inner-box .inner-title {
+  font-size: 23px;
+  color: black;
+  font-weight: 500;
+  margin-top: 10px;
+  text-align: center;
+}
+.section-four .inner-box .inner-desc {
+  font-size: 16px;
+  color: black;
+  font-weight: 400;
+  margin-top: 10px;
+  text-align: center;
+}
+/* end section four */
+/* section five */
+.section-five {
+  padding: 100px 0;
+  background-color: #fff;
+}
+.section-five .inner-box {
+  background-color: #def5fd;
+  padding: 20px;
+}
+.section-five .inner-head::after {
+  font-family: "Font Awesome 5 Free";
+  content: "\f10e";
+  font-weight: 900;
+  margin-left: 15px;
+  font-size: 50px;
+  color: #b2eeea;
+}
+.section-five .inner-box .inner-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.section-five .inner-box .inner-head .avatar {
+  width: 80px;
+  height: 80px;
+  border: 3px solid #00adef;
+  border-radius: 100%;
+}
+.section-five .inner-box .inner-head .avatar img {
+  width: 100%;
+  height: 100%;
+}
+.section-five .inner-box .inner-head .inner-info {
+  text-align: center;
+}
+.section-five .inner-box .inner-head .inner-info .inner-name {
+  font-size: 23px;
+  color: black;
+  font-weight: 600;
+  margin-left: 20px;
+  white-space: nowrap;
+}
+.section-five .inner-box .inner-head .inner-info .inner-course {
+  margin-left: 18px;
+}
+.section-five .inner-box .inner-star i {
+  color: orange;
+  margin-top: 20px;
+}
+/* end section five */
+/* section six */
+.section-six {
+  padding: 100px 0;
+  background-color: #f6fcff;
+}
+.section-six .inner-box {
+  display: flex;
+  margin-top: 50px;
+  margin-left: 80px;
+}
+.section-six .inner-box .inner-icon {
+  padding: 20px;
+  background-color: #def5fd;
+  margin-right: 20px;
+  border-radius: 8px;
+}
+.section-six .inner-box .inner-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.section-six .inner-box .inner-right .inner-titile {
+  font-size: 20px;
+  color: #001c66;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.section-six .inner-box .inner-right .inner-desc{
+  color: #001c66;
+}
+/* end section six */
+
