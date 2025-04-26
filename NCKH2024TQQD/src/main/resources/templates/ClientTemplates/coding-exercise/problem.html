@@ -15,7 +15,7 @@
     <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
 
     <!-- Problem Navigation -->
-    <div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav(exercise=${exercise})}"></div>
+    <div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav(slug=${slug})}"></div>
 
     <div class="content-wrapper">
         <div class="container">
@@ -100,6 +100,8 @@
     <script th:src="@{/ClientStatic/js/script.js}"></script>
     <script th:src="@{/ClientStatic/js/handle-run-code.js}"></script>
     <script th:src="@{/ClientStatic/js/handle-submit-code.js}"></script>
+    <script th:src="@{/ClientStatic/js/handle-code-editor.js}"></script>
+
 
 </body>
 

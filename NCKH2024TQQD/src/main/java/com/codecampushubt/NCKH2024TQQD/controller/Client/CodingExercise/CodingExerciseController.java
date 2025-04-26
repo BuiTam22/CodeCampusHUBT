@@ -20,6 +20,7 @@ import java.util.List;
 public class CodingExerciseController {
 
     private final CodingExerciseService codingExerciseService;
+    private String exerciseSlug;
 
     @Autowired
     public CodingExerciseController(CodingExerciseService codingExerciseService) {
@@ -39,8 +40,16 @@ public class CodingExerciseController {
     public String showExerciseDetailBySlug(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
         CodingExerciseDetailDTO exercise = codingExerciseService.getCodingExerciseDetailDTOByExerciseSlug(theSlug);
         model.addAttribute("exercise", exercise);
+        model.addAttribute("slug", theSlug);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/coding-exercise/problem";
-
     }
+
+    @GetMapping("/submissions/{slug}")
+    public String showExerciseSubmissions(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
+        model.addAttribute("slug", theSlug);
+        model.addAttribute("activePage", request.getRequestURI());
+        return "ClientTemplates/coding-exercise/submission";
+    }
+
 }
