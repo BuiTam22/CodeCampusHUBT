@@ -11,7 +11,7 @@ import java.util.List;
 public interface CodingSubmissionRepository extends JpaRepository<CodingSubmission, Long> {
     @Query("""
             SELECT new com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission.CodingSubmissionShow
-            (cb.user.userName, cb.code, cb.language, cb.status, cb.testCasesPassed, cb.totalTestCases, cb.score)
+            (cb.exercise.title, cb.user.userName, cb.code, cb.language, cb.status, cb.testCasesPassed, cb.totalTestCases, cb.score)
             FROM CodingSubmission cb
             WHERE cb.user.userName = :userName
             """)
@@ -19,7 +19,7 @@ public interface CodingSubmissionRepository extends JpaRepository<CodingSubmissi
 
     @Query("""
             SELECT new com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission.CodingSubmissionShow
-            (cb.user.userName, cb.code, cb.language, cb.status, cb.testCasesPassed, cb.totalTestCases, cb.score)
+            (cb.exercise.title, cb.user.userName, cb.code, cb.language, cb.status, cb.testCasesPassed, cb.totalTestCases, cb.score)
             FROM CodingSubmission cb
             WHERE cb.exercise.slug = :theSlug
             ORDER BY cb.user.userName ASC

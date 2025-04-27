@@ -1,6 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission;
 
 public class CodingSubmissionShow {
+    private String exerciseName;
     private String userName;
     private String code;
     private String language;
@@ -9,7 +10,8 @@ public class CodingSubmissionShow {
     private Integer totalTestCases;
     private Integer score;
 
-    public CodingSubmissionShow(String userName, String code, String language, String status, Integer testCasesPassed, Integer totalTestCases, Integer score) {
+    public CodingSubmissionShow(String exerciseName, String userName, String code, String language, String status, Integer testCasesPassed, Integer totalTestCases, Integer score) {
+        this.exerciseName = exerciseName;
         this.userName = userName;
         this.code = code;
         this.language = language;
@@ -73,5 +75,13 @@ public class CodingSubmissionShow {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public String getExerciseName() {
+        return exerciseName;
+    }
+
+    public void setExerciseName(String exerciseName) {
+        this.exerciseName = exerciseName;
     }
 }

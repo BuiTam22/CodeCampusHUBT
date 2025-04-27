@@ -44,21 +44,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td class="result-false">
-                                    <i class="fas fa-times"></i> Wrong Answer
+                            <tr th:each="submission : ${submissions}">
+                                <td th:class="${submission.status == 'accepted' ? 'result-true' : 'result-false'}">
+                                    <i th:class="${submission.status == 'accepted' ? 'fa-solid fa-check' : 'fas fa-times'}"></i>
+                                    <span th:text="${submission.status == 'accepted' ? 'AC' : 'Wrong Answer'}"></span>
                                 </td>
-                                <td>0.0</td>
-                                <td>C++20</td>
-                                <td>in a minute</td>
-                                <td class="view-results">View Results</td>
-                            </tr>
-                            <tr>
-                                <td class="result-true">
-                                    <i class="fa-solid fa-check"></i> AC
-                                </td>
-                                <td>10.0</td>
-                                <td>C++20</td>
+                                <td th:text="${submission.score}">10.0</td>
+                                <td th:text="${submission.language}">Java</td>
                                 <td>in a minute</td>
                                 <td class="view-results">View Results</td>
                             </tr>
