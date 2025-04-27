@@ -16,4 +16,13 @@ public interface CodingSubmissionRepository extends JpaRepository<CodingSubmissi
             WHERE cb.user.userName = :userName
             """)
     List<CodingSubmissionShow> getCodingSubmissionShowByUserName(@Param("userName") String theUserName);
+
+    @Query("""
+            SELECT new com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission.CodingSubmissionShow
+            (cb.user.userName, cb.code, cb.language, cb.status, cb.testCasesPassed, cb.totalTestCases, cb.score)
+            FROM CodingSubmission cb
+            WHERE cb.exercise.slug = :theSlug
+            ORDER BY cb.user.userName ASC
+            """)
+    List<CodingSubmissionShow> getCodingSubmissionShowBySlugExercise(@Param("theSlug") String theSlug);
 }

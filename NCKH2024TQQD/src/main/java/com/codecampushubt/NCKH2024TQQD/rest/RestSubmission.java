@@ -21,10 +21,16 @@ public class RestSubmission {
     }
 
 
-    @GetMapping("/{theUserName}")
+    @GetMapping("/user/{theUserName}")
     public List<CodingSubmissionShow> getCodingSubmissionShowByUserName(@PathVariable String theUserName){
 
         return codingSubmissionService.getCodingSubmissionShowByUserName(theUserName);
+
+    }
+
+    @GetMapping("/exercise/{theSlugExercise}")
+    public List<CodingSubmissionShow> getCodingSubmissionShowBySubmissionID(@PathVariable String theSlugExercise){
+        return codingSubmissionService.getCodingSubmissionShowBySlugExercise(theSlugExercise);
 
     }
 }

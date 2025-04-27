@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const result = await response.json();
 
             // Hiện test cases sau khi chạy xong
-            testCase.style.display = "block";
+            testCase.style.display = "none";
 
             console.log("Kết quả chạy thử:", result);
             alert("Kết quả: " + (result.output || result.message));
