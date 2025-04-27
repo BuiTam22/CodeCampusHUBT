@@ -61,4 +61,15 @@ public class CodingExerciseController {
         return "ClientTemplates/coding-exercise/submission";
     }
 
+    @GetMapping("/leaderboard/{slug}")
+    public String showLeaderBoard(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
+
+        List<CodingSubmissionShow> submissions = codingSubmissionService.getCodingSubmissionShowBySlugExercise(theSlug);
+        model.addAttribute("submissions", submissions);
+        model.addAttribute("slug", theSlug);
+        model.addAttribute("activePage", request.getRequestURI());
+        return "ClientTemplates/coding-exercise/leaderboard";
+    }
+
+
 }
