@@ -66,12 +66,12 @@
   background: #333;
 }
 /* Thêm vào phần CSS của header */
-.nav-item.active {
+.problem-nav-item.active {
   color: #3498db !important;
   font-weight: 600;
 }
 
-.nav-item.active::after {
+.problem-nav-item.active::after {
   width: 100% !important;
 }
 .main-nav {
@@ -94,7 +94,7 @@
 }
 
 
-.nav-item {
+.problem-nav-item {
   color: #ecf0f1;
   text-decoration: none;
   font-size: 18px;
@@ -105,7 +105,7 @@
   transition: color 0.3s;
 }
 
-.nav-item::after {
+.problem-nav-item::after {
   content: "";
   position: absolute;
   bottom: -5px;
@@ -116,8 +116,9 @@
   transition: width 0.3s;
 }
 
-.nav-item:hover {
+.problem-nav-item:hover {
   color: #3498db;
+   text-decoration: none;
 }
 
 .user-profile {

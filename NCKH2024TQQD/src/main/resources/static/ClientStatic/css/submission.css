@@ -1,0 +1,104 @@
+.section-one {
+    margin-top:100px;
+    padding: 30px 0;
+    background-color: #F3F3F3;
+  }
+
+  .inner-box {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 20px;
+    color: black;
+    margin-top:30px;
+  }
+
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .custom-table thead th {
+    text-align: center;
+    padding: 15px 0;
+    font-weight: 600;
+    color: black;
+  }
+
+  .custom-table tbody td {
+    text-align: center;
+    padding: 15px 0;
+    border-top: 1px solid #333;
+    font-size: 14px;
+  }
+
+  .result-false {
+    color: #ff4d4d;
+    font-weight: 500;
+  }
+  .result-true {
+    color: green;
+    font-weight: 500;
+  }
+  .result-text i {
+    margin-right: 5px;
+  }
+
+  .view-results {
+    color: #4f8cff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    white-space: nowrap;
+  }
+
+  .view-results:hover {
+    text-decoration: underline;
+  }
+  .help-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    color: black;
+    margin-top: 30px;
+  }
+
+  .help-title {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    color: black;
+  }
+
+  .help-links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .help-link {
+    display: flex;
+    align-items: center;
+    color: #4f8cff;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .help-link i {
+    margin-right: 8px;
+    font-size: 18px;
+    color: black;
+  }
+
+  .help-link:hover {
+    text-decoration: underline;
+  }
+  hr {
+    border: none;
+    height: 2px;
+    background-color: black;
+    margin: 20px 0;
+    opacity: 0.2;
+    width: 100%;
+  }
