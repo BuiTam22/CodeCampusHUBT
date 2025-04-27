@@ -4,81 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <title>Submission</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/ClientStatic/css/problem-show.css}">
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+            integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/submission.css}">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/problem_nav.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}">
 </head>
-
 <body>
 <!-- Header -->
 <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
-
 <!-- Problem Navigation -->
 <div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav(slug=${slug})}"></div>
-
-<div class="content-wrapper">
-    <div class="container">
-        <!-- Problem Statement -->
-<!--        <div class="problem-panel">-->
-<!--            <h1 class="problem-title" th:text="${exercise.title}">1. Array Sum</h1>-->
-<!--            <div class="problem-description">-->
-<!--                <p th:text="${exercise.description}">Given an array of integers, find the sum of its elements.</p>-->
-
-<!--                <h3 class="input-format">Định dạng đầu vào</h3>-->
-<!--                <p>&lt;!&ndash; Thêm nếu có thêm trường inputFormat sau này &ndash;&gt;</p>-->
-
-<!--                <h3 class="constraint">Ràng buộc</h3>-->
-<!--                <p>-->
-<!--                    <span th:text="'Thời gian tối đa: ' + ${exercise.timeLimit} + 'ms'"></span><br/>-->
-<!--                    <span th:text="'Giới hạn bộ nhớ: ' + ${exercise.memoryLimit} + 'MB'"></span>-->
-<!--                </p>-->
-
-<!--                &lt;!&ndash; Sample IO &ndash;&gt;-->
-<!--                <div class="sample-io" th:if="${#lists.size(exercise.exerciseTestCases) > 0}">-->
-<!--                    <div th:each="testCase : ${exercise.exerciseTestCases}">-->
-<!--                        <div th:if="${testCase.public}">-->
-<!--                            <h4>Ví dụ đầu vào</h4>-->
-<!--                            <pre th:text="${testCase.input}">6-->
-<!--1 2 3 4 5 6</pre>-->
-<!--                            <h4>Ví dụ đầu ra</h4>-->
-<!--                            <pre th:text="${testCase.expectedOutput}">21</pre>-->
-<!--                            &lt;!&ndash; Chỉ lấy 1 test case public đầu tiên &ndash;&gt;-->
-<!--                            <div th:remove="all"></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Code Editor &ndash;&gt;-->
-<!--        <div class="editor-panel">-->
-<!--            <div class="editor-header">-->
-<!--                <span>Code</span>-->
-<!--                <select class="language-selector">-->
-<!--                    <option th:selected="${exercise.programmingLanguage == 'Python'}">Python 3</option>-->
-<!--                    <option th:selected="${exercise.programmingLanguage == 'Java'}">Java</option>-->
-<!--                    <option th:selected="${exercise.programmingLanguage == 'JavaScript'}">JavaScript</option>-->
-<!--                </select>-->
-<!--            </div>-->
-<!--            <div class="code-area">-->
-<!--                <div class="line-numbers" id="lineNumbers"></div>-->
-<!--                <textarea class="code-editor" id="editor"-->
-<!--                          spellcheck="false"-->
-<!--                          placeholder="// Viết Code vào đây"-->
-<!--                          th:text="${exercise.initialCode}"-->
-<!--                          th:attr="data-exercise-id=${exercise.exerciseID}"></textarea>-->
-<!--            </div>-->
-<!--        </div>-->
+<div class="page-wrapper">
+    <div class="section-one">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="inner-box">
+                        <table class="custom-table">
+                            <thead>
+                            <tr>
+                                <th>RESULT</th>
+                                <th>SCORE</th>
+                                <th>LANGUAGE</th>
+                                <th>TIME</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="result-false">
+                                    <i class="fas fa-times"></i> Wrong Answer
+                                </td>
+                                <td>0.0</td>
+                                <td>C++20</td>
+                                <td>in a minute</td>
+                                <td class="view-results">View Results</td>
+                            </tr>
+                            <tr>
+                                <td class="result-true">
+                                    <i class="fa-solid fa-check"></i> AC
+                                </td>
+                                <td>10.0</td>
+                                <td>C++20</td>
+                                <td>in a minute</td>
+                                <td class="view-results">View Results</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="help-box">
+                        <h6 class="help-title">NEED HELP?</h6>
+                        <hr>
+                        <div class="help-links">
+                            <a href="#" class="help-link">
+                                <i class="fas fa-comments"></i> View discussions
+                            </a>
+                            <a href="#" class="help-link">
+                                <i class="fas fa-trophy"></i> View top submissions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
-
-
 <!-- Footer -->
 <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
-
 <script th:src="@{/ClientStatic/js/script.js}"></script>
-
+<script
+        src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"
+></script>
 </body>
 
 </html>
