@@ -71,5 +71,11 @@ public class CodingExerciseController {
         return "ClientTemplates/coding-exercise/leaderboard";
     }
 
+    @GetMapping("/tutorial/{slug}")
+    public String showTutorial(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
+        model.addAttribute("activePage", request.getRequestURI());
+        return "ClientTemplates/coding-exercise/tutorial";
+    }
+
 
 }
