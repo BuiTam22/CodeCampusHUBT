@@ -53,7 +53,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="submission : ${submissions}">
+                            <tr th:each="submission : ${submissions}"
+                                th:data-code="${submission.code}"
+                                th:data-passed="${submission.testCasesPassed}"
+                                th:data-total="${submission.totalTestCases}"
+                                th:data-score="${submission.score}"
+                                th:data-language="${submission.language}">
+
                                 <td th:class="${submission.status == 'accepted' ? 'result-true' : 'result-false'}">
                                     <i th:class="${submission.status == 'accepted' ? 'fa-solid fa-check' : 'fas fa-times'}"></i>
                                     <span th:text="${submission.status == 'accepted' ? 'AC' : 'Wrong Answer'}"></span>
@@ -68,6 +74,31 @@
                         <nav>
                             <ul id="pagination" class="pagination justify-content-center mt-4"></ul>
                         </nav>
+                    </div>
+                    <!-- Thêm phần này sau bảng trong file submission.html -->
+                    <div class="submission-detail mt-4" id="submissionDetail" style="display: none;">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Submission Details</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <strong>Test Cases:</strong>
+                                        <span id="detailPassed">0</span>/<span id="detailTotal">0</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Score:</strong> <span id="detailScore">0</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Language:</strong> <span id="detailLanguage">-</span>
+                                    </div>
+                                </div>
+                                <div class="code-section">
+                                    <pre class="bg-light p-3 rounded"><code id="detailCode"></code></pre>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-xl-4">
@@ -91,8 +122,9 @@
 <!-- Footer -->
 <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 <!--<script th:src="@{/ClientStatic/js/script.js}"></script>-->
-<script th:src="@{/ClientStatic/js/problem-nav.js}"></script>
+
 <script th:src="@{/ClientStatic/js/pagination-submission.js}"></script>
+<script th:src="@{/ClientStatic/js/view-result-detail.js}"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
