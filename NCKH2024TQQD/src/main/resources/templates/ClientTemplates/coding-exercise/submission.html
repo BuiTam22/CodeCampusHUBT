@@ -28,6 +28,15 @@
 <!-- Problem Navigation -->
 <div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav(slug=${slug})}"></div>
 <div class="page-wrapper">
+    <div class="inner-head">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="inner-title">Kiểu dữ liệu int</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="section-one">
         <div class="container">
             <div class="row">
@@ -56,6 +65,9 @@
                             </tr>
                             </tbody>
                         </table>
+                        <nav>
+                            <ul id="pagination" class="pagination justify-content-center mt-4"></ul>
+                        </nav>
                     </div>
                 </div>
                 <div class="col-xl-4">
@@ -75,11 +87,12 @@
             </div>
         </div>
     </div>
-
 </div>
 <!-- Footer -->
 <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
-<script th:src="@{/ClientStatic/js/script.js}"></script>
+<!--<script th:src="@{/ClientStatic/js/script.js}"></script>-->
+<script th:src="@{/ClientStatic/js/problem-nav.js}"></script>
+<script th:src="@{/ClientStatic/js/pagination-submission.js}"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
