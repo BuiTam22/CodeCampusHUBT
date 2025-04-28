@@ -1,5 +1,5 @@
  document.addEventListener("DOMContentLoaded", function () {
-        const rowsPerPage = 8; // Số dòng mỗi trang
+        const rowsPerPage = 15; // Số dòng mỗi trang
         const table = document.querySelector(".custom-table tbody");
         const rows = Array.from(table.querySelectorAll("tr"));
         const pagination = document.getElementById("pagination");
