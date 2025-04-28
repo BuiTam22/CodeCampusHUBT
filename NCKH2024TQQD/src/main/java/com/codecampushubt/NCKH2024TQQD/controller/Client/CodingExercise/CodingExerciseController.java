@@ -53,8 +53,7 @@ public class CodingExerciseController {
 
     @GetMapping("/submissions/{slug}")
     public String showExerciseSubmissions(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
-
-        List<CodingSubmissionShow> submissions = codingSubmissionService.getCodingSubmissionShowByUserName(UserContext.getUsername());
+        List<CodingSubmissionShow> submissions = codingSubmissionService.getCodingSubmissionShowByUserName(UserContext.getUsername(), theSlug);
         model.addAttribute("submissions", submissions);
         model.addAttribute("slug", theSlug);
         model.addAttribute("activePage", request.getRequestURI());

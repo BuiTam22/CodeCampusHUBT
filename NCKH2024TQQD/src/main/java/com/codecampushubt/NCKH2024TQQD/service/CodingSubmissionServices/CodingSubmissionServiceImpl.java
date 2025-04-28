@@ -26,8 +26,8 @@ public class CodingSubmissionServiceImpl implements CodingSubmissionService{
     }
 
     @Override
-    public List<CodingSubmissionShow> getCodingSubmissionShowByUserName(String theUserName) {
-        return codingSubmissionRepository.getCodingSubmissionShowByUserName(theUserName);
+    public List<CodingSubmissionShow> getCodingSubmissionShowByUserName(String theUserName, String theSlug) {
+        return codingSubmissionRepository.getCodingSubmissionShowByUserName(theUserName, theSlug);
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CodingSubmissionService {
     CodingSubmission save(CodingSubmission codingSubmission);
-    List<CodingSubmissionShow> getCodingSubmissionShowByUserName(String theUserName);
+    List<CodingSubmissionShow> getCodingSubmissionShowByUserName(String theUserName, String theSlug);
     List<CodingSubmissionShow> getCodingSubmissionShowBySlugExercise(String theSlug);
 
 }
