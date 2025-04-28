@@ -17,7 +17,7 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" th:href="@{/ClientStatic/css/submission.css}">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/leaderboard.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/problem_nav.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}">
@@ -66,9 +66,59 @@
                             </tr>
                             </tbody>
                         </table>
+                        <nav>
+                            <ul id="pagination" class="pagination justify-content-center mt-4"></ul>
+                        </nav>
                     </div>
                 </div>
                 <div class="col-xl-4">
+                    <div class="inner-status">
+                        <h2 class="inner-title">User Name</h2>
+                        <div class="status-checkbox">
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">All</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" />
+                                <span class="checkmark"></span>
+                                <span class="label-text">Friends</span>
+                            </label>
+                        </div>
+                        <div class="line"></div>
+                        <div class="inner-status">
+                            <h2 class="inner-title">Filter By</h2>
+                            <div class="status-checkbox">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" />
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Language</span>
+                                </label>
+                                <div class="search-box">
+                                    <input type="text" class="search-input" placeholder="Type to search">
+                                </div>
+
+                                <label class="checkbox-container">
+                                    <input type="checkbox" />
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Country</span>
+                                </label>
+
+                                <label class="checkbox-container">
+                                    <input type="checkbox" />
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Company</span>
+                                </label>
+
+                                <label class="checkbox-container">
+                                    <input type="checkbox" />
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">School</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="line"></div>
                     <div class="help-box">
                         <h6 class="help-title">NEED HELP?</h6>
                         <hr>
@@ -77,7 +127,7 @@
                                 <i class="fas fa-comments"></i> View discussions
                             </a>
                             <a href="#" class="help-link">
-                                <i class="fas fa-trophy"></i> View top submissions
+                                <i class="fas fa-trophy"></i> View editorial
                             </a>
                         </div>
                     </div>
@@ -90,6 +140,7 @@
 <!-- Footer -->
 <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 <script th:src="@{/ClientStatic/js/script.js}"></script>
+    <script th:src="@{/ClientStatic/js/pagination-submission.js}"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
