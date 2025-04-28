@@ -8,7 +8,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // Ẩn test cases ban đầu
     testCase.style.display = "none";
 
+    // Thêm spinner vào HTML
+    runButton.innerHTML = `
+        <span class="button-text">Nộp</span>
+        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+    `;
+
     runButton.addEventListener("click", async () => {
+
+        // Vô hiệu hóa nút và hiển thị spinner
+        runButton.disabled = true;
+        runButton.querySelector(".button-text").textContent = "Đang nộp bài...";
+        runButton.querySelector(".spinner-border").classList.remove("d-none");
+
         const sourceCode = codeEditor.value;
         const language = languageSelector.value;
         const exerciseID = parseInt(codeEditor.dataset.exerciseId);
@@ -43,6 +55,11 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error("Lỗi:", error);
             alert("Không thể chạy code. Vui lòng thử lại.");
+        } finally {
+             // Luôn luôn chạy phần này dù thành công hay thất bại
+             runButton.disabled = false;
+             runButton.querySelector(".button-text").textContent = "Nộp";
+             runButton.querySelector(".spinner-border").classList.add("d-none");
         }
     });
     function showTestResult(result) {
