@@ -91,29 +91,53 @@ body {
     border-radius: 4px;
 }
 
+/*button-group*/
 .button-group {
     margin: 20px 0;
     text-align: center;
-    /* Căn giữa theo chiều ngang */
     display: flex;
-    /* Sử dụng flexbox */
     justify-content: center;
-    /* Căn các nút ra giữa */
     gap: 20px;
-    /* Khoảng cách giữa các nút */
+    position: relative; /* Thêm cho positioning context */
 }
 
 .run-button,
 .submit-button {
     padding: 10px 30px;
-    /* Tăng padding cho đẹp */
     border: none;
     border-radius: 4px;
     cursor: pointer;
     margin-left: 0;
-    /* Bỏ margin-left cũ */
-    transition: transform 0.2s, filter 0.2s;
-    /* Thêm hiệu ứng hover */
+    transition: all 0.3s ease; /* Thêm all để animate mọi thuộc tính */
+    display: inline-flex; /* Để căn giữa nội dung */
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Khoảng cách giữa text và spinner */
+    position: relative;
+}
+
+/* Trạng thái disabled */
+.run-button:disabled,
+.submit-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important; /* Vô hiệu hóa hiệu ứng hover khi disabled */
+}
+
+/* Loading state */
+.run-button .spinner-border,
+.submit-button .spinner-border {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.15em;
+    display: none; /* Ẩn mặc định */
+}
+
+/* Hiển thị spinner khi có class loading */
+.run-button.loading .spinner-border,
+.submit-button.loading .spinner-border {
+    display: inline-block;
+    animation: spinner-border 0.75s linear infinite;
 }
 
 .run-button {
@@ -126,11 +150,19 @@ body {
     color: white;
 }
 
-.run-button:hover,
-.submit-button:hover {
+.run-button:hover:not(:disabled),
+.submit-button:hover:not(:disabled) {
     filter: brightness(110%);
     transform: translateY(-1px);
 }
+
+/* Animation cho spinner */
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg);
+    }
+}
+/*end button-group*/
 
 
 /* New Header Styles */
