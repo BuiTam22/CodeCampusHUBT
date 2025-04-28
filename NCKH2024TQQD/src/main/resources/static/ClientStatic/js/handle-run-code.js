@@ -8,7 +8,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // Ẩn test cases ban đầu
     testCase.style.display = "none";
 
+    // Thêm spinner vào HTML
+    runButton.innerHTML = `
+        <span class="button-text">Chạy code</span>
+        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+    `;
+
     runButton.addEventListener("click", async () => {
+        // Vô hiệu hóa nút và hiển thị spinner
+        runButton.disabled = true;
+        runButton.querySelector(".button-text").textContent = "Đang chạy...";
+        runButton.querySelector(".spinner-border").classList.remove("d-none");
+
         const sourceCode = codeEditor.value;
         const language = languageSelector.value;
         const exerciseID = parseInt(codeEditor.dataset.exerciseId);
@@ -33,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const result = await response.json();
 
             // Hiện test cases sau khi chạy xong
-            testCase.style.display = "block";
+            testCase.style.display = "none";
 
             console.log("Kết quả chạy thử:", result);
             alert("Kết quả: " + (result.output || result.message));
@@ -41,6 +52,11 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error("Lỗi:", error);
             alert("Không thể chạy code. Vui lòng thử lại.");
+        } finally{
+            // Khôi phục trạng thái nút
+            runButton.disabled = false;
+            runButton.querySelector(".button-text").textContent = "Chạy code";
+            runButton.querySelector(".spinner-border").classList.add("d-none");
         }
     });
 });

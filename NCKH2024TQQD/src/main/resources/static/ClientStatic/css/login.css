@@ -67,3 +67,46 @@ button {
     justify-content: center;
     align-items: center;
 }
+
+/* css khi ấn nút submit */
+#submitBtn {
+    position: relative;
+    transition: all 0.3s ease;
+    display: inline-flex; /* Thêm dòng này */
+    align-items: center; /* Thêm dòng này */
+    justify-content: center; /* Thêm dòng này */
+    gap: 8px; /* Thêm khoảng cách giữa text và spinner */
+}
+
+#submitBtn .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    /* Bỏ position: absolute và right: 20px */
+}
+
+#submitBtn.loading .button-text {
+    visibility: visible; /* Sửa từ hidden thành visible */
+    display: inline-block; /* Thêm dòng này */
+}
+
+#submitBtn.loading .spinner {
+    display: inline-block;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#submitBtn:disabled {
+    background-color: #a5d6a7;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+/*end css khi ấn nút submit */

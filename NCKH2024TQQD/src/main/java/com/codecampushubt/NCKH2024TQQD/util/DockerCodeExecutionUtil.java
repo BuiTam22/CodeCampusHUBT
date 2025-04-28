@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class DockerCodeExecutionUtil {
 
     private static final String DOCKER_IMAGE = "java-runner:latest";
-    private static final int EXECUTION_TIMEOUT_SECONDS = 5;
+    private static final int EXECUTION_TIMEOUT_SECONDS = 10;
     private static final int MEMORY_LIMIT_MB = 256;
 
     /**
