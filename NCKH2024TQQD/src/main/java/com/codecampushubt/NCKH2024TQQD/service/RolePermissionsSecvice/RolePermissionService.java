@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface RolePermissionService {
     List<PermissionAssignDTO> getAllRolePermissions();
+    void createRolePermissions(String roleName, String permissionName);
 }

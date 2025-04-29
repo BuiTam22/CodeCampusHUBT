@@ -5,6 +5,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.PermissionDTO.UpdatePermissionsDTO;
 import com.codecampushubt.NCKH2024TQQD.service.PermissionServices.PermissionService;
 import com.codecampushubt.NCKH2024TQQD.service.RolePermissionsSecvice.RolePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,23 +15,34 @@ import java.util.List;
 @RequestMapping("/admin/api/role")
 public class RoleAPIController {
     private final PermissionService permissionService;
-    public RoleAPIController(PermissionService permissionService) {
+    private final RolePermissionService rolePermissionService;
+
+    public RoleAPIController(PermissionService permissionService, RolePermissionService rolePermissionService) {
         this.permissionService = permissionService;
+        this.rolePermissionService = rolePermissionService;
     }
-    @Autowired
-    private RolePermissionService rolePermissionService;
+
 
     @GetMapping("/show")
     public ResponseEntity<List<PermissionAssignDTO>> getPermissionsByRole() {
         List<PermissionAssignDTO> permissions = rolePermissionService.getAllRolePermissions();
         return ResponseEntity.ok(permissions);
     }
-    @PostMapping("/add")
-    public ResponseEntity<String> assignPermission(@RequestBody List<PermissionAssignDTO> dto) {
-        for (PermissionAssignDTO dtos : dto) {
-            permissionService.assignPermission(dtos);
-            System.out.println(dtos);
+
+    @PostMapping("/permissionsAdd")
+    public ResponseEntity<?> createRolePermission(@RequestBody PermissionAssignDTO dto) {
+        try {
+            System.out.println("controller"+dto);
+
+            rolePermissionService.createRolePermissions(dto.getRoleName(), dto.getPermissionName());
+            return ResponseEntity.ok("Role Permission created successfully!");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+
         }
-        return ResponseEntity.ok("Permission assigned successfully.");
+
+
     }
 }

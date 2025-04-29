@@ -3,9 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.dto.PermissionDTO;
 import jakarta.validation.constraints.NotBlank;
 
 public class PermissionAssignDTO {
-    @NotBlank(message = "RoleName Không Được Để Trống ")
     private String roleName;
-    @NotBlank(message = "Permission Không Được Để Trống")
     private String permissionName;
 
     public PermissionAssignDTO() {}

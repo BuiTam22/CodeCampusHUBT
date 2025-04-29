@@ -24,63 +24,51 @@ fetch(`/admin/api/role/show`)
         console.error("Lỗi khi lấy danh sách role:", err);
     });
 
-function editPermission(roleName, permissionName) {
-    const permissionCell = document.getElementById(`permissionCell-${roleName}-${permissionName}`);
-    const actionCell = document.getElementById(`actionCell-${roleName}-${permissionName}`);
-
-    // Đổi thành input
-    permissionCell.innerHTML = `<input type="text" id="input-${roleName}-${permissionName}" value="${permissionName}" class="form-control">`;
-
-    // Đổi nút
-    actionCell.innerHTML = `
-        <button class="btn btn-success mx-2" onclick="savePermission('${roleName}', '${permissionName}')">Lưu</button>
-        <button class="btn btn-secondary" onclick="cancelEdit('${roleName}', '${permissionName}')">Hủy</button>
-    `;
+function hideAllForms() {
+    document.getElementById("RoleAddForm").style.display = "none";
+    document.getElementById("rolePermissionTable").style.display = "none"; // r thường
 }
 
+function showRoleList() {
+    hideAllForms();
+    document.getElementById("rolePermissionTable").style.display = "block"; // r thường
+}
 
-function savePermission(roleName, oldPermissionName) {
-    const input = document.getElementById(`input-${roleName}-${oldPermissionName}`);
-    const newPermissionName = input.value;
+function showAddRoleFormOnly() {
+    hideAllForms();
+    document.getElementById("RoleAddForm").style.display = "block";
+}
 
-    const updatedPermission = {
-        roleName: roleName,
-        permissionName: newPermissionName
-    };
-
-    fetch('/admin/api/role/add', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
+//add permissions
+document.getElementById("addRoleForm").addEventListener('submit',function (e){
+    e.preventDefault();
+    const formdata = new FormData(this);
+    const data = {
+        roleName: formdata.get("roleName"),
+        permissionName: formdata.get("permissionName")
+    }
+    fetch('/admin/api/role/permissionsAdd',{
+        method:"POST",
+        headers:{
+            'content-Type' : 'application/json'
         },
-        body: JSON.stringify(updatedPermission)
+        body: JSON.stringify(data)
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Cập nhật thất bại');
+        .then(res =>{
+            if (res.ok){
+                alert("Thêm Thành Công ")
+                showRoleList()
+                location.reload()
+            }else {
+                return res.json().then(err=>{throw err;})
             }
-            return response.json();
         })
-        .then(data => {
-            alert('Cập nhật thành công!');
-            fetchPermissions();
+        .catch(err => {
+            console.log("Lỗi", err)
+            alert("Lỗi")
         })
-        .catch(error => {
-            console.error('Lỗi cập nhật:', error);
-            alert('Cập nhật thất bại!');
-        });
-}
+})
 
-function cancelEdit(roleName, permissionName) {
-    const permissionCell = document.getElementById(`permissionCell-${roleName}-${permissionName}`);
-    const actionCell = document.getElementById(`actionCell-${roleName}-${permissionName}`);
 
-    // Khôi phục lại tên permission cũ
-    permissionCell.innerHTML = permissionName;
 
-    // Khôi phục lại 2 nút "Sửa" + "Xóa"
-    actionCell.innerHTML = `
-        <button class="btn btn-warning mx-2" onclick="editPermission('${roleName}', '${permissionName}')">Sửa</button>
-        <button class="btn btn-danger" onclick="deletePermission('${roleName}', '${permissionName}')">Xóa</button>
-    `;
-}
+

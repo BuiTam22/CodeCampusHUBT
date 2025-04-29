@@ -12,7 +12,7 @@ public interface PermissionService {
 //
 //
 //    void updatePermissions(UpdatePermissionsDTO updatePermissionsDTO);
-void assignPermission(PermissionAssignDTO dto);
+//void assignPermission(PermissionAssignDTO dto);
 
 //    List<PermissionAssignDTO> getAllRolePermissions();
 }

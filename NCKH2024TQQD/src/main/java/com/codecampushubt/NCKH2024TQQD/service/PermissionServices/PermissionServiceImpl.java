@@ -35,45 +35,18 @@ public class PermissionServiceImpl implements PermissionService{
         return permissionRepository.getPermissionNameDTO(userName);
     }
 
-    @Override
-    public void assignPermission(PermissionAssignDTO dto) {
-        String roleName = dto.getRoleName().toUpperCase();
-
-        if (!roleName.equals("ADMIN") && !roleName.equals("STUDENT") && !roleName.equals("TEACHER")) {
-            throw new IllegalArgumentException("Invalid role name: " + roleName);
-        }
-
-        Role role = roleRepository.findByRoleName(roleName)
-                .orElseThrow(() -> new IllegalArgumentException("Role not found with name: " + roleName));
-        Integer roleId = role.getRoleID();
-
-        Permission permission = permissionRepository.findByPermissionName(dto.getPermissionName())
-                .orElseGet(() -> {
-                    Permission newPermission = new Permission();
-                    newPermission.setPermissionName(dto.getPermissionName());
-                    return permissionRepository.save(newPermission);
-                });
-        Integer permissionId = permission.getPermissionID();
-
-        RolePermissionId rolePermissionId = new RolePermissionId(roleId, permissionId);
-
-        if (!rolePermissionRepository.existsById(rolePermissionId)) {
-            RolePermission rolePermission = new RolePermission();
-            rolePermission.setId(rolePermissionId);
-            rolePermissionRepository.save(rolePermission);
-        } else {
-            throw new IllegalStateException("Permission already assigned to role.");
-        }
-    }
-
-
-
-
-
-
-
-
-
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+

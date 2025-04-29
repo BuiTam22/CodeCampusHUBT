@@ -27,5 +27,7 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
     List<String> getRoleNameByUserName(@Param("userName") String userName);
 
 
+
+
 }
 
