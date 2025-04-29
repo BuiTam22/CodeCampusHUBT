@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,9 +25,21 @@ public class LessonCommon {
 
 
     @GetMapping("")
-    public String returnLessonCommon(Model model, HttpServletRequest request){
-        // lấy moduleID là 3 cố định vì đây là lấy ra module common chứa các lessoncommon
-        List<LessonShowDTO> lessons = lessonRepository.getLessonShowDTO(3L);
+    public String returnLessonCommon(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String difficulty,
+            Model model, HttpServletRequest request){
+
+        List<LessonShowDTO> lessons = new ArrayList<>();
+
+        if(search!=null || status!=null || difficulty!=null){
+            // tự viết hàm tìm kiếm kết quả
+        }else{
+            // lấy moduleID là 3 cố định vì đây là lấy ra module common chứa các lessoncommon
+            lessons = lessonRepository.getLessonShowDTO(3L);
+        }
+
         model.addAttribute("lessons" , lessons);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/lesson/show-common";

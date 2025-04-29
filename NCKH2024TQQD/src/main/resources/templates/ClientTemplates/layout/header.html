@@ -41,10 +41,17 @@
             <button class="user-button">
                 <i class="fas fa-bell"></i>
             </button>
-            <div class="user-profile">
+            <div class="user-profile" onclick="toggleDropdown()">
                 <span class="username" th:text="${userFullName}">Guest</span>
                 <i class="fas fa-user"></i>
+
+                <div id="dropdownMenu" class="dropdown-menu hidden">
+                    <a th:href="@{/profile}">Profile</a>
+                    <a th:href="@{/management}">Management</a>
+                    <a th:href="@{/logout}">Log out</a>
+                </div>
             </div>
+
         </div>
     </div>
 </header>

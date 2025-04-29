@@ -20,6 +20,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     List<LessonShowDTO> getLessonShowDTO(@Param("moduleID") Long moduleID);
 
 
+
     boolean existsBySlug(String slug);
 
 
