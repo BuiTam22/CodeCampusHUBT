@@ -16,7 +16,7 @@
 <div class="page-wrapper">
     <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
     <!--Filter-->
-    <div th:replace="~{ClientTemplates/layout/filter :: filters}"></div>
+    <div th:replace="~{ClientTemplates/layout/filter :: filters(filterAction='/courses/show')}"></div>
     <div class="content-wrapper">
         <div class="container">
             <div class="courses-container">

@@ -14,53 +14,54 @@
 <body>
 <div class="page-wrapper">
 <!-- Header -->
-<div th:replace="~{ClientTemplates/layout/header :: header}"></div>
+    <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
 
-<!--Filter-->
-<div th:replace="~{ClientTemplates/layout/filter :: filters}"></div>
-<div class="content-wrapper">
-    <div class="container">
-        <div class="courses-container">
-            <div class="courses-grid">
-                <a th:each="lesson : ${lessons}"
-                   th:href="@{practice/lesson/{slug}(slug=${lesson.slug})}"
-                   class="course-card">
+    <!--Filter-->
+    <div th:replace="~{ClientTemplates/layout/filter :: filters(filterAction='/practice')}"></div>
 
-                    <!-- Hình ảnh mặc định vì lesson không có image -->
-                    <div class="course-image">
-                        <div class="image-placeholder">
-                            <i class="fas fa-laptop-code"></i>
-                        </div>
-                    </div>
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="courses-container">
+                <div class="courses-grid">
+                    <a th:each="lesson : ${lessons}"
+                       th:href="@{practice/lesson/{slug}(slug=${lesson.slug})}"
+                       class="course-card">
 
-                    <!-- Nội dung bài học -->
-                    <div class="course-content">
-                        <h3 class="course-title" th:text="${lesson.title}"></h3>
-
-                        <div class="course-meta">
-                            <div class="course-instructor">
-                                <i class="fas fa-clock"></i>
-                                <span th:text="${lesson.duration} + ' phút'"></span>
-                            </div>
-                            <div class="course-rating">
-                                <i class="fas fa-eye"></i>
-                                <span th:text="${lesson.preview} ? 'Xem trước' : 'Bài học'"></span>
+                        <!-- Hình ảnh mặc định vì lesson không có image -->
+                        <div class="course-image">
+                            <div class="image-placeholder">
+                                <i class="fas fa-laptop-code"></i>
                             </div>
                         </div>
 
-                        <!-- Có thể hiện mô tả nếu muốn -->
-                        <div class="course-pricing">
-                            <span th:text="${lesson.description}"></span>
+                        <!-- Nội dung bài học -->
+                        <div class="course-content">
+                            <h3 class="course-title" th:text="${lesson.title}"></h3>
+
+                            <div class="course-meta">
+                                <div class="course-instructor">
+                                    <i class="fas fa-clock"></i>
+                                    <span th:text="${lesson.duration} + ' phút'"></span>
+                                </div>
+                                <div class="course-rating">
+                                    <i class="fas fa-eye"></i>
+                                    <span th:text="${lesson.preview} ? 'Xem trước' : 'Bài học'"></span>
+                                </div>
+                            </div>
+
+                            <!-- Có thể hiện mô tả nếu muốn -->
+                            <div class="course-pricing">
+                                <span th:text="${lesson.description}"></span>
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Footer -->
-<div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+    <!-- Footer -->
+    <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 
 <script th:src="@{/ClientStatic/js/script.js}"></script>
 </div>
