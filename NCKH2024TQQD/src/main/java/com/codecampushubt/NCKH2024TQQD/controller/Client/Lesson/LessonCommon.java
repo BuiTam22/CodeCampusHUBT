@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.controller.Client.Lesson;
 
 import com.codecampushubt.NCKH2024TQQD.dao.LessonRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
+import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,11 +17,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/practice")
 public class LessonCommon {
-    private final LessonRepository lessonRepository;
+    private final LessonService lessonService;
 
     @Autowired
-    public LessonCommon(LessonRepository lessonRepository) {
-        this.lessonRepository = lessonRepository;
+    public LessonCommon(LessonService lessonService) {
+        this.lessonService = lessonService;
     }
 
 
@@ -31,13 +32,16 @@ public class LessonCommon {
             @RequestParam(required = false) String difficulty,
             Model model, HttpServletRequest request){
 
+
         List<LessonShowDTO> lessons = new ArrayList<>();
 
         if(search!=null || status!=null || difficulty!=null){
-            // tự viết hàm tìm kiếm kết quả
+            // lấy moduleID là 3 cố định vì đây là lấy ra module common chứa các lessoncommon
+            // truyền vào Param search
+            lessons = lessonService.getLessonShowDTOByModuleIDAndSlug(3L, search);
         }else{
             // lấy moduleID là 3 cố định vì đây là lấy ra module common chứa các lessoncommon
-            lessons = lessonRepository.getLessonShowDTO(3L);
+            lessons = lessonService.getLessonShowDTO(3L);
         }
 
         model.addAttribute("lessons" , lessons);
