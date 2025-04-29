@@ -32,7 +32,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="inner-title" th:text="${submissions[0].exerciseName}">Kiểu dữ liệu int</div>
+                    <div class="inner-title" th:text="${submissions.size() > 0 ? submissions[0].exerciseName : 'Không có bài nộp'}">Chưa có submission nào</div>
                 </div>
             </div>
         </div>
