@@ -330,4 +330,17 @@ function softDeleteUser(userId) {
             });
     }
 }
-//Xóa Cứng
+//Xóa Mềm
+
+//Phân Trang
+let currentPage =  0
+let totalPage = 0
+function loadUsers(page){
+    fetch(`/admin/api/user?page=${page}&size=4`)
+        .then(res => res.json())
+        .then(data =>{
+            totalPage = data.totalPage;
+            displayUser(data.conten)
+        })
+}
+//phân Trang

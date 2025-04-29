@@ -2,19 +2,21 @@ package com.codecampushubt.NCKH2024TQQD.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import org.hibernate.Internal;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class RolePermissionId {
-    @Column(name = "role_id")  // Đúng với tên cột trong bảng RolePermission
+public class RolePermissionId implements Serializable {
+    @Column(name = "role_id")
     private Integer roleID;
 
-    @Column(name = "permission_id")  // Đúng với tên cột trong bảng RolePermission
+    @Column(name = "permission_id")
     private Integer permissionID;
 
-    public RolePermissionId() {
-    }
+    // Constructor, getters, setters
+    public RolePermissionId() {}
 
     public RolePermissionId(Integer roleID, Integer permissionID) {
         this.roleID = roleID;
@@ -37,13 +39,13 @@ public class RolePermissionId {
         this.permissionID = permissionID;
     }
 
-    // Override equals and hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RolePermissionId that = (RolePermissionId) o;
-        return Objects.equals(roleID, that.roleID) && Objects.equals(permissionID, that.permissionID);
+        return Objects.equals(roleID, that.roleID) &&
+                Objects.equals(permissionID, that.permissionID);
     }
 
     @Override
@@ -51,3 +53,5 @@ public class RolePermissionId {
         return Objects.hash(roleID, permissionID);
     }
 }
+
+
