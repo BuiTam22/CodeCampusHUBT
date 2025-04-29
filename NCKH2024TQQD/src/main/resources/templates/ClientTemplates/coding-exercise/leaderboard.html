@@ -62,7 +62,7 @@
                                 </td>
                                 <td th:text="${submission.score}">10.0</td>
                                 <td th:text="${submission.language}">Java</td>
-                                <td>in a minute</td>
+                                <td th:text="${#temporals.format(submission.submittedAt, 'HH:mm dd-MM-yyyy')}"></td>
                             </tr>
                             </tbody>
                         </table>
