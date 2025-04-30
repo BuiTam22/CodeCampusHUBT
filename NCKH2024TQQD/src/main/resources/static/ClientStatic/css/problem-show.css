@@ -1,522 +1,141 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+.section-one {
+  margin-top: 150px;
 }
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f3f3;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    padding: 0px 0 0 0; /* Top padding cho header và nav *//*
-    margin: 0;
-}*/
-.container {
-    display: flex;
-    padding: 20px;
-    gap: 20px;
-}
-
-/* Problem Statement Section */
-.section-one{
-margin-top:30px;
-}
+/* Panel đề bài */
 .problem-panel {
-/*    flex: 0.7;*/
-    background: white;
-    padding: 20px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 25px 30px;
+  margin-bottom: 20px;
 }
 
 .problem-title {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #333;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-.problem-description {
-    line-height: 1.6;
-    color: #444;
+.problem-description h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 20px;
 }
 
-.sample-io {
-    margin: 20px 0;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 4px;
+.problem-description p,
+.problem-description span {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 10px;
 }
 
-/* Code Editor Section */
+/* Code Editor Panel */
 .editor-panel {
-    flex: 1;
-    background: #1e1e1e;
-    border-radius: 4px;
-    color: white;
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .editor-header {
-    padding: 10px;
-    background: #252526;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 4px 4px 0 0;
+  background-color: #2d2d2d;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #ffffff;
+  border-bottom: 1px solid #444;
 }
 
 .language-selector {
-    padding: 5px 10px;
-    background: #333;
-    color: white;
-    border: none;
-    border-radius: 3px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.scrollable-panel {
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  padding-right: 15px;
+}
+.problem-panel.scrollable-panel {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+/* Monaco Editor Container */
+#editor {
+  height: 500px;
+  padding: 10px;
+  font-family: monospace;
 }
 
+/* Sample I/O */
+.sample-io h4 {
+  margin-top: 20px;
+  font-weight: 600;
+  color: #222;
+}
 
-/* Test Cases Section */
+.sample-io pre {
+  background-color: #f1f1f1;
+  padding: 15px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: monospace;
+}
+
+/* Kết quả nộp bài */
 .test-cases {
-    margin: 20px 20px 20px 20px;
+  margin: 30px auto;
+  max-width: 900px;
 }
 
-.test-case {
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.test-result {
+  background-color: #ffffff;
+  border-left: 4px solid #28a745;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
 }
 
-/*button-group*/
+.test-result h3 {
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* Nút chạy & nộp */
 .button-group {
-    margin: 20px 0;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    position: relative; /* Thêm cho positioning context */
+  text-align: center;
+  margin: 30px 0;
 }
 
 .run-button,
 .submit-button {
-    padding: 10px 30px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 0;
-    transition: all 0.3s ease; /* Thêm all để animate mọi thuộc tính */
-    display: inline-flex; /* Để căn giữa nội dung */
-    align-items: center;
-    justify-content: center;
-    gap: 8px; /* Khoảng cách giữa text và spinner */
-    position: relative;
-}
-
-/* Trạng thái disabled */
-.run-button:disabled,
-.submit-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none !important; /* Vô hiệu hóa hiệu ứng hover khi disabled */
-}
-
-/* Loading state */
-.run-button .spinner-border,
-.submit-button .spinner-border {
-    width: 1rem;
-    height: 1rem;
-    border-width: 0.15em;
-    display: none; /* Ẩn mặc định */
-}
-
-/* Hiển thị spinner khi có class loading */
-.run-button.loading .spinner-border,
-.submit-button.loading .spinner-border {
-    display: inline-block;
-    animation: spinner-border 0.75s linear infinite;
-}
-
-.run-button {
-    background: #4CAF50;
-    color: white;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 6px;
+  margin: 0 10px;
+  transition: 0.3s ease-in-out;
 }
 
 .submit-button {
-    background: #2196F3;
-    color: white;
+  background-color: #28a745;
 }
 
-.run-button:hover:not(:disabled),
-.submit-button:hover:not(:disabled) {
-    filter: brightness(110%);
-    transform: translateY(-1px);
+.run-button:hover {
+  background-color: #0069d9;
 }
 
-/* Animation cho spinner */
-@keyframes spinner-border {
-    to {
-        transform: rotate(360deg);
-    }
+.submit-button:hover {
+  background-color: #218838;
 }
-/*end button-group*/
-
-
-/* Adjust main container for new layout */
-.container {
-    margin-top: 20px;
-    margin-left: 0px;
-}
-
-
-/* css cho thanh problem, submisstion,... */
-.problem-nav {
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    z-index: 999;
-}
-
-.nav-tabs {
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.nav-tab {
-    padding: 14px 20px;
-        border: none;
-    background: none;
-    cursor: pointer;
-    color: #666;
-    font-size: 14px;
-    position: relative;
-    transition: 0.3s;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.nav-tab:hover {
-    color: #2196F3;
-    background: #f5f5f5;
-}
-
-.nav-tab.active {
-    color: #2196F3;
-    font-weight: 500;
-}
-
-.nav-tab.active::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: #2196F3;
-    animation: underline 0.3s ease;
-}
-
-
-html,
-body {
-    height: 100%;
-}
-
-.content-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-top: 120px; /* Bù trừ cho header cố định */
-}
-
-.main-nav {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    flex: 1;
-    justify-content: center;
-    margin: 0 50px;
-}
-
-
-.nav-item {
-    color: #ecf0f1;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: 500;
-    position: relative;
-    padding: 5px 0;
-    transition: color 0.3s;
-}
-
-.nav-item::after {
-    content: "";
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #3498db;
-    transition: width 0.3s;
-}
-
-.nav-item:hover {
-    color: #3498db;
-}
-
-
-
-.courses-container {
-    padding: 2rem;
-    width: 100%;
-}
-
-.courses-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-}
-
-.course-card {
-    cursor: pointer; /* Thêm dòng này */
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
-}
-
-.course-card:hover {
-    transform: translateY(-5px);
-}
-
-.course-image {
-    height: 200px;
-    background: #f5f7fa;
-    position: relative;
-}
-
-.course-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.image-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: #3498db;
-    font-size: 3rem;
-}
-
-.course-content {
-    padding: 1rem;
-}
-
-.course-title {
-    font-size: 1.1rem;
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-    height: 3.2rem;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-.course-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0.8rem 0;
-    font-size: 0.9rem;
-    color: #7f8c8d;
-}
-
-.course-instructor {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.course-pricing {
-    margin-top: 1rem;
-    text-align: right;
-}
-
-.original-price {
-    text-decoration: line-through;
-    color: #95a5a6;
-    margin-right: 0.5rem;
-}
-
-.free-badge {
-    background: #2ecc71;
-    color: white;
-    padding: 0.2rem 0.5rem;
-    border-radius: 3px;
-    font-size: 0.8rem;
-}
-
-@media (max-width: 1200px) {
-    .courses-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 992px) {
-    .courses-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 576px) {
-    .courses-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .course-image {
-        height: 150px;
-    }
-}
-
-/* Test Cases Container */
-.test-cases {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    margin: 20px 0;
-    padding: 25px;
-}
-
-/* Test Result Header */
-.test-cases h3 {
-    color: #2d3436;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 0.8rem;
-}
-
-/* Result Summary */
-.test-result {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid #e9ecef;
-}
-
-.test-result p {
-    margin: 0.8rem 0;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.test-result strong {
-    color: #495057;
-    min-width: 120px;
-    display: inline-block;
-}
-
-.test-result span {
-    color: #212529;
-    font-weight: 500;
-}
-
-/* Status Badges */
-#resultStatus {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-#resultStatus[data-status="accepted"] {
-    background: #d4edda;
-    color: #155724;
-}
-
-#resultStatus[data-status="failed"] {
-    background: #f8d7da;
-    color: #721c24;
-}
-
-/* Test Case Details */
-.test-case-detail {
-    background: white;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    padding: 1rem;
-    margin: 1rem 0;
-    transition: all 0.2s ease;
-}
-
-.test-case-detail:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-}
-
-.test-case-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.8rem;
-}
-
-.test-case-status {
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 4px;
-}
-
-.passed {
-    background: #e6ffed;
-    color: #1f7d45;
-}
-
-.failed {
-    background: #ffeef0;
-    color: #cf222e;
-}
-
-.test-case-details pre {
-    background: #f8f9fa;
-    padding: 12px;
-    border-radius: 4px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    margin: 8px 0;
-    white-space: pre-wrap;
-    border: 1px solid #eee;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .test-result p {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-    }
-
-    .test-result strong {
-        min-width: auto;
-    }
-
-    .test-case-detail {
-        padding: 0.8rem;
-    }
-}
-
-/* END Test Cases Container */
