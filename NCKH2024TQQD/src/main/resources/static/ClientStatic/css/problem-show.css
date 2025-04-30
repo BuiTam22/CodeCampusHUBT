@@ -72,12 +72,6 @@ body {
     border-radius: 3px;
 }
 
-.code-area {
-    display: flex;
-    position: relative;
-    height: 500px;
-    overflow: auto;
-}
 
 /* Test Cases Section */
 .test-cases {
@@ -266,41 +260,6 @@ body {
     margin-left: 0px;
 }
 
-.code-editor {
-    flex: 1;
-    background: #1e1e1e;
-    color: #d4d4d4;
-    padding: 15px 10px;
-    /* Điều chỉnh padding */
-    font-family: 'Consolas', monospace;
-    border: none;
-    outline: none;
-    resize: none;
-    width: calc(100% - 40px);
-    line-height: 1.5;
-    tab-size: 4;
-    font-size: 14px;
-    /* Đảm bảo cùng kích thước font */
-    box-sizing: border-box;
-}
-
-.line-numbers {
-    width: 40px;
-    padding: 15px 5px;
-    color: #858585;
-    background: #252526;
-    height: 100%;
-    text-align: right;
-    user-select: none;
-    overflow: hidden;
-    line-height: 1.5;
-    /* Thêm line-height */
-    font-family: 'Consolas', monospace;
-    /* Thêm font chữ */
-    font-size: 14px;
-    /* Thêm kích thước font */
-    box-sizing: border-box;
-}
 
 /* css cho thanh problem, submisstion,... */
 .problem-nav {
@@ -322,7 +281,7 @@ body {
 
 .nav-tab {
     padding: 14px 20px;
-    border: none;
+        border: none;
     background: none;
     cursor: pointer;
     color: #666;
@@ -403,24 +362,7 @@ body {
     color: #3498db;
 }
 
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-}
 
-.username {
-    font-size: 14px;
-    color: #ecf0f1;
-}
-
-.fa-user {
-    background: #34495e;
-    padding: 8px;
-    border-radius: 50%;
-    font-size: 14px;
-}
 
 .courses-container {
     padding: 2rem;
@@ -706,4 +648,3 @@ body {
 }
 
 /* END Test Cases Container */
-
