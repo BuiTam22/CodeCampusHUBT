@@ -13,7 +13,7 @@ fetch(`/admin/api/role/show`)
                     </td>
                     <td id="actionCell-${permission.roleName}-${permission.permissionName}">
                         <button class="btn btn-warning mx-2" onclick="editPermission('${permission.roleName}', '${permission.permissionName}')">Sửa</button>
-                        <button class="btn btn-danger" onclick="deletePermission('${permission.roleName}', '${permission.permissionName}')">Xóa</button>
+                        <button class="btn btn-danger" onclick="softDeleteRolePermission('${permission.roleName}', '${permission.permissionName}')">Xóa</button>
                     </td>                                                     
                 </tr>
             `;
@@ -68,6 +68,45 @@ document.getElementById("addRoleForm").addEventListener('submit',function (e){
             alert("Lỗi")
         })
 })
+
+
+// Xóa
+function softDeleteRolePermission(roleName , permissionName){
+    const url = `/admin/api/role/delete?roleName=${encodeURIComponent(roleName)}&permissionName=${encodeURIComponent(permissionName)}`;
+    console.log(roleName)
+    console.log(permissionName)
+    console.log(url)
+    if (confirm("Bạn có chắc chắn muốn Xóa Quyền Này chứ ?")){
+        fetch(url,{
+            method:"DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+
+
+        })
+
+            .then(res => {
+                    if (res.ok) {
+                        alert("Xóa thành công!");
+                        location.reload();
+                    } else {
+                        return res.json().then(errorData => {
+                            alert("Xóa thất bại: " + (errorData.message || "Không rõ lỗi"));
+                            console.error("Chi tiết lỗi từ backend:", errorData);
+                        });
+                    }
+                })
+
+
+            .catch(err => {
+                console.error("Lỗi khi gọi Api ",err)
+                alert("Đã xảy ra Lỗi ")
+            })
+
+    }
+}
+// end Xóa
 
 
 

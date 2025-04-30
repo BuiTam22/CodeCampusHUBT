@@ -60,5 +60,17 @@ public class RolePermissionServiceImpl implements RolePermissionService{
             rolePermissionRepository.save(rolePermission);
     }
 
+    public void deleteRolePermissions(String roleName,String permissionName) {
+        System.out.println(roleName+" "+permissionName);
+        Role role = roleRepository.findByRoleName(roleName).orElseThrow(() -> new RuntimeException("Role not found"));
+        System.out.println(role.getRoleID());
+        Permission permission = permissionRepository.findByPermissionName(permissionName).orElseThrow(() -> new RuntimeException("Permission not found"));
+        System.out.println(permission.getPermissionID());
+        RolePermissionId id = new RolePermissionId(role.getRoleID(),permission.getPermissionID());
+        rolePermissionRepository.deleteById(id);
+
+
+    }
+
 
 }
