@@ -71,8 +71,11 @@
                                 <option value="javascript" th:selected="${exercise.programmingLanguage == 'JavaScript'}">JavaScript</option>
                             </select>
                         </div>
-                        <div id="editor">
-                            <span th:utext="${exercise.initialCode}">// Viết code vào đây</span>
+                        <div
+                                id="editor"
+                                th:attr="data-exercise-id=${exercise.exerciseID}">
+                            <span th:utext="${exercise.initialCode}"
+                            >// Viết code vào đây</span>
                         </div>
                     </div>
                 </div>
