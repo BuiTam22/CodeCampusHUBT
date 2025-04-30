@@ -8,7 +8,7 @@
   padding: 0 30px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   height: 60px;
-  z-index: 999;
+  z-index: 1050;
 }
 
 .header-content {
@@ -92,8 +92,6 @@
   justify-content: center;
   margin: 0 50px;
 }
-
-
 .problem-nav-item {
   color: #ecf0f1;
   text-decoration: none;
@@ -126,6 +124,7 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  position: relative;
 }
 
 .username {
@@ -141,29 +140,28 @@
 }
 /*ket thuc css main-nav*/
 
-
-/*css cho drop dowrn user-profile*/
-.dropdown-menu {
+/*dropdown*/
+.user-dropdown {
     position: absolute;
     top: 100%;
     right: 0;
     background-color: white;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
-    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    z-index: 999;
+    width: 150px;
     display: flex;
     flex-direction: column;
-    padding: 8px 0;
-    z-index: 10;
 }
 
-.dropdown-menu a {
-    padding: 8px 16px;
+.user-dropdown a {
+    padding: 10px 15px;
     text-decoration: none;
-    color: black;
-    white-space: nowrap;
+    color: #333;
 }
 
-.dropdown-menu a:hover {
+.user-dropdown a:hover {
     background-color: #f0f0f0;
 }
 
@@ -171,4 +169,9 @@
     display: none;
 }
 
-/*end css cho drop dowrn user-profile*/
+.user-profile {
+    position: relative;
+    cursor: pointer;
+}
+/*end dropdown*/
+

@@ -1,16 +1,19 @@
-function toggleDropdown() {
-    const dropdown = document.getElementById("dropdownMenu");
-    dropdown.classList.toggle("hidden");
-}
 
-// Ẩn dropdown nếu click ra ngoài
-document.addEventListener("click", function(event) {
-    const profile = document.querySelector(".user-profile");
-    const dropdown = document.getElementById("dropdownMenu");
-    if (!profile.contains(event.target)) {
-        dropdown.classList.add("hidden");
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    const userProfile = document.getElementById('userProfile');
+    const dropdown = document.getElementById('userDropdown');
+
+    userProfile.addEventListener('click', function (e) {
+        e.stopPropagation(); // Ngăn không cho sự kiện lan ra ngoài
+        dropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function () {
+        dropdown.classList.add('hidden');
+    });
+
 });
+
 document.addEventListener('DOMContentLoaded', function() {
     const currentUrl = window.location.pathname;
 
