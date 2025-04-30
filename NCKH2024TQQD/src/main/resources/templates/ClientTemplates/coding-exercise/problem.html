@@ -5,71 +5,90 @@
     <meta charset="UTF-8">
     <title>CodeHubt</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/ClientStatic/css/problem-show.css}">
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+            integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/problem_nav.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/problem-show.css}">
 </head>
 
 <body>
     <!-- Header -->
     <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
-
     <!-- Problem Navigation -->
     <div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav(slug=${slug})}"></div>
-
     <div class="content-wrapper">
+        <div class="section-one">
         <div class="container">
-            <!-- Problem Statement -->
-            <div class="problem-panel">
-                <h1 class="problem-title" th:text="${exercise.title}">1. Array Sum</h1>
-                <div class="problem-description">
-                    <p th:text="${exercise.description}">Given an array of integers, find the sum of its elements.</p>
+            <div class="row">
+                <div class="col-xl-6">
+                    <!-- Problem Statement -->
+                    <div class="problem-panel">
+                        <h1 class="problem-title" th:text="${exercise.title}">1. Array Sum</h1>
+                        <div class="problem-description">
+                            <p th:text="${exercise.description}">Given an array of integers, find the sum of its elements.</p>
 
-                    <h3 class="input-format">Định dạng đầu vào</h3>
-                    <p><!-- Thêm nếu có thêm trường inputFormat sau này --></p>
+                            <h3 class="input-format">Định dạng đầu vào</h3>
+                            <p><!-- Thêm nếu có thêm trường inputFormat sau này --></p>
 
-                    <h3 class="constraint">Ràng buộc</h3>
-                    <p>
-                        <span th:text="'Thời gian tối đa: ' + ${exercise.timeLimit} + 'ms'"></span><br/>
-                        <span th:text="'Giới hạn bộ nhớ: ' + ${exercise.memoryLimit} + 'MB'"></span>
-                    </p>
+                            <h3 class="constraint">Ràng buộc</h3>
+                            <p>
+                                <span th:text="'Thời gian tối đa: ' + ${exercise.timeLimit} + 'ms'"></span><br/>
+                                <span th:text="'Giới hạn bộ nhớ: ' + ${exercise.memoryLimit} + 'MB'"></span>
+                            </p>
 
-                    <!-- Sample IO -->
-                    <div class="sample-io" th:if="${#lists.size(exercise.exerciseTestCases) > 0}">
-                        <div th:each="testCase : ${exercise.exerciseTestCases}">
-                            <div th:if="${testCase.public}">
-                                <h4>Ví dụ đầu vào</h4>
-                                <pre th:text="${testCase.input}">6
+                            <!-- Sample IO -->
+                            <div class="sample-io" th:if="${#lists.size(exercise.exerciseTestCases) > 0}">
+                                <div th:each="testCase : ${exercise.exerciseTestCases}">
+                                    <div th:if="${testCase.public}">
+                                        <h4>Ví dụ đầu vào</h4>
+                                        <pre th:text="${testCase.input}">6
 1 2 3 4 5 6</pre>
-                                <h4>Ví dụ đầu ra</h4>
-                                <pre th:text="${testCase.expectedOutput}">21</pre>
-                                <!-- Chỉ lấy 1 test case public đầu tiên -->
-                                <div th:remove="all"></div>
+                                        <h4>Ví dụ đầu ra</h4>
+                                        <pre th:text="${testCase.expectedOutput}">21</pre>
+                                        <!-- Chỉ lấy 1 test case public đầu tiên -->
+                                        <div th:remove="all"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Code Editor -->
-            <div class="editor-panel">
-                <div class="editor-header">
-                    <span>Code</span>
-                    <select class="language-selector">
-                        <option th:selected="${exercise.programmingLanguage == 'Python'}">Python 3</option>
-                        <option th:selected="${exercise.programmingLanguage == 'Java'}">Java</option>
-                        <option th:selected="${exercise.programmingLanguage == 'JavaScript'}">JavaScript</option>
-                    </select>
+                <div class="col-xl-6">
+                    <!-- Code Editor -->
+                    <div class="editor-panel">
+                        <div class="editor-header">
+                            <span>Code</span>
+                            <select class="language-selector">
+                                <option th:selected="${exercise.programmingLanguage == 'Python'}">Python 3</option>
+                                <option th:selected="${exercise.programmingLanguage == 'Java'}">Java</option>
+                                <option th:selected="${exercise.programmingLanguage == 'JavaScript'}">JavaScript</option>
+                            </select>
+                        </div>
+                        <div class="code-area">
+                            <div class="line-numbers" id="lineNumbers"></div>
+                            <textarea class="code-editor" id="editor"
+                                      spellcheck="false"
+                                      placeholder="// Viết Code vào đây"
+                                      th:text="${exercise.initialCode}"
+                                      th:attr="data-exercise-id=${exercise.exerciseID}"></textarea>
+                        </div>
+                    </div>
                 </div>
-                <div class="code-area">
-                    <div class="line-numbers" id="lineNumbers"></div>
-                    <textarea class="code-editor" id="editor"
-                              spellcheck="false"
-                              placeholder="// Viết Code vào đây"
-                              th:text="${exercise.initialCode}"
-                              th:attr="data-exercise-id=${exercise.exerciseID}"></textarea>
-                </div>
             </div>
+        </div>
         </div>
     </div>
 

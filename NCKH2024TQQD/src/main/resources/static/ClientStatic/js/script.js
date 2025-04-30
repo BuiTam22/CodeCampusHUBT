@@ -1,4 +1,16 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const userProfile = document.getElementById('userProfile');
+    const dropdown = document.getElementById('userDropdown');
 
+    userProfile.addEventListener('click', function (e) {
+        e.stopPropagation(); // Ngăn không cho sự kiện lan ra ngoài
+        dropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function () {
+        dropdown.classList.add('hidden');
+    });
+});
 document.addEventListener('DOMContentLoaded', function() {
     const currentUrl = window.location.pathname;
 
