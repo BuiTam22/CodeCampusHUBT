@@ -107,6 +107,83 @@ function softDeleteRolePermission(roleName , permissionName){
     }
 }
 // end Xóa
+function editPermission(roleName, permissionName){
+    const permissionCell = document.getElementById(`permissionCell-${roleName}-${permissionName}`)
+    const actionCell = document.getElementById(`actionCell-${roleName}-${permissionName}`)
+    // console.log(editPermission,actionCell)
+//     Lưu Lại Giá Trị hiện tại để có thể khôi phục khi ấn nut Hủy
+    const currentPermissionName = permissionCell.textContent.trim();
+    // console.log(currentPermissionName)
+
+//     tạo input để suawra
+    const inputElement  = document.createElement('input');
+    inputElement.type="text";
+    inputElement.value=currentPermissionName;
+    inputElement.classList.add('form-control','form-control-sm')
+
+    permissionCell.innerHTML=''
+    permissionCell.appendChild(inputElement)
+
+//     taoj nut luu
+    const saveButton = document.createElement('button');
+    saveButton.textContent= 'Lưu';
+    saveButton.classList.add("btn",'btn-success','mx-2');
+    saveButton.onclick=function (){
+        const newPermissionName = inputElement.value.trim();
+        savePermission (roleName,currentPermissionName,newPermissionName)
+    }
+
+    // tạo nút đóng
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent='Hủy';
+    cancelButton.classList.add('btn','btn-secondary')
+    cancelButton.onclick=function (){
+    //     khôi phục lại data cho permissionName
+        permissionCell.textContent = currentPermissionName
+        actionCell.innerHTML=`
+               
+            <button class="btn btn-warning mx-2" onclick="editPermission('${roleName}', '${currentPermissionName}')">Sửa</button>
+            <button class="btn btn-danger" onclick="softDeleteRolePermission('${roleName}', '${currentPermissionName}')">Xóa</button>
+        `
+    }
+
+    // thay thế nút sửa
+    actionCell.innerHTML=''
+    actionCell.appendChild(saveButton)
+    actionCell.appendChild(cancelButton)
+
+    function savePermission(roleName , olePermissionName,newPermissionName){
+        // console.log(roleName,olePermissionName,newPermissionName)
+
+        fetch(`/admin/api/role/update`,{
+            method: 'PUT',
+            headers:{
+                'Content-Type' : 'application/json',
+            },
+            body: JSON.stringify({
+                roleName: roleName,
+                oldPermissionName: olePermissionName,
+                newPermissionName: newPermissionName
+            }),
+        })
+            .then(res=>res.json())
+            .then(data => {
+                alert("Thành Công")
+                location.reload()
+            } )
+            .catch(er =>{
+                console.error(er)
+            })
+
+
+    }
+
+
+
+
+}
+
+
 
 
 

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/api/role")
@@ -60,6 +61,14 @@ public class RoleAPIController {
             // Xử lý lỗi khi không tìm thấy role hoặc permission
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy role hoặc permission");
         }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateRolePermission(@RequestBody UpdatePermissionsDTO dto) {
+
+        rolePermissionService.updateRolePermissions(dto.getRoleName(), dto.getOldPermissionName(), dto.getNewPermissionName());
+        // Record hoặc Class DTO để nhận dữ liệu request
+        return ResponseEntity.ok(Map.of("message", "Permissions updated successfully"));
     }
 
 

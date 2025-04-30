@@ -60,4 +60,12 @@ public class RolePermission {
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+        return "RolePermission{" +
+                "id=" + id +
+                ", role=" + role +
+                ", permission=" + permission +
+                '}';
+    }
 }
