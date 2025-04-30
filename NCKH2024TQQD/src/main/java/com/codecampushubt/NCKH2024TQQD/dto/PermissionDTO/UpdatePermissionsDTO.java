@@ -6,38 +6,47 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 public class UpdatePermissionsDTO {
-   @NotBlank(message = "Không Được Để Trống ")
     private String roleName;
-   @NotBlank(message = "Không Được Để Trống ")
-    private List<String> permissionName;
-   public UpdatePermissionsDTO() {}
+    private String oldPermissionName;
+    private String newPermissionName;
+    public UpdatePermissionsDTO() {}
 
-    public UpdatePermissionsDTO(String roleName, List<String> permissionName) {
+    public UpdatePermissionsDTO(String newPermissionName, String oldPermissionName, String roleName) {
+        this.newPermissionName = newPermissionName;
+        this.oldPermissionName = oldPermissionName;
         this.roleName = roleName;
-        this.permissionName = permissionName;
     }
 
-    public @NotBlank(message = "Không Được Để Trống ") String getRoleName() {
+    public String getRoleName() {
         return roleName;
     }
 
-    public void setRoleName(@NotBlank(message = "Không Được Để Trống ") String roleName) {
+    public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
 
-    public @NotBlank(message = "Không Được Để Trống ") List<String> getPermissionName() {
-        return permissionName;
+    public String getOldPermissionName() {
+        return oldPermissionName;
     }
 
-    public void setPermissionName(@NotBlank(message = "Không Được Để Trống ") List<String> permissionName) {
-        this.permissionName = permissionName;
+    public void setOldPermissionName(String oldPermissionName) {
+        this.oldPermissionName = oldPermissionName;
+    }
+
+    public String getNewPermissionName() {
+        return newPermissionName;
+    }
+
+    public void setNewPermissionName(String newPermissionName) {
+        this.newPermissionName = newPermissionName;
     }
 
     @Override
     public String toString() {
         return "UpdatePermissionsDTO{" +
                 "roleName='" + roleName + '\'' +
-                ", permissionName=" + permissionName +
+                ", oldPermissionName='" + oldPermissionName + '\'' +
+                ", newPermissionName='" + newPermissionName + '\'' +
                 '}';
     }
 }
