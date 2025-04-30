@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     const userProfile = document.getElementById('userProfile');
     const dropdown = document.getElementById('userDropdown');
@@ -10,7 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function () {
         dropdown.classList.add('hidden');
     });
+
 });
+
 document.addEventListener('DOMContentLoaded', function() {
     const currentUrl = window.location.pathname;
 
@@ -36,6 +39,10 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (currentUrl.startsWith('/practice/lesson/tutorial/')) {
         if (tutorialTab) tutorialTab.classList.add('active');
     }
+
+
+
+
 });
 
 

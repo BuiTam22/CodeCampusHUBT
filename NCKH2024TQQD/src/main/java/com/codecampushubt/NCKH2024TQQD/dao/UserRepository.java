@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -50,8 +52,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllActiveUsers();
 
     // Tìm người dùng có trạng thái ACTIVE theo id
-    @Query("SELECT u FROM User u WHERE u.id = :userId AND u.accountStatus = 'ACTIVE'")
+    @Query("SELECT u FROM User u WHERE u.userID = :userId AND u.accountStatus = 'ACTIVE'")
     Optional<User> findActiveUserById(Long userId);
+
+    Page<User> findAllByAccountStatusNot(String status, Pageable pageable);
 
 
 

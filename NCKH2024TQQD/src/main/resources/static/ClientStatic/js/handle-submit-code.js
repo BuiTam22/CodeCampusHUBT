@@ -21,9 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         runButton.querySelector(".button-text").textContent = "Đang nộp bài...";
         runButton.querySelector(".spinner-border").classList.remove("d-none");
 
-        const sourceCode = codeEditor.value;
-        const language = languageSelector.value;
-        const exerciseID = parseInt(codeEditor.dataset.exerciseId);
+        const {sourceCode, language, exerciseID } = getCodeSubmission();
 
         try {
             const response = await fetch("/api/judge/submit", {

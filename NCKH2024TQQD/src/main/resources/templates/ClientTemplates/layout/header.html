@@ -23,17 +23,19 @@
             <button class="user-button">
                 <i class="fas fa-bell"></i>
             </button>
+
             <div class="user-profile" id="userProfile">
                 <span class="username" th:text="${userFullName}">Guest</span>
                 <i class="fas fa-user"></i>
                 <!-- Dropdown menu -->
                 <div class="user-dropdown hidden" id="userDropdown">
-                    <a href="/manager">Profile</a>
-                    <a href="/logout">Setting</a>
-                    <a href="/logout">Administration</a>
-                    <a href="/logout">Logout</a>
+                    <a th:href="@{/profile}">Profile</a>
+                    <a th:href="@{/management}">Management</a>
+                    <a th:href="@{/logout}">Log out</a>
+
                 </div>
             </div>
+
         </div>
     </div>
 </header>

@@ -1,5 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission;
 
+import java.time.LocalDateTime;
+
 public class CodingSubmissionShow {
     private String exerciseName;
     private String userName;
@@ -9,8 +11,9 @@ public class CodingSubmissionShow {
     private Integer testCasesPassed;
     private Integer totalTestCases;
     private Integer score;
+    private LocalDateTime submittedAt;
 
-    public CodingSubmissionShow(String exerciseName, String userName, String code, String language, String status, Integer testCasesPassed, Integer totalTestCases, Integer score) {
+    public CodingSubmissionShow(String exerciseName, String userName, String code, String language, String status, Integer testCasesPassed, Integer totalTestCases, Integer score, LocalDateTime submittedAt) {
         this.exerciseName = exerciseName;
         this.userName = userName;
         this.code = code;
@@ -19,6 +22,7 @@ public class CodingSubmissionShow {
         this.testCasesPassed = testCasesPassed;
         this.totalTestCases = totalTestCases;
         this.score = score;
+        this.submittedAt = submittedAt;
     }
 
     public String getUserName() {
@@ -83,5 +87,13 @@ public class CodingSubmissionShow {
 
     public void setExerciseName(String exerciseName) {
         this.exerciseName = exerciseName;
+    }
+
+    public LocalDateTime getSubmittedAt() {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(LocalDateTime submittedAt) {
+        this.submittedAt = submittedAt;
     }
 }
