@@ -62,4 +62,19 @@ public class RestLogin {
         return ResponseEntity.ok("Login successful" + cookie.toString());
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        // Xóa cookie bằng cách đặt maxAge = 0
+        ResponseCookie cookie = ResponseCookie.from("token", "")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0) // Xóa ngay lập tức
+                .build();
+
+        response.setHeader("Set-Cookie", cookie.toString());
+        return ResponseEntity.ok("Logged out");
+    }
+
+
 }

@@ -94,7 +94,11 @@ public class JwtFilter extends OncePerRequestFilter { // Kế thừa từ OncePe
         return path.equals("/api/user/login") || // Kiểm tra endpoint đăng nhập API
                 path.equals("/login/show") ||     // Kiểm tra endpoint trang đăng nhập
                 path.startsWith("/AdminStatic/") || // Kiểm tra tài nguyên static cho admin
-                path.startsWith("/ClientStatic/");  // Kiểm tra tài nguyên static cho client
+                path.startsWith("/ClientStatic/") ||  // Kiểm tra tài nguyên static cho client
+                path.equals("/blog") ||
+                path.equals("/") ||
+                path.equals("/about");
+
     }
 
     /**

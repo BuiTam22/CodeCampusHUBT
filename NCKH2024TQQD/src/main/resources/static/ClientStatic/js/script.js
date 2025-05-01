@@ -40,9 +40,30 @@ document.addEventListener('DOMContentLoaded', function() {
         if (tutorialTab) tutorialTab.classList.add('active');
     }
 
-
-
-
 });
 
+// logout button click: vì token được set httpOnly(true) nên client không thể tự xóa
+// phải xóa token thông qua server (api)
+document.querySelector('.logout-button').addEventListener('click', function (e) {
+    e.preventDefault();
 
+    try {
+        fetch('/api/user/logout', {
+            method: 'POST',
+            credentials: 'include'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Logout failed with status ' + response.status);
+            }
+            window.location.href = '/';
+        })
+        .catch(error => {
+            console.error('Error during logout:', error);
+            alert('Đăng xuất thất bại. Vui lòng thử lại.');
+        });
+    } catch (error) {
+        console.error('Unexpected error during logout setup:', error);
+        alert('Đã xảy ra lỗi không xác định.');
+    }
+});
