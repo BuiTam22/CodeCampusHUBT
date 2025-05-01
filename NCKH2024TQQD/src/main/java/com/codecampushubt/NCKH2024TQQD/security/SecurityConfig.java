@@ -28,16 +28,13 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .requestMatchers(
                         "/api/user/**",
-                        "/login/show",
-
+//                        "/login/show",
                         "/AdminStatic/**", // Cho phép tất cả tài nguyên static AdminStatic
                         "/ClientStatic/**" ,// Cho phép tất cả tài nguyên static ClientStatic
                         "/test-connection",
                         "/api/course/add",
-
                         "/AdminStatic/**",
                         "/ClientStatic/**",
-
                         "/api/upload"
          ).permitAll()
                 // Cho phép Spring Security xử lý phần chứng thực cơ bản
