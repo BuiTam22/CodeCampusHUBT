@@ -1119,7 +1119,40 @@ GO
 -------------------------------------------Kết thúc----------------------------------------------------------------------------------------
 
 
+-------------------------------------------Tạo Contest cho Lesson--------------------------------------------------------------------------
+ALTER TABLE CourseLessons
+DROP CONSTRAINT CHK_Lesson_Type;
 
+ALTER TABLE CourseLessons
+ADD CONSTRAINT CHK_Lesson_Type CHECK (Type IN ('video', 'text', 'quiz', 'assignment', 'coding', 'contest'));
+
+CREATE TABLE Contests (
+    LessonID BIGINT PRIMARY KEY FOREIGN KEY REFERENCES CourseLessons(LessonID) ON DELETE CASCADE,
+    StartTime DATETIME NOT NULL,
+    EndTime DATETIME NOT NULL,
+    TotalPoints INT NOT NULL,
+    TimeLimit INT, -- Giới hạn thời gian làm bài (phút)
+    MaxAttempts INT DEFAULT 1, -- Số lần thử tối đa
+    ShowLeaderboard BIT DEFAULT 1, -- Hiển thị bảng xếp hạng
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE ContestParticipations (
+    ContestParticipationID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    LessonID BIGINT NOT NULL FOREIGN KEY REFERENCES CourseLessons(LessonID),
+    UserID BIGINT NOT NULL FOREIGN KEY REFERENCES Users(UserID),
+    StartTime DATETIME NOT NULL,
+    EndTime DATETIME,
+    TotalScore INT DEFAULT 0,
+    AttemptCount INT DEFAULT 0,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT UC_Participation UNIQUE (LessonID, UserID)
+);
+
+
+-------------------------------------------Kết thúc Tạo Contest cho Lesson--------------------------------------------------------------------------
 
 
 
