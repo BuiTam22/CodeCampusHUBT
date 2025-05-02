@@ -28,4 +28,9 @@ public class LessonServiceImpl implements LessonService{
         String newSlug = new Slugify().slugify(processed);
         return lessonRepository.getLessonShowDTOByModuleIDAndSlug(moduleID, newSlug);
     }
+
+    @Override
+    public List<LessonShowDTO> getLessonShowDTOByIsContest(Long moduleID) {
+        return lessonRepository.getLessonShowDTOByIsContest(moduleID);
+    }
 }

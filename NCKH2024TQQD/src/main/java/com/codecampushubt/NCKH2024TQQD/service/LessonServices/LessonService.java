@@ -8,5 +8,6 @@ import java.util.List;
 public interface LessonService {
     List<LessonShowDTO> getLessonShowDTO(Long theID);
     List<LessonShowDTO> getLessonShowDTOByModuleIDAndSlug(Long moduleID, String search);
+    List<LessonShowDTO> getLessonShowDTOByIsContest(Long moduleID);
 
 }
