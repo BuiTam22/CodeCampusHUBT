@@ -160,7 +160,9 @@
     text-decoration: none;
     color: #333;
 }
-
+.user-button{
+margin-left:30px;
+}
 .user-dropdown a:hover {
     background-color: #f0f0f0;
 }
@@ -174,4 +176,11 @@
     cursor: pointer;
 }
 /*end dropdown*/
+/* button login */
+.button-log-in{
+  border-radius: 5px;
+  background: rgb(27, 219, 27);
+  margin-bottom:3px;
+}
+/* end button login */
 
