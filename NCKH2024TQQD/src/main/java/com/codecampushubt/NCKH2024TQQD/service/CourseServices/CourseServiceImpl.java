@@ -1,8 +1,10 @@
 package com.codecampushubt.NCKH2024TQQD.service.CourseServices;
 
+import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseModuleRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseModuleDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowithRolenameDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseRepository;
 import com.github.slugify.Slugify;
@@ -10,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +72,23 @@ public class CourseServiceImpl implements CourseService {
             counter++;
         }
         return slug;
+    }
+    @Override
+    public List<CourseShowithRolenameDTO> getAllCoursesBasedOnUserRole() {
+        String UserName = UserContext.getUsername();
+        List<String> roleName = courseRepository.findRoleNamesByUserName(UserName);
+//        return courseRepository.getAllCourseShowDTO();
+        if (roleName.contains("ADMIN")){
+            System.out.println("Admin");
+            return courseRepository.getAllCoursesShowDTOWithRole();
+        }
+        Long userId = courseRepository.findUserIdByUserName(UserName);
+        System.out.println("userId = " + userId);
+
+        if (userId != null){
+            return courseRepository.getCoursesShowDTOByUserId(userId);}
+        else {
+            return new ArrayList<>();
+        }
     }
 }
