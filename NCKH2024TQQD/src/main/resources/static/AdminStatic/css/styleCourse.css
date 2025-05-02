@@ -1,0 +1,13 @@
+.course-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.admin-controls {
+    margin-top: 10px;
+}
+.admin-controls button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
