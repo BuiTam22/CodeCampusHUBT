@@ -66,12 +66,40 @@ public class CourseLesson {
     @Column(name = "Slug", nullable = true)
     private String slug;
 
+    @Column(name = "IsContest", nullable = true, columnDefinition = "BIT DEFAULT 0")
+    private Boolean isContest;
+
+    @Column(name = "ContestStartTime")
+    private LocalDateTime contestStartTime;
+
+    @Column(name = "ContestEndTime")
+    private LocalDateTime contestEndTime;
+
+    @Column(name = "TotalPoints", columnDefinition = "INT DEFAULT 0")
+    private Integer totalPoints;
 
     // Constructor
     public CourseLesson() {
     }
 
-    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+//    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+//        this.lessonID = lessonID;
+//        this.module = module;
+//        this.title = title;
+//        this.description = description;
+//        this.type = type;
+//        this.content = content;
+//        this.videoUrl = videoUrl;
+//        this.duration = duration;
+//        this.orderIndex = orderIndex;
+//        this.isPreview = isPreview;
+//        this.isPublished = isPublished;
+//        this.createdAt = createdAt;
+//        this.updatedAt = updatedAt;
+//    }
+
+
+    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt, String slug, Boolean isContest, LocalDateTime contestStartTime, LocalDateTime contestEndTime, Integer totalPoints) {
         this.lessonID = lessonID;
         this.module = module;
         this.title = title;
@@ -85,6 +113,11 @@ public class CourseLesson {
         this.isPublished = isPublished;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.slug = slug;
+        this.isContest = isContest;
+        this.contestStartTime = contestStartTime;
+        this.contestEndTime = contestEndTime;
+        this.totalPoints = totalPoints;
     }
 
     public Long getLessonID() {
@@ -159,12 +192,12 @@ public class CourseLesson {
         this.orderIndex = orderIndex;
     }
 
-    public Boolean getPreview() {
+    public Boolean getIsPreview() {
         return isPreview;
     }
 
-    public void setPreview(Boolean preview) {
-        isPreview = preview;
+    public void setIsPreview(Boolean isPreview) {
+        isPreview = isPreview;
     }
 
     public Boolean getPublished() {
@@ -197,5 +230,37 @@ public class CourseLesson {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public Boolean getIsContest() {
+        return isContest;
+    }
+
+    public void setIsContest(Boolean isContest) {
+        isContest = isContest;
+    }
+
+    public LocalDateTime getContestStartTime() {
+        return contestStartTime;
+    }
+
+    public void setContestStartTime(LocalDateTime contestStartTime) {
+        this.contestStartTime = contestStartTime;
+    }
+
+    public LocalDateTime getContestEndTime() {
+        return contestEndTime;
+    }
+
+    public void setContestEndTime(LocalDateTime contestEndTime) {
+        this.contestEndTime = contestEndTime;
+    }
+
+    public Integer getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(Integer totalPoints) {
+        this.totalPoints = totalPoints;
     }
 }

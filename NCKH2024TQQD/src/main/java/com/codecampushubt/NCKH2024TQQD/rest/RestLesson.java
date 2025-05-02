@@ -24,4 +24,9 @@ public class RestLesson {
     public List<LessonShowDTO> getLessonShowDTO(@PathVariable("id") Long theID){
         return lessonService.getLessonShowDTO(theID);
     }
+
+    @GetMapping("/contest/{moduleID}")
+    private List<LessonShowDTO> getLessonShowDTOByIsContest(@PathVariable("moduleID") Long moduleID){
+        return lessonService.getLessonShowDTOByIsContest(moduleID);
+    }
 }

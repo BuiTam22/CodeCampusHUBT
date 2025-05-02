@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
-
+    // lấy ra lesson luyện tập
     @Query("""
         SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO(
         cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
@@ -21,6 +21,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     """)
     List<LessonShowDTO> getLessonShowDTO(@Param("moduleID") Long moduleID);
 
+    // tìm kiếm lesson theo slug
     @Query("""
         SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO(
         cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
@@ -30,10 +31,15 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     """)
     List<LessonShowDTO> getLessonShowDTOByModuleIDAndSlug(@Param("moduleID") Long moduleID, @Param("slug") String theSlug);
 
+    //Lấy ra những lesson là contest
+    @Query("""
+        SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO(
+        cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
+        cl.videoUrl, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
+        FROM CourseLesson cl
+        WHERE cl.module.id = :moduleID AND cl.isContest = true
+    """)
+    List<LessonShowDTO> getLessonShowDTOByIsContest(@Param("moduleID") Long moduleID);
 
     boolean existsBySlug(String slug);
-
-
-
-
 }
