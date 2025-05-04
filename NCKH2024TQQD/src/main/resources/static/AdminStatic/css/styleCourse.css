@@ -11,3 +11,40 @@
     padding: 5px 10px;
     cursor: pointer;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Thêm khoảng cách phía trên bảng */
+    font-family: Arial, sans-serif; /* Phông chữ dễ đọc */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
+    border: 1px solid #ddd; /* Viền ngoài cho bảng */
+}
+
+thead tr {
+    background-color: #f8f8f8; /* Màu nền nhạt cho header */
+    font-weight: bold;
+    color: #333; /* Màu chữ đậm cho header */
+}
+
+th, td {
+    padding: 12px 15px; /* Khoảng cách bên trong ô */
+    text-align: left;
+    border-bottom: 1px solid #eee; /* Đường kẻ dưới mỗi hàng */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Màu nền khác cho các hàng chẵn để dễ đọc */
+}
+
+tbody tr:hover {
+    background-color: #e0f7fa; /* Hiệu ứng hover khi di chuột qua hàng */
+}
+
+th {
+    font-size: 1rem; /* Kích thước chữ cho header */
+}
+
+td {
+    font-size: 0.9rem; /* Kích thước chữ cho data */
+}

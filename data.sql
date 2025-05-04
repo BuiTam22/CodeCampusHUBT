@@ -204,7 +204,7 @@ CREATE TABLE Courses (
     DiscountPrice DECIMAL(10,2), -- Giá khuyến mãi
     ImageUrl VARCHAR(255), -- Ảnh đại diện
     VideoUrl VARCHAR(255), -- Video giới thiệu
-    Requirements NVARCHAR(MAX), -- Yêu cầu đầu vào
+    Requirements NVARCHAR(MAX), -- Yêu cầu       vào
     Objectives NVARCHAR(MAX), -- Mục tiêu khóa học
     Syllabus NVARCHAR(MAX), -- Giáo trình
     Status VARCHAR(20) DEFAULT 'draft', -- Trạng thái khóa học

@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             html += `
                     <th>Tiêu đề</th>
+                    <th>Slug</th>
                     <th>Giá</th>
                     <th>Giảm giá</th>
                     `;
@@ -54,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 html += `
                     <td>${course.title}</td>
+                    <td>${course.slug}</td>
                     <td>${course.price}</td>
                     <td>${course.discountPrice ?? 0}</td>`;
                 if (isAdmin) {
