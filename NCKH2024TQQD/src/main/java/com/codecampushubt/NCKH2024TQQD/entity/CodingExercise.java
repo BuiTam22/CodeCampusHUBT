@@ -69,12 +69,24 @@ public class CodingExercise {
     @Column(name = "Slug", nullable = true)
     private String slug;
 
+    // ĐỊNH DẠNG ĐẦU VÀO
+    @Column(name = "InputFormat", columnDefinition = "NVARCHAR(MAX)")
+    private String inputFormat;
+
+    // ĐỊNH DẠNG ĐẦU RA
+    @Column(name = "OutputFormat", columnDefinition = "NVARCHAR(MAX)")
+    private String outputFormat;
+
+    // TÊN RÀNG BUỘC
+    @Column(name = "ConstraintName", length = 50)
+    private String constraintName;
+
 
     // Constructor
     public CodingExercise() {
     }
 
-    public CodingExercise(CourseLesson lesson, String title, String description, String programmingLanguage, String initialCode, String solutionCode, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, LocalDateTime createdAt, LocalDateTime updatedAt, String slug) {
+    public CodingExercise(CourseLesson lesson, String title, String description, String programmingLanguage, String initialCode, String solutionCode, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, LocalDateTime createdAt, LocalDateTime updatedAt, String slug, String inputFormat, String outputFormat, String constraintName) {
         this.lesson = lesson;
         this.title = title;
         this.description = description;
@@ -88,6 +100,9 @@ public class CodingExercise {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.slug = slug;
+        this.inputFormat = inputFormat;
+        this.outputFormat = outputFormat;
+        this.constraintName = constraintName;
     }
 
     public Set<ExerciseTestCase> getExerciseTestCases() {
@@ -209,6 +224,30 @@ public class CodingExercise {
 
     public void setLesson(CourseLesson lesson) {
         this.lesson = lesson;
+    }
+
+    public String getInputFormat() {
+        return inputFormat;
+    }
+
+    public void setInputFormat(String inputFormat) {
+        this.inputFormat = inputFormat;
+    }
+
+    public String getOutputFormat() {
+        return outputFormat;
+    }
+
+    public void setOutputFormat(String outputFormat) {
+        this.outputFormat = outputFormat;
+    }
+
+    public String getConstraintName() {
+        return constraintName;
+    }
+
+    public void setConstraintName(String constraintName) {
+        this.constraintName = constraintName;
     }
 
     @Override

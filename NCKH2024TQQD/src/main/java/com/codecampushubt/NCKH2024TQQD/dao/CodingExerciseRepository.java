@@ -23,7 +23,9 @@ public interface CodingExerciseRepository extends JpaRepository<CodingExercise, 
 
     @Query("""
             SELECT new com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDetailDTO
-            (ce.exerciseID, null, ce.title, ce.description, ce.programmingLanguage, ce.initialCode, ce.timeLimit, ce.memoryLimit, ce.difficulty, ce.points, ce.slug)
+            (ce.exerciseID, null, ce.title, ce.description, ce.programmingLanguage, ce.initialCode,
+            ce.timeLimit, ce.memoryLimit, ce.difficulty, ce.points, ce.slug, ce.inputFormat, ce.outputFormat,
+            ce.constraintName)
             FROM CodingExercise ce
             WHERE ce.slug = :theSlug
             """)

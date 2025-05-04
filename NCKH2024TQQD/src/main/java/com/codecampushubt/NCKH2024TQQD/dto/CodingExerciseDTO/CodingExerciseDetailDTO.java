@@ -17,8 +17,11 @@ public class CodingExerciseDetailDTO {
     private String difficulty;
     private Integer points;
     private String slug;
+    private String inputFormat;
+    private String outputFormat;
+    private String constraintName;
 
-    public CodingExerciseDetailDTO(Long exerciseID, Set<ExerciseTestCasesDTO> exerciseTestCases, String title, String description, String programmingLanguage, String initialCode, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, String slug) {
+    public CodingExerciseDetailDTO(Long exerciseID, Set<ExerciseTestCasesDTO> exerciseTestCases, String title, String description, String programmingLanguage, String initialCode, Integer timeLimit, Integer memoryLimit, String difficulty, Integer points, String slug, String inputFormat, String outputFormat, String constraintName) {
         this.exerciseID = exerciseID;
         this.exerciseTestCases = exerciseTestCases;
         this.title = title;
@@ -30,6 +33,9 @@ public class CodingExerciseDetailDTO {
         this.difficulty = difficulty;
         this.points = points;
         this.slug = slug;
+        this.inputFormat = inputFormat;
+        this.outputFormat = outputFormat;
+        this.constraintName = constraintName;
     }
 
     public Long getExerciseID() {
@@ -78,5 +84,17 @@ public class CodingExerciseDetailDTO {
 
     public void setExerciseTestCases(Set<ExerciseTestCasesDTO> exerciseTestCases) {
         this.exerciseTestCases = exerciseTestCases;
+    }
+
+    public String getInputFormat() {
+        return inputFormat;
+    }
+
+    public String getOutputFormat() {
+        return outputFormat;
+    }
+
+    public String getConstraintName() {
+        return constraintName;
     }
 }

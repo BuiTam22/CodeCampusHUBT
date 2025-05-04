@@ -316,6 +316,9 @@ CREATE TABLE CodingSubmissions (
     UserID BIGINT FOREIGN KEY REFERENCES Users(UserID), -- Người nộp bài
     Code NVARCHAR(MAX), -- Code đã nộp
     Language VARCHAR(50), -- Ngôn ngữ lập trình sử dụng
+    InputFormat NVARCHAR(MAX), -- Mô tả định dạng đầu vào
+    OutputFormat NVARCHAR(MAX); -- Mô tả định dạng đầu ra
+    ConstraintName NVARCHAR(50);
     Status VARCHAR(20), -- Trạng thái chấm bài
     ExecutionTime INT, -- Thời gian chạy (mili giây)
     MemoryUsed INT, -- Bộ nhớ sử dụng (KB)
