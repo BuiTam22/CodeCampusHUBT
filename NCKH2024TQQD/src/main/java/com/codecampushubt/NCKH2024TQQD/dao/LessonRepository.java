@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     @Query("""
         SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO(
         cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
-        cl.videoUrl, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
+        cl.image, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
         FROM CourseLesson cl
         WHERE cl.module.id = :moduleID
     """)
@@ -25,7 +26,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     @Query("""
         SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO(
         cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
-        cl.videoUrl, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
+        cl.image, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
         FROM CourseLesson cl
         WHERE cl.module.id = :moduleID AND cl.slug LIKE %:slug%
     """)
@@ -33,13 +34,13 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
 
     //Lấy ra những lesson là contest
     @Query("""
-        SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO(
-        cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
-        cl.videoUrl, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
+        SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO(
+        cl.lessonID, cl.title, cl.description, cl.type,
+        cl.duration, cl.image, cl.isPreview, cl.slug, cl.contestStartTime, cl.contestEndTime)
         FROM CourseLesson cl
         WHERE cl.module.id = :moduleID AND cl.isContest = true
     """)
-    List<LessonShowDTO> getLessonShowDTOByIsContest(@Param("moduleID") Long moduleID);
+    List<ContestShowDTO> getContestShowDTOByIsContest(@Param("moduleID") Long moduleID);
 
     boolean existsBySlug(String slug);
 }

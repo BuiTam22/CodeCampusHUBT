@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class RestLesson {
     }
 
     @GetMapping("/contest/{moduleID}")
-    private List<LessonShowDTO> getLessonShowDTOByIsContest(@PathVariable("moduleID") Long moduleID){
-        return lessonService.getLessonShowDTOByIsContest(moduleID);
+    private List<ContestShowDTO> getLessonShowDTOByIsContest(@PathVariable("moduleID") Long moduleID){
+        return lessonService.getContestShowDTOByIsContest(moduleID);
     }
 }
