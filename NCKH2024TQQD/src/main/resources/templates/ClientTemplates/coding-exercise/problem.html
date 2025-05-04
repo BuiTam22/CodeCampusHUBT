@@ -35,9 +35,16 @@
                             <p th:text="${exercise.description}">Given an array of integers, find the sum of its elements.</p>
 
                             <h3 class="input-format">Định dạng đầu vào</h3>
-                            <p><!-- Thêm nếu có thêm trường inputFormat sau này --></p>
+                            <!-- Hiển thị inputFormat -->
+                            <p th:text="${exercise.inputFormat}">Số nguyên n</p>
+
+                            <h3 class="output-format">Định dạng ra vào</h3>
+                            <!-- Hiển thị outputFormat -->
+                            <p th:text="${exercise.outputFormat}">Số n*2</p>
 
                             <h3 class="constraint">Ràng buộc</h3>
+                            <!-- Hiển thị constraintName -->
+                            <p th:text="${exercise.constraintName}">1<=n<=10^9</p>
                             <p>
                                 <span th:text="'Thời gian tối đa: ' + ${exercise.timeLimit} + 'ms'"></span><br/>
                                 <span th:text="'Giới hạn bộ nhớ: ' + ${exercise.memoryLimit} + 'MB'"></span>
