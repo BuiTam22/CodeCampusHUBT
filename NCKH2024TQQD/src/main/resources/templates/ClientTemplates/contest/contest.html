@@ -55,7 +55,7 @@
         <div class="container-fluid px-5">
           <div id="contest-list" class="row">
             <div class="col-12 mb-4" th:each="contest : ${contests}">
-              <a th:href="@{practice/lesson/{slug}(slug=${contest.slug})}">
+              <a th:href="@{contest/{slug}(slug=${contest.slug})}">
                 <div class="inner-box">
                   <div class="inner-left">
                     <div class="inner-main-content">
