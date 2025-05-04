@@ -16,19 +16,6 @@ ul{
     padding: 0;
     margin: 0;
 }
-/*
-body {
-    font-family:var(--font);
-    background-color: #EFEFEF;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+p{
+margin:0;
 }
-
-.container {
-        width: 100%;
-        max-width: 1000px;
-        margin-left: 50px;
-        background-color: #ffff;
-}
-*/

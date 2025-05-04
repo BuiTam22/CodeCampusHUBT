@@ -71,6 +71,11 @@ body {
 .section-two .inner-wrap .inner-box p {
   color: #b7d7da;
   font-size: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;         /* Số dòng muốn hiển thị */
+  -webkit-box-orient: vertical;
+   overflow: hidden;
+   text-overflow: ellipsis;
 }
 .section-two .inner-wrap .inner-right {
   flex: 1;
