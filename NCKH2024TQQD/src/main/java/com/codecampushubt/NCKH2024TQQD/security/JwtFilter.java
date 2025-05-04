@@ -71,7 +71,8 @@ public class JwtFilter extends OncePerRequestFilter { // Kế thừa từ OncePe
                 } else {
                     // Người dùng không có quyền truy cập
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN); // Đặt status code 403 Forbidden
-                    response.getWriter().write("Access denied: You don't have permission to access this resource"); // Gửi thông báo lỗi
+                    response.getWriter().write("Access denied: You don't have permission to access this resource. Please contact ADMIN => ");
+                    response.getWriter().write("Truy cap bi tu choi: Ban khong co quyen truy cap vao tai nguyen nay. Vui long lien he voi quan tri vien.");// Gửi thông báo lỗi
                 }
             } else {
                 // Username null, token không hợp lệ
@@ -81,7 +82,8 @@ public class JwtFilter extends OncePerRequestFilter { // Kế thừa từ OncePe
         } else {
             // Token null hoặc không hợp lệ
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Đặt status code 401 Unauthorized
-            response.getWriter().write("Authentication required"); // Gửi thông báo lỗi
+            response.sendRedirect("/login/show");
+            return;
         }
     }
 
@@ -91,7 +93,9 @@ public class JwtFilter extends OncePerRequestFilter { // Kế thừa từ OncePe
      * @return true nếu là public path, false nếu không phải
      */
     private boolean isPublicPath(String path) {
-        return path.equals("/api/user/login") || // Kiểm tra endpoint đăng nhập API
+        return path.equals("/api/user/login") ||// Kiểm tra endpoint đăng nhập API
+                path.equals("/api/user/logout") || // Kiểm tra endpoint đăng xuất API
+                // Kiểm tra endpoint đăng nhập
                 path.equals("/login/show") ||     // Kiểm tra endpoint trang đăng nhập
                 path.startsWith("/AdminStatic/") || // Kiểm tra tài nguyên static cho admin
                 path.startsWith("/ClientStatic/") ||  // Kiểm tra tài nguyên static cho client
