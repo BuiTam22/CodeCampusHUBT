@@ -18,7 +18,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
         cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
         cl.image, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID
+        WHERE cl.module.id = :moduleID AND cl.isContest = false
     """)
     List<LessonShowDTO> getLessonShowDTO(@Param("moduleID") Long moduleID);
 
@@ -28,7 +28,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
         cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
         cl.image, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID AND cl.slug LIKE %:slug%
+        WHERE cl.module.id = :moduleID AND cl.slug LIKE %:slug% AND cl.isContest = false
     """)
     List<LessonShowDTO> getLessonShowDTOByModuleIDAndSlug(@Param("moduleID") Long moduleID, @Param("slug") String theSlug);
 
