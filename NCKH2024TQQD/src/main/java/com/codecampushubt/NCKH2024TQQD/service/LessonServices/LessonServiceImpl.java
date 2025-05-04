@@ -1,6 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.service.LessonServices;
 
 import com.codecampushubt.NCKH2024TQQD.dao.LessonRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.github.slugify.Slugify;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class LessonServiceImpl implements LessonService{
     }
 
     @Override
-    public List<LessonShowDTO> getLessonShowDTOByIsContest(Long moduleID) {
-        return lessonRepository.getLessonShowDTOByIsContest(moduleID);
+    public List<ContestShowDTO> getContestShowDTOByIsContest(Long moduleID) {
+        return lessonRepository.getContestShowDTOByIsContest(moduleID);
     }
 }

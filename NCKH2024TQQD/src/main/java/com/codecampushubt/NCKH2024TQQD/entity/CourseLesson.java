@@ -35,9 +35,9 @@ public class CourseLesson {
     @Column(name = "Content", columnDefinition = "NVARCHAR(MAX)")
     private String content;
 
-    // ĐƯỜNG DẪN VIDEO
-    @Column(name = "VideoUrl", length = 255)
-    private String videoUrl;
+    // ĐƯỜNG DẪN image
+    @Column(name = "Image", length = 255)
+    private String image;
 
     // THỜI LƯỢNG (PHÚT)
     @Column(name = "Duration")
@@ -82,7 +82,7 @@ public class CourseLesson {
     public CourseLesson() {
     }
 
-//    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+//    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String image, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
 //        this.lessonID = lessonID;
 //        this.module = module;
 //        this.title = title;
@@ -99,14 +99,14 @@ public class CourseLesson {
 //    }
 
 
-    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String videoUrl, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt, String slug, Boolean isContest, LocalDateTime contestStartTime, LocalDateTime contestEndTime, Integer totalPoints) {
+    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String image, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt, String slug, Boolean isContest, LocalDateTime contestStartTime, LocalDateTime contestEndTime, Integer totalPoints) {
         this.lessonID = lessonID;
         this.module = module;
         this.title = title;
         this.description = description;
         this.type = type;
         this.content = content;
-        this.videoUrl = videoUrl;
+        this.image = image;
         this.duration = duration;
         this.orderIndex = orderIndex;
         this.isPreview = isPreview;
@@ -168,12 +168,12 @@ public class CourseLesson {
         this.content = content;
     }
 
-    public String getVideoUrl() {
-        return videoUrl;
+    public String getImage() {
+        return image;
     }
 
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Integer getDuration() {

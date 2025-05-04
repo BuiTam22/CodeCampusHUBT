@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const rowsPerPage = 1; // Số mục mỗi trang (thay đổi tùy ý)
+    const rowsPerPage = 6; // Số mục mỗi trang (thay đổi tùy ý)
     const container = document.getElementById("contest-list");
     const items = Array.from(container.querySelectorAll(".col-12"));
     const pagination = document.getElementById("pagination");
