@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.dao;
 
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -43,4 +44,37 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     List<ContestShowDTO> getContestShowDTOByIsContest(@Param("moduleID") Long moduleID);
 
     boolean existsBySlug(String slug);
+
+    @Query("SELECT r.roleName FROM User u " +
+            "JOIN u.userRoles ur " +
+            "JOIN ur.role r " +
+            "WHERE u.userName = :userName ")
+    List<String> findRoleNameByUserName(String userName);
+
+    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA( " +
+            "cl.lessonID , cl.title, cl.description, cl.type, cl.content, cl.duration, r.roleName , u.userName) " +
+            "FROM CourseLesson cl " +
+            "JOIN cl.module cm " +
+            "JOIN cm.course c " +
+            "JOIN c.instructor u " +
+            "JOIN u.userRoles ur " +
+            "JOIN ur.role r " +
+            "WHERE r.roleName = :roleName")
+    List<LessonShowDTOA> findLessonByRoleName(@Param("roleName") String roleName);
+
+    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA( " +
+            "cl.lessonID , cl.title, cl.description, cl.type, cl.content, cl.duration, r.roleName , u.userName) " +
+            "FROM CourseLesson cl " +
+            "JOIN cl.module cm " +
+            "JOIN cm.course c " +
+            "JOIN c.instructor u " +
+            "JOIN u.userRoles ur " +
+            "JOIN ur.role r " +
+            "WHERE u.userID = :userId")
+    List<LessonShowDTOA> findLessonByInstructorId(@Param("userId") Long userId);
+
+    @Query("SELECT u.userID FROM User u where u.userName = :userName")
+    Long finduseridByUsername(String userName);
+
+
 }
