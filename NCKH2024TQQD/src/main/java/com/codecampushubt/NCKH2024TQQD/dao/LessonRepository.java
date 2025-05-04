@@ -38,7 +38,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
         cl.lessonID, cl.title, cl.description, cl.type,
         cl.duration, cl.image, cl.isPreview, cl.slug, cl.contestStartTime, cl.contestEndTime)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID AND cl.isContest = true
+        WHERE cl.module.id = :moduleID AND cl.isContest = true AND CURRENT_TIMESTAMP < cl.contestEndTime
     """)
     List<ContestShowDTO> getContestShowDTOByIsContest(@Param("moduleID") Long moduleID);
 
