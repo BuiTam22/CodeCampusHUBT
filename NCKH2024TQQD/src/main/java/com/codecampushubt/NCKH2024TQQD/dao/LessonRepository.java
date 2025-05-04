@@ -43,4 +43,8 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     List<ContestShowDTO> getContestShowDTOByIsContest(@Param("moduleID") Long moduleID);
 
     boolean existsBySlug(String slug);
+
+
+
+
 }
