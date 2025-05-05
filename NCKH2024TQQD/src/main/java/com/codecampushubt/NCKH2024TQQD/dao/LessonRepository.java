@@ -3,6 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.dao;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
+import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -75,6 +76,13 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
 
     @Query("SELECT u.userID FROM User u where u.userName = :userName")
     Long finduseridByUsername(String userName);
+
+
+    @Query(value = "SELECT c.title FROM courses c JOIN [Users] u ON c.instructorID = u.userID WHERE u.userName = :username", nativeQuery = true)
+    List<String> findCourseNamesByInstructorUsername(@Param("username") String username);
+
+
+
 
 
 }

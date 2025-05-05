@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function(){
         `;
 
             if (isAdmin) {
-                html += `<th>ID</th>`;
+                html += `<th>STT</th>`;
             }
 
             html += `
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 html += `<tr>`;
 
                 if (isAdmin) {
-                    html += `<td>${lesson.title}</td>`;
+                    html += `<td>${lesson.lessonId}</td>`;
                 }
 
                 html += `
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function(){
             `;
 
                 if (isAdmin) {
-                    html += `<td>${lesson.title}</td>`;
+                    html += `<td>${lesson.userName}</td>`;
                 }
 
                 html += `</tr>`;
