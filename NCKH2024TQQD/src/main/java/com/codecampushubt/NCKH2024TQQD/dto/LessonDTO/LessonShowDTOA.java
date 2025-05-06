@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.dto.LessonDTO;
 
 public class LessonShowDTOA {
     private Long lessonId;
+    private String courseModule;
     private String title;
     private String description;
     private String type;
@@ -12,8 +13,9 @@ public class LessonShowDTOA {
 
     public LessonShowDTOA() {}
 
-    public LessonShowDTOA(Long lessonId, String title, String description, String type, String content, Integer duration, String rolename, String userName) {
+    public LessonShowDTOA(Long lessonId, String courseModule,String title, String description, String type, String content, Integer duration, String rolename, String userName) {
         this.lessonId = lessonId;
+        this.courseModule = courseModule;
         this.title = title;
         this.description = description;
         this.type = type;
@@ -21,6 +23,14 @@ public class LessonShowDTOA {
         this.duration = duration;
         this.rolename = rolename;
         this.userName = userName;
+    }
+
+    public String getCourseModule() {
+        return courseModule;
+    }
+
+    public void setCourseModule(String courseModule) {
+        this.courseModule = courseModule;
     }
 
     public Long getLessonId() {
@@ -92,12 +102,14 @@ public class LessonShowDTOA {
         return "LessonShowDTOA{" +
                 "lessonId=" + lessonId +
                 ", title='" + title + '\'' +
+                ",courseModule='" + courseModule + '\'' +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
                 ", content='" + content + '\'' +
                 ", duration=" + duration +
                 ", rolename='" + rolename + '\'' +
                 ", userName='" + userName + '\'' +
+
                 '}';
     }
 }

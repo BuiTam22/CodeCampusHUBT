@@ -27,16 +27,16 @@ public class lessonAPIController {
         List<LessonShowDTOA> showlesson = lessonService.getLessonShowDTOA();
         return ResponseEntity.ok(showlesson);
     }
-    @GetMapping("/add")
-    public ResponseEntity<List<String>> addLesson() {
-        String username = UserContext.getUsername();
-        List<String> courseName = lessonRepository.findCourseNamesByInstructorUsername(username);
-        System.out.println(courseName);
-        return ResponseEntity.ok(courseName);
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<String> addLesson(@RequestBody CreateLessonsDTO createLessonsDTO) {
-        return ResponseEntity.ok(createLessonsDTO.toString());
-    }
+//    @GetMapping("/add")
+//    public ResponseEntity<List<String>> addLesson() {
+//        String username = UserContext.getUsername();
+//        List<String> courseName = lessonRepository.findCourseNamesByInstructorUsername(username);
+//        System.out.println(courseName);
+//        return ResponseEntity.ok(courseName);
+//    }
+//
+//    @PostMapping("/add")
+//    public ResponseEntity<String> addLesson(@RequestBody CreateLessonsDTO createLessonsDTO) {
+//        return ResponseEntity.ok(createLessonsDTO.toString());
+//    }
 }

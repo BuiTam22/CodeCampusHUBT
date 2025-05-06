@@ -47,8 +47,9 @@ public class LessonServiceImpl implements LessonService{
             return lessonRepository.findLessonByRoleName("ADMIN");
 
         }else {
-            return lessonRepository.findLessonByInstructorId(UserID);
+            return lessonRepository.findLessonByUserID(UserID);
         }
+
 
 
     }
