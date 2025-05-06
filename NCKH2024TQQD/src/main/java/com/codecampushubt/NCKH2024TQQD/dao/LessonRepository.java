@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
+import com.codecampushubt.NCKH2024TQQD.dto.CourseModule.CourseModuleFILLDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
@@ -53,18 +54,20 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     List<String> findRoleNameByUserName(String userName);
 
 
-    Long finduseridByUsername(String userName);
+    @Query("SELECT u.userID FROM User u WHERE u.userName = :username")
+    Long findUserIdByUsername(@Param("username") String username);
 
 
-//    @Query(value = "SELECT CONCAT(c.title, ' - ', c.slug) FROM courses c JOIN [Users] u ON c.instructorID = u.userID WHERE u.userName = :username", nativeQuery = true)
+
+    //    @Query(value = "SELECT CONCAT(c.title, ' - ', c.slug) FROM courses c JOIN [Users] u ON c.instructorID = u.userID WHERE u.userName = :username", nativeQuery = true)
 //    List<String> findCourseNamesByInstructorUsername(@Param("username") String username);
-    @Query("select new com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO(" +
-            "cm.moduleID ,cm.title , cm.slug) " +
+    @Query("select new com.codecampushubt.NCKH2024TQQD.dto.CourseModule.CourseModuleFILLDTO(" +
+            "cm.title , cm.slug) " +
             "from CourseModule cm " +
             "join cm.course c " +
             "join c.instructor u " +
             "where u.userName = :userName")
-    List<LessonShowDTOA> findModulesByInstructorUserName(@Param("userName") String userName);
+    List<CourseModuleFILLDTO> findModulesByInstructorUserName(@Param("userName") String userName);
 
 
     @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA(" +

@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.controller.Admin.Lessons;
 
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dao.LessonRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.CourseModule.CourseModuleFILLDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.CreateLessonsDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
@@ -27,14 +28,14 @@ public class lessonAPIController {
         List<LessonShowDTOA> showlesson = lessonService.getLessonShowDTOA();
         return ResponseEntity.ok(showlesson);
     }
-//    @GetMapping("/add")
-//    public ResponseEntity<List<String>> addLesson() {
-//        String username = UserContext.getUsername();
-//        List<String> courseName = lessonRepository.findCourseNamesByInstructorUsername(username);
-//        System.out.println(courseName);
-//        return ResponseEntity.ok(courseName);
-//    }
-//
+    @GetMapping("/add")
+    public ResponseEntity<List<CourseModuleFILLDTO>> addLesson() {
+        String username = UserContext.getUsername();
+        List<CourseModuleFILLDTO> courseName = lessonRepository.findModulesByInstructorUserName(username);
+        return ResponseEntity.ok(courseName);
+    }
+
+
 //    @PostMapping("/add")
 //    public ResponseEntity<String> addLesson(@RequestBody CreateLessonsDTO createLessonsDTO) {
 //        return ResponseEntity.ok(createLessonsDTO.toString());

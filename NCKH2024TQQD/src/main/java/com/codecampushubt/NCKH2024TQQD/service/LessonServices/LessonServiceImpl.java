@@ -42,7 +42,7 @@ public class LessonServiceImpl implements LessonService{
     public List<LessonShowDTOA> getLessonShowDTOA(){
         String userName = UserContext.getUsername();
         List<String> roleName = lessonRepository.findRoleNameByUserName(userName);
-        Long UserID = lessonRepository.finduseridByUsername(userName);
+        Long UserID = lessonRepository.findUserIdByUsername(userName);
         if (roleName.contains("ADMIN")){
             return lessonRepository.findLessonByRoleName("ADMIN");
 

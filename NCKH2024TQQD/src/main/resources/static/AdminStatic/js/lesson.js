@@ -107,14 +107,14 @@ fetch('http://localhost:3000/admin/api/lesson/add')
         const select = document.getElementById("Course")
         const label = document.getElementById('courseLabel')
         console.log(data)
+
         if (data && data.length > 0 ){
             label.style.display ="block"
             select.innerHTML = '<option disabled selected>-- Select a Course --</option>'
             data.forEach(function(entry) {
-                const [title, slug] = entry.split(" - ");
                 const option = document.createElement('option');
-                option.value = slug;
-                option.textContent = title;
+                option.value = entry.slug;
+                option.textContent = entry.title;
                 select.appendChild(option);
             });
 
