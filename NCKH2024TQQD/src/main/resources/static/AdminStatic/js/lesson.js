@@ -129,4 +129,39 @@ fetch('http://localhost:3000/admin/api/lesson/add')
 
 // api thêm lesson
 
+document.getElementById('submitlessonadd').addEventListener("Submit",function (e){
+    e.preventDefault();
+
+    const form = document.getElementById("lesson-form-add");
+    const formData = new FormData(form);
+
+    // Lấy dữ liệu từ các trường
+    const data = {
+        title: formData.get("title"),
+        courseSlug: document.getElementById("Course").value,
+        description: formData.get("description"),
+        type: form.querySelector('select option:checked').textContent.toLowerCase(),
+        duration: document.getElementById("duration").value
+    };
+    fetch("/admin/api/lesson/add",{
+        method:"POST",
+        headers : {
+            "Content-Type" : "application"
+         },
+        body:JSON.stringify(data)
+    })
+        .then(res => {
+            if(!res.ok) throw new Error("Gửi Dữ Liệu Thất Bại ")
+            return res.json()
+        })
+        .then(result =>{
+            alert("Thêm Bài Học Thành Công ")
+            location.reload()
+        })
+        .then(err => {
+            console.log("Lỗi " + err)
+            alert("Đã Xảy ra lỗi Khi thêm Bài Học ")
+        })
+})
+
 // end api them lesson

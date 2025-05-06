@@ -6,9 +6,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.CreateLessonsDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,5 +33,10 @@ public class lessonAPIController {
         List<String> courseName = lessonRepository.findCourseNamesByInstructorUsername(username);
         System.out.println(courseName);
         return ResponseEntity.ok(courseName);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<String> addLesson(@RequestBody CreateLessonsDTO createLessonsDTO) {
+        return ResponseEntity.ok(createLessonsDTO.toString());
     }
 }
