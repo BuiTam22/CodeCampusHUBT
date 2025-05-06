@@ -1,122 +1,73 @@
+/* Định dạng toàn bộ khối form */
 .form-container {
-    margin-bottom: 20px;
-    padding: 20px; /* Tăng padding để có khoảng trống hơn */
-    border: 1px solid #ccc;
-    border-radius: 8px; /* Bo tròn góc nhiều hơn */
-    background-color: #f8f9fa; /* Màu nền nhạt hơn một chút */
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-#lesson-form-add {
-    display: grid; /* Sử dụng grid layout để sắp xếp các phần tử */
-    grid-template-columns: auto 1fr; /* Hai cột, cột label tự động kích thước, cột input/select/textarea chiếm phần còn lại */
-    gap: 10px; /* Khoảng cách giữa các hàng và cột */
-}
-
+/* Định dạng các trường nhập */
 .form-field {
-    grid-column: 1 / 3; /* Label chiếm toàn bộ chiều rộng */
     display: block;
-    margin-bottom: 8px; /* Giảm khoảng cách dưới label một chút */
-    font-weight: bold;
-    color: #495057; /* Màu chữ đậm hơn một chút */
-}
-
-.form-field + input[type="text"],
-.form-field + input[type="number"],
-.form-field + textarea,
-.form-field + select {
-    grid-column: 2 / 3; /* Input/select/textarea nằm ở cột thứ hai */
-    width: 100%; /* Chiều rộng full trong cột của nó */
-    padding: 8px; /* Tăng padding một chút */
-    border: 1px solid #ced4da; /* Màu viền nhạt hơn */
-    border-radius: 4px; /* Bo tròn góc nhẹ hơn */
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-/* Style cho select (tương tự như trước) */
-#Course,
-#lesson-form-add > select { /* Áp dụng style cho cả select Khóa Học và Loại Bài Học */
-    appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 8px center; /* Căn giữa theo chiều dọc */
-    background-size: 16px;
-    padding-right: 30px;
-}
-
-#Course::-ms-expand,
-#lesson-form-add > select::-ms-expand {
-    display: none;
-}
-
-#Course option:first-child,
-#lesson-form-add > select option:first-child {
-    color: #6c757d; /* Màu chữ nhạt hơn cho option đầu tiên */
-}
-
-/* Style riêng cho textarea để chiếm toàn bộ chiều rộng nếu cần */
-#lesson-form-add textarea {
-    grid-column: 1 / 3;
-    min-height: 100px; /* Tăng chiều cao mặc định của textarea */
-}
-
-/* Loại bỏ margin-bottom của input/select/textarea vì đã có gap trong grid */
-.form-field + input[type="text"],
-.form-field + input[type="number"],
-.form-field + textarea,
-.form-field + select {
-    margin-bottom: 0;
-}
-
-/* Thêm margin-bottom cho label cuối cùng trước các input/select không có label trực tiếp */
-#lesson-form-add > label:nth-child(9) { /* Label "Loại Bài Học" là phần tử thứ 9 */
-    grid-column: 1 / 3;
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #495057;
-}
-
-#lesson-form-add > select:nth-child(10) { /* Select "Loại Bài Học" là phần tử thứ 10 */
-    grid-column: 1 / 3;
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    box-sizing: border-box;
+    margin-bottom: 15px;
+    padding: 10px;
     font-size: 16px;
-    margin-bottom: 10px; /* Thêm margin bottom cho select này */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
 }
 
+/* Label */
+.form-container label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Nút bấm */
+.form-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    margin-right: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Nút lưu */
 #submit {
-    display: inline-block; /* Để có thể thiết lập padding và margin xung quanh */
-    padding: 10px 20px; /* Khoảng cách bên trong nút (trên/dưới, trái/phải) */
-    font-size: 16px; /* Kích thước chữ */
-    font-weight: bold; /* Chữ in đậm */
-    text-align: center; /* Căn giữa chữ */
-    text-decoration: none; /* Loại bỏ gạch chân (nếu có) */
-    color: #fff; /* Màu chữ trắng */
-    background-color: #007bff; /* Màu nền xanh dương */
-    border: none; /* Loại bỏ viền mặc định */
-    border-radius: 5px; /* Bo tròn góc */
-    cursor: pointer; /* Hiển thị con trỏ chuột khi di vào */
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà */
-    margin-top: 20px; /* Tạo khoảng cách với các phần tử phía trên */
+    background-color: #007bff;
+    color: white;
 }
 
 #submit:hover {
-    background-color: #0056b3; /* Màu nền đậm hơn khi hover */
+    background-color: #0056b3;
 }
 
-#submit:focus {
-    outline: none; /* Loại bỏ viền focus mặc định */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Thêm bóng đổ khi focus */
+/* Nút thoát */
+.form-container button:nth-child(3) {
+    background-color: #6c757d;
+    color: white;
 }
 
-#submit:active {
-    background-color: #004085; /* Màu nền đậm hơn nữa khi nút được nhấn */
-    transform: translateY(1px); /* Hiệu ứng nhấn xuống nhẹ */
+.form-container button:nth-child(3):hover {
+    background-color: #5a6268;
 }
+
+/* Ẩn nhãn label khi cần */
+#courseLabel label {
+    display: block;
+}
+#courseLabel.hidden label {
+    display: none;
+}
+
 
 /*lesson show */
 #CourseLessonList {

@@ -94,3 +94,39 @@ function cancelAddLesson() {
     document.getElementById("CourseLessonList").style.display = "block";
 }
 //end ẩn hiện form
+
+//call api khoas hoc
+fetch('http://localhost:3000/admin/api/lesson/add')
+    .then(response =>{
+        if(! response.ok){
+            throw new Error("Failed to fetch course list")
+        }
+        return response.json()
+    })
+    .then(data =>{
+        const select = document.getElementById("Course")
+        const label = document.getElementById('courseLabel')
+        console.log(data)
+        if (data && data.length > 0 ){
+            label.style.display ="block"
+            select.innerHTML = '<option disabled selected>-- Select a Course --</option>'
+            data.forEach(function(entry) {
+                const [title, slug] = entry.split(" - ");
+                const option = document.createElement('option');
+                option.value = slug;
+                option.textContent = title;
+                select.appendChild(option);
+            });
+
+        }else {
+            label.style.display = 'none'
+        }
+    })
+    .catch(err =>{
+        console.log("Lỗi gọi API" , err)
+    })
+//end api khoa hojc
+
+// api thêm lesson
+
+// end api them lesson

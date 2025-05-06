@@ -33,6 +33,7 @@ public class lessonAPIController {
     public ResponseEntity<List<String>> addLesson() {
         String username = UserContext.getUsername();
         List<String> courseName = lessonRepository.findCourseNamesByInstructorUsername(username);
+        System.out.println(courseName);
         return ResponseEntity.ok(courseName);
     }
 }
