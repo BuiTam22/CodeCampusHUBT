@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(){
     const lessonListDiv = document.getElementById("CourseLessonList")
-    console.log(lessonListDiv)
+    // console.log(lessonListDiv)
     fetch('/admin/api/lesson/show',{
         method :'GET',
         headers:{
@@ -10,13 +10,13 @@ document.addEventListener("DOMContentLoaded", function(){
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
+            // console.log(data)
             if (data.length === 0 ){
                 lessonListDiv.innerHTML="<p>Không có câu hỏi nào !</p>"
 
             }
             const isAdmin = data.some(lesson => lesson.rolename === "ADMIN")
-            console.log(isAdmin)
+            // console.log(isAdmin)
             let html = `
             <table>
                 <thead>
@@ -78,3 +78,19 @@ document.addEventListener("DOMContentLoaded", function(){
             lessonListDiv.innerHTML="<p>Đã Xảy Ra Lỗi !</p>"
         })
 });
+
+
+//ẩn hiện form
+function showAddlessonFormOnly(){
+    var addForm = document.getElementById("lesson_add")
+    var showform = document.getElementById("CourseLessonList")
+
+    addForm.style.display="block"
+    showform.style.display="none"
+}
+
+function cancelAddLesson() {
+    document.getElementById("lesson_add").style.display = "none";
+    document.getElementById("CourseLessonList").style.display = "block";
+}
+//end ẩn hiện form

@@ -78,8 +78,10 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     Long finduseridByUsername(String userName);
 
 
-    @Query(value = "SELECT c.title FROM courses c JOIN [Users] u ON c.instructorID = u.userID WHERE u.userName = :username", nativeQuery = true)
+    @Query(value = "SELECT CONCAT(c.title, ' - ', c.slug) FROM courses c JOIN [Users] u ON c.instructorID = u.userID WHERE u.userName = :username", nativeQuery = true)
     List<String> findCourseNamesByInstructorUsername(@Param("username") String username);
+
+
 
 
 
