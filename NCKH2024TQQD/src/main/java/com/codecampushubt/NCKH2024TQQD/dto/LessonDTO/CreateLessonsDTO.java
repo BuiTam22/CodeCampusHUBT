@@ -1,44 +1,34 @@
 package com.codecampushubt.NCKH2024TQQD.dto.LessonDTO;
+import com.codecampushubt.NCKH2024TQQD._enum.Admin.Lesson.type;
 
-public class LessonShowDTOA {
-    private Long lessonId;
-    private String courseModule;
+public class CreateLessonsDTO {
+    private String courseName;
     private String title;
     private String description;
     private String type;
     private String content;
     private Integer duration;
-    private String rolename;
-    private String userName;
+    private String image;
+    private Integer orderIndex;
+    public CreateLessonsDTO(){}
 
-    public LessonShowDTOA() {}
-
-    public LessonShowDTOA(Long lessonId, String courseModule,String title, String description, String type, String content, Integer duration, String rolename, String userName) {
-        this.lessonId = lessonId;
-        this.courseModule = courseModule;
+    public CreateLessonsDTO(String courseName, String title, String description, String type, String content, Integer duration, String image, Integer orderIndex) {
+        this.courseName = courseName;
         this.title = title;
         this.description = description;
         this.type = type;
         this.content = content;
         this.duration = duration;
-        this.rolename = rolename;
-        this.userName = userName;
+        this.image = image;
+        this.orderIndex = orderIndex;
     }
 
-    public String getCourseModule() {
-        return courseModule;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCourseModule(String courseModule) {
-        this.courseModule = courseModule;
-    }
-
-    public Long getLessonId() {
-        return lessonId;
-    }
-
-    public void setLessonId(Long lessonId) {
-        this.lessonId = lessonId;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public String getTitle() {
@@ -81,35 +71,33 @@ public class LessonShowDTOA {
         this.duration = duration;
     }
 
-    public String getRolename() {
-        return rolename;
+    public String getImage() {
+        return image;
     }
 
-    public void setRolename(String rolename) {
-        this.rolename = rolename;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getUserName() {
-        return userName;
+    public Integer getOrderIndex() {
+        return orderIndex;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setOrderIndex(Integer orderIndex) {
+        this.orderIndex = orderIndex;
     }
 
     @Override
     public String toString() {
-        return "LessonShowDTOA{" +
-                "lessonId=" + lessonId +
+        return "CreateLessonsDTO{" +
+                "courseName='" + courseName + '\'' +
                 ", title='" + title + '\'' +
-                ",courseModule='" + courseModule + '\'' +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
                 ", content='" + content + '\'' +
                 ", duration=" + duration +
-                ", rolename='" + rolename + '\'' +
-                ", userName='" + userName + '\'' +
-
+                ", image='" + image + '\'' +
+                ", orderIndex=" + orderIndex +
                 '}';
     }
 }

@@ -1,12 +1,19 @@
 package com.codecampushubt.NCKH2024TQQD.service.LessonServices;
 
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
+import com.codecampushubt.NCKH2024TQQD.dao.CourseModuleRepository;
+import com.codecampushubt.NCKH2024TQQD.dao.CourseRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.LessonRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.CreateLessonsDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
+import com.codecampushubt.NCKH2024TQQD.entity.Course;
+import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
+import com.codecampushubt.NCKH2024TQQD.entity.CourseModule;
 import com.github.slugify.Slugify;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,11 +22,15 @@ import java.util.List;
 @Service
 public class LessonServiceImpl implements LessonService{
     private final LessonRepository lessonRepository;
+    private final CourseModuleRepository courseModuleRepository;
 
     @Autowired
-    public LessonServiceImpl(LessonRepository lessonRepository) {
+    public LessonServiceImpl(LessonRepository lessonRepository ,CourseModuleRepository courseModuleRepository ) {
         this.lessonRepository = lessonRepository;
+        this.courseModuleRepository = courseModuleRepository;
     }
+
+
 
     @Override
     public List<LessonShowDTO> getLessonShowDTO(Long theID) {
@@ -42,14 +53,43 @@ public class LessonServiceImpl implements LessonService{
     public List<LessonShowDTOA> getLessonShowDTOA(){
         String userName = UserContext.getUsername();
         List<String> roleName = lessonRepository.findRoleNameByUserName(userName);
-        Long UserID = lessonRepository.finduseridByUsername(userName);
+        Long UserID = lessonRepository.findUserIdByUsername(userName);
         if (roleName.contains("ADMIN")){
             return lessonRepository.findLessonByRoleName("ADMIN");
 
         }else {
-            return lessonRepository.findLessonByInstructorId(UserID);
+            return lessonRepository.findLessonByUserID(UserID);
         }
 
 
+
     }
+
+    @Override
+    public CourseLesson addLesson(CreateLessonsDTO dto ){
+//        System.out.println(dto);
+        Slugify slugify = new Slugify();
+        String Slug = slugify.slugify(dto.getTitle());
+//        System.out.println(dto.getCourseName());
+        String courseName = dto.getCourseName();
+        CourseModule module = courseModuleRepository.findBySlug(courseName)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy module"));
+//        System.out.println(module);
+//        khởi tạo
+        CourseLesson courseLesson = new CourseLesson();
+        courseLesson.setModule(module);
+        courseLesson.setTitle(dto.getTitle());
+        courseLesson.setDescription(dto.getDescription());
+        courseLesson.setType(dto.getType());
+        courseLesson.setContent(dto.getContent());
+        courseLesson.setImage(dto.getImage());
+        courseLesson.setDuration(dto.getDuration());
+        courseLesson.setSlug(Slug);
+        courseLesson.setOrderIndex(dto.getOrderIndex());
+
+        lessonRepository.save(courseLesson);
+
+        return courseLesson;
+    }
+
 }

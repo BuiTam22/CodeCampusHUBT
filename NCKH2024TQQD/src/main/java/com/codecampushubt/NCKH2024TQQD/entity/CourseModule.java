@@ -23,6 +23,7 @@ public class CourseModule {
     private List<CourseLesson> lessons = new ArrayList<>();
 
 
+
     @Column(name = "Title", nullable = false, length = 255)
     private String title;
 
@@ -51,9 +52,10 @@ public class CourseModule {
     public CourseModule() {
     }
 
-    public CourseModule(Long moduleID, Course course, String title, String description, Integer orderIndex, Integer duration, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CourseModule(Long moduleID, Course course, List<CourseLesson> lessons, String title, String description, Integer orderIndex, Integer duration, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt, String slug) {
         this.moduleID = moduleID;
         this.course = course;
+        this.lessons = lessons;
         this.title = title;
         this.description = description;
         this.orderIndex = orderIndex;
@@ -61,16 +63,24 @@ public class CourseModule {
         this.isPublished = isPublished;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.slug = slug;
     }
 
     public Long getModuleID() {
         return moduleID;
     }
 
-    public void setId(Long moduleID) {
+    public void setModuleID(Long moduleID) {
         this.moduleID = moduleID;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
     public List<CourseLesson> getLessons() {
         return lessons;
@@ -79,7 +89,6 @@ public class CourseModule {
     public void setLessons(List<CourseLesson> lessons) {
         this.lessons = lessons;
     }
-
 
     public String getTitle() {
         return title;
@@ -145,12 +154,21 @@ public class CourseModule {
         this.slug = slug;
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
+    @Override
+    public String toString() {
+        return "CourseModule{" +
+                "moduleID=" + moduleID +
+                ", course=" + course +
+                ", lessons=" + lessons +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", orderIndex=" + orderIndex +
+                ", duration=" + duration +
+                ", isPublished=" + isPublished +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", slug='" + slug + '\'' +
+                '}';
     }
 }
 

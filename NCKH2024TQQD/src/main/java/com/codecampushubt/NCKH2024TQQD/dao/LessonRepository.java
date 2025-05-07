@@ -1,8 +1,10 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
+import com.codecampushubt.NCKH2024TQQD.dto.CourseModule.CourseModuleFILLDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
+import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -51,8 +53,25 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
             "WHERE u.userName = :userName ")
     List<String> findRoleNameByUserName(String userName);
 
-    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA( " +
-            "cl.lessonID , cl.title, cl.description, cl.type, cl.content, cl.duration, r.roleName , u.userName) " +
+
+    @Query("SELECT u.userID FROM User u WHERE u.userName = :username")
+    Long findUserIdByUsername(@Param("username") String username);
+
+
+
+    //    @Query(value = "SELECT CONCAT(c.title, ' - ', c.slug) FROM courses c JOIN [Users] u ON c.instructorID = u.userID WHERE u.userName = :username", nativeQuery = true)
+//    List<String> findCourseNamesByInstructorUsername(@Param("username") String username);
+    @Query("select new com.codecampushubt.NCKH2024TQQD.dto.CourseModule.CourseModuleFILLDTO(" +
+            "cm.title , cm.slug) " +
+            "from CourseModule cm " +
+            "join cm.course c " +
+            "join c.instructor u " +
+            "where u.userName = :userName")
+    List<CourseModuleFILLDTO> findModulesByInstructorUserName(@Param("userName") String userName);
+
+
+    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA(" +
+            "cl.lessonID , cm.title, cl.title , cl.description , cl.type , cl.content , cl.duration , r.roleName , u.userName) " +
             "FROM CourseLesson cl " +
             "JOIN cl.module cm " +
             "JOIN cm.course c " +
@@ -62,19 +81,16 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
             "WHERE r.roleName = :roleName")
     List<LessonShowDTOA> findLessonByRoleName(@Param("roleName") String roleName);
 
-    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA( " +
-            "cl.lessonID , cl.title, cl.description, cl.type, cl.content, cl.duration, r.roleName , u.userName) " +
+    @Query("select new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA(" +
+            "cl.lessonID , cm.title , cl.title , cl.description , cl.type ,cl.content , cl.duration , r.roleName , u.userName )" +
             "FROM CourseLesson cl " +
-            "JOIN cl.module cm " +
-            "JOIN cm.course c " +
-            "JOIN c.instructor u " +
-            "JOIN u.userRoles ur " +
-            "JOIN ur.role r " +
-            "WHERE u.userID = :userId")
-    List<LessonShowDTOA> findLessonByInstructorId(@Param("userId") Long userId);
-
-    @Query("SELECT u.userID FROM User u where u.userName = :userName")
-    Long finduseridByUsername(String userName);
+            "join cl.module cm " +
+            "join cm.course c " +
+            "join c.instructor u " +
+            "join u.userRoles ur " +
+            "join ur.role r " +
+            "where u.userID = :userID")
+    List<LessonShowDTOA> findLessonByUserID(@Param("userID") Long userID);
 
 
 }
