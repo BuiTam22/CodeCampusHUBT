@@ -35,6 +35,12 @@ public class lessonAPIController {
         return ResponseEntity.ok(courseName);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<?> addLesson(@RequestBody CreateLessonsDTO createLessonsDTO) {
+        System.out.println(createLessonsDTO);
+        return ResponseEntity.ok("a");
+    }
+
 
 //    @PostMapping("/add")
 //    public ResponseEntity<String> addLesson(@RequestBody CreateLessonsDTO createLessonsDTO) {
