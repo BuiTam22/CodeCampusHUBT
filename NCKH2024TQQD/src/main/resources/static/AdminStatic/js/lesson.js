@@ -157,6 +157,8 @@ abc.addEventListener("submit",async function (event) {
         imgadd = await uploadImage(file)
     }
     const duration = formdata.get("duration");
+    const OrderIndex = formdata.get("OrderIndex")
+    console.log(OrderIndex)
     console.log(duration)
 
     const data = {
@@ -166,7 +168,8 @@ abc.addEventListener("submit",async function (event) {
         type: formdata.get("type"),
         content: formdata.get("content"),
         duration: duration,
-        image: imgadd
+        image: imgadd,
+        orderIndex:OrderIndex
 
 
     }

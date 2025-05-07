@@ -9,9 +9,10 @@ public class CreateLessonsDTO {
     private String content;
     private Integer duration;
     private String image;
+    private Integer orderIndex;
     public CreateLessonsDTO(){}
 
-    public CreateLessonsDTO(String courseName, String title, String description, String type, String content, Integer duration,String image) {
+    public CreateLessonsDTO(String courseName, String title, String description, String type, String content, Integer duration, String image, Integer orderIndex) {
         this.courseName = courseName;
         this.title = title;
         this.description = description;
@@ -19,14 +20,7 @@ public class CreateLessonsDTO {
         this.content = content;
         this.duration = duration;
         this.image = image;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
+        this.orderIndex = orderIndex;
     }
 
     public String getCourseName() {
@@ -77,16 +71,33 @@ public class CreateLessonsDTO {
         this.duration = duration;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Integer getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(Integer orderIndex) {
+        this.orderIndex = orderIndex;
+    }
+
     @Override
     public String toString() {
         return "CreateLessonsDTO{" +
                 "courseName='" + courseName + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", type=" + type +
+                ", type='" + type + '\'' +
                 ", content='" + content + '\'' +
                 ", duration=" + duration +
                 ", image='" + image + '\'' +
+                ", orderIndex=" + orderIndex +
                 '}';
     }
 }

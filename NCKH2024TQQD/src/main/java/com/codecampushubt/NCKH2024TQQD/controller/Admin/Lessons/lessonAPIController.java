@@ -6,6 +6,7 @@ import com.codecampushubt.NCKH2024TQQD.dto.CourseModule.CourseModuleFILLDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.CreateLessonsDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,10 @@ import java.util.Objects;
 public class lessonAPIController {
     private final LessonRepository lessonRepository;
     private final LessonService lessonService;
-    public lessonAPIController(LessonService lessonService , LessonRepository lessonRepository) {
-        this.lessonService = lessonService;
+    @Lazy
+    public lessonAPIController(LessonService lessonService, LessonRepository lessonRepository) {
         this.lessonRepository = lessonRepository;
+        this.lessonService = lessonService;
     }
     @GetMapping("/show")
     public ResponseEntity<List<LessonShowDTOA>> showLessons() {
@@ -38,7 +40,8 @@ public class lessonAPIController {
     @PostMapping("/add")
     public ResponseEntity<?> addLesson(@RequestBody CreateLessonsDTO createLessonsDTO) {
         System.out.println(createLessonsDTO);
-        return ResponseEntity.ok("a");
+        lessonService.addLesson(createLessonsDTO);
+        return ResponseEntity.ok("Thêm Thành Công ");
     }
 
 

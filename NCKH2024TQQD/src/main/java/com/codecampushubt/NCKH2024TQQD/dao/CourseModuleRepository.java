@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CourseModuleRepository extends JpaRepository<CourseModule, Long> {
 
@@ -14,6 +15,9 @@ public interface CourseModuleRepository extends JpaRepository<CourseModule, Long
             "FROM CourseModule cm " +
             "WHERE cm.course.slug = :slug")
     List<CourseModuleDTO> getCourseModuleByCourseSlug(@Param("slug") String theSlug);
+
+    Optional<CourseModule> findBySlug(String slug);
+
 
     boolean existsBySlug(String slug);
 
