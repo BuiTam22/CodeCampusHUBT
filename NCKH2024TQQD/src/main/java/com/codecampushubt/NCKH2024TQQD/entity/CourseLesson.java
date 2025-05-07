@@ -49,11 +49,11 @@ public class CourseLesson {
 
     // CÓ CHO PHÉP XEM THỬ KHÔNG (TRUE/FALSE)
     @Column(name = "IsPreview", nullable = false, columnDefinition = "BIT DEFAULT 0")
-    private Boolean isPreview;
+    private boolean isPreview;
 
     // BÀI HỌC ĐÃ XUẤT BẢN CHƯA (TRUE/FALSE)
     @Column(name = "IsPublished", nullable = false, columnDefinition = "BIT DEFAULT 0")
-    private Boolean isPublished;
+    private boolean isPublished;
 
     // THỜI ĐIỂM TẠO BÀI HỌC
     @Column(name = "CreatedAt", nullable = false, columnDefinition = "DATETIME DEFAULT GETDATE()")
@@ -109,8 +109,8 @@ public class CourseLesson {
         this.image = image;
         this.duration = duration;
         this.orderIndex = orderIndex;
-        this.isPreview = isPreview;
-        this.isPublished = isPublished;
+        this.isPreview = false;
+        this.isPublished = false;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.slug = slug;
@@ -118,6 +118,16 @@ public class CourseLesson {
         this.contestStartTime = contestStartTime;
         this.contestEndTime = contestEndTime;
         this.totalPoints = totalPoints;
+    }
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now(); // Gán thời gian hiện tại khi đối tượng được tạo mới
+        this.updatedAt = LocalDateTime.now(); // Gán thời gian hiện tại cho trường updatedAt khi tạo mới
+    }
+
+    @PreUpdate
+    public void setUpdatedAt() {
+        this.updatedAt = LocalDateTime.now(); // Gán thời gian hiện tại khi đối tượng được cập nhật
     }
 
     public Long getLessonID() {
@@ -196,16 +206,16 @@ public class CourseLesson {
         return isPreview;
     }
 
-    public void setIsPreview(Boolean isPreview) {
-        isPreview = isPreview;
+    public void setIsPreview(boolean isPreview) {
+        this.isPreview = isPreview;
     }
 
     public Boolean getPublished() {
         return isPublished;
     }
 
-    public void setPublished(Boolean published) {
-        isPublished = published;
+    public void setPublished(boolean published) {
+        this.isPublished = published;
     }
 
     public LocalDateTime getCreatedAt() {

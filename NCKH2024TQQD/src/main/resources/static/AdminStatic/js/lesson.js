@@ -106,7 +106,7 @@ fetch('http://localhost:3000/admin/api/lesson/add')
     .then(data =>{
         const select = document.getElementById("Course")
         const label = document.getElementById('courseLabel')
-        console.log(data)
+        // console.log(data)
 
         if (data && data.length > 0 ){
             label.style.display ="block"
@@ -127,41 +127,93 @@ fetch('http://localhost:3000/admin/api/lesson/add')
     })
 //end api khoa hojc
 
+// updaloaf ảnh
+async function uploadImage(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/admin/api/upload", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+    return data.url;
+
+}
+
+// upload ảnh
+
 // api thêm lesson
+const abc = document.getElementById("lesson-form-add")
+// console.log(abc)
+abc.addEventListener("submit",async function (event) {
+    event.preventDefault();
+    const formdata = new FormData(event.target)
+    const fileInput = document.getElementById('image');
+    const file = fileInput.files[0];
+    let imgadd;
+    if (file) {
+        imgadd = await uploadImage(file)
+    }
+    const duration = formdata.get("duration");
+    const OrderIndex = formdata.get("OrderIndex")
+    console.log(OrderIndex)
+    console.log(duration)
 
-document.getElementById('submitlessonadd').addEventListener("Submit",function (e){
-    e.preventDefault();
-
-    const form = document.getElementById("lesson-form-add");
-    const formData = new FormData(form);
-
-    // Lấy dữ liệu từ các trường
     const data = {
-        title: formData.get("title"),
-        courseSlug: document.getElementById("Course").value,
-        description: formData.get("description"),
-        type: form.querySelector('select option:checked').textContent.toLowerCase(),
-        duration: document.getElementById("duration").value
-    };
-    fetch("/admin/api/lesson/add",{
-        method:"POST",
-        headers : {
-            "Content-Type" : "application"
-         },
-        body:JSON.stringify(data)
+        courseName: formdata.get("course"),
+        title: formdata.get("title"),
+        description: formdata.get("description"),
+        type: formdata.get("type"),
+        content: formdata.get("content"),
+        duration: duration,
+        image: imgadd,
+        orderIndex:OrderIndex
+
+
+    }
+    fetch("/admin/api/lesson/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
     })
         .then(res => {
-            if(!res.ok) throw new Error("Gửi Dữ Liệu Thất Bại ")
-            return res.json()
-        })
-        .then(result =>{
-            alert("Thêm Bài Học Thành Công ")
-            location.reload()
+            if (res.ok ) {
+                alert("Thêm Thành Công ")
+                location.reload()
+            }
         })
         .then(err => {
-            console.log("Lỗi " + err)
-            alert("Đã Xảy ra lỗi Khi thêm Bài Học ")
+            alert("Lỗi khi gọi api " + err)
+
         })
-})
+});
+
 
 // end api them lesson
+
+// hiện ảnh
+
+document.getElementById('image').addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (file) {
+        var fileName = file.name;
+        document.getElementById('file-name').textContent = fileName;
+
+        // Hiển thị ảnh xem trước
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var preview = document.getElementById('preview');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    } else {
+        document.getElementById('file-name').textContent = 'Chưa có file nào được chọn';
+        document.getElementById('preview').style.display = 'none';
+    }
+});
+// end hiện ảnh

@@ -52,6 +52,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             "JOIN c.instructor.userRoles ur " +
             "JOIN ur.role r")
     List<CourseShowithRolenameDTO> getAllCoursesShowDTOWithRole();
+
     }
 
 
