@@ -43,7 +43,11 @@
                         <!-- Hình ảnh mặc định vì lesson không có image -->
                         <div class="course-image">
                             <div class="image-placeholder">
-                                <i class="fas fa-laptop-code"></i>
+<!--                                <i class="fas fa-laptop-code"></i>-->
+                                <img
+                                        th:src="${lesson.image != null} ? ${lesson.image} : 'https://via.placeholder.com/300x200.png?text=No+Image'"
+                                        alt="Lesson Image"
+                                />
                             </div>
                         </div>
 
