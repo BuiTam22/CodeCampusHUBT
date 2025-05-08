@@ -12,10 +12,17 @@ import java.util.List;
 @Controller
 @RequestMapping("/management")
 public class ManagementController {
-    @GetMapping("")
+    @GetMapping("/contest")
     public String showCourse(Model model, HttpServletRequest request){
 
         model.addAttribute("activePage", request.getRequestURI());
-        return "ClientTemplates/management/management";
+        return "ClientTemplates/management/contest";
+    }
+
+    @GetMapping("/contest/create")
+    public String createConteset(Model model, HttpServletRequest request){
+
+        model.addAttribute("activePage", request.getRequestURI());
+        return "ClientTemplates/management/contest-create";
     }
 }
