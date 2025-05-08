@@ -1,7 +1,11 @@
 package com.codecampushubt.NCKH2024TQQD.controller.Client.Management;
 
+import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestManagementShowDTO;
+import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +16,18 @@ import java.util.List;
 @Controller
 @RequestMapping("/management")
 public class ManagementController {
+    private final LessonService lessonService;
+
+    @Autowired
+    public ManagementController(LessonService lessonService) {
+        this.lessonService = lessonService;
+    }
+
+
     @GetMapping("/contest")
     public String showCourse(Model model, HttpServletRequest request){
-
+        List<ContestManagementShowDTO> contests = lessonService.getContestManagementShowDTO(3L, UserContext.getUsername());
+        model.addAttribute("contests",contests);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest";
     }
