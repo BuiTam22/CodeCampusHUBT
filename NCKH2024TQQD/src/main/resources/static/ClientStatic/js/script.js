@@ -67,3 +67,19 @@ document.querySelector('.logout-button').addEventListener('click', function (e) 
         alert('Đã xảy ra lỗi không xác định.');
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const createContestButton = document.querySelector('#createContestButton');
+  // Kiểm tra nếu nút "Create Contest" tồn tại
+  if (createContestButton) {
+    createContestButton.addEventListener('click', function() {
+      // Chuyển hướng tới trang tạo cuộc thi
+      window.location.href = '/management/contest/create';
+    });
+  } else {
+    console.log('Create Contest button not found');
+  }
+});
+
+
+
