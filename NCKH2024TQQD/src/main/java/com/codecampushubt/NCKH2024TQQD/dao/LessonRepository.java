@@ -1,6 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
 import com.codecampushubt.NCKH2024TQQD.dto.CourseModule.CourseModuleFILLDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestManagementShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
@@ -44,6 +45,16 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
         WHERE cl.module.id = :moduleID AND cl.isContest = true AND CURRENT_TIMESTAMP < cl.contestEndTime
     """)
     List<ContestShowDTO> getContestShowDTOByIsContest(@Param("moduleID") Long moduleID);
+
+    //Lấy ra những lesson/contest với username
+    @Query("""
+        SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestManagementShowDTO(
+        cl.title, cl.slug, cl.creator.userName, cl.contestStartTime, cl.contestEndTime)
+        FROM CourseLesson cl
+        WHERE cl.module.id = :moduleID AND cl.creator.userName = :userName
+    """)
+    List<ContestManagementShowDTO> getContestManagementShowDTO(@Param("moduleID") Long moduleID, @Param("userName") String userName);
+
 
     boolean existsBySlug(String slug);
 

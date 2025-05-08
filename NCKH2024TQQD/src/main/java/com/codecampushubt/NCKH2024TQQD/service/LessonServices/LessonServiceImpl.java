@@ -4,10 +4,7 @@ import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseModuleRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.LessonRepository;
-import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
-import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.CreateLessonsDTO;
-import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
-import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.*;
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseModule;
@@ -90,6 +87,11 @@ public class LessonServiceImpl implements LessonService{
         lessonRepository.save(courseLesson);
 
         return courseLesson;
+    }
+
+    @Override
+    public List<ContestManagementShowDTO> getContestManagementShowDTO(Long moduleID, String userName) {
+        return lessonRepository.getContestManagementShowDTO(moduleID, userName);
     }
 
 }

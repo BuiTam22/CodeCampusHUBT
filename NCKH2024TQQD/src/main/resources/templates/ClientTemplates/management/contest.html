@@ -63,15 +63,18 @@
                 <th>Contest Name</th>
                 <th>Contest Slug</th>
                 <th>Contest Owner</th>
-                <th>Status Date</th>
+                <th>Start Time</th>
                 <th>End Time</th>
               </tr>
               <tr>
-                <td>Test 1746634808</td>
-                <td>Test 1746634808</td>
-                <td>creshtthuyquai@gmail.com</td>
-                <td>May 8,2025</td>
-                <td>Be 9,2025</td>
+              <tr th:each="contest : ${contests}">
+                <td th:text="${contest.title}">Contest Title</td>
+                <td th:text="${contest.slug}">Contest Slug</td>
+                <td th:text="${contest.userNameOwner}">Owner</td>
+                <td th:text="${#temporals.format(contest.contestStartTime, 'dd/MM/yyyy')}" />
+                <td th:text="${#temporals.format(contest.contestEndTime, 'dd/MM/yyyy')}" />
+              </tr>
+
               </tr>
             </table>
           </div>
