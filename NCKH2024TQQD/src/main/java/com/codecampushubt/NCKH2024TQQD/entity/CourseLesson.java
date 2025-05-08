@@ -19,6 +19,10 @@ public class CourseLesson {
     @JoinColumn(name = "moduleID", nullable = false)
     private CourseModule module;
 
+    @ManyToOne
+    @JoinColumn(name = "CreatorID", nullable = false)
+    private User creator;
+
     // TIÊU ĐỀ BÀI HỌC
     @Column(name = "Title", nullable = false, length = 255)
     private String title;
@@ -99,7 +103,7 @@ public class CourseLesson {
 //    }
 
 
-    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String image, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt, String slug, Boolean isContest, LocalDateTime contestStartTime, LocalDateTime contestEndTime, Integer totalPoints) {
+    public CourseLesson(Long lessonID, CourseModule module, String title, String description, String type, String content, String image, Integer duration, Integer orderIndex, Boolean isPreview, Boolean isPublished, LocalDateTime createdAt, LocalDateTime updatedAt, String slug, Boolean isContest, LocalDateTime contestStartTime, LocalDateTime contestEndTime, Integer totalPoints, User creator) {
         this.lessonID = lessonID;
         this.module = module;
         this.title = title;
@@ -118,6 +122,7 @@ public class CourseLesson {
         this.contestStartTime = contestStartTime;
         this.contestEndTime = contestEndTime;
         this.totalPoints = totalPoints;
+        this.creator = creator;
     }
     @PrePersist
     public void prePersist() {
@@ -272,5 +277,13 @@ public class CourseLesson {
 
     public void setTotalPoints(Integer totalPoints) {
         this.totalPoints = totalPoints;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 }

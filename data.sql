@@ -1145,10 +1145,10 @@ CREATE TABLE ContestExerciseAttempts (
 
 
 
+-------------------------------------------Thêm UserID cho bảng Lesson---------------------------------------------------------------------------
+ALTER TABLE CourseLessons ADD CreatorID BIGINT;
 
+ALTER TABLE CourseLessons
+ADD CONSTRAINT fk_creator FOREIGN KEY (Creator) REFERENCES Users(UserID);
 
-
-
-
-
-
+-------------------------------------------Kết thúc Thêm UserID cho bảng Lesson-------------------------------------------------------------------
