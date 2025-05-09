@@ -16,64 +16,70 @@
     <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}" />
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}" />
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}" />
-    <link rel="stylesheet" th:href="@{/ClientStatic/css/management.css}" />
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/create-contest.css}" />
 <!--    <link rel="stylesheet" th:href="@{/ClientStatic/css/contest.css}" />-->
   </head>
   <body>
     <div class="page-wrapper">
       <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
       <div class="section-one">
-        <div class="inner-title">Management</div>
-      </div>
-      <div class="section-two">
         <div class="container">
-          <div class="row mb-3">
-            <div class="col-xl-6">
-              <div class="inner-role">
-                <a href=""><div class="inner-contest">Manage Contest</div></a>
-                <a href=""
-                ><div class="inner-challenges">Manage Challenges</div></a
-                >
-              </div>
-            </div>
-            <div class="col-xl-6">
-              <div class="inner-search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Start typing..." />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xl-10">
-              <p class="inner-title">Contests you can edit are below. For more info, visit our FAQ or join our discussion forum.</p>
-            </div>
-            <div class="col-xl-2">
-              <div class="inner-button">
-                <button>Create Contest</button>
-              </div>
-            </div>
+          <div class="inner-title">Create Contest</div>
+          <div class="inner-desc">
+            Host your own coding contest on HackerRank. You can practice and
+            compete with friends from your organization or school. Select from
+            our library of over 1,500 coding challenges or create your own. Get
+            started by providing the initial details for your contest.
           </div>
         </div>
       </div>
-      <div class="section-three">
+      <div class="section-two">
         <div class="container">
-          <div class="row">
-            <table>
-              <tr>
-                <th>Contest Name</th>
-                <th>Contest Slug</th>
-                <th>Contest Owner</th>
-                <th>Status Date</th>
-                <th>End Time</th>
-              </tr>
-              <tr>
-                <td>Test 1746634808</td>
-                <td>Test 1746634808</td>
-                <td>creshtthuyquai@gmail.com</td>
-                <td>May 8,2025</td>
-                <td>Be 9,2025</td>
-              </tr>
-            </table>
+          <div class="inner-main">
+            <form action="">
+              <div class="inner-content">
+                <label for="">Contest Name</label>
+                <input type="text" />
+              </div>
+              <div class="inner-content">
+                <label for="">Duration</label>
+                <input type="text" />
+              </div>
+              <div class="inner-content">
+                <label for="">Type</label>
+                <select>
+                  <option>Coding</option>
+                  <option>Essay</option>
+                </select>
+              </div>
+              <div class="inner-check">
+                <div class="inner-tick">
+                  <label for="" class="tick">Lesson</label>
+                  <input type="radio" name="option" />
+                </div>
+                <div class="inner-tick">
+                  <label for="" class="tick">Contest</label>
+                  <input type="radio" name="option" />
+                </div>
+              </div>
+              <div class="inner-content">
+                <label for="">Start Time</label>
+                <input type="date" />
+                <label for="" class="at">at</label>
+                <input type="time" />
+                <label for="" class="itc">ITC</label>
+              </div>
+              <div class="inner-content">
+                <label for="">End Time</label>
+                <input type="date" />
+                <label for="" class="at">at</label>
+                <input type="time" />
+                <label for="" class="itc">ITC</label>
+              </div>
+            </form>
+          </div>
+          <div class="inner-button">
+            <button>Get Started</button>
           </div>
         </div>
       </div>
