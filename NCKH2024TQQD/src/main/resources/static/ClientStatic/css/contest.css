@@ -132,7 +132,6 @@
   font-size: 14px;
 }
 .section-three .inner-box .inner-right .inner-Completion-time{
-  display: flex;
   gap: 20px;
   align-items: center;
   margin-left: 5px;
