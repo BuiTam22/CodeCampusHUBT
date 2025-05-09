@@ -57,7 +57,7 @@ input:focus {
   outline: none;
 }
 .inner-button button{
-  background-color: aquamarine;
+  background-color: #28a745;
   padding: 10px 20px;
   border-radius: 10px;
   margin-bottom:20px;
