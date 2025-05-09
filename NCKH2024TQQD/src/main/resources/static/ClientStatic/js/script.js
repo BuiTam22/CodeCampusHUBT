@@ -67,7 +67,7 @@ document.querySelector('.logout-button').addEventListener('click', function (e) 
         alert('Đã xảy ra lỗi không xác định.');
     }
 });
-
+/*chuyển sang trang contest*/
 document.addEventListener('DOMContentLoaded', function () {
   const createContestButton = document.querySelector('#createContestButton');
   // Kiểm tra nếu nút "Create Contest" tồn tại
@@ -80,6 +80,57 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Create Contest button not found');
   }
 });
+/*end chuyển trang*/
+/*tính duration trong create contest*/
+        function calculateDuration() {
+          const startDate = document.getElementById("start-date").value;
+          const startTime = document.getElementById("start-time").value;
+          const endDate = document.getElementById("end-date").value;
+          const endTime = document.getElementById("end-time").value;
+          const durationInput = document.getElementById("duration");
+          const getStartedBtn = document.getElementById("get-started-btn");
+          const warning = document.getElementById("time-warning");
+
+          if (!startDate || !startTime || !endDate || !endTime) {
+            durationInput.value = "";
+            getStartedBtn.disabled = true;
+            warning.style.display = "none";
+            return;
+          }
+
+          const start = new Date(`${startDate}T${startTime}`);
+          const end = new Date(`${endDate}T${endTime}`);
+
+          if (isNaN(start) || isNaN(end) || end <= start) {
+            durationInput.value = "";
+            getStartedBtn.disabled = true;
+            warning.style.display = "block"; // ⚠ Hiện cảnh báo
+            return;
+          }
+
+          // Tính duration
+          const diffMs = end - start;
+          const totalMinutes = Math.floor(diffMs / (1000 * 60));
+          const days = Math.floor(totalMinutes / (24 * 60));
+          const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
+          const minutes = totalMinutes % 60;
+
+          let result = "";
+          if (days > 0) result += `${days} ngày `;
+          if (hours > 0) result += `${hours} giờ `;
+          if (minutes > 0) result += `${minutes} phút`;
+          if (result === "") result = "0 phút";
+
+          durationInput.value = result.trim();
+          getStartedBtn.disabled = false;
+          warning.style.display = "none"; // ✅ Ẩn cảnh báo nếu hợp lệ
+        }
+
+        ["start-date", "start-time", "end-date", "end-time"].forEach((id) => {
+          document.getElementById(id).addEventListener("input", calculateDuration);
+        });
+/*end tính duration*/
+
 
 
 
