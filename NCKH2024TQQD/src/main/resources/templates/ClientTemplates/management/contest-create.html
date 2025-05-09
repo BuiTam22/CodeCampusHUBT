@@ -26,7 +26,7 @@
         <div class="container">
           <div class="inner-title">Create Contest</div>
           <div class="inner-desc">
-            Host your own coding contest on HackerRank. You can practice and
+            Host your own coding contest on CodeHubt. You can practice and
             compete with friends from your organization or school. Select from
             our library of over 1,500 coding challenges or create your own. Get
             started by providing the initial details for your contest.
@@ -38,8 +38,8 @@
           <div class="inner-main">
             <form action="">
               <div class="inner-content">
-                <label for="">Contest Name</label>
-                <input type="text" />
+                <label for="">Contest Title</label>
+                <input type="text" id="title" name="title"/>
               </div>
               <div class="inner-content">
                 <label for="duration">Duration</label>
@@ -47,21 +47,22 @@
               </div>
               <div class="inner-content">
                 <label for="">Type</label>
-                <select>
+                <select id="contest-type">
                   <option>Coding</option>
                   <option>Essay</option>
                 </select>
               </div>
-              <div class="inner-check">
+              <div class="inner-check" id="contest-check">
                 <div class="inner-tick">
-                  <label for="" class="tick">Lesson</label>
-                  <input type="radio" name="option" />
+                  <input type="radio" name="option" value="Lesson" id="option-lesson" />
+                  <label for="option-lesson" class="tick">Lesson</label>
                 </div>
                 <div class="inner-tick">
-                  <label for="" class="tick">Contest</label>
-                  <input type="radio" name="option" />
+                  <input type="radio" name="option" value="Contest" id="option-contest" />
+                  <label for="option-contest" class="tick">Contest</label>
                 </div>
               </div>
+
               <div class="inner-content">
                 <label for="">Start Time</label>
                 <input type="date" id="start-date" />
@@ -89,6 +90,7 @@
       </div>
       <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
     </div>
+    <script th:src="@{/ClientStatic/js/handle-get-started-contest.js}">></script>
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -99,7 +101,7 @@
       integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
       crossorigin="anonymous"
     ></script>
-    <script th:src="@{/ClientStatic/js/pagination-contest.js}"></script>
+
     <script th:src="@{/ClientStatic/js/script.js}"></script>
   </body>
 </html>
