@@ -80,4 +80,19 @@ input:focus {
   height: 20px;
   margin-bottom: 5px;
 }
+/*cảnh báo*/
+#time-warning {
+  color: #dc3545;
+  font-size: 18px;
+  display: none;
+  margin-bottom:20px;
+}
+#time-warning.show {
+  display: block;  /* Hiển thị thông báo khi có lỗi */
+  animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
 

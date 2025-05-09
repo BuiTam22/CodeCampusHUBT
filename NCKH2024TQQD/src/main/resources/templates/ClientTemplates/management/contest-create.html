@@ -42,8 +42,8 @@
                 <input type="text" />
               </div>
               <div class="inner-content">
-                <label for="">Duration</label>
-                <input type="text" />
+                <label for="duration">Duration</label>
+                <input type="text" id="duration" name="duration" readonly />
               </div>
               <div class="inner-content">
                 <label for="">Type</label>
@@ -64,22 +64,26 @@
               </div>
               <div class="inner-content">
                 <label for="">Start Time</label>
-                <input type="date" />
+                <input type="date" id="start-date" />
                 <label for="" class="at">at</label>
-                <input type="time" />
+                <input type="time" id="start-time" />
                 <label for="" class="itc">ITC</label>
               </div>
               <div class="inner-content">
                 <label for="">End Time</label>
-                <input type="date" />
+                <input type="date" id="end-date" />
                 <label for="" class="at">at</label>
-                <input type="time" />
+                <input type="time" id="end-time" />
                 <label for="" class="itc">ITC</label>
+              </div>
+              <!-- Chỗ hiển thị cảnh báo -->
+              <div id="time-warning" class="text-danger mt-1">
+                ⛔ End time must be after start time.
               </div>
             </form>
           </div>
           <div class="inner-button">
-            <button>Get Started</button>
+            <button id="get-started-btn" type="submit" disabled>Get Started</button>
           </div>
         </div>
       </div>
