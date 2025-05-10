@@ -80,3 +80,15 @@
   background-color: #baf3ce;
 }
 /* end button */
+
+
+
+/*them hieu ung khi tro chuot vao management contest*/
+.clickable-row {
+  cursor: pointer;
+}
+.clickable-row:hover {
+  background-color: #f2f2f2;
+}
+/*ket thuc them hieu ung khi tro chuot vao management contest*/
+

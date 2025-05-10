@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -37,5 +38,12 @@ public class ManagementController {
 
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest-create";
+    }
+
+    @GetMapping("/contest/edit/{contestSlug}")
+    public String editConteset(@PathVariable("contestSlug") String theSlug, Model model, HttpServletRequest request){
+
+        model.addAttribute("activePage", request.getRequestURI());
+        return "ClientTemplates/management/contest-edit";
     }
 }
