@@ -3,10 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.service.UserServices;
 import java.security.PublicKey;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.cloudinary.Cloudinary;
@@ -254,6 +251,11 @@ public User updateUser(Long userId, UserUpdateDTO dto) {
 
         return UpdatedUser;
 
+    }
+
+    @Override
+    public Optional<User> findByUserName(String userName) {
+        return userRepository.findByUserName(userName);
     }
 
     // end    xóa mềm ---------------------------------------------------------------------------------------

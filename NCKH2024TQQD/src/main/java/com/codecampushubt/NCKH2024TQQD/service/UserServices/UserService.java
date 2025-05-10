@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.service.UserServices;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserBasicInfoDTO;
@@ -38,6 +39,8 @@ public interface UserService {
     Page<UserShowDTO> getAllUsers(int page, int size);
 
     User softDeleteUser(Long userID);
+
+    Optional<User> findByUserName(String userName);
 
 
 }

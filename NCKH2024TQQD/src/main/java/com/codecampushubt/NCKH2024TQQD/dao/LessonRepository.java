@@ -55,7 +55,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     """)
     List<ContestManagementShowDTO> getContestManagementShowDTO(@Param("moduleID") Long moduleID, @Param("userName") String userName);
 
-
+    // Hàm này tương đương: SELECT COUNT(*) > 0 FROM courselesson WHERE slug = :slug
     boolean existsBySlug(String slug);
 
     @Query("SELECT r.roleName FROM User u " +
