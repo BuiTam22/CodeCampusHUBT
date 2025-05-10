@@ -48,7 +48,7 @@ public class CourseLesson {
     private Integer duration;
 
     // THỨ TỰ SẮP XẾP TRONG MODULE
-    @Column(name = "OrderIndex", nullable = false)
+    @Column(name = "OrderIndex", nullable = true)
     private Integer orderIndex;
 
     // CÓ CHO PHÉP XEM THỬ KHÔNG (TRUE/FALSE)
@@ -252,7 +252,7 @@ public class CourseLesson {
     }
 
     public void setIsContest(Boolean isContest) {
-        isContest = isContest;
+        this.isContest = isContest;
     }
 
     public LocalDateTime getContestStartTime() {
@@ -285,5 +285,30 @@ public class CourseLesson {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    @Override
+    public String toString() {
+        return "CourseLesson{" +
+                "lessonID=" + lessonID +
+                ", module=" + module.getModuleID() +
+                ", creator=" + creator +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", type='" + type + '\'' +
+                ", content='" + content + '\'' +
+                ", image='" + image + '\'' +
+                ", duration=" + duration +
+                ", orderIndex=" + orderIndex +
+                ", isPreview=" + isPreview +
+                ", isPublished=" + isPublished +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", slug='" + slug + '\'' +
+                ", isContest=" + isContest +
+                ", contestStartTime=" + contestStartTime +
+                ", contestEndTime=" + contestEndTime +
+                ", totalPoints=" + totalPoints +
+                '}';
     }
 }

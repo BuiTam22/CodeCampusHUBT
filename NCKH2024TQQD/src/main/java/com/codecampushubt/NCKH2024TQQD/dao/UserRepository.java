@@ -28,13 +28,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     LoginBasicDTO getLoginBasicDTO(@Param("userName") String userName);
 
 
-//    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserShowDTO(u.userID, u.userName, u.email, r.roleName) " +
-//            "FROM User u " +
-//            "join  UserRole ur on u.userID = ur.user.userID" +
-//            "join Roles r ")
-//    List<UserShowDTO> getAllUsers();
-//    List<String>
     boolean existsByEmail(String email);
+
     Optional<User> findByUserName(String userName);
 
 

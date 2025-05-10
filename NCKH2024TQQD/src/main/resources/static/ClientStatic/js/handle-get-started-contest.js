@@ -25,4 +25,40 @@ const button = document.getElementById("get-started-btn");
       console.log("End Time:", endTime);
 
       // TODO: Gửi dữ liệu qua API hoặc xử lý tiếp
+
+      const startDateTime = `${startDate}T${startTime}:00`;
+      const endDateTime = `${endDate}T${endTime}:00`;
+
+      const data = {
+        title: title,
+        duration: parseInt(duration), // nếu cần parse
+        type: contestType,
+        isContest: selectedOption === 'Contest',
+        contestStartTime: startDateTime,
+        contestEndTime: endDateTime
+      };
+      console.log(data)
+      fetch("/api/lesson/contest/create", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+        .then(res => {
+            if (res.status === "success") {
+                alert("Thêm thành công");
+            } else {
+                alert("Thêm thất bại");
+            }
+        })
+
+
+      .catch(err => {
+          console.error("Error creating lesson:", err);
+          alert("Có lỗi xảy ra");
+      });
+
+
     });

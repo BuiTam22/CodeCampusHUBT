@@ -9,6 +9,7 @@ import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseModule;
 import com.github.slugify.Slugify;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,6 @@ public class LessonServiceImpl implements LessonService{
         this.courseModuleRepository = courseModuleRepository;
     }
 
-
-
     @Override
     public List<LessonShowDTO> getLessonShowDTO(Long theID) {
         return lessonRepository.getLessonShowDTO(theID);
@@ -44,6 +43,25 @@ public class LessonServiceImpl implements LessonService{
     @Override
     public List<ContestShowDTO> getContestShowDTOByIsContest(Long moduleID) {
         return lessonRepository.getContestShowDTOByIsContest(moduleID);
+    }
+
+    @Override
+    @Transactional
+    public CourseLesson save(CourseLesson theLesson){
+        String baseSlug = new Slugify().slugify(theLesson.getTitle());
+        String uniqueSlug = generateUniqueSlug(baseSlug);
+        theLesson.setSlug(uniqueSlug);
+        return lessonRepository.save(theLesson);
+    }
+
+    public String generateUniqueSlug(String baseSlug) {
+        String slug = baseSlug;
+        int counter = 1;
+        while (lessonRepository.existsBySlug(slug)) {
+            slug = baseSlug + "-" + counter;
+            counter++;
+        }
+        return slug;
     }
 
     @Override

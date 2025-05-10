@@ -13,7 +13,5 @@ public interface LessonService {
     List<LessonShowDTOA> getLessonShowDTOA();
     CourseLesson addLesson(CreateLessonsDTO dto);
     List<ContestManagementShowDTO> getContestManagementShowDTO(Long moduleID, String userName);
-
-
-
+    CourseLesson save(CourseLesson theLesson);
 }
