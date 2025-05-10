@@ -10,14 +10,41 @@
 <div class="main">
     <h1>CodeHubt</h1>
     <h2>Login</h2>
-    <form id="loginForm">
+    <form id="registerForm" style="display: none">
+
+        <label>Email Của Bạn là :</label>
+        <input type="email" id="email" name="email" placeholder="Mời Bạn Nhập Email Của Mình " required>
+
+        <label>Họ Và Tên :  </label>
+        <input type="text" id="fullName" name="fullName" placeholder="Nhập Họ Tên Của Bạn " required>
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username"
+        <input type="text" id="registerUserName" name="username"
                placeholder="Enter your Username" required>
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password"
+        <input type="password" id="registerPassword" name="password"
                placeholder="Enter your Password" required>
+
+
+        <div class="wrap">
+            <button type="submit" id="submitRegister">
+                <span class="button-text">Submit</span>
+                <button onclick="showFormLogin()">Back to Login</button>
+
+            </button>
+        </div>
+
+    </form>
+
+    <form id="loginForm" style="display: block" >
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"
+               placeholder="Nhập Tên Tài Khoản " required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"
+               placeholder="Nhập Mật Khẩu Của Bạn " required>
+
 
         <div class="wrap">
             <button type="submit" id="submitBtn">
@@ -25,13 +52,26 @@
                 <span class="spinner"></span>
             </button>
         </div>
+
+
     </form>
 
-    <p>Not registered?
-        <a th:href="@{/register}" style="text-decoration: none;">
-            Create an account
-        </a>
-    </p>
+    <form id="forgotForm" style="display: none" >
+        <label >Email:</label>
+        <input type="email" id="forgorEmail" name="email"
+               placeholder="Nhập Email Của Bạn required">
+        <div class="wrap">
+            <button type="submit" id="submitforgot">
+                <span class="button-text">Submit</span>
+                <button onclick="showFormLogin()">Back to Login</button>
+
+            </button>
+        </div>
+    </form>
+    <div id="navButtons">
+        <button onclick="showFormRegister()">Register</button>
+        <button onclick="showFormForgot()">Forgot Password</button>
+    </div>
 </div>
 
 <!-- Định nghĩa apiBaseUrl trước khi gọi login.js -->

@@ -47,8 +47,9 @@ public class Exam {
     @Column(name = "ShuffleQuestions", columnDefinition = "BIT DEFAULT 1")
     private boolean shuffleQuestions = true;
 
-    @Column(name = "Status", columnDefinition = "VARCHAR(20) DEFAULT 'upcoming'")
+    @Column(name = "Status", length = 20, nullable = false)
     private String status = "upcoming";
+
 
     @ManyToOne
     @JoinColumn(name = "CreatedBy", nullable = false) // Liên kết đến UserID trong bảng Users
