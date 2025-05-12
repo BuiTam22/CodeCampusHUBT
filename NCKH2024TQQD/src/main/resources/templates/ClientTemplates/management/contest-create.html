@@ -24,12 +24,10 @@
       <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
       <div class="section-one">
         <div class="container">
-          <div class="inner-title">Create Contest</div>
+          <div class="inner-title">Tạo bài học</div>
           <div class="inner-desc">
-            Host your own coding contest on CodeHubt. You can practice and
-            compete with friends from your organization or school. Select from
-            our library of over 1,500 coding challenges or create your own. Get
-            started by providing the initial details for your contest.
+            Đây là trang tạo bài học/cuộc thi trên nền tảng CodeHubt. Bạn hãy điền đầy đủ các trường ở dưới đây
+            để tạo bài học/cuộc thi của riêng mình
           </div>
         </div>
       </div>
@@ -38,11 +36,11 @@
           <div class="inner-main">
             <form action="">
               <div class="inner-content">
-                <label for="">Contest Title</label>
+                <label for="">Tiêu đề</label>
                 <input type="text" id="title" name="title"/>
               </div>
               <div class="inner-content">
-                <label for="duration">Duration</label>
+                <label for="duration">Thời gian làm bài</label>
                 <input type="text" id="duration" name="duration" />
               </div>
               <div class="inner-content">
@@ -64,14 +62,14 @@
               </div>
 
               <div class="inner-content">
-                <label for="">Start Time</label>
+                <label for="">Thời gian bắt đầu</label>
                 <input type="date" id="start-date" />
                 <label for="" class="at">at</label>
                 <input type="time" id="start-time" />
                 <label for="" class="itc">ITC</label>
               </div>
               <div class="inner-content">
-                <label for="">End Time</label>
+                <label for="">Thời gian kết thúc</label>
                 <input type="date" id="end-date" />
                 <label for="" class="at">at</label>
                 <input type="time" id="end-time" />
@@ -79,12 +77,12 @@
               </div>
               <!-- Chỗ hiển thị cảnh báo -->
               <div id="time-warning" class="text-danger mt-1">
-                ⛔ End time must be after start time.
+                ⛔ Thời gian kết thúc phải sau thời gian bắt đầu
               </div>
             </form>
           </div>
           <div class="inner-button">
-            <button id="get-started-btn" type="submit" disabled>Get Started</button>
+            <button id="get-started-btn" type="submit" disabled>Tạo bài học</button>
           </div>
         </div>
       </div>
