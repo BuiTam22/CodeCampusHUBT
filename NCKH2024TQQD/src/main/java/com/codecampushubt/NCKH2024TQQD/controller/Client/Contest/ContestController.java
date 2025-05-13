@@ -45,9 +45,16 @@ public class ContestController {
         return  "ClientTemplates/contest/show";
     }
 
-    @GetMapping("/type/essay")
-    public String showCodingExerciseEssay(Model model, HttpServletRequest request){
+    @GetMapping("/type-essay")
+    public String showEssayExercises(Model model, HttpServletRequest request){
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/contest/contest";
+    }
+
+    @GetMapping("/type-essay/{lesson-slug}")
+    public String showEssayExerciseByLessonSlug(@PathVariable("lesson-slug") String theSlug, Model model, HttpServletRequest request){
+
+        model.addAttribute("activePage", request.getRequestURI());
+        return  "ClientTemplates/contest/show";
     }
 }
