@@ -160,9 +160,18 @@
     text-decoration: none;
     color: #333;
 }
-.user-button{
-margin-left:30px;
+
+.user-button {
+    margin-left: 11px;
+    transition: all 0.3s ease; /* Cho hiệu ứng mượt hơn khi hover */
 }
+
+.user-button:hover {
+    background-color: #f0f0f0; /* Màu nền khi hover */
+    cursor: pointer; /* Đổi con trỏ chuột */
+    border-radius: 5px; /* Bo góc nhẹ */
+}
+
 .user-dropdown a:hover {
     background-color: #f0f0f0;
 }
@@ -184,3 +193,6 @@ margin-left:30px;
 }
 /* end button login */
 
+.user-controls{
+    display: contents
+}
