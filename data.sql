@@ -1129,16 +1129,19 @@ ADD IsContest BIT DEFAULT 0,
     ContestEndTime DATETIME,
     TotalPoints INT DEFAULT 0;
 
+DROP TABLE ContestExerciseAttempts
 
 CREATE TABLE ContestExerciseAttempts (
     AttemptID BIGINT IDENTITY(1,1) PRIMARY KEY,
-    ExerciseID BIGINT FOREIGN KEY REFERENCES CodingExercises(ExerciseID),
-    LessonID BIGINT FOREIGN KEY REFERENCES CourseLessons(LessonID),
-    UserID BIGINT FOREIGN KEY REFERENCES Users(UserID),
+    ExerciseID BIGINT NOT NULL, -- ID bài tập (coding hoặc essay)
+    LessonID BIGINT NOT NULL FOREIGN KEY REFERENCES CourseLessons(LessonID),
+    UserID BIGINT NOT NULL FOREIGN KEY REFERENCES Users(UserID),
     SubmittedAt DATETIME DEFAULT GETDATE(),
     Score INT,
-    UNIQUE(ExerciseID, UserID) -- Ràng buộc: mỗi user chỉ được submit một lần cho mỗi bài
+    ExerciseType VARCHAR(20) NOT NULL CHECK (ExerciseType IN ('coding', 'essay')), -- Phân biệt loại bài
+    UNIQUE(ExerciseID, UserID, ExerciseType) -- Đảm bảo mỗi user chỉ nộp 1 lần cho 1 bài loại cụ thể
 );
+
 
 
 -------------------------------------------Kết thúc Tạo Contest cho Lesson--------------------------------------------------------------------------
@@ -1152,3 +1155,33 @@ ALTER TABLE CourseLessons
 ADD CONSTRAINT fk_creator FOREIGN KEY (Creator) REFERENCES Users(UserID);
 
 -------------------------------------------Kết thúc Thêm UserID cho bảng Lesson-------------------------------------------------------------------
+
+
+
+-------------------------------------------Tạo bảng EssayExercises và EssaySubmissions để quản lý bài luyện tập------------------------------------
+CREATE TABLE EssayExercises (
+    ExerciseID BIGINT IDENTITY(1,1) PRIMARY KEY, -- ID tự động tăng
+    LessonID BIGINT FOREIGN KEY REFERENCES CourseLessons(LessonID), -- Bài học liên quan
+    Title NVARCHAR(255) NOT NULL, -- Tiêu đề bài tự luận
+    Description NVARCHAR(MAX), -- Mô tả chi tiết đề bài
+    SubjectName NVARCHAR(255), -- Tên môn học (Toán, Văn, Sử, CNTT...)
+    ExpectedAnswer NVARCHAR(MAX), -- Nội dung đáp án mong đợi, để hỗ trợ chấm điểm tự động/AI
+    TimeLimit INT DEFAULT NULL, -- Giới hạn thời gian (mili giây hoặc phút, tùy định nghĩa)
+    Difficulty VARCHAR(20) DEFAULT 'medium', -- Mức độ khó
+    Points INT DEFAULT 0, -- Điểm tối đa
+    CreatedAt DATETIME DEFAULT GETDATE(), -- Thời điểm tạo
+    UpdatedAt DATETIME DEFAULT GETDATE(), -- Thời điểm cập nhật
+    CONSTRAINT CHK_Essay_Exercise_Difficulty CHECK (Difficulty IN ('easy', 'medium', 'hard', 'expert'))
+);
+
+CREATE TABLE EssaySubmissions (
+    SubmissionID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    ExerciseID BIGINT FOREIGN KEY REFERENCES EssayExercises(ExerciseID),
+    UserID BIGINT FOREIGN KEY REFERENCES Users(UserID),
+    AnswerText NVARCHAR(MAX), -- Bài làm của học viên
+    SubmittedAt DATETIME DEFAULT GETDATE(),
+    Score INT, -- Điểm chấm
+    Feedback NVARCHAR(MAX) -- Nhận xét của giáo viên (nếu có)
+);
+
+-------------------------------------------Kết thúcTạo bảng EssayExercises và EssaySubmissions để quản lý bài luyện tập------------------------------------
