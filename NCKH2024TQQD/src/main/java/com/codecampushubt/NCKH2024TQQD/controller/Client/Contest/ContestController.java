@@ -44,4 +44,10 @@ public class ContestController {
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/contest/show";
     }
+
+    @GetMapping("/type/essay")
+    public String showCodingExerciseEssay(Model model, HttpServletRequest request){
+        model.addAttribute("activePage", request.getRequestURI());
+        return  "ClientTemplates/contest/contest";
+    }
 }
