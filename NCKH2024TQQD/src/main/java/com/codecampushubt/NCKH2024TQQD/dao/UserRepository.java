@@ -31,6 +31,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
     Optional<User> findByUserName(String userName);
+    Optional<User> findByEmail(String email);
 
 
     @Query("SELECT DISTINCT u.fullName FROM User u WHERE u.userName = :userName")

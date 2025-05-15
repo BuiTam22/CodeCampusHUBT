@@ -1,9 +1,11 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
 import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.RegisterUserDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ForgotPasswordRequest;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
 import com.codecampushubt.NCKH2024TQQD.service.PermissionServices.PermissionService;
 import com.codecampushubt.NCKH2024TQQD.service.RoleServices.RoleService;
+import com.codecampushubt.NCKH2024TQQD.service.passResset.passService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -28,14 +30,19 @@ public class RestLogin {
     private final BCryptPasswordUtil bCryptPasswordUtil;
     private final PermissionService permissionService;
     private final RoleService roleService;
+    private final passService passService;
+
 
     @Autowired
-    public RestLogin(UserService userService, JwtService jwtService, BCryptPasswordUtil bCryptPasswordUtil1, PermissionService permissionService, RoleService roleService){
+    public RestLogin(UserService userService, JwtService jwtService, BCryptPasswordUtil bCryptPasswordUtil1, PermissionService permissionService, RoleService roleService
+    ,
+                     passService passService) {
         this.userService = userService;
         this.jwtService = jwtService;
         this.bCryptPasswordUtil = bCryptPasswordUtil1;
         this.permissionService = permissionService;
         this.roleService = roleService;
+        this.passService = passService;
     }
 
     @PostMapping("/login")
@@ -86,6 +93,12 @@ public class RestLogin {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage()); // Trả lỗi nếu có vấn đề
         }
+    }
+
+    @PostMapping("/forgot")
+    public ResponseEntity<String> sendOtp (@RequestBody ForgotPasswordRequest dto ){
+        passService.sendOtpToEmail(dto.getEmail());
+        return ResponseEntity.ok("OTP Đã Được Gửi Về Email .");
     }
 
 

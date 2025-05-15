@@ -1,21 +1,20 @@
 package com.codecampushubt.NCKH2024TQQD.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-
+@Entity
 public class PasswordResetToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String otp;
-    private LocalTime expiryTime;
+    private LocalDateTime expiryTime;
     public PasswordResetToken() {}
 
-    public PasswordResetToken(Long id, String email, String otp, LocalTime expiryTime) {
+    public PasswordResetToken(Long id, String email, String otp, LocalDateTime expiryTime) {
         this.id = id;
         this.email = email;
         this.otp = otp;
@@ -46,11 +45,11 @@ public class PasswordResetToken {
         this.otp = otp;
     }
 
-    public LocalTime getExpiryTime() {
+    public LocalDateTime getExpiryTime() {
         return expiryTime;
     }
 
-    public void setExpiryTime(LocalTime expiryTime) {
+    public void setExpiryTime(LocalDateTime expiryTime) {
         this.expiryTime = expiryTime;
     }
 
