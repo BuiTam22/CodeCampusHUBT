@@ -10,6 +10,7 @@ public interface LessonService {
     List<LessonShowDTO> getLessonShowDTO(Long theID);
     List<LessonShowDTO> getLessonShowDTOByModuleIDAndSlug(Long moduleID, String search);
     List<ContestShowDTO> getContestShowDTOByIsContest(Long moduleID);
+    List<ContestShowDTO> getEssayContestShowDTOByIsContest(Long moduleID);
     List<LessonShowDTOA> getLessonShowDTOA();
     CourseLesson addLesson(CreateLessonsDTO dto);
     List<ContestManagementShowDTO> getContestManagementShowDTO(Long moduleID, String userName);

@@ -247,7 +247,7 @@ CREATE TABLE CourseLessons (
     IsPublished BIT DEFAULT 0, -- Đã xuất bản chưa
     CreatedAt DATETIME DEFAULT GETDATE(), -- Thời điểm tạo
     UpdatedAt DATETIME DEFAULT GETDATE(), -- Thời điểm cập nhật
-    CONSTRAINT CHK_Lesson_Type CHECK (Type IN ('video', 'text', 'quiz', 'assignment', 'coding')) -- Kiểm tra loại bài học hợp lệ
+    CONSTRAINT CHK_Lesson_Type CHECK (Type IN ('video', 'text', 'quiz', 'assignment', 'coding', 'essay')) -- Kiểm tra loại bài học hợp lệ
 );
 GO
 

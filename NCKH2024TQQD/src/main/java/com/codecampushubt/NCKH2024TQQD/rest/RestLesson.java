@@ -49,6 +49,11 @@ public class RestLesson {
         return lessonService.getContestManagementShowDTO(moduleID, userName);
     }
 
+    @GetMapping("/show-lesson-essay-contest/{moduleID}")
+    List<ContestShowDTO> getEssayContestShowDTOByIsContest(@PathVariable("moduleID") Long moduleID, String userName){
+        return lessonService.getEssayContestShowDTOByIsContest(moduleID);
+    }
+
     @PostMapping("/contest/create")
     public ResponseEntity<?> save(@RequestBody() CreateLessonClientDTO theLesson) {
         try {

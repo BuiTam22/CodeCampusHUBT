@@ -36,15 +36,25 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     """)
     List<LessonShowDTO> getLessonShowDTOByModuleIDAndSlug(@Param("moduleID") Long moduleID, @Param("slug") String theSlug);
 
-    //Lấy ra những lesson là contest
+    //Lấy ra những lesson là contest và có type = coding
     @Query("""
         SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO(
         cl.lessonID, cl.title, cl.description, cl.type,
         cl.duration, cl.image, cl.isPreview, cl.slug, cl.contestStartTime, cl.contestEndTime)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID AND cl.isContest = true AND CURRENT_TIMESTAMP < cl.contestEndTime
+        WHERE cl.module.id = :moduleID AND cl.isContest = true AND CURRENT_TIMESTAMP < cl.contestEndTime AND cl.type = "coding"
     """)
     List<ContestShowDTO> getContestShowDTOByIsContest(@Param("moduleID") Long moduleID);
+
+    //Lấy ra những lesson là contest và có type = essay
+    @Query("""
+        SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO(
+        cl.lessonID, cl.title, cl.description, cl.type,
+        cl.duration, cl.image, cl.isPreview, cl.slug, cl.contestStartTime, cl.contestEndTime)
+        FROM CourseLesson cl
+        WHERE cl.module.id = :moduleID AND cl.isContest = true AND CURRENT_TIMESTAMP < cl.contestEndTime AND cl.type = "essay"
+    """)
+    List<ContestShowDTO> getEssayContestShowDTOByIsContest(@Param("moduleID") Long moduleID);
 
     //Lấy ra những lesson/contest với username
     @Query("""
