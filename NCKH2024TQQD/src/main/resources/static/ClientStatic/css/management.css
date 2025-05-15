@@ -61,7 +61,7 @@
 }
 .section-three table th,td{
   padding: 10px 45px;
-  white-space: nowrap;
+  white-space: pre-wrap;
   max-width: 400px;
   min-width: 200px;
 }
