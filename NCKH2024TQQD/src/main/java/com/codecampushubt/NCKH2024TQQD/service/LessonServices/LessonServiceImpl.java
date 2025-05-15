@@ -46,6 +46,11 @@ public class LessonServiceImpl implements LessonService{
     }
 
     @Override
+    public List<ContestShowDTO> getEssayContestShowDTOByIsContest(Long moduleID) {
+        return lessonRepository.getEssayContestShowDTOByIsContest(3L);
+    }
+
+    @Override
     @Transactional
     public CourseLesson save(CourseLesson theLesson){
         String baseSlug = new Slugify().slugify(theLesson.getTitle());

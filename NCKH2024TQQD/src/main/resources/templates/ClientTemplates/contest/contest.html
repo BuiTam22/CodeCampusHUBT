@@ -55,8 +55,8 @@
         <div class="container-fluid px-5">
           <div id="contest-list" class="row">
             <div class="col-12 mb-4" th:each="contest : ${contests}">
-              <a th:href="@{contest/{slug}(slug=${contest.slug})}">
-                <div class="inner-box">
+              <a th:href="${contest.type == 'essay'} ? @{/contest/type-essay/{slug}(slug=${contest.slug})} : @{/contest/{slug}(slug=${contest.slug})}">
+                  <div class="inner-box">
                   <div class="inner-left">
                     <div class="inner-main-content">
                       <div class="inner-image">

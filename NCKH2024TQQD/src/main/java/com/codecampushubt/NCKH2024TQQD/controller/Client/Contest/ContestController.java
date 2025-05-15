@@ -49,6 +49,8 @@ public class ContestController {
 
     @GetMapping("/type-essay")
     public String showEssayExercises(Model model, HttpServletRequest request){
+        List<ContestShowDTO> essayContests = lessonService.getEssayContestShowDTOByIsContest(3L);
+        model.addAttribute("contests", essayContests);
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/contest/contest";
     }
