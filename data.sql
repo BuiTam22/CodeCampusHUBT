@@ -1169,6 +1169,7 @@ CREATE TABLE EssayExercises (
     TimeLimit INT DEFAULT NULL, -- Giới hạn thời gian (mili giây hoặc phút, tùy định nghĩa)
     Difficulty VARCHAR(20) DEFAULT 'medium', -- Mức độ khó
     Points INT DEFAULT 0, -- Điểm tối đa
+    Slug NVARCHAR(255) NULL;
     CreatedAt DATETIME DEFAULT GETDATE(), -- Thời điểm tạo
     UpdatedAt DATETIME DEFAULT GETDATE(), -- Thời điểm cập nhật
     CONSTRAINT CHK_Essay_Exercise_Difficulty CHECK (Difficulty IN ('easy', 'medium', 'hard', 'expert'))
