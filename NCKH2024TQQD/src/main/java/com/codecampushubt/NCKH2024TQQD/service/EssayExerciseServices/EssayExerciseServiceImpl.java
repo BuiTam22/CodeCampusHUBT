@@ -1,6 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.service.EssayExerciseServices;
 
 import com.codecampushubt.NCKH2024TQQD.dao.EssayExerciseRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseDetailShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseListShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,10 @@ public class EssayExerciseServiceImpl implements EssayExerciseService{
     @Override
     public List<EssayExerciseListShowDTO> getEssayExerciseListShowDTOByLessonSlug(String theSlug) {
         return essayExerciseRepository.getEssayExerciseListShowDTOByLessonSlug(theSlug);
+    }
+
+    @Override
+    public EssayExerciseDetailShowDTO getEssayExerciseDetailShowDTOBySlug(String theSlug) {
+        return essayExerciseRepository.getEssayExerciseDetailShowDTOBySlug(theSlug);
     }
 }

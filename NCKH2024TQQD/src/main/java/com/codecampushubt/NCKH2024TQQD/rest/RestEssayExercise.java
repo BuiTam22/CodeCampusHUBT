@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
+import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseDetailShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseListShowDTO;
 import com.codecampushubt.NCKH2024TQQD.service.EssayExerciseServices.EssayExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,10 @@ public class RestEssayExercise {
     @GetMapping("/{lessonSlug}")
     public List<EssayExerciseListShowDTO> getEssayExerciseListShowDTOByLessonSlug(@PathVariable("lessonSlug") String theSlug){
         return essayExerciseService.getEssayExerciseListShowDTOByLessonSlug(theSlug);
+    }
+
+    @GetMapping("/problem/{exerciseSlug}")
+    public EssayExerciseDetailShowDTO getEssayExerciseDetailShowDTOBySlug(@PathVariable("exerciseSlug")String theSlug){
+        return essayExerciseService.getEssayExerciseDetailShowDTOBySlug(theSlug);
     }
 }
