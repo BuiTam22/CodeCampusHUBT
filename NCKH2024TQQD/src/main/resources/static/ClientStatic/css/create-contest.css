@@ -3,6 +3,7 @@
 }
 .section-one .inner-title{
   font-size: 40px;
+  font-weight:700;
 }
 .section-one .inner-desc{
   margin-top: 20px;
@@ -72,7 +73,7 @@ input:focus {
   margin-bottom: 20px;
 }
 .section-two .inner-check .inner-tick .tick{
-  margin-right: 10px;
+  margin-left: 10px;
   font-size: 18px;
 }
 .section-two .inner-check .inner-tick input{
