@@ -10,14 +10,65 @@
 <div class="main">
     <h1>CodeHubt</h1>
     <h2>Login</h2>
-    <form id="loginForm">
+    <form id="registerForm" style="display: none">
+
+        <label>Tên Tài Khoản :
+            <input type="text" name="userName" required pattern="[a-z0-9]+" title="Chỉ viết thường không dấu, không khoảng trắng">
+            <small class="hint">(Chỉ dùng chữ thường và số, không dấu, không khoảng trắng)</small>
+        </label>
+
+        <label>Email:
+            <input type="email" name="email" required>
+        </label>
+
+        <label>Mật khẩu:
+            <div class="password-container">
+                <input type="password" name="password" required>
+            </div>
+        </label>
+
+        <label>Họ Và Tên :
+            <input type="text" name="fullName" required>
+        </label>
+
+        <label>Sinh Nhật :
+            <input type="date" name="dateOfBirth">
+        </label>
+
+        <label>Số Điện Thoại :
+            <input type="text" name="phoneNumber">
+        </label>
+
+        <label>Địa Chỉ :
+            <input type="text" name="address">
+        </label>
+
+        <label>Bạn Là</label>
+        <select name="role" id="role">
+            <option value="STUDENT">Student</option>
+            <option value="TEACHER">Teacher</option>
+        </select>
+
+
+        <div class="wrap">
+            <button type="submit" id="submitRegister">
+                <span class="button-text">Submit</span>
+                <button onclick="showFormLogin()">Back to Login</button>
+
+            </button>
+        </div>
+
+    </form>
+
+    <form id="loginForm" style="display: block" >
         <label for="username">Username:</label>
         <input type="text" id="username" name="username"
-               placeholder="Enter your Username" required>
+               placeholder="Nhập Tên Tài Khoản " required>
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password"
-               placeholder="Enter your Password" required>
+               placeholder="Nhập Mật Khẩu Của Bạn " required>
+
 
         <div class="wrap">
             <button type="submit" id="submitBtn">
@@ -25,13 +76,26 @@
                 <span class="spinner"></span>
             </button>
         </div>
+
+
     </form>
 
-    <p>Not registered?
-        <a th:href="@{/register}" style="text-decoration: none;">
-            Create an account
-        </a>
-    </p>
+    <form id="forgotForm" style="display: none" >
+        <label >Email:</label>
+        <input type="email" id="forgorEmail" name="email"
+               placeholder="Nhập Email Của Bạn required">
+        <div class="wrap">
+            <button type="submit" id="submitforgot">
+                <span class="button-text">Submit</span>
+                <button onclick="showFormLogin()">Back to Login</button>
+
+            </button>
+        </div>
+    </form>
+    <div id="navButtons">
+        <a onclick="showFormRegister()">Register</a>
+        <a onclick="showFormForgot()">Forgot Password</a>
+    </div>
 </div>
 
 <!-- Định nghĩa apiBaseUrl trước khi gọi login.js -->

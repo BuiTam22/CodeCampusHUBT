@@ -94,8 +94,8 @@ public class JwtFilter extends OncePerRequestFilter { // Kế thừa từ OncePe
      */
     private boolean isPublicPath(String path) {
         return path.equals("/api/user/login") ||// Kiểm tra endpoint đăng nhập API
-                path.equals("api/user/register") ||
-                path.equals("api/user/forgotpassword") ||
+                path.equals("/api/user/register") ||
+                path.equals("/api/user/forgotpassword") ||
                 path.equals("/api/user/logout") || // Kiểm tra endpoint đăng xuất API
                 path.equals("/login/show") ||     // Kiểm tra endpoint trang đăng nhập
                 path.startsWith("/AdminStatic/") || // Kiểm tra tài nguyên static cho admin
