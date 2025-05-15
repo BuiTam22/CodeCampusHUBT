@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>CodeHubt</title>
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-            integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
-            crossorigin="anonymous"
-    />
+    <title>CodeHubt - Essay</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+          crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/problem-show.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/problem_nav.css}">
@@ -29,21 +25,23 @@
         <div class="container-fluid px-4">
             <div class="row">
                 <div class="col-xl-5">
-                    <div class="problem-panel scrollable-panel">
-                        <h1 class="problem-title">Đề Bài</h1>
-                        <div class="problem-description">
-                            <p>Hãy Tả về Một Con Vật Mà Em Thích Nhất</p>
+                    <div th:if="${essayExercise != null}">
+                        <div class="problem-panel scrollable-panel">
+                            <h1 class="problem-title" th:text="${essayExercise.title}">Đề Bài</h1>
+                            <div class="problem-description">
+                                <p th:text="${essayExercise.description}">Mô tả đề bài</p>
+                            </div>
                         </div>
                     </div>
-
                 </div>
+
                 <div class="col-xl-7">
                     <div class="editor-panel">
                         <div class="editor-header">
                             <span>Bài làm tự luận</span>
                         </div>
                         <div class="editor essay-editor" contenteditable="true" spellcheck="false">
-
+                            <!-- Nội dung người dùng sẽ viết vào đây -->
                         </div>
                     </div>
                 </div>
@@ -53,31 +51,23 @@
 </div>
 
 
-<!-- Test Cases -->
-<div class="test-cases">
-    <!-- Test Cases Result -->
-    <div class="test-result" id="testResultContainer" style="display: none;">
-        <h3>Kết quả nộp bài</h3>
-        <p><strong>Ngôn ngữ:</strong> <span id="resultLanguage"></span></p>
-        <p><strong>Trạng thái:</strong> <span id="resultStatus"></span></p>
-        <p><strong>Số test case qua:</strong> <span id="resultPassed"></span>/<span id="resultTotal"></span></p>
-        <p><strong>Điểm:</strong> <span id="resultScore"></span></p>
-
-    </div>
-</div>
 <!-- Buttons -->
 <div class="button-group">
     <button class="submit-button">Nộp Bài</button>
 </div>
+
+<!-- Footer -->
 <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
 <script th:src="@{/ClientStatic/js/script.js}"></script>
-<script th:src="@{/ClientStatic/js/handle-run-code.js}"></script>
-<script th:src="@{/ClientStatic/js/handle-submit-code.js}"></script>
 <script th:src="@{/ClientStatic/js/handle-code-editor.js}"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
 </body>
-
 </html>
