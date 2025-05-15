@@ -3,6 +3,8 @@ package com.codecampushubt.NCKH2024TQQD.controller.Client.Contest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseListShowDTO;
+import com.codecampushubt.NCKH2024TQQD.service.EssayExerciseServices.EssayExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,11 +24,13 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ContestController {
     private final LessonService lessonService;
     private final CodingExerciseService codingExerciseService;
+    private final EssayExerciseService essayExerciseService;
 
     @Autowired
-    public ContestController(LessonService lessonService, CodingExerciseService codingExerciseService) {
+    public ContestController(LessonService lessonService, CodingExerciseService codingExerciseService, EssayExerciseService essayExerciseService) {
         this.lessonService = lessonService;
         this.codingExerciseService = codingExerciseService;
+        this.essayExerciseService = essayExerciseService;
     }
 
     @GetMapping("")
@@ -57,7 +61,9 @@ public class ContestController {
 
     @GetMapping("/type-essay/{lesson-slug}")
     public String showEssayExerciseByLessonSlug(@PathVariable("lesson-slug") String theSlug, Model model, HttpServletRequest request){
-
+        List<EssayExerciseListShowDTO> exercises = essayExerciseService.getEssayExerciseListShowDTOByLessonSlug(theSlug);
+        exercises = exercises != null ? exercises : new ArrayList<>();
+        model.addAttribute("exercises", exercises);
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/contest/list-essay-show";
     }
