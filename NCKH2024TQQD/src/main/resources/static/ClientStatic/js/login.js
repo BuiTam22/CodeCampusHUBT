@@ -73,13 +73,19 @@ function showFormForgot() {
         const formData = new FormData(e.target)
         // console.log(formData)
         const data = {
-            email:formData.get("email"),
-            fullName:formData.get("fullName"),
-            userName:formData.get("username"),
-            password: formData.get("password"),
-            roleName :formData.get("role")
+            email:formData.get("userName"),
+            fullName:formData.get("email"),
+            userName:formData.get("password"),
+            password: formData.get("fullName"),
+            dateOfBirth :formData.get("dateOfBirth"),
+            phoneNumber :formData.get("phoneNumber"),
+            address :formData.get("address"),
+            roleName:formData.get("role")
+
+
 
         }
+        console.log(data);
         fetch("http://localhost:3000/api/user/register",{
 
             method: "POST",
@@ -88,6 +94,7 @@ function showFormForgot() {
             },
             body:JSON.stringify(data)
         })
+
 
             .then(res => {
                 if (res.ok) {

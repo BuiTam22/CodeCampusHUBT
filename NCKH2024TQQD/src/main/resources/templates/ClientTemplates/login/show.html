@@ -12,18 +12,37 @@
     <h2>Login</h2>
     <form id="registerForm" style="display: none">
 
-        <label>Email Của Bạn là :</label>
-        <input type="email" id="email" name="email" placeholder="Mời Bạn Nhập Email Của Mình " required>
+        <label>Tên Tài Khoản :
+            <input type="text" name="userName" required pattern="[a-z0-9]+" title="Chỉ viết thường không dấu, không khoảng trắng">
+            <small class="hint">(Chỉ dùng chữ thường và số, không dấu, không khoảng trắng)</small>
+        </label>
 
-        <label>Họ Và Tên :  </label>
-        <input type="text" id="fullName" name="fullName" placeholder="Nhập Họ Tên Của Bạn " required>
-        <label for="username">Username:</label>
-        <input type="text" id="registerUserName" name="username"
-               placeholder="Enter your Username" required>
+        <label>Email:
+            <input type="email" name="email" required>
+        </label>
 
-        <label for="password">Password:</label>
-        <input type="password" id="registerPassword" name="password"
-               placeholder="Enter your Password" required>
+        <label>Mật khẩu:
+            <div class="password-container">
+                <input type="password" name="password" required>
+            </div>
+        </label>
+
+        <label>Họ Và Tên :
+            <input type="text" name="fullName" required>
+        </label>
+
+        <label>Sinh Nhật :
+            <input type="date" name="dateOfBirth">
+        </label>
+
+        <label>Số Điện Thoại :
+            <input type="text" name="phoneNumber">
+        </label>
+
+        <label>Địa Chỉ :
+            <input type="text" name="address">
+        </label>
+
         <label>Bạn Là</label>
         <select name="role" id="role">
             <option value="STUDENT">Student</option>
