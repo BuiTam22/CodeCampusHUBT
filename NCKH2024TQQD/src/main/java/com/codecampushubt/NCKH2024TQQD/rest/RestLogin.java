@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
+import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.RegisterUserDTO;
 import com.codecampushubt.NCKH2024TQQD.service.PermissionServices.PermissionService;
 import com.codecampushubt.NCKH2024TQQD.service.RoleServices.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,12 @@ public class RestLogin {
 
         response.setHeader("Set-Cookie", cookie.toString());
         return ResponseEntity.ok("Logged out");
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody RegisterUserDTO dto){
+        System.out.println(dto);
+        return ResponseEntity.ok("Thêm người dùngssss thành công!");
     }
 
 

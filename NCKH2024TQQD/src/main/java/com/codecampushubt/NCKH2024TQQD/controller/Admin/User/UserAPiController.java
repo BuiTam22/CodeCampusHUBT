@@ -33,7 +33,7 @@ public class UserAPiController {
         try {
             userService.addUser(dto); // Gọi phương thức thêm người dùng từ UserService
 //            System.out.println(dto);
-            return ResponseEntity.ok("Thêm người dùng thành công!");
+            return ResponseEntity.ok("Thêm người dùngssss thành công!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage()); // Trả lỗi nếu có vấn đề
         }

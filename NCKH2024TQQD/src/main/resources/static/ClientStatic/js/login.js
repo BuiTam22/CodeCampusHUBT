@@ -68,17 +68,45 @@ function showFormForgot() {
 //end Ẩn Hiện Form
 
 //regiter
-document.getElementById("registerForm").addEventListener("submit", function (e) {
-    e.preventDefault()
-    const formData = new FormData(e.target)
-    // console.log(formData)
-    const data = {
-        email:formData.get("email"),
-        fullName:formData.get("fullName"),
-        userName:formData.get("username"),
-        password: formData.get("password")
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        // console.log(formData)
+        const data = {
+            email:formData.get("email"),
+            fullName:formData.get("fullName"),
+            userName:formData.get("username"),
+            password: formData.get("password"),
+            roleName :formData.get("role")
 
-    }
-    console.log(data)
-})
+        }
+        fetch("http://localhost:3000/api/user/register",{
+
+            method: "POST",
+            headers : {
+                "Content-Type" : "application/json",
+            },
+            body:JSON.stringify(data)
+        })
+
+            .then(res => {
+                if (res.ok) {
+                    alert("Thêm Thành Công Người Dùng !")
+                    location.reload()
+
+                } else {
+                    return res.text().then(errmes => {
+                        alert("Lỗi Từ Server " + errmes)
+                        console.log("Chi TIết Lỗi " + errmes)
+                    })
+
+                }
+
+            })
+            .catch(err =>{
+                alert("Lỗi Khi Gọi AP" + err.message)
+                console.log("Lỗi " +  err)
+
+            })
+    })
 //end regitter
