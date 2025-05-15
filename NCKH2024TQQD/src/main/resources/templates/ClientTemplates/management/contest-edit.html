@@ -24,12 +24,10 @@
       <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
       <div class="section-one">
         <div class="container">
-          <div class="inner-title">Create Contest</div>
+          <div class="inner-title">Chỉnh Sửa Bài Học</div>
           <div class="inner-desc">
-            Host your own coding contest on CodeHubt. You can practice and
-            compete with friends from your organization or school. Select from
-            our library of over 1,500 coding challenges or create your own. Get
-            started by providing the initial details for your contest.
+            Đây là trang chỉnh sửa bài học/cuộc thi trên nền tảng Codehubt.Bạn hãy chỉnh sửa các trường bên dưới
+            nếu trong lúc tạo bạn điền sai thông tin nhé=))
           </div>
         </div>
       </div>
@@ -38,7 +36,7 @@
           <div class="inner-main">
             <form action="">
               <div class="inner-content">
-                <label for="">Contest Title</label>
+                <label for="">Tên Bài Học</label>
                 <input type="text" id="title" name="title"/>
               </div>
               <div class="inner-content">
@@ -50,36 +48,36 @@
                 <input type="file" id="file" name="file"/>
               </div>
               <div class="inner-content">
-                <label for="duration">Duration</label>
+                <label for="duration">Thời Gian Làm Bài</label>
                 <input type="text" id="duration" name="duration"  />
               </div>
               <div class="inner-content">
-                <label for="">Type</label>
+                <label for="">Dạng Bài</label>
                 <select id="contest-type">
                   <option>Coding</option>
-                  <option>Essay</option>
+                  <option>Tự Luận</option>
                 </select>
               </div>
               <div class="inner-check" id="contest-check">
                 <div class="inner-tick">
                   <input type="radio" name="option" value="Lesson" id="option-lesson" />
-                  <label for="option-lesson" class="tick">Lesson</label>
+                  <label for="option-lesson" class="tick">Bài Tập</label>
                 </div>
                 <div class="inner-tick">
                   <input type="radio" name="option" value="Contest" id="option-contest" />
-                  <label for="option-contest" class="tick">Contest</label>
+                  <label for="option-contest" class="tick">Cuộc Thi</label>
                 </div>
               </div>
 
               <div class="inner-content">
-                <label for="">Start Time</label>
+                <label for="">Thời Gian Bắt Đầu</label>
                 <input type="date" id="start-date" />
                 <label for="" class="at">at</label>
                 <input type="time" id="start-time" />
                 <label for="" class="itc">ITC</label>
               </div>
               <div class="inner-content">
-                <label for="">End Time</label>
+                <label for="">Thời Gian Kết Thúc</label>
                 <input type="date" id="end-date" />
                 <label for="" class="at">at</label>
                 <input type="time" id="end-time" />
@@ -92,8 +90,10 @@
             </form>
           </div>
           <div class="inner-button">
-            <button id="get-started-btn" type="submit" disabled>Edit</button>
+            <button id="get-started-btn" class="button-edit" type="submit" disabled>Chỉnh Sửa</button>
+            <button id="btn-quanly-diem" class="button-core" type="submit">Quản Lý Điểm</button>
           </div>
+
         </div>
       </div>
       <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>

@@ -63,6 +63,9 @@ input:focus {
   border-radius: 10px;
   margin-bottom:20px;
 }
+.inner-button .button-core{
+   margin-left:25rem;
+}
 .section-two .inner-check{
   display: flex;
   justify-content: space-around;
