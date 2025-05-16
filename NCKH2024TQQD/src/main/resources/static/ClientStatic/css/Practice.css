@@ -32,6 +32,7 @@ body {
 /* section-two */
 .section-two {
   padding: 50px;
+  background-color:#F7F8FD;
 }
 .section-two .inner-wrap {
   display: flex;
@@ -41,12 +42,13 @@ body {
   width: 70%;
 }
 .section-two .inner-wrap .inner-box {
-  background-color: #35363f;
+  background-color: #fff;
   padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   border-radius: 10px;
   margin-bottom: 10px;
+  color:black;
 }
 .section-two .inner-wrap .inner-box .inner-content {
   width: 70%;
@@ -61,7 +63,7 @@ body {
   margin-right: 20px;
 }
 .section-two .inner-wrap .inner-box .inner-title {
-  color: #fff;
+  color: black;
   font-size: 20px;
   font-weight: 600;
 }
@@ -69,7 +71,7 @@ body {
   color: #2ec866;
 }
 .section-two .inner-wrap .inner-box p {
-  color: #b7d7da;
+  color: black;
   font-size: 20px;
   display: -webkit-box;
   -webkit-line-clamp: 2;         /* Số dòng muốn hiển thị */
