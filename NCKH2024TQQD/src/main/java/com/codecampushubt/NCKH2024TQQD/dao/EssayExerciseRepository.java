@@ -25,9 +25,17 @@ public interface EssayExerciseRepository extends JpaRepository<EssayExercise, Lo
     // LẤY RA CHI TIẾT EssayExercise
     @Query("""
             SELECT new com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseDetailShowDTO
-            (ee.title, ee.description, ee.timeLimit, ee.slug)
+            (ee.exerciseID, ee.title, ee.description, ee.timeLimit, ee.slug)
             FROM EssayExercise ee
             WHERE ee.slug = :theSlug
             """)
     EssayExerciseDetailShowDTO getEssayExerciseDetailShowDTOBySlug(@Param("theSlug") String theSlug);
+
+    // LẤY RA expectedAnswer CỦA EXERCISEID
+    @Query("""
+            SELECT ee.expectedAnswer
+            FROM EssayExercise ee
+            WHERE ee.exerciseID = :theID
+            """)
+    String getExpectedAnswerOfEssayExerciseByExerciseID(@Param("theID") Long theID);
 }

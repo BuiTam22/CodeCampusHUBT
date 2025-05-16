@@ -26,4 +26,9 @@ public class EssayExerciseServiceImpl implements EssayExerciseService{
     public EssayExerciseDetailShowDTO getEssayExerciseDetailShowDTOBySlug(String theSlug) {
         return essayExerciseRepository.getEssayExerciseDetailShowDTOBySlug(theSlug);
     }
+
+    @Override
+    public String getExpectedAnswerOfEssayExerciseByExerciseID(Long theID) {
+        return essayExerciseRepository.getExpectedAnswerOfEssayExerciseByExerciseID(theID);
+    }
 }
