@@ -93,13 +93,13 @@ public class passRessetImpl implements passService {
             return "Otp Đã Hết Hạn ";
         }
 
-        return "Xác Thực OTP Thành Công ";
+        return "done";
     }
 
 
 
     @Override
-    public void resetPassword(String email , String otp , String newPassword) {
+    public String resetPassword(String email , String otp , String newPassword) {
         PasswordResetToken token = tokenRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy OTP cho email này."));
         if (!token.getOtp().equals(otp)) {
@@ -113,6 +113,8 @@ public class passRessetImpl implements passService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         tokenRepo.delete(token);
+        return "done_p";
+
     }
 
 

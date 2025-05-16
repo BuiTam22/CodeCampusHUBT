@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.rest;
 
 import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.RegisterUserDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ForgotPasswordRequest;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ResetPasswordRequest;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.veriOtp;
 import com.codecampushubt.NCKH2024TQQD.entity.Message;
@@ -108,7 +109,15 @@ public class RestLogin {
     @PostMapping("/verifyOtp")
     public ResponseEntity<?> verifyOtp (@RequestBody veriOtp dto) {
         String very = passService.verifyOtp(dto.getEmail(), dto.getOtp());
-        return ResponseEntity.ok(Map.of("Message", very));
+        System.out.println(very);
+        return ResponseEntity.ok(Map.of("message", very));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest dto) {
+        String message = passService.resetPassword(dto.getEmail(), dto.getOtp(), dto.getNewPassword());
+        System.out.println(dto);
+        return ResponseEntity.ok(Map.of("message", message));
     }
 
 
