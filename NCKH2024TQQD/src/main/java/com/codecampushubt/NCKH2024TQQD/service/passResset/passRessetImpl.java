@@ -36,14 +36,16 @@ public class passRessetImpl implements passService {
     }
 
     @Override
-    public void sendOtpToEmail(String email){
+    public void sendOtpToEmail(String email) {
         System.out.println(email);
-        Optional<User> userOtp = userRepository.findByEmail(email);
-        if(userOtp.isEmpty()) throw new RuntimeException("Email not found");
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty()) throw new RuntimeException("Email không tồn tại");
 
-//        Xóa token nếu có
-        tokenRepo.deleteByEmail(email);
+        // Kiểm tra nếu đã có token tồn tại thì xóa
+        Optional<PasswordResetToken> existingToken = tokenRepo.findByEmail(email);
+        existingToken.ifPresent(token -> tokenRepo.delete(token));
 
+        // Tạo OTP mới
         String otp = String.valueOf(new Random().nextInt(900000) + 100000);
         PasswordResetToken token = new PasswordResetToken();
         token.setEmail(email);
@@ -51,7 +53,7 @@ public class passRessetImpl implements passService {
         token.setExpiryTime(LocalDateTime.now().plusMinutes(10));
         tokenRepo.save(token);
 
-//        Gửi Email
+        // Gửi mail - đoạn này lồng luôn logic thay vì gọi hàm riêng
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -70,7 +72,7 @@ public class passRessetImpl implements passService {
 
             helper.setTo(email);
             helper.setSubject("🛡️ Mã OTP Đặt lại mật khẩu");
-            helper.setText(htmlContent, true); // true = gửi dưới dạng HTML
+            helper.setText(htmlContent, true); // gửi HTML
 
             mailSender.send(mimeMessage);
 
@@ -78,8 +80,23 @@ public class passRessetImpl implements passService {
             e.printStackTrace();
             throw new RuntimeException("Lỗi khi gửi email OTP", e);
         }
-
     }
+
+    @Override
+    public String verifyOtp(String email , String otp) {
+        PasswordResetToken token = tokenRepo.findByEmail(email)
+                .orElseThrow(()-> new RuntimeException(" Không Tìm Thấy Email của bạn "));
+        if (!token.getOtp().equals(otp)) {
+            return "Otp Không Chính xác ";
+        }
+        if (token.getExpiryTime().isBefore(LocalDateTime.now())) {
+            return "Otp Đã Hết Hạn ";
+        }
+
+        return "Xác Thực OTP Thành Công ";
+    }
+
+
 
     @Override
     public void resetPassword(String email , String otp , String newPassword) {

@@ -3,6 +3,8 @@ package com.codecampushubt.NCKH2024TQQD.rest;
 import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.RegisterUserDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ForgotPasswordRequest;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.veriOtp;
+import com.codecampushubt.NCKH2024TQQD.entity.Message;
 import com.codecampushubt.NCKH2024TQQD.service.PermissionServices.PermissionService;
 import com.codecampushubt.NCKH2024TQQD.service.RoleServices.RoleService;
 import com.codecampushubt.NCKH2024TQQD.service.passResset.passService;
@@ -20,6 +22,8 @@ import com.codecampushubt.NCKH2024TQQD.service.UserServices.UserService;
 import com.codecampushubt.NCKH2024TQQD.util.BCryptPasswordUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -99,6 +103,12 @@ public class RestLogin {
     public ResponseEntity<String> sendOtp (@RequestBody ForgotPasswordRequest dto ){
         passService.sendOtpToEmail(dto.getEmail());
         return ResponseEntity.ok("OTP Đã Được Gửi Về Email .");
+    }
+
+    @PostMapping("/verifyOtp")
+    public ResponseEntity<?> verifyOtp (@RequestBody veriOtp dto) {
+        String very = passService.verifyOtp(dto.getEmail(), dto.getOtp());
+        return ResponseEntity.ok(Map.of("Message", very));
     }
 
 
