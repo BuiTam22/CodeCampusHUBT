@@ -10,4 +10,5 @@ import java.util.List;
 public interface EssayExerciseService {
     List<EssayExerciseListShowDTO> getEssayExerciseListShowDTOByLessonSlug(String theSlug);
     EssayExerciseDetailShowDTO getEssayExerciseDetailShowDTOBySlug(String theSlug);
+    String getExpectedAnswerOfEssayExerciseByExerciseID(Long theID);
 }

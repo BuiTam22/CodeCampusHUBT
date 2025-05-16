@@ -1,6 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.dto.ExerciseTestCasesDTO;
 
-public class ExerciseTestCasesDTO {
+public class    ExerciseTestCasesDTO {
     private String input;
     private String expectedOutput;
     private Boolean isPublic;
