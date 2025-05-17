@@ -10,6 +10,8 @@
 <div class="main">
     <h1>CodeHubt</h1>
     <h2>Login</h2>
+    <div id="message" class="error"></div>
+
     <form id="registerForm" style="display: none">
 
         <label>Tên Tài Khoản :
@@ -91,6 +93,18 @@
 
             </button>
         </div>
+    </form>
+
+    <form id="step2" class="hidden">
+        <label>Nhập Mã Otp</label>
+        <input type="text" id="otp" placeholder="Nhập Mã Otp">
+        <button type="submit" >Xác Thực OTP</button>
+
+    </form>
+    <form id="step3" class="hidden">
+        <label> Nhập Mật Khẩu Mới</label>
+        <input type="text" id="newPassword" placeholder="Mật Khẩu Mới">
+        <button type="submit" >Đặt Lại Mật Khẩu Mới</button>
     </form>
     <div id="navButtons">
         <a onclick="showFormRegister()">Register</a>

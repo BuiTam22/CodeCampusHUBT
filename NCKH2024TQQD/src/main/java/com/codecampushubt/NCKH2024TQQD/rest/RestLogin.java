@@ -1,9 +1,14 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
 import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.RegisterUserDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ForgotPasswordRequest;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ResetPasswordRequest;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.veriOtp;
+import com.codecampushubt.NCKH2024TQQD.entity.Message;
 import com.codecampushubt.NCKH2024TQQD.service.PermissionServices.PermissionService;
 import com.codecampushubt.NCKH2024TQQD.service.RoleServices.RoleService;
+import com.codecampushubt.NCKH2024TQQD.service.passResset.passService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -19,6 +24,8 @@ import com.codecampushubt.NCKH2024TQQD.util.BCryptPasswordUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/user")
 public class RestLogin {
@@ -28,14 +35,19 @@ public class RestLogin {
     private final BCryptPasswordUtil bCryptPasswordUtil;
     private final PermissionService permissionService;
     private final RoleService roleService;
+    private final passService passService;
+
 
     @Autowired
-    public RestLogin(UserService userService, JwtService jwtService, BCryptPasswordUtil bCryptPasswordUtil1, PermissionService permissionService, RoleService roleService){
+    public RestLogin(UserService userService, JwtService jwtService, BCryptPasswordUtil bCryptPasswordUtil1, PermissionService permissionService, RoleService roleService
+    ,
+                     passService passService) {
         this.userService = userService;
         this.jwtService = jwtService;
         this.bCryptPasswordUtil = bCryptPasswordUtil1;
         this.permissionService = permissionService;
         this.roleService = roleService;
+        this.passService = passService;
     }
 
     @PostMapping("/login")
@@ -86,6 +98,26 @@ public class RestLogin {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage()); // Trả lỗi nếu có vấn đề
         }
+    }
+
+    @PostMapping("/forgot")
+    public ResponseEntity<String> sendOtp (@RequestBody ForgotPasswordRequest dto ){
+        passService.sendOtpToEmail(dto.getEmail());
+        return ResponseEntity.ok("OTP Đã Được Gửi Về Email .");
+    }
+
+    @PostMapping("/verifyOtp")
+    public ResponseEntity<?> verifyOtp (@RequestBody veriOtp dto) {
+        String very = passService.verifyOtp(dto.getEmail(), dto.getOtp());
+        System.out.println(very);
+        return ResponseEntity.ok(Map.of("message", very));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest dto) {
+        String message = passService.resetPassword(dto.getEmail(), dto.getOtp(), dto.getNewPassword());
+        System.out.println(dto);
+        return ResponseEntity.ok(Map.of("message", message));
     }
 
 

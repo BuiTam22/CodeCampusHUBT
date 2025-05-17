@@ -117,3 +117,133 @@ function showFormForgot() {
             })
     })
 //end regitter
+
+//quên Mật Khẩu
+const messageDiv = document.getElementById("message")
+const forgotForm = document.getElementById("forgotForm")
+const step2 = document.getElementById("step2")
+const step3 = document.getElementById("step3")
+console.log(step3)
+function showMessage (msg , isError = true){
+    messageDiv.textContent=msg
+    if (isError) {
+        messageDiv.classList.remove('success');
+        messageDiv.classList.add('error');
+    } else {
+        messageDiv.classList.remove('error');
+        messageDiv.classList.add('success');
+    }
+}
+function clearMessage() {
+    messageDiv.textContent = '';
+}
+
+forgotForm.addEventListener("submit" ,  async function (e) {
+    e.preventDefault()
+    clearMessage()
+    const email = document.getElementById("forgorEmail").value.trim()
+    // console.log(email)
+    if (!email) {
+        showMessage('Vui lòng nhập email');
+        return;
+    }
+    try{
+        const res = await fetch(`/api/user/forgot`, {
+            method : "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email})
+        });
+        const data = await res.text()
+        if (res.ok){
+            showMessage(data.message || 'OTP đã được gửi tới email.', false);
+            forgotForm.style.display = 'none';
+            step2.style.display = 'block';
+        }else {
+            showMessage(data.message || 'Gửi email thất bại');
+
+        }
+
+    }
+    catch (e){
+        showMessage('Lỗi kết nối server');
+
+    }
+})
+
+step2.addEventListener("submit", async function (e) {
+    e.preventDefault()
+    const email = document.getElementById("forgorEmail").value.trim()
+    const otp = document.getElementById("otp").value.trim()
+    if (!otp) {
+        showMessage('Vui lòng nhập mã OTP');
+        return;
+    }
+    try{
+        const res = await fetch(`/api/user/verifyOtp` , {
+            method : "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify({
+                email,
+                otp
+            })
+        })
+        const data = await res.json()
+        // console.log(data)
+        if(res.ok && data.message === "done"){
+            showMessage('OTP Hợp Lệ', false);
+            step2.style.display = "none"
+            step3.style.display = "block"
+        }else {
+            showMessage(data.message || 'OTP không đúng hoặc đã hết hạn');
+
+        }
+
+    }catch (e){
+        showMessage('Lỗi kết nối server');
+
+    }
+
+
+})
+
+step3.addEventListener("submit",async function (e){
+    e.preventDefault()
+    const newPassword = document.getElementById("newPassword").value.trim()
+    const email = document.getElementById('forgorEmail').value.trim();
+    const otp = document.getElementById('otp').value.trim();
+    console.log(newPassword + email + otp )
+    if(!newPassword){
+        showMessage("Vui Lòng Nhập Mật Khẩu")
+        return
+    }
+
+    try {
+        const res = await fetch(`/api/user/reset-password`, {
+            method : "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                email,
+                otp,
+                newPassword})
+        })
+        const data = await res.json()
+        if(data.message === "done_p"){
+            showMessage(data.message || 'Đặt lại mật khẩu thành công.', false);
+            // Reset form về bước 1
+            location.reload()
+
+        }
+        else {
+
+        }
+
+    }catch (e){
+        showMessage('Lỗi kết nối server');
+    }
+
+
+})
+
+//end Quên Maatj Khaaur
