@@ -1,4 +1,4 @@
-package com.codecampushubt.NCKH2024TQQD.service.passResset;
+package com.codecampushubt.NCKH2024TQQD.service.PassResetServices;
 
 import com.codecampushubt.NCKH2024TQQD.dao.PasswordResetTokenRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
@@ -6,28 +6,26 @@ import com.codecampushubt.NCKH2024TQQD.entity.PasswordResetToken;
 import com.codecampushubt.NCKH2024TQQD.entity.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Optional;
 import java.util.Random;
 
 @Service
-public class passRessetImpl implements passService {
+public class PassResetResetServiceImpl implements PassResetService {
     private final PasswordResetTokenRepository tokenRepo;
     private final UserRepository userRepository;
     private final JavaMailSender mailSender;
     private final PasswordEncoder passwordEncoder;
 
-    public passRessetImpl(PasswordResetTokenRepository tokenRepo,
-                          UserRepository userRepository,
-                          JavaMailSender mailSender,
-                          PasswordEncoder passwordEncoder) {
+    public PassResetResetServiceImpl(PasswordResetTokenRepository tokenRepo,
+                                     UserRepository userRepository,
+                                     JavaMailSender mailSender,
+                                     PasswordEncoder passwordEncoder) {
         this.tokenRepo = tokenRepo;
         this.userRepository = userRepository;
         this.mailSender = mailSender;
