@@ -62,3 +62,4 @@ const button = document.getElementById("get-started-btn");
 
 
     });
+

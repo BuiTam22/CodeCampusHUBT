@@ -3,6 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.controller.Client.Management;
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestManagementShowDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.EditLessonDTO;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,17 @@ public class ManagementController {
         return "ClientTemplates/management/contest-create";
     }
 
-    @GetMapping("/contest/edit/{contestSlug}")
-    public String editConteset(@PathVariable("contestSlug") String theSlug, Model model, HttpServletRequest request){
-
+    @GetMapping("/contest/edit/{lessonSlug}")
+    public String editConteset(@PathVariable("lessonSlug") String theSlug, Model model, HttpServletRequest request){
+        EditLessonDTO lesson = lessonService.getEditLessonDTO(3L, theSlug);
+        model.addAttribute("lesson", lesson);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest-edit";
+    }
+
+    @GetMapping("/contest/score/{lessonSlug}")
+    private String showScoreInLesson(@PathVariable("lessonSlug") String theSlug, Model model, HttpServletRequest request){
+        model.addAttribute("activePage", request.getRequestURI());
+        return "ClientTemplates/management/contest-score";
     }
 }
