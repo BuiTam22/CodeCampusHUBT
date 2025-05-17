@@ -1,10 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
 import com.codecampushubt.NCKH2024TQQD.dto.CourseModule.CourseModuleFILLDTO;
-import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestManagementShowDTO;
-import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
-import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
-import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTOA;
+import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.*;
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -64,6 +61,16 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
         WHERE cl.module.id = :moduleID AND cl.creator.userName = :userName
     """)
     List<ContestManagementShowDTO> getContestManagementShowDTO(@Param("moduleID") Long moduleID, @Param("userName") String userName);
+
+    // lấy ra các trường có thể chỉnh sửa của lesson theo slug
+    @Query("""
+        SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.EditLessonDTO(
+        cl.lessonID, cl.title, cl.description, cl.image, cl.duration, cl.type,
+        cl.isContest, cl.contestStartTime, cl.contestEndTime, cl.slug)
+        FROM CourseLesson cl
+        WHERE cl.module.id = :moduleID AND cl.slug = :theSlug
+    """)
+    EditLessonDTO getEditLessonDTO(@Param("moduleID") Long moduleID, @Param("theSlug") String theSlug);
 
     // Hàm này tương đương: SELECT COUNT(*) > 0 FROM courselesson WHERE slug = :slug
     boolean existsBySlug(String slug);

@@ -26,8 +26,7 @@
         <div class="container">
           <div class="inner-title">Chỉnh Sửa Bài Học</div>
           <div class="inner-desc">
-            Đây là trang chỉnh sửa bài học/cuộc thi trên nền tảng Codehubt.Bạn hãy chỉnh sửa các trường bên dưới
-            nếu trong lúc tạo bạn điền sai thông tin nhé=))
+            Đây là trang chỉnh sửa bài học/cuộc thi trên nền tảng Codehubt.Bạn hãy chỉnh sửa các trường bên dưới.
           </div>
         </div>
       </div>
@@ -37,50 +36,58 @@
             <form action="">
               <div class="inner-content">
                 <label for="">Tên Bài Học</label>
-                <input type="text" id="title" name="title"/>
+                <input type="text" id="title" name="title" th:value="${lesson.title}" />
               </div>
               <div class="inner-content">
                 <label for="">Mô Tả</label>
-                <input type="text" id="desc" name="desc"/>
+                <input type="text" id="desc" name="desc" th:value="${lesson.description}" />
               </div>
               <div class="inner-content">
                 <label for="">Chọn Ảnh</label>
-                <input type="file" id="file" name="file"/>
+                <input type="file" id="file" name="file" />
+                <div th:if="${lesson.image != null}">
+                  <img th:src="@{${lesson.image}}" alt="Ảnh hiện tại" style="max-height: 120px; margin-top: 10px;" />
+                </div>
               </div>
               <div class="inner-content">
                 <label for="duration">Thời Gian Làm Bài</label>
-                <input type="text" id="duration" name="duration"  />
+                <input type="text" id="duration" name="duration" th:value="${lesson.duration}" />
               </div>
               <div class="inner-content">
                 <label for="">Dạng Bài</label>
-                <select id="contest-type">
-                  <option>Coding</option>
-                  <option>Tự Luận</option>
+                <select id="contest-type" name="type">
+                  <option value="Coding" th:selected="${lesson.type == 'coding'}">Coding</option>
+                  <option value="Tự Luận" th:selected="${lesson.type == 'essay'}">Tự Luận</option>
                 </select>
               </div>
               <div class="inner-check" id="contest-check">
                 <div class="inner-tick">
-                  <input type="radio" name="option" value="Lesson" id="option-lesson" />
+                  <input type="radio" name="option" value="Lesson" id="option-lesson" th:checked="${lesson.isContest}" />
                   <label for="option-lesson" class="tick">Bài Tập</label>
                 </div>
                 <div class="inner-tick">
-                  <input type="radio" name="option" value="Contest" id="option-contest" />
+                  <input type="radio" name="option" value="Contest" id="option-contest" th:checked="${lesson.isContest}" />
                   <label for="option-contest" class="tick">Cuộc Thi</label>
                 </div>
               </div>
 
               <div class="inner-content">
                 <label for="">Thời Gian Bắt Đầu</label>
-                <input type="date" id="start-date" />
+                <input type="date" id="start-date"
+                       th:value="${#temporals.format(lesson.contestStartTime, 'yyyy-MM-dd')}"/>
                 <label for="" class="at">at</label>
-                <input type="time" id="start-time" />
+                <input type="time" id="start-time"
+                       th:value="${#temporals.format(lesson.contestStartTime, 'HH:mm')}"/>
                 <label for="" class="itc">ITC</label>
               </div>
+
               <div class="inner-content">
                 <label for="">Thời Gian Kết Thúc</label>
-                <input type="date" id="end-date" />
+                <input type="date" id="end-date"
+                       th:value="${#temporals.format(lesson.contestEndTime, 'yyyy-MM-dd')}"/>
                 <label for="" class="at">at</label>
-                <input type="time" id="end-time" />
+                <input type="time" id="end-time"
+                       th:value="${#temporals.format(lesson.contestEndTime, 'HH:mm')}"/>
                 <label for="" class="itc">ITC</label>
               </div>
               <!-- Chỗ hiển thị cảnh báo -->
@@ -91,14 +98,14 @@
           </div>
           <div class="inner-button">
             <button id="get-started-btn" class="button-edit" type="submit" disabled>Chỉnh Sửa</button>
-            <button id="btn-quanly-diem" class="button-core" type="submit">Quản Lý Điểm</button>
+            <button id="manage-score" class="button-core" type="submit" th:attr="data-slug=${lesson.slug}">Quản Lý Điểm</button>
           </div>
 
         </div>
       </div>
       <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
     </div>
-    <script th:src="@{/ClientStatic/js/handle-get-started-contest.js}">></script>
+    <script th:src="@{/ClientStatic/js/manage-edit-lesson.js}">></script>
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

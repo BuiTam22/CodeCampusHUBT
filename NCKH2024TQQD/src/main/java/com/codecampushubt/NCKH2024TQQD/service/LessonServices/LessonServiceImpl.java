@@ -59,6 +59,11 @@ public class LessonServiceImpl implements LessonService{
         return lessonRepository.save(theLesson);
     }
 
+    @Override
+    public EditLessonDTO getEditLessonDTO(Long moduleID, String theSlug) {
+        return lessonRepository.getEditLessonDTO(moduleID, theSlug);
+    }
+
     public String generateUniqueSlug(String baseSlug) {
         String slug = baseSlug;
         int counter = 1;
