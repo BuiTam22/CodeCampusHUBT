@@ -16,93 +16,48 @@
     <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}" />
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}" />
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}" />
-    <link rel="stylesheet" th:href="@{/ClientStatic/css/create-contest.css}" />
-<!--    <link rel="stylesheet" th:href="@{/ClientStatic/css/contest.css}" />-->
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/contest-score.css}" />
   </head>
   <body>
     <div class="page-wrapper">
       <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
-<!--      <div class="section-one">-->
-<!--        <div class="container">-->
-<!--          <div class="inner-title">Chỉnh Sửa Bài Học</div>-->
-<!--          <div class="inner-desc">-->
-<!--            Đây là trang chỉnh sửa bài học/cuộc thi trên nền tảng Codehubt.Bạn hãy chỉnh sửa các trường bên dưới.-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="section-two">-->
-<!--        <div class="container">-->
-<!--          <div class="inner-main">-->
-<!--            <form action="">-->
-<!--              <div class="inner-content">-->
-<!--                <label for="">Tên Bài Học</label>-->
-<!--                <input type="text" id="title" name="title" th:value="${lesson.title}" />-->
-<!--              </div>-->
-<!--              <div class="inner-content">-->
-<!--                <label for="">Mô Tả</label>-->
-<!--                <input type="text" id="desc" name="desc" th:value="${lesson.description}" />-->
-<!--              </div>-->
-<!--              <div class="inner-content">-->
-<!--                <label for="">Chọn Ảnh</label>-->
-<!--                <input type="file" id="file" name="file" />-->
-<!--                <div th:if="${lesson.image != null}">-->
-<!--                  <img th:src="@{${lesson.image}}" alt="Ảnh hiện tại" style="max-height: 120px; margin-top: 10px;" />-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div class="inner-content">-->
-<!--                <label for="duration">Thời Gian Làm Bài</label>-->
-<!--                <input type="text" id="duration" name="duration" th:value="${lesson.duration}" />-->
-<!--              </div>-->
-<!--              <div class="inner-content">-->
-<!--                <label for="">Dạng Bài</label>-->
-<!--                <select id="contest-type" name="type">-->
-<!--                  <option value="Coding" th:selected="${lesson.type == 'coding'}">Coding</option>-->
-<!--                  <option value="Tự Luận" th:selected="${lesson.type == 'essay'}">Tự Luận</option>-->
-<!--                </select>-->
-<!--              </div>-->
-<!--              <div class="inner-check" id="contest-check">-->
-<!--                <div class="inner-tick">-->
-<!--                  <input type="radio" name="option" value="Lesson" id="option-lesson" th:checked="${lesson.isContest}" />-->
-<!--                  <label for="option-lesson" class="tick">Bài Tập</label>-->
-<!--                </div>-->
-<!--                <div class="inner-tick">-->
-<!--                  <input type="radio" name="option" value="Contest" id="option-contest" th:checked="${lesson.isContest}" />-->
-<!--                  <label for="option-contest" class="tick">Cuộc Thi</label>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              <div class="inner-content">-->
-<!--                <label for="">Thời Gian Bắt Đầu</label>-->
-<!--                <input type="date" id="start-date"-->
-<!--                       th:value="${#temporals.format(lesson.contestStartTime, 'yyyy-MM-dd')}"/>-->
-<!--                <label for="" class="at">at</label>-->
-<!--                <input type="time" id="start-time"-->
-<!--                       th:value="${#temporals.format(lesson.contestStartTime, 'HH:mm')}"/>-->
-<!--                <label for="" class="itc">ITC</label>-->
-<!--              </div>-->
-
-<!--              <div class="inner-content">-->
-<!--                <label for="">Thời Gian Kết Thúc</label>-->
-<!--                <input type="date" id="end-date"-->
-<!--                       th:value="${#temporals.format(lesson.contestEndTime, 'yyyy-MM-dd')}"/>-->
-<!--                <label for="" class="at">at</label>-->
-<!--                <input type="time" id="end-time"-->
-<!--                       th:value="${#temporals.format(lesson.contestEndTime, 'HH:mm')}"/>-->
-<!--                <label for="" class="itc">ITC</label>-->
-<!--              </div>-->
-<!--              &lt;!&ndash; Chỗ hiển thị cảnh báo &ndash;&gt;-->
-<!--              <div id="time-warning" class="text-danger mt-1">-->
-<!--                ⛔ End time must be after start time.-->
-<!--              </div>-->
-<!--            </form>-->
-<!--          </div>-->
-<!--          <div class="inner-button">-->
-<!--            <button id="get-started-btn" class="button-edit" type="submit" disabled>Chỉnh Sửa</button>-->
-<!--            <button id="manage-score" class="button-core" type="submit" th:attr="data-slug=${lesson.slug}">Quản Lý Điểm</button>-->
-<!--          </div>-->
-
-<!--        </div>-->
-<!--      </div>-->
+      <div class="section-one">
+        <div class="inner-title">Quản lý Điểm</div>
+      </div>
+      <div class="section-three">
+        <div class="container">
+          <div class="row">
+            <table>
+              <tr>
+                <th>lesson title</th>
+                <th>User</th>
+                <th>subject</th>
+                <th>Language</th>
+                <th>Time</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            <tr>
+              <td>
+                Bài Những người con xa xứ trở về nhà hoàng qu vương bất tử
+              </td>
+              <td>Manh_Nguyen</td>
+              <td>
+                Lập Trình Phân Tán
+              </td>
+              <td>
+                Tiếng Mẹ Đẻ
+              </td>
+              <td>
+                kjghghfghdghdfhgiudgh
+              </td>
+              <td>10</td>
+              <td>Đang Hoạt Dộng</td>
+            </tr>
+            </table>
+          </div>
+        </div>
+      </div>
       <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
     </div>
     <script th:src="@{/ClientStatic/js/manage-edit-lesson.js}">></script>
