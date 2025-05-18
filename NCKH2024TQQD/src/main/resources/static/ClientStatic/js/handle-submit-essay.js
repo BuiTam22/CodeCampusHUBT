@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             content: userAnswer
         };
 
-        fetch("/api/essay-exercise/submit", {
+        fetch("/api/judge/essay/submit", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

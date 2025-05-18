@@ -123,6 +123,14 @@ public class User {
         this.deletedAt = deletedAt;
     }
 
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public Set<UserRole> getUserRoles() {
         return userRoles;
     }
