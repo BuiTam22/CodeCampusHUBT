@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     ArrayList<UserBasicInfoDTO> getUserBasicInfo(@Param("userID") Long userID);
 
     // truy vấn 3 trường để so sánh login
-    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO(u.userName, u.email, u.password) FROM User u WHERE u.userName = :userName")
+    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO(u.userName, u.email, u.password, u.userID) FROM User u WHERE u.userName = :userName")
     LoginBasicDTO getLoginBasicDTO(@Param("userName") String userName);
 
 

@@ -5,6 +5,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.codecampushubt.NCKH2024TQQD.context.UserContext;
+import com.codecampushubt.NCKH2024TQQD.dto.ContestExerciseAttempt.AttemptInfoDTO;
+import com.codecampushubt.NCKH2024TQQD.entity.User;
+import com.codecampushubt.NCKH2024TQQD.service.ContestExerciseAttemptServices.ContestExerciseAttemptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -33,12 +37,13 @@ public class RestEssayExercise {
     private String GEMINI_API_KEY;
 
     private final EssayExerciseService essayExerciseService;
-
     private final WebClient webClient;
+    private final ContestExerciseAttemptService contestExerciseAttemptService;
 
     @Autowired
-    public RestEssayExercise(EssayExerciseService essayExerciseService) {
+    public RestEssayExercise(EssayExerciseService essayExerciseService, ContestExerciseAttemptService contestExerciseAttemptService) {
         this.essayExerciseService = essayExerciseService;
+        this.contestExerciseAttemptService = contestExerciseAttemptService;
         this.webClient = WebClient.create();
     }
 
@@ -54,6 +59,14 @@ public class RestEssayExercise {
 
     @PostMapping("/submit")
     public ResponseEntity<?> submitEssayExercise(@RequestBody EssayExerciseSubmissionRequest request) {
+        AttemptInfoDTO attempt = contestExerciseAttemptService.getAttemptInfoDTOByuserIDAndExerciseID(UserContext.getUserID(), request.getExerciseID());
+        if(attempt == null){
+            System.out.println("Lần đầu làm bài");
+        }
+        else{
+            attempt.setAttemptNumber(attempt.getAttemptNumber()+1);
+        }
+
         String expectedAnswer = essayExerciseService.getExpectedAnswerOfEssayExerciseByExerciseID(request.getExerciseID());
 
         String prompt = "So sánh bài làm sinh viên với đáp án dưới đây. Hãy đưa ra nhận xét chi tiết và chấm điểm (thang điểm 10). Trả về kết quả dưới dạng JSON: {\"feedback\": \"...\", \"score\": số thực từ 0 đến 10}\n\n"

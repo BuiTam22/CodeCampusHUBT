@@ -43,7 +43,9 @@ public class UserContextFilter extends OncePerRequestFilter {
             // Nếu token hợp lệ → set vào ThreadLocal
             if (token != null && jwtService.validateToken(token)) {
                 String username = jwtService.extractUsername(token);
+                Long userID = jwtService.extractUserID(token);
                 UserContext.setUsername(username);
+                UserContext.setUserID(userID);
             }
 
             filterChain.doFilter(request, response);

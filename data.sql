@@ -1138,6 +1138,7 @@ CREATE TABLE ContestExerciseAttempts (
     UserID BIGINT NOT NULL FOREIGN KEY REFERENCES Users(UserID),
     SubmittedAt DATETIME DEFAULT GETDATE(),
     Score INT,
+    AttemptNumber INT,
     ExerciseType VARCHAR(20) NOT NULL CHECK (ExerciseType IN ('coding', 'essay')), -- Phân biệt loại bài
     UNIQUE(ExerciseID, UserID, ExerciseType) -- Đảm bảo mỗi user chỉ nộp 1 lần cho 1 bài loại cụ thể
 );
