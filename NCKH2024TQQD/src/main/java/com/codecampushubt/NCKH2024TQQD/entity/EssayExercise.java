@@ -75,6 +75,10 @@ public class EssayExercise {
         this.slug = slug;
     }
 
+    public void setExerciseID(Long exerciseID) {
+        this.exerciseID = exerciseID;
+    }
+
     public Long getExerciseID() {
         return exerciseID;
     }
