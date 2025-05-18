@@ -20,10 +20,11 @@ public class JwtServiceImpl implements JwtService{
 ;
 
     // Phương thức tạo token từ username
-    public String generateToken(String username, List<String> permissions, List<String> role) {
+    public String generateToken(String username, List<String> permissions, List<String> role, Long userID) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("permissions", permissions);
         claims.put("roles", role);
+        claims.put("userID", userID);
         return Jwts.builder()
                 .setClaims(claims) // thêm permissions và role vào claims
                 .setSubject(username) // Lưu username vào payload
@@ -66,5 +67,12 @@ public class JwtServiceImpl implements JwtService{
     public List<String> extractRoles(String token){
         Claims claims = extractClaims(token);
         return (List<String>) claims.get("roles");
+    }
+
+    // Phương thức lấy userID từ token
+    public Long extractUserID(String token){
+        Claims claims = extractClaims(token);
+        Number userIdNumber = (Number) claims.get("userID");
+        return userIdNumber != null ? userIdNumber.longValue() : null;
     }
 }

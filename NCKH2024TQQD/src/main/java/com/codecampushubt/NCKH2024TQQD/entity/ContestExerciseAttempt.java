@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(
         name = "ContestExerciseAttempts",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"ExerciseID", "UserID"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"ExerciseID", "UserID", "ExerciseType"})
 )
 public class ContestExerciseAttempt {
     @Id
@@ -32,16 +32,42 @@ public class ContestExerciseAttempt {
     @Column(name = "Score")
     private Integer score;
 
+    @Column(name = "ExerciseType")
+    private String exerciseType;
+
+    @Column(name = "AttemptNumber")
+    private Integer attemptNumber;
+
+
+
     public ContestExerciseAttempt() {
     }
 
-    public ContestExerciseAttempt(Long attemptID, CodingExercise exercise, CourseLesson lesson, User user, LocalDateTime submittedAt, Integer score) {
-        this.attemptID = attemptID;
+    public ContestExerciseAttempt(CodingExercise exercise, CourseLesson lesson, User user, LocalDateTime submittedAt, Integer score, String exerciseType, Integer attemptNumber) {
         this.exercise = exercise;
         this.lesson = lesson;
         this.user = user;
         this.submittedAt = submittedAt;
         this.score = score;
+        this.exerciseType = exerciseType;
+        this.attemptNumber = attemptNumber;
+    }
+
+
+    public String getExerciseType() {
+        return exerciseType;
+    }
+
+    public void setExerciseType(String exerciseType) {
+        this.exerciseType = exerciseType;
+    }
+
+    public Integer getAttemptNumber() {
+        return attemptNumber;
+    }
+
+    public void setAttemptNumber(Integer attemptNumber) {
+        this.attemptNumber = attemptNumber;
     }
 
     public Long getAttemptID() {

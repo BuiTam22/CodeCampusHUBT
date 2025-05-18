@@ -1,6 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
 import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.LoginDTO.LoginBasicDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserBasicInfoDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.*;
 import com.codecampushubt.NCKH2024TQQD.service.UserServices.*;
@@ -48,4 +49,8 @@ public class RestUser {
         return userService.getFullName("tambui");
     }
 
+    @GetMapping("/login-info/{userName}")
+    public LoginBasicDTO getLoginBasicDTO(@PathVariable("userName") String userName){
+        return userService.getLoginBasicDTO(userName);
+    }
 }

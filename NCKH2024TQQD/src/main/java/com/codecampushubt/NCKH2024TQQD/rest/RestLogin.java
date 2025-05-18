@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
+import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ForgotPasswordRequest;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ResetPasswordRequest;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserCreateDTO;
@@ -50,14 +51,14 @@ public class RestLogin {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request, HttpServletResponse response, CsrfToken csrfToken) {
+
         LoginBasicDTO user = userService.getLoginBasicDTO(request.getUsername());
 
         if (user == null || !bCryptPasswordUtil.passwordMatches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
 
-        String token = jwtService.generateToken(user.getUserName(), permissionService.getPermissionNameDTO(user.getUserName()), roleService.getRoleNameByUserName(user.getUserName()));
-
+        String token = jwtService.generateToken(user.getUserName(), permissionService.getPermissionNameDTO(user.getUserName()), roleService.getRoleNameByUserName(user.getUserName()), user.getUserId());
         // Tạo cookie chứa JWT
         ResponseCookie cookie = ResponseCookie.from("token", token)
                 .httpOnly(true)
