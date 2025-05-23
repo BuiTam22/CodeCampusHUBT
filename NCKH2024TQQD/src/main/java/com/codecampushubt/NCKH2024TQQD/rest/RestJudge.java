@@ -1,17 +1,17 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
+import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dao.ExerciseTestCaseRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.JudgeRequestDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.JudgeRunResponseDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission.CodingSubmissionResponseDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseSubmissionRequest;
 import com.codecampushubt.NCKH2024TQQD.dto.ExerciseTestCasesDTO.ExerciseTestCasesDTO;
-import com.codecampushubt.NCKH2024TQQD.entity.CodingExercise;
-import com.codecampushubt.NCKH2024TQQD.entity.CodingSubmission;
-import com.codecampushubt.NCKH2024TQQD.entity.User;
+import com.codecampushubt.NCKH2024TQQD.entity.*;
 import com.codecampushubt.NCKH2024TQQD.service.CodingExerciseServices.CodingExerciseService;
 import com.codecampushubt.NCKH2024TQQD.service.CodingSubmissionServices.CodingSubmissionService;
 import com.codecampushubt.NCKH2024TQQD.service.EssayExerciseServices.EssayExerciseService;
+import com.codecampushubt.NCKH2024TQQD.service.EssaySubmissionServices.EssaySubmissionService;
 import com.codecampushubt.NCKH2024TQQD.service.JudgeServices.JudgeService;
 import com.codecampushubt.NCKH2024TQQD.service.UserServices.UserService;
 import com.ibm.icu.text.UFieldPosition;
@@ -48,10 +48,11 @@ public class RestJudge {
     private final CodingSubmissionService codingSubmissionService;
     private final WebClient webClient;
     private final EssayExerciseService essayExerciseService;
+    private final EssaySubmissionService essaySubmissionService;
 
 
     @Autowired
-    public RestJudge(JudgeService judgeService, ExerciseTestCaseRepository exerciseTestCaseRepository, UserService userService, CodingExerciseService codingExerciseService, CodingSubmissionService codingSubmissionService, WebClient webClient, EssayExerciseService essayExerciseService) {
+    public RestJudge(JudgeService judgeService, ExerciseTestCaseRepository exerciseTestCaseRepository, UserService userService, CodingExerciseService codingExerciseService, CodingSubmissionService codingSubmissionService, WebClient webClient, EssayExerciseService essayExerciseService, EssaySubmissionService essaySubmissionService) {
         this.judgeService = judgeService;
         this.exerciseTestCaseRepository = exerciseTestCaseRepository;
         this.userService = userService;
@@ -59,6 +60,7 @@ public class RestJudge {
         this.codingSubmissionService = codingSubmissionService;
         this.webClient = webClient;
         this.essayExerciseService = essayExerciseService;
+        this.essaySubmissionService = essaySubmissionService;
     }
 
     @PostMapping("/run")
@@ -136,12 +138,33 @@ public class RestJudge {
             Pattern jsonPattern = Pattern.compile("\\{.*?\\}", Pattern.DOTALL);
             Matcher matcher = jsonPattern.matcher(rawText);
 
+            EssaySubmission submission = new EssaySubmission();
+            EssayExercise exercise = new EssayExercise();
+            exercise.setExerciseID(request.getExerciseID());
+            User user = new User();
+            user.setUserID(UserContext.getUserID());
+            submission.setExercise(exercise);
+            submission.setUser(user);
+            submission.setAnswerText(request.getContent());
+            submission.setSubmittedAt(LocalDateTime.now());
+
+
             if (matcher.find()) {
                 String json = matcher.group();
                 com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
                 Map<String, Object> result = mapper.readValue(json, Map.class);
+                submission.setFeedback((String) result.get("feedback"));
+                submission.setScore(Double.valueOf(result.get("score").toString()));
+
+                // Lưu vào DB
+                essaySubmissionService.save(submission);
+
                 return ResponseEntity.ok(result);
             } else {
+                submission.setFeedback(rawText);
+                submission.setScore(0.0);
+                essaySubmissionService.save(submission);
+
                 return ResponseEntity.ok(Map.of("feedback", rawText, "score", 0));
             }
 
