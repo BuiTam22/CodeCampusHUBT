@@ -14,9 +14,8 @@ public class ContestExerciseAttempt {
     @Column(name = "AttemptID")
     private Long attemptID;
 
-    @ManyToOne
-    @JoinColumn(name = "ExerciseID", nullable = false)
-    private CodingExercise exercise;
+    @Column(name = "ExerciseID", nullable = false)
+    private Long exerciseID;
 
     @ManyToOne
     @JoinColumn(name = "LessonID", nullable = false)
@@ -43,8 +42,8 @@ public class ContestExerciseAttempt {
     public ContestExerciseAttempt() {
     }
 
-    public ContestExerciseAttempt(CodingExercise exercise, CourseLesson lesson, User user, LocalDateTime submittedAt, Integer score, String exerciseType, Integer attemptNumber) {
-        this.exercise = exercise;
+    public ContestExerciseAttempt(Long exerciseID, CourseLesson lesson, User user, LocalDateTime submittedAt, Integer score, String exerciseType, Integer attemptNumber) {
+        this.exerciseID = exerciseID;
         this.lesson = lesson;
         this.user = user;
         this.submittedAt = submittedAt;
@@ -74,12 +73,12 @@ public class ContestExerciseAttempt {
         return attemptID;
     }
 
-    public CodingExercise getExercise() {
-        return exercise;
+    public Long getExerciseID() {
+        return exerciseID;
     }
 
-    public void setExercise(CodingExercise exercise) {
-        this.exercise = exercise;
+    public void setExercise(Long exerciseID) {
+        this.exerciseID = exerciseID;
     }
 
     public CourseLesson getLesson() {
