@@ -5,16 +5,17 @@ import com.codecampushubt.NCKH2024TQQD.dao.ExerciseTestCaseRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.JudgeRequestDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.JudgeRunResponseDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission.CodingSubmissionResponseDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.ContestExerciseAttempt.AttemptInfoDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseSubmissionRequest;
 import com.codecampushubt.NCKH2024TQQD.dto.ExerciseTestCasesDTO.ExerciseTestCasesDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.*;
 import com.codecampushubt.NCKH2024TQQD.service.CodingExerciseServices.CodingExerciseService;
 import com.codecampushubt.NCKH2024TQQD.service.CodingSubmissionServices.CodingSubmissionService;
+import com.codecampushubt.NCKH2024TQQD.service.ContestExerciseAttemptServices.ContestExerciseAttemptService;
 import com.codecampushubt.NCKH2024TQQD.service.EssayExerciseServices.EssayExerciseService;
 import com.codecampushubt.NCKH2024TQQD.service.EssaySubmissionServices.EssaySubmissionService;
 import com.codecampushubt.NCKH2024TQQD.service.JudgeServices.JudgeService;
 import com.codecampushubt.NCKH2024TQQD.service.UserServices.UserService;
-import com.ibm.icu.text.UFieldPosition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -49,10 +50,11 @@ public class RestJudge {
     private final WebClient webClient;
     private final EssayExerciseService essayExerciseService;
     private final EssaySubmissionService essaySubmissionService;
+    private final ContestExerciseAttemptService contestExerciseAttemptService;
 
 
     @Autowired
-    public RestJudge(JudgeService judgeService, ExerciseTestCaseRepository exerciseTestCaseRepository, UserService userService, CodingExerciseService codingExerciseService, CodingSubmissionService codingSubmissionService, WebClient webClient, EssayExerciseService essayExerciseService, EssaySubmissionService essaySubmissionService) {
+    public RestJudge(JudgeService judgeService, ExerciseTestCaseRepository exerciseTestCaseRepository, UserService userService, CodingExerciseService codingExerciseService, CodingSubmissionService codingSubmissionService, WebClient webClient, EssayExerciseService essayExerciseService, EssaySubmissionService essaySubmissionService, ContestExerciseAttemptService contestExerciseAttemptService) {
         this.judgeService = judgeService;
         this.exerciseTestCaseRepository = exerciseTestCaseRepository;
         this.userService = userService;
@@ -61,6 +63,8 @@ public class RestJudge {
         this.webClient = webClient;
         this.essayExerciseService = essayExerciseService;
         this.essaySubmissionService = essaySubmissionService;
+        this.contestExerciseAttemptService = contestExerciseAttemptService;
+
     }
 
     @PostMapping("/run")
@@ -99,6 +103,33 @@ public class RestJudge {
 
     @PostMapping("/essay/submit")
     public ResponseEntity<?> submitEssayExercise(@RequestBody EssayExerciseSubmissionRequest request) {
+        AttemptInfoDTO attempInfo = contestExerciseAttemptService.getAttemptInfoDTOByuserIDAndExerciseID(UserContext.getUserID(), request.getExerciseID(), "essay");
+
+
+        if(attempInfo != null && attempInfo.getAttemptNumber() != null && attempInfo.getAttemptNumber() >0){
+            System.out.println("Lần làm bài thứ " + (attempInfo.getAttemptNumber() + 1));
+        }
+        if (attempInfo == null){
+            attempInfo = new AttemptInfoDTO();
+            attempInfo.setAttemptNumber(0);
+            attempInfo.setExerciseType("essay");
+            attempInfo.setLessonID(essayExerciseService.getLessonIDByExerciseID(request.getExerciseID()));
+        }
+
+        ContestExerciseAttempt exerciseAttempt = new ContestExerciseAttempt();
+        exerciseAttempt.setExerciseID(request.getExerciseID());
+        CourseLesson lesson = new CourseLesson();
+        lesson.setLessonID(attempInfo.getlessonID());
+        exerciseAttempt.setLesson(lesson);
+        User user = new User();
+        user.setUserID(UserContext.getUserID());
+        exerciseAttempt.setUser(user);
+        exerciseAttempt.setSubmittedAt(LocalDateTime.now());
+        exerciseAttempt.setExerciseType("essay");
+        Integer currentAttempt = attempInfo.getAttemptNumber() == null ? 0 : attempInfo.getAttemptNumber();
+        exerciseAttempt.setAttemptNumber(currentAttempt + 1);
+
+
 
         String expectedAnswer = essayExerciseService.getExpectedAnswerOfEssayExerciseByExerciseID(request.getExerciseID());
 
@@ -141,10 +172,10 @@ public class RestJudge {
             EssaySubmission submission = new EssaySubmission();
             EssayExercise exercise = new EssayExercise();
             exercise.setExerciseID(request.getExerciseID());
-            User user = new User();
-            user.setUserID(UserContext.getUserID());
+            User userSubmit = new User();
+            userSubmit.setUserID(UserContext.getUserID());
             submission.setExercise(exercise);
-            submission.setUser(user);
+            submission.setUser(userSubmit);
             submission.setAnswerText(request.getContent());
             submission.setSubmittedAt(LocalDateTime.now());
 
@@ -155,16 +186,18 @@ public class RestJudge {
                 Map<String, Object> result = mapper.readValue(json, Map.class);
                 submission.setFeedback((String) result.get("feedback"));
                 submission.setScore(Double.valueOf(result.get("score").toString()));
+                exerciseAttempt.setScore(Double.valueOf(result.get("score").toString()));
 
                 // Lưu vào DB
                 essaySubmissionService.save(submission);
+                contestExerciseAttemptService.save(exerciseAttempt);
 
                 return ResponseEntity.ok(result);
             } else {
                 submission.setFeedback(rawText);
                 submission.setScore(0.0);
                 essaySubmissionService.save(submission);
-
+                contestExerciseAttemptService.save(exerciseAttempt);
                 return ResponseEntity.ok(Map.of("feedback", rawText, "score", 0));
             }
 

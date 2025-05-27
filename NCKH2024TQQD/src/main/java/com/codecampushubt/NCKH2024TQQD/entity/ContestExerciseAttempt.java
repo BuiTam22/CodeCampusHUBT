@@ -29,7 +29,7 @@ public class ContestExerciseAttempt {
     private LocalDateTime submittedAt = LocalDateTime.now();
 
     @Column(name = "Score")
-    private Integer score;
+    private Double score;
 
     @Column(name = "ExerciseType")
     private String exerciseType;
@@ -42,7 +42,7 @@ public class ContestExerciseAttempt {
     public ContestExerciseAttempt() {
     }
 
-    public ContestExerciseAttempt(Long exerciseID, CourseLesson lesson, User user, LocalDateTime submittedAt, Integer score, String exerciseType, Integer attemptNumber) {
+    public ContestExerciseAttempt(Long exerciseID, CourseLesson lesson, User user, LocalDateTime submittedAt, Double score, String exerciseType, Integer attemptNumber) {
         this.exerciseID = exerciseID;
         this.lesson = lesson;
         this.user = user;
@@ -77,7 +77,7 @@ public class ContestExerciseAttempt {
         return exerciseID;
     }
 
-    public void setExercise(Long exerciseID) {
+    public void setExerciseID(Long exerciseID) {
         this.exerciseID = exerciseID;
     }
 
@@ -105,11 +105,11 @@ public class ContestExerciseAttempt {
         this.submittedAt = submittedAt;
     }
 
-    public Integer getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 }

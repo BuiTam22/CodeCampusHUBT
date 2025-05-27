@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.service.ContestExerciseAttemptServices;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class ContestExerciseAttemptServiceImpl implements ContestExerciseAttempt
     }
 
     @Override
+    @Transactional
     public ContestExerciseAttempt save(ContestExerciseAttempt contestExerciseAttempt) {
         return contestExerciseAttemptRepository.save(contestExerciseAttempt);
     }
