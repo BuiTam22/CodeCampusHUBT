@@ -13,6 +13,12 @@ import java.util.List;
 @Repository
 public interface CodingExerciseRepository extends JpaRepository<CodingExercise, Long> {
 
+    /**
+     * Retrieves a list of CodingExerciseDTO objects based on the lesson slug.
+     *
+     * @param theSlug The slug of the lesson to retrieve coding exercises for.
+     * @return A list of CodingExerciseDTO objects containing exercise details.
+     */
     @Query("""
             SELECT new com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDTO
             (ce.exerciseID, ce.lesson.title, ce.title, ce.description, ce.programmingLanguage, ce.difficulty, ce.points, ce.slug)
@@ -21,6 +27,12 @@ public interface CodingExerciseRepository extends JpaRepository<CodingExercise, 
             """)
     List<CodingExerciseDTO> getCodingExerciseDTOByLessonSlug(@Param("theSlug") String theSlug);
 
+    /**
+     * Retrieves a CodingExerciseDetailDTO object based on the given exercise slug.
+     *
+     * @param theSlug The slug of the exercise to retrieve details for.
+     * @return The CodingExerciseDetailDTO object containing the exercise details.
+     */
     @Query("""
             SELECT new com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDetailDTO
             (ce.exerciseID, null, ce.title, ce.description, ce.programmingLanguage, ce.initialCode,
@@ -31,6 +43,12 @@ public interface CodingExerciseRepository extends JpaRepository<CodingExercise, 
             """)
     CodingExerciseDetailDTO getCodingExerciseDetailDTOByExerciseSlug(@Param("theSlug") String theSlug);
 
+    /**
+     * Retrieves a CodingExercise entity by its exercise ID.
+     *
+     * @param exerciseID The ID of the exercise entity to retrieve.
+     * @return The CodingExercise entity with the specified exercise ID.
+     */
     @Query("SELECT ce FROM CodingExercise ce WHERE ce.exerciseID = :exerciseID")
     CodingExercise getExerciseEntityByID(@Param("exerciseID") Long exerciseID);
 
