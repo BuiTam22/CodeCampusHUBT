@@ -42,6 +42,13 @@ public class ManagementController {
         return "ClientTemplates/management/contest";
     }
 
+    @GetMapping("/contest/challenge")
+    public String showChallenge(Model model, HttpServletRequest request){
+
+        model.addAttribute("activePage", request.getRequestURI());
+        return "ClientTemplates/management/challenge";
+    }
+
     @GetMapping("/contest/create")
     public String createConteset(Model model, HttpServletRequest request){
 
@@ -61,14 +68,7 @@ public class ManagementController {
     private String showScoreInLesson(@PathVariable("lessonType") String lessonType, @PathVariable("lessonSlug") String theSlug, Model model, HttpServletRequest request){
         Long lessonID = lessonService.findLessonIdBySlug(theSlug);
         List<LessonSubmissionDTO> submissionDTOs = lessonSubmissionService.getLessonSubmissionsByLessonId(lessonID);
-        // lấy ra mảng dữ liệu chứa tổng điểm những attempt của lessonID trong ContestExerciseAttempt
-        // chỉ tổng những bản ghi có attemptNumber là 1 (tạm thời truyền vào, sau này sẽ phát triển)
-        // các trường cầ
-        if(lessonType.equals("essay")){
 
-        }else {
-
-        }
         model.addAttribute("submissions", submissionDTOs);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest-score";
