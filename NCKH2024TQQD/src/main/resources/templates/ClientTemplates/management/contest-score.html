@@ -31,29 +31,19 @@
               <tr>
                 <th>lesson title</th>
                 <th>User</th>
-                <th>subject</th>
-                <th>Language</th>
                 <th>Time</th>
                 <th>Score</th>
                 <th>Status</th>
               </tr>
-            <tr>
-              <td>
-                Bài Những người con xa xứ trở về nhà hoàng qu vương bất tử
-              </td>
-              <td>Manh_Nguyen</td>
-              <td>
-                Lập Trình Phân Tán
-              </td>
-              <td>
-                Tiếng Mẹ Đẻ
-              </td>
-              <td>
-                kjghghfghdghdfhgiudgh
-              </td>
-              <td>10</td>
-              <td>Đang Hoạt Dộng</td>
-            </tr>
+
+              <!-- Lặp qua danh sách submissions -->
+              <tr th:each="submission : ${submissions}">
+                <td th:text="${submission.lessonTitle}">Lesson Title</td>
+                <td th:text="${submission.userName}">User</td>
+                <td th:text="${#temporals.format(submission.time, 'dd/MM/yyyy HH:mm')}">Time</td>
+                <td th:text="${submission.score}">Score</td>
+                <td th:text="${submission.status}">Status</td>
+              </tr>
             </table>
           </div>
         </div>

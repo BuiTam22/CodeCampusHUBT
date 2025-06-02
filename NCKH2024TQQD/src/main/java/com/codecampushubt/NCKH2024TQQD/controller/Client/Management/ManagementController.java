@@ -4,7 +4,10 @@ import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestManagementShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.EditLessonDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.SubmissionDTO.LessonSubmissionDTO;
+import com.codecampushubt.NCKH2024TQQD.service.CodingSubmissionServices.CodingSubmissionService;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
+import com.codecampushubt.NCKH2024TQQD.service.LessonSubmissionServices.LessonSubmissionService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,16 +16,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/management")
 public class ManagementController {
     private final LessonService lessonService;
+    private final CodingSubmissionService codingSubmissionService;
+    private final LessonSubmissionService lessonSubmissionService;
 
     @Autowired
-    public ManagementController(LessonService lessonService) {
+    public ManagementController(LessonService lessonService, CodingSubmissionService codingSubmissionService, LessonSubmissionService lessonSubmissionService) {
         this.lessonService = lessonService;
+        this.codingSubmissionService = codingSubmissionService;
+        this.lessonSubmissionService = lessonSubmissionService;
     }
 
 
@@ -49,8 +57,19 @@ public class ManagementController {
         return "ClientTemplates/management/contest-edit";
     }
 
-    @GetMapping("/contest/score/{lessonSlug}")
-    private String showScoreInLesson(@PathVariable("lessonSlug") String theSlug, Model model, HttpServletRequest request){
+    @GetMapping("/contest/score/{lessonType}/{lessonSlug}")
+    private String showScoreInLesson(@PathVariable("lessonType") String lessonType, @PathVariable("lessonSlug") String theSlug, Model model, HttpServletRequest request){
+        Long lessonID = lessonService.findLessonIdBySlug(theSlug);
+        List<LessonSubmissionDTO> submissionDTOs = lessonSubmissionService.getLessonSubmissionsByLessonId(lessonID);
+        // lấy ra mảng dữ liệu chứa tổng điểm những attempt của lessonID trong ContestExerciseAttempt
+        // chỉ tổng những bản ghi có attemptNumber là 1 (tạm thời truyền vào, sau này sẽ phát triển)
+        // các trường cầ
+        if(lessonType.equals("essay")){
+
+        }else {
+
+        }
+        model.addAttribute("submissions", submissionDTOs);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest-score";
     }

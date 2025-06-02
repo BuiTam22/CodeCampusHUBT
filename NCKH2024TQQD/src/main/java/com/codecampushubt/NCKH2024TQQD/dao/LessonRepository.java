@@ -75,6 +75,11 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     // Hàm này tương đương: SELECT COUNT(*) > 0 FROM courselesson WHERE slug = :slug
     boolean existsBySlug(String slug);
 
+    // LẤY LessonID dựa vào lessonSlug
+    @Query("SELECT cl.lessonID FROM CourseLesson cl WHERE cl.slug = :slug")
+    Long findLessonIdBySlug(@Param("slug") String slug);
+
+
     @Query("SELECT r.roleName FROM User u " +
             "JOIN u.userRoles ur " +
             "JOIN ur.role r " +

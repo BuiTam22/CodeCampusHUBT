@@ -70,6 +70,11 @@ public class LessonServiceImpl implements LessonService{
         return lessonRepository.findById(id);
     }
 
+    @Override
+    public Long findLessonIdBySlug(String slug) {
+        return lessonRepository.findLessonIdBySlug(slug);
+    }
+
     public String generateUniqueSlug(String baseSlug) {
         String slug = baseSlug;
         int counter = 1;

@@ -98,7 +98,9 @@
           </div>
           <div class="inner-button">
             <button id="get-started-btn" class="button-edit" type="submit" disabled>Chỉnh Sửa</button>
-            <button id="manage-score" class="button-core" type="submit" th:attr="data-slug=${lesson.slug}">Quản Lý Điểm</button>
+              <button id="manage-score" class="button-core" th:data-slug="${lesson.slug}"
+                      th:data-lesson-type="${lesson.type}">Quản Lý Điểm
+              </button>
           </div>
 
         </div>
