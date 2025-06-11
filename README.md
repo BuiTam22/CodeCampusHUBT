@@ -16,7 +16,6 @@ codeHUBT là một hệ thống quản lý khóa học trực tuyến, hỗ tr�
 
 ### Yêu cầu
 - Java 17 trở lên
-- MySQL 8.0 trở lên
 - Maven
 
 ### Cài đặt Dự án
