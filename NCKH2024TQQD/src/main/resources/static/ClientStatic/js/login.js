@@ -73,10 +73,10 @@ function showFormForgot() {
         const formData = new FormData(e.target)
         // console.log(formData)
         const data = {
-            email:formData.get("userName"),
-            fullName:formData.get("email"),
-            userName:formData.get("password"),
-            password: formData.get("fullName"),
+            email:formData.get("email"),
+            fullName:formData.get("fullName"),
+            userName:formData.get("userName"),
+            password: formData.get("password"),
             dateOfBirth :formData.get("dateOfBirth"),
             phoneNumber :formData.get("phoneNumber"),
             address :formData.get("address"),

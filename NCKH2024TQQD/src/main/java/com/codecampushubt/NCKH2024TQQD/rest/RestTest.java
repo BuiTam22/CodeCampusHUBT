@@ -14,7 +14,7 @@ import com.codecampushubt.NCKH2024TQQD.service.JWTServices.JwtService;
 import jakarta.persistence.EntityManager;
 
 @RequestMapping("/api/test")
-@RestController()
+@RestController
 public class RestTest {
     private EntityManager entityManager;
     private JwtService jwtService;
