@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
         user.setFullName(dto.getFullName());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setAddress(dto.getAddress());
-        user.setStatus("ACTIVE");
+        user.setStatus("ONLINE");
         user.setAccountStatus(AccountStatus.ACTIVE);
         user.setProvider("LOCAL");
         user.setEmailVerified(false);
