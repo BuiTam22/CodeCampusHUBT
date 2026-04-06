@@ -1,0 +1,293 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────
+#  Online Judge Platform — Local Dev Stack
+#  Services: 1 PostgreSQL(5 DB), Redis, Kafka,
+#            MinIO, Keycloak
+# ─────────────────────────────────────────────
+
+networks:
+  oj-net:
+    driver: bridge
+
+volumes:
+  pg_data:
+  redis_data:
+  kafka_data:
+  zookeeper_data:
+  zookeeper_log:
+  minio_data:
+  keycloak_data:
+
+# ─── Shared healthcheck defaults ──────────────
+x-pg-healthcheck: &pg-healthcheck
+  healthcheck:
+    # Sử dụng thẳng user 'postgres' và db 'default_db' để check trạng thái instance
+    test: ["CMD-SHELL", "pg_isready -U postgres -d default_db"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+    start_period: 10s
+
+services:
+
+  # ═══════════════════════════════════════════
+  #  POSTGRESQL × 5 DB in 1 instance  (one DB per service)
+  # ═══════════════════════════════════════════
+
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres-oj
+    restart: unless-stopped
+    <<: *pg-healthcheck  # (Bật lại nếu bạn đã define alias này ở trên)
+    environment:
+      # Đây là tài khoản Admin (Superuser) của toàn bộ Instance
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: default_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # Volume lưu trữ data
+      - pg_data:/var/lib/postgresql/data
+      # Mount file script vào thư mục khởi tạo của Postgres
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - oj-net
+
+  # ═══════════════════════════════════════════
+  #  REDIS  (with persistence)
+  # ═══════════════════════════════════════════
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --requirepass redis_pass
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis_pass", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - oj-net
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    ports:
+      - "5540:5540"
+    networks:
+      - oj-net
+
+  # ═══════════════════════════════════════════
+  #  KAFKA + ZOOKEEPER
+  # ═══════════════════════════════════════════
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    platform: linux/amd64
+    container_name: zookeeper
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SYNC_LIMIT: 2
+    ports:
+      - "2181:2181"
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+      - zookeeper_log:/var/lib/zookeeper/log
+    networks:
+      - oj-net
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    platform: linux/amd64
+    container_name: kafka
+    restart: unless-stopped
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # Accessible from host (localhost:9092) and within docker network (kafka:29092)
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_LOG_RETENTION_HOURS: 168        # 7 days
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824   # 1 GB
+      KAFKA_NUM_PARTITIONS: 6
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - oj-net
+
+  # Create topics automatically after Kafka is ready
+  kafka-init:
+    image: confluentinc/cp-kafka:7.6.0
+    platform: linux/amd64
+    container_name: kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: [ "/bin/sh", "-c" ]
+    command: >
+      "
+      echo 'Creating Kafka topics...'
+
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic submission_topic --partitions 12 --replication-factor 1 --config retention.ms=604800000
+      
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic result_topic --partitions 12 --replication-factor 1 --config retention.ms=604800000
+      
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic contest_events --partitions 6 --replication-factor 1 --config retention.ms=604800000
+      
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic retry_topic --partitions 6 --replication-factor 1 --config retention.ms=604800000
+      
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic dead_letter_topic --partitions 3 --replication-factor 1 --config retention.ms=2592000000
+
+      echo 'Topics created:'
+      kafka-topics --bootstrap-server kafka:29092 --list
+      "
+    networks:
+      - oj-net
+
+  # Kafka UI — optional but very useful for dev
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    ports:
+      - "8090:8080"
+    networks:
+      - oj-net
+
+  # ═══════════════════════════════════════════
+  #  MINIO  (S3-compatible object storage)
+  # ═══════════════════════════════════════════
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio_admin
+      MINIO_ROOT_PASSWORD: minio_pass_123
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # Web console
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - oj-net
+
+  # Create buckets automatically after MinIO is ready
+  minio-init:
+    image: minio/mc:latest
+    container_name: minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "
+      mc alias set local http://minio:9000 minio_admin minio_pass_123
+
+      echo 'Creating buckets...'
+      mc mb --ignore-existing local/source-code
+      mc mb --ignore-existing local/test-cases
+      mc mb --ignore-existing local/judge-outputs
+
+      # Versioning for test-cases (important for audit)
+      mc version enable local/test-cases
+      mc version enable local/source-code
+
+      echo 'Buckets ready:'
+      mc ls local
+      "
+    networks:
+      - oj-net
+
+  # ═══════════════════════════════════════════
+  #  KEYCLOAK  (Identity & Access Management)
+  # ═══════════════════════════════════════════
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    platform: linux/amd64
+    container_name: keycloak
+    restart: unless-stopped
+    command: start-dev --import-realm
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Admin credentials
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin_pass
+
+      # Use PostgreSQL as backend (shared with identity-service DB for simplicity in dev)
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/identity_db
+      KC_DB_USERNAME: identity_user
+      KC_DB_PASSWORD: identity_pass
+
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+
+      # Logging
+      KC_LOG_LEVEL: INFO
+    ports:
+      - "8080:8080"   # Keycloak HTTP
+      - "9990:9000"   # Keycloak metrics/health (avoid clash with MinIO)
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+      # Drop a realm JSON here to auto-import on startup:
+      # - ./keycloak/realms:/opt/keycloak/data/import
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 && cat <&3 | grep -q '200 OK'"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    networks:
+      - oj-net
