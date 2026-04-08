@@ -153,22 +153,5 @@ public class CourseModule {
     public void setSlug(String slug) {
         this.slug = slug;
     }
-
-    @Override
-    public String toString() {
-        return "CourseModule{" +
-                "moduleID=" + moduleID +
-                ", course=" + course +
-                ", lessons=" + lessons +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", orderIndex=" + orderIndex +
-                ", duration=" + duration +
-                ", isPublished=" + isPublished +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", slug='" + slug + '\'' +
-                '}';
-    }
 }
 
