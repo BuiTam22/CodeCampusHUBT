@@ -3,6 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.controller.Client.Contest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
 import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseListShowDTO;
 import com.codecampushubt.NCKH2024TQQD.service.EssayExerciseServices.EssayExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class ContestController {
     @GetMapping("")
     public String showContest(Model model, HttpServletRequest request){
         // fix cứng moduleId là 3
-        List<ContestShowDTO> contests = lessonService.getContestShowDTOByIsContest(3L);
+        List<ContestShowDTO> contests = lessonService.getContestShowDTOByIsContest(Constant.ID_MODULE_COMMON);
         model.addAttribute("contests", contests);
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/contest/contest";
@@ -53,7 +54,7 @@ public class ContestController {
 
     @GetMapping("/type-essay")
     public String showEssayExercises(Model model, HttpServletRequest request){
-        List<ContestShowDTO> essayContests = lessonService.getEssayContestShowDTOByIsContest(3L);
+        List<ContestShowDTO> essayContests = lessonService.getEssayContestShowDTOByIsContest(Constant.ID_MODULE_COMMON);
         model.addAttribute("contests", essayContests);
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/contest/contest";

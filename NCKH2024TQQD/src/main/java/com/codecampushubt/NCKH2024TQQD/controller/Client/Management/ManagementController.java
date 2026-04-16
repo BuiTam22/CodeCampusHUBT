@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.controller.Client.Management;
 
+import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestManagementShowDTO;
@@ -9,6 +10,7 @@ import com.codecampushubt.NCKH2024TQQD.service.CodingSubmissionServices.CodingSu
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import com.codecampushubt.NCKH2024TQQD.service.LessonSubmissionServices.LessonSubmissionService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +38,7 @@ public class ManagementController {
 
     @GetMapping("/contest")
     public String showCourse(Model model, HttpServletRequest request){
-        List<ContestManagementShowDTO> contests = lessonService.getContestManagementShowDTO(3L, UserContext.getUsername());
+        List<ContestManagementShowDTO> contests = lessonService.getContestManagementShowDTO(Constant.ID_MODULE_COMMON, UserContext.getUsername());
         model.addAttribute("contests",contests);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest";
@@ -58,7 +60,7 @@ public class ManagementController {
 
     @GetMapping("/contest/edit/{lessonSlug}")
     public String editConteset(@PathVariable("lessonSlug") String theSlug, Model model, HttpServletRequest request){
-        EditLessonDTO lesson = lessonService.getEditLessonDTO(3L, theSlug);
+        EditLessonDTO lesson = lessonService.getEditLessonDTO(Constant.ID_MODULE_COMMON, theSlug);
         model.addAttribute("lesson", lesson);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest-edit";

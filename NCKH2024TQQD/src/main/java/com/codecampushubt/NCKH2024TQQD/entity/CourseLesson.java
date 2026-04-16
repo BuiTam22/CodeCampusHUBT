@@ -52,11 +52,11 @@ public class CourseLesson {
     private Integer orderIndex;
 
     // CÓ CHO PHÉP XEM THỬ KHÔNG (TRUE/FALSE)
-    @Column(name = "IsPreview", nullable = false, columnDefinition = "BIT DEFAULT 0")
+    @Column(name = "IsPreview", nullable = false, columnDefinition = "BIT DEFAULT 1")
     private boolean isPreview;
 
     // BÀI HỌC ĐÃ XUẤT BẢN CHƯA (TRUE/FALSE)
-    @Column(name = "IsPublished", nullable = false, columnDefinition = "BIT DEFAULT 0")
+    @Column(name = "IsPublished", nullable = false, columnDefinition = "BIT DEFAULT 1")
     private boolean isPublished;
 
     // THỜI ĐIỂM TẠO BÀI HỌC

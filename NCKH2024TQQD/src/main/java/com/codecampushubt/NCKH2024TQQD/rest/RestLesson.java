@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
+import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.*;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
@@ -71,7 +72,7 @@ public class RestLesson {
                     .orElseThrow(() -> new RuntimeException("User not found"));
             lesson.setCreator(user);
 
-            CourseModule module = courseModuleService.findByModuleID(3L)
+            CourseModule module = courseModuleService.findByModuleID(Constant.ID_MODULE_COMMON)
                     .orElseThrow(() -> new RuntimeException("Module not found"));
             lesson.setModule(module);
 

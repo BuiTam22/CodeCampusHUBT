@@ -1,9 +1,12 @@
 package com.codecampushubt.NCKH2024TQQD.controller.Client.Lesson;
 
+import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
 import com.codecampushubt.NCKH2024TQQD.dao.LessonRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/practice")
 public class LessonCommon {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LessonCommon.class);
     private final LessonService lessonService;
 
     @Autowired
@@ -36,14 +40,15 @@ public class LessonCommon {
         List<LessonShowDTO> lessons = new ArrayList<>();
 
         if(search!=null || status!=null || difficulty!=null){
-            // lấy moduleID là 3 cố định vì đây là lấy ra module common chứa các lessoncommon
+            // lấy moduleID là 1 cố định vì đây là lấy ra module common chứa các lessoncommon
             // truyền vào Param search
-            lessons = lessonService.getLessonShowDTOByModuleIDAndSlug(3L, search);
+            lessons = lessonService.getLessonShowDTOByModuleIDAndSlug(Constant.ID_MODULE_COMMON, search);
         }else{
-            // lấy moduleID là 3 cố định vì đây là lấy ra module common chứa các lessoncommon
-            lessons = lessonService.getLessonShowDTO(3L);
+            // lấy moduleID là 1 cố định vì đây là lấy ra module common chứa các lessoncommon
+            lessons = lessonService.getLessonShowDTO(Constant.ID_MODULE_COMMON);
         }
 
+        LOGGER.info("lessons: {}", lessons);
         model.addAttribute("lessons" , lessons);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/lesson/show-common";

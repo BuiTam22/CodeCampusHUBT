@@ -16,20 +16,20 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     // lấy ra lesson luyện tập
     @Query("""
         SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO(
-        cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
+        cl.lessonID, cl.module.moduleID, cl.title, cl.description, cl.type, cl.content,
         cl.image, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID AND cl.isContest = false
+        WHERE cl.module.moduleID= :moduleID AND cl.isContest = false
     """)
     List<LessonShowDTO> getLessonShowDTO(@Param("moduleID") Long moduleID);
 
     // tìm kiếm lesson theo slug
     @Query("""
         SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO(
-        cl.lessonID, cl.module.id, cl.title, cl.description, cl.type, cl.content,
+        cl.lessonID, cl.module.moduleID, cl.title, cl.description, cl.type, cl.content,
         cl.image, cl.duration, cl.orderIndex, cl.isPreview, cl.isPublished, cl.slug)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID AND cl.slug LIKE %:slug% AND cl.isContest = false
+        WHERE cl.module.moduleID= :moduleID AND cl.slug LIKE %:slug% AND cl.isContest = false
     """)
     List<LessonShowDTO> getLessonShowDTOByModuleIDAndSlug(@Param("moduleID") Long moduleID, @Param("slug") String theSlug);
 
@@ -39,7 +39,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
         cl.lessonID, cl.title, cl.description, cl.type,
         cl.duration, cl.image, cl.isPreview, cl.slug, cl.contestStartTime, cl.contestEndTime)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID AND cl.isContest = true AND CURRENT_TIMESTAMP < cl.contestEndTime AND cl.type = "coding"
+        WHERE cl.module.moduleID = :moduleID AND cl.isContest = true AND CURRENT_TIMESTAMP < cl.contestEndTime AND cl.type = "coding"
     """)
     List<ContestShowDTO> getContestShowDTOByIsContest(@Param("moduleID") Long moduleID);
 
@@ -49,7 +49,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
         cl.lessonID, cl.title, cl.description, cl.type,
         cl.duration, cl.image, cl.isPreview, cl.slug, cl.contestStartTime, cl.contestEndTime)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID AND cl.isContest = true AND CURRENT_TIMESTAMP < cl.contestEndTime AND cl.type = "essay"
+        WHERE cl.module.moduleID= :moduleID AND cl.isContest = true AND CURRENT_TIMESTAMP < cl.contestEndTime AND cl.type = "essay"
     """)
     List<ContestShowDTO> getEssayContestShowDTOByIsContest(@Param("moduleID") Long moduleID);
 
@@ -58,7 +58,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
         SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestManagementShowDTO(
         cl.title, cl.slug, cl.creator.userName, cl.contestStartTime, cl.contestEndTime)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID AND cl.creator.userName = :userName
+        WHERE cl.module.moduleID= :moduleID AND cl.creator.userName = :userName
     """)
     List<ContestManagementShowDTO> getContestManagementShowDTO(@Param("moduleID") Long moduleID, @Param("userName") String userName);
 
@@ -68,7 +68,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
         cl.lessonID, cl.title, cl.description, cl.image, cl.duration, cl.type,
         cl.isContest, cl.contestStartTime, cl.contestEndTime, cl.slug)
         FROM CourseLesson cl
-        WHERE cl.module.id = :moduleID AND cl.slug = :theSlug
+        WHERE cl.module.moduleID= :moduleID AND cl.slug = :theSlug
     """)
     EditLessonDTO getEditLessonDTO(@Param("moduleID") Long moduleID, @Param("theSlug") String theSlug);
 

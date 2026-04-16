@@ -1,13 +1,16 @@
 package com.codecampushubt.NCKH2024TQQD.service.LessonServices;
 
+import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseModuleRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.LessonRepository;
+import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.*;
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseModule;
+import com.codecampushubt.NCKH2024TQQD.entity.User;
 import com.github.slugify.Slugify;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +25,13 @@ import java.util.Optional;
 public class LessonServiceImpl implements LessonService{
     private final LessonRepository lessonRepository;
     private final CourseModuleRepository courseModuleRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public LessonServiceImpl(LessonRepository lessonRepository ,CourseModuleRepository courseModuleRepository ) {
+    public LessonServiceImpl(LessonRepository lessonRepository , CourseModuleRepository courseModuleRepository, UserRepository userRepository) {
         this.lessonRepository = lessonRepository;
         this.courseModuleRepository = courseModuleRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -48,7 +53,7 @@ public class LessonServiceImpl implements LessonService{
 
     @Override
     public List<ContestShowDTO> getEssayContestShowDTOByIsContest(Long moduleID) {
-        return lessonRepository.getEssayContestShowDTOByIsContest(3L);
+        return lessonRepository.getEssayContestShowDTOByIsContest(Constant.ID_MODULE_COMMON);
     }
 
     @Override
@@ -122,6 +127,9 @@ public class LessonServiceImpl implements LessonService{
         courseLesson.setDuration(dto.getDuration());
         courseLesson.setSlug(Slug);
         courseLesson.setOrderIndex(dto.getOrderIndex());
+        Optional<User> user = userRepository.findByUserName(UserContext.getUsername());
+        courseLesson.setCreator(user.get());
+        courseLesson.setOrderIndex(1);
 
         lessonRepository.save(courseLesson);
 
