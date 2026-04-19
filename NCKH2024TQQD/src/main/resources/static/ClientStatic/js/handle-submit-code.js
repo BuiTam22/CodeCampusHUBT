@@ -36,6 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
             });
 
+            if (response.status === 409) {
+                const errData = await response.json();
+                alert("⚠️ " + (errData.message || "Bạn đã nộp bài này rồi!"));
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error("Có lỗi xảy ra khi gửi code.");
             }
@@ -47,8 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             console.log("Kết quả", result);
             showTestResult(result);
-
-
 
         } catch (error) {
             console.error("Lỗi:", error);

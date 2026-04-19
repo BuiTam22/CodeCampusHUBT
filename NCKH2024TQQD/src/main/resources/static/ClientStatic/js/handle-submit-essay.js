@@ -25,6 +25,12 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify(payload)
         })
             .then(response => {
+                if (response.status === 409) {
+                    return response.json().then(errData => {
+                        alert("⚠️ " + (errData.message || "Bạn đã nộp bài này rồi!"));
+                        throw new Error("already_submitted");
+                    });
+                }
                 if (!response.ok) {
                     throw new Error("Lỗi khi gửi bài!");
                 }
@@ -35,8 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("Kết quả chấm:", data);
             })
             .catch(error => {
-                console.error("Lỗi:", error);
-                alert("Đã có lỗi xảy ra khi nộp bài.");
+                if (error.message !== "already_submitted") {
+                    console.error("Lỗi:", error);
+                    alert("Đã có lỗi xảy ra khi nộp bài.");
+                }
             });
     });
 });
