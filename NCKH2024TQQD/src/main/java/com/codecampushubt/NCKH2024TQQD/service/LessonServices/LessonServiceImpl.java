@@ -72,6 +72,26 @@ public class LessonServiceImpl implements LessonService{
     }
 
     @Override
+    @Transactional
+    public CourseLesson updateContestLesson(UpdateLessonClientDTO dto) {
+        CourseLesson lesson = lessonRepository.findById(dto.getLessonId())
+                .orElseThrow(() -> new RuntimeException("Lesson not found"));
+        User current = userRepository.findByUserName(UserContext.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!lesson.getCreator().getUserId().equals(current.getUserId())) {
+            throw new RuntimeException("Forbidden");
+        }
+        lesson.setTitle(dto.getTitle());
+        lesson.setDescription(dto.getDescription());
+        lesson.setDuration(dto.getDuration());
+        lesson.setType(dto.getType());
+        lesson.setIsContest(dto.getIsContest());
+        lesson.setContestStartTime(dto.getContestStartTime());
+        lesson.setContestEndTime(dto.getContestEndTime());
+        return lessonRepository.save(lesson);
+    }
+
+    @Override
     public Optional<CourseLesson> findById(Long id) {
         return lessonRepository.findById(id);
     }

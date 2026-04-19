@@ -81,46 +81,59 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 /*end chuyển trang*/
-/*tính duration trong create contest*/
-      function calculateDuration() {
-        const startDate = document.getElementById("start-date").value;
-        const startTime = document.getElementById("start-time").value;
-        const endDate = document.getElementById("end-date").value;
-        const endTime = document.getElementById("end-time").value;
-        const durationInput = document.getElementById("duration");
-        const getStartedBtn = document.getElementById("get-started-btn");
-        const warning = document.getElementById("time-warning");
+/*tính duration trong create / edit contest*/
+document.addEventListener("DOMContentLoaded", function () {
+  const startDateEl = document.getElementById("start-date");
+  if (!startDateEl) {
+    return;
+  }
 
-        if (!startDate || !startTime || !endDate || !endTime) {
-          durationInput.value = "";
-          getStartedBtn.disabled = true;
-          warning.style.display = "none";
-          return;
-        }
+  function calculateDuration() {
+    const startDate = document.getElementById("start-date").value;
+    const startTime = document.getElementById("start-time").value;
+    const endDate = document.getElementById("end-date").value;
+    const endTime = document.getElementById("end-time").value;
+    const durationInput = document.getElementById("duration");
+    const getStartedBtn = document.getElementById("get-started-btn");
+    const warning = document.getElementById("time-warning");
 
-        const start = new Date(`${startDate}T${startTime}`);
-        const end = new Date(`${endDate}T${endTime}`);
+    if (!durationInput || !getStartedBtn) {
+      return;
+    }
 
-        if (isNaN(start) || isNaN(end) || end <= start) {
-          durationInput.value = "";
-          getStartedBtn.disabled = true;
-          warning.style.display = "block"; // ⚠ Hiện cảnh báo
-          return;
-        }
+    if (!startDate || !startTime || !endDate || !endTime) {
+      durationInput.value = "";
+      getStartedBtn.disabled = true;
+      if (warning) warning.style.display = "none";
+      return;
+    }
 
-        // Tính tổng phút
-        const diffMs = end - start;
-        const totalMinutes = Math.floor(diffMs / (1000 * 60));
-        durationInput.value = `${totalMinutes} phút`;
+    const start = new Date(`${startDate}T${startTime}`);
+    const end = new Date(`${endDate}T${endTime}`);
 
-        getStartedBtn.disabled = false;
-        warning.style.display = "none"; // ✅ Ẩn cảnh báo nếu hợp lệ
-      }
+    if (isNaN(start.getTime()) || isNaN(end.getTime()) || end <= start) {
+      durationInput.value = "";
+      getStartedBtn.disabled = true;
+      if (warning) warning.style.display = "block";
+      return;
+    }
 
-      // Gán sự kiện tính toán lại khi người dùng thay đổi thời gian
-      ["start-date", "start-time", "end-date", "end-time"].forEach((id) => {
-        document.getElementById(id).addEventListener("input", calculateDuration);
-      });
+    const diffMs = end - start;
+    const totalMinutes = Math.floor(diffMs / (1000 * 60));
+    durationInput.value = `${totalMinutes} phút`;
+
+    getStartedBtn.disabled = false;
+    if (warning) warning.style.display = "none";
+  }
+
+  ["start-date", "start-time", "end-date", "end-time"].forEach(function (id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("input", calculateDuration);
+    }
+  });
+  calculateDuration();
+});
 /*end tính duration*/
 
 

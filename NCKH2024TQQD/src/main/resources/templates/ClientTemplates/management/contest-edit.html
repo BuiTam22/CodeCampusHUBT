@@ -56,13 +56,13 @@
               <div class="inner-content">
                 <label for="">Dạng Bài</label>
                 <select id="contest-type" name="type">
-                  <option value="Coding" th:selected="${lesson.type == 'coding'}">Coding</option>
-                  <option value="Tự Luận" th:selected="${lesson.type == 'essay'}">Tự Luận</option>
+                  <option value="coding" th:selected="${lesson.type == 'coding'}">Coding</option>
+                  <option value="essay" th:selected="${lesson.type == 'essay'}">Tự Luận</option>
                 </select>
               </div>
               <div class="inner-check" id="contest-check">
                 <div class="inner-tick">
-                  <input type="radio" name="option" value="Lesson" id="option-lesson" th:checked="${lesson.isContest}" />
+                  <input type="radio" name="option" value="Lesson" id="option-lesson" th:checked="${lesson.isContest == false}" />
                   <label for="option-lesson" class="tick">Bài Tập</label>
                 </div>
                 <div class="inner-tick">
@@ -97,7 +97,8 @@
             </form>
           </div>
           <div class="inner-button">
-            <button id="get-started-btn" class="button-edit" type="submit" disabled>Chỉnh Sửa</button>
+            <button id="get-started-btn" class="button-edit" type="button" disabled
+                    th:attr="data-lesson-id=${lesson.lessonID}">Chỉnh Sửa</button>
               <button id="manage-score" class="button-core" th:data-slug="${lesson.slug}"
                       th:data-lesson-type="${lesson.type}">Quản Lý Điểm
               </button>
@@ -107,7 +108,7 @@
       </div>
       <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
     </div>
-    <script th:src="@{/ClientStatic/js/manage-edit-lesson.js}">></script>
+    <script th:src="@{/ClientStatic/js/manage-edit-lesson.js}"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
