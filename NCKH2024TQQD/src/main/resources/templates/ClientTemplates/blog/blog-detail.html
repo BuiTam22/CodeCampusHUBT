@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${post.title} + ' - CodeCampus HUBT'">Blog Detail</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          crossorigin="anonymous" />
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/blog-detail.css}" />
+</head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
+
+    <div class="blog-detail-wrapper">
+
+        <!-- Breadcrumb -->
+        <div class="blog-detail-breadcrumb">
+            <a th:href="@{/}"><i class="fa-solid fa-house"></i> Trang chủ</a>
+            <span>/</span>
+            <a th:href="@{/blog}">Blog</a>
+            <span>/</span>
+            <span th:text="${post.title}">Tiêu đề bài viết</span>
+        </div>
+
+        <div class="blog-detail-layout">
+
+            <!-- ====== NỘI DUNG CHÍNH ====== -->
+            <div class="blog-detail-main">
+
+                <!-- Thumbnail -->
+                <img class="blog-detail-thumbnail"
+                     th:src="${post.thumbnailUrl}"
+                     th:alt="${post.title}"
+                     onerror="this.src='https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=460&fit=crop'" />
+
+                <!-- Category -->
+                <span class="blog-detail-category" th:text="${post.type}">CODING</span>
+
+                <!-- Title -->
+                <h1 class="blog-detail-title" th:text="${post.title}">Tiêu đề bài viết</h1>
+
+                <!-- Meta -->
+                <div class="blog-detail-meta">
+                    <div class="meta-author">
+                        <!-- Anh tac gia -->
+                        <img th:if="${post.authorImage != null and !#strings.isEmpty(post.authorImage)}"
+                             th:src="${post.authorImage}" th:alt="${post.authorName}" />
+                        <!-- Placeholder neu khong co anh -->
+                        <div class="author-avatar-placeholder"
+                             th:if="${post.authorImage == null or #strings.isEmpty(post.authorImage)}">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <span class="author-name" th:text="${post.authorName != null ? post.authorName : 'Ẩn danh'}">Author</span>
+                    </div>
+
+                    <div class="meta-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy')}">01/01/2025</span>
+                    </div>
+
+                    <div class="meta-likes">
+                        <i class="fa-solid fa-heart" style="color: #e55;"></i>
+                        <span th:text="${post.likesCount} + ' lượt thích'">0 lượt thích</span>
+                    </div>
+
+                    <div class="meta-comments">
+                        <i class="fa-solid fa-comment"></i>
+                        <span th:text="${post.commentsCount} + ' bình luận'">0 bình luận</span>
+                    </div>
+                </div>
+
+                <!-- Nội dung bài viết -->
+                <div class="blog-detail-content" th:text="${post.content}">
+                    Nội dung bài viết sẽ hiển thị ở đây...
+                </div>
+
+                <!-- Action buttons -->
+                <div class="blog-detail-actions">
+                    <a th:href="@{/blog}" class="btn-action btn-back">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại Blog
+                    </a>
+                    <button class="btn-action btn-like">
+                        <i class="fa-solid fa-heart"></i>
+                        <span th:text="${post.likesCount}">0</span> Thích
+                    </button>
+                    <button class="btn-action btn-comment">
+                        <i class="fa-solid fa-comment"></i>
+                        <span th:text="${post.commentsCount}">0</span> Bình luận
+                    </button>
+                    <button class="btn-action btn-share">
+                        <i class="fa-solid fa-share-nodes"></i> Chia sẻ
+                    </button>
+                </div>
+            </div>
+
+            <!-- ====== SIDEBAR ====== -->
+            <div class="blog-detail-sidebar">
+
+                <!-- Social -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Kết nối với chúng tôi</div>
+                    <div class="sidebar-social">
+                        <a href="#" target="_blank"><i class="fa-brands fa-square-facebook"></i></a>
+                        <a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" target="_blank"><i class="fa-brands fa-square-instagram"></i></a>
+                        <a href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Popular Posts -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Bài viết phổ biến</div>
+
+                    <a class="popular-post-item"
+                       th:each="p : ${popularPosts}"
+                       th:href="@{/blog/{slug}(slug=${p.slug})}">
+                        <img th:src="${p.thumbnailUrl}" th:alt="${p.title}"
+                             onerror="this.src='https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=72&h=56&fit=crop'" />
+                        <div class="popular-post-title" th:text="${p.title}">Post Title</div>
+                    </a>
+
+                    <div th:if="${#lists.isEmpty(popularPosts)}" style="color:#888; text-align:center; padding:16px;">
+                        Chưa có bài viết.
+                    </div>
+                </div>
+
+                <!-- Subscribe YouTube -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Subscribe Us</div>
+                    <iframe style="display:block; margin:0 auto; border-radius: 8px;"
+                            width="260" height="160"
+                            src="https://www.youtube.com/embed/ELpoKqVSZ0U?si=IE_fq922f_hdvyZT"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/ClientStatic/js/script.js}"></script>
+</body>
+</html>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/blog")
 public class BlogController {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogController.class);
 
     private final PostService postService;
@@ -30,23 +32,34 @@ public class BlogController {
     public String showHome(Model model, HttpServletRequest request) {
         model.addAttribute("activePage", request.getRequestURI());
 
-        // 4 bai viet moi nhat cho section-six
         List<BlogPostDTO> latestPosts = postService.getLatestPosts(4);
         model.addAttribute("latestPosts", latestPosts);
 
-        // Tat ca bai viet cho section-eight (danh sach chinh)
         List<BlogPostDTO> blogPosts = postService.getAllBlogPosts();
         model.addAttribute("blogPosts", blogPosts);
 
-        // 3 bai viet pho bien nhat cho sidebar
         List<BlogPostDTO> popularPosts = postService.getPopularPosts(3);
         model.addAttribute("popularPosts", popularPosts);
 
-
-        LOGGER.info("BlogController showHome latestPosts: {}" , JsonUtil.toJson(latestPosts));
-        LOGGER.info("BlogController showHome blogPosts: {}" , JsonUtil.toJson(blogPosts));
-        LOGGER.info("BlogController showHome popularPosts: {}" , JsonUtil.toJson(popularPosts));
+        LOGGER.info("BlogController showHome latestPosts: {}", JsonUtil.toJson(latestPosts));
+        LOGGER.info("BlogController showHome blogPosts: {}", JsonUtil.toJson(blogPosts));
+        LOGGER.info("BlogController showHome popularPosts: {}", JsonUtil.toJson(popularPosts));
 
         return "ClientTemplates/blog/blog";
+    }
+
+    @GetMapping("/{slug}")
+    public String showDetail(@PathVariable String slug, Model model) {
+        model.addAttribute("activePage", "/blog");
+
+        BlogPostDTO post = postService.getBlogPostBySlug(slug);
+        model.addAttribute("post", post);
+
+        List<BlogPostDTO> popularPosts = postService.getPopularPosts(3);
+        model.addAttribute("popularPosts", popularPosts);
+
+        LOGGER.info("BlogController showDetail slug={}, post: {}", slug, JsonUtil.toJson(post));
+
+        return "ClientTemplates/blog/blog-detail";
     }
 }
