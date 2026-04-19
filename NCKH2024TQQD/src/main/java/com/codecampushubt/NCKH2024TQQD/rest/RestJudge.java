@@ -185,9 +185,8 @@ public class RestJudge {
                 )
         );
 
-        String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + GEMINI_API_KEY;
-
-        try {
+// Thêm hậu tố "-preview" theo đúng danh sách API trả về
+        String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=" + GEMINI_API_KEY;        try {
             Mono<Map> responseMono = webClient.post()
                     .uri(url)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
