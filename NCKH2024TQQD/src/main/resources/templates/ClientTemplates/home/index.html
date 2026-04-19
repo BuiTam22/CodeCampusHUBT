@@ -52,14 +52,14 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-xl-4 col-md-4 col-sm-6 col-12">
+            <div class="col-xl-4 col-md-4 col-sm-6 col-12"
+                 th:each="lesson : ${topLessons}">
               <div class="course-card">
                 <div class="inner-image">
-                  <a href=""
-                  ><img
-                          src="https://cdn-main.28tech.com.vn/thumbs/anh-khoa-hoc/anh_dai_dien_khoa_hoc/new/c%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20v%C3%A0%20sql_thumb_500.png"
-                          alt=""
-                  /></a>
+                  <a th:href="@{/practice/lesson/{slug}(slug=${lesson.slug})}">
+                    <img th:src="${lesson.image != null ? lesson.image : 'https://cdn-main.28tech.com.vn/thumbs/anh-khoa-hoc/anh_dai_dien_khoa_hoc/new/c%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20v%C3%A0%20sql_thumb_500.png'}"
+                         th:alt="${lesson.title}" />
+                  </a>
                 </div>
                 <div class="inner-content">
                   <div class="inner-assess">
@@ -68,123 +68,26 @@
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
-                    <p>(120 Đánh Giá)</p>
+                    <p>(Đánh Giá)</p>
                   </div>
-                  <div class="inner-title">Cơ Sở Dữ Liệu Và SQL</div>
+                  <div class="inner-title">
+                    <a th:href="@{/practice/lesson/{slug}(slug=${lesson.slug})}"
+                       th:text="${lesson.title}">
+                      Tên bài học mặc định
+                    </a>
+                  </div>
                   <div class="inner-info">
-                    <img
-                            src="https://th.bing.com/th/id/OIP.x0GBD5wzzx3MV8mdcuCojwHaKV?w=211&h=295&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                            alt=""
-                    />
-                    <div class="inner-owner">Đội Ngũ HUBT</div>
+                    <img src="https://cdn-main.28tech.com.vn/media/core/icons/user.png" alt="" />
+                    <div class="inner-owner" th:text="${lesson.creatorUserName != null ? lesson.creatorUserName : 'Đội Ngũ HUBT'}">Đội Ngũ HUBT</div>
                   </div>
                   <div class="inner-price">
-                    <div class="price-new">2,400,000<span>đ</span></div>
-                    <div class="price-old">6,000,000<span>đ</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-4 col-sm-6 col-12">
-              <div class="course-card">
-                <div class="inner-image">
-                  <a href=""
-                  ><img
-                          src="https://cdn-main.28tech.com.vn/thumbs/anh-khoa-hoc/anh_dai_dien_khoa_hoc/new/c%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20v%C3%A0%20sql_thumb_500.png"
-                          alt=""
-                  /></a>
-                </div>
-                <div class="inner-content">
-                  <div class="inner-assess">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <p>(120 Đánh Giá)</p>
-                  </div>
-                  <div class="inner-title">Cơ Sở Dữ Liệu Và SQL</div>
-                  <div class="inner-info">
-                    <img
-                            src="https://th.bing.com/th/id/OIP.x0GBD5wzzx3MV8mdcuCojwHaKV?w=211&h=295&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                            alt=""
-                    />
-                    <div class="inner-owner">Đội Ngũ HUBT</div>
-                  </div>
-                  <div class="inner-price">
-                    <div class="price-new">2,400,000<span>đ</span></div>
-                    <div class="price-old">6,000,000<span>đ</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-4 col-sm-6 col-12">
-              <div class="course-card">
-                <div class="inner-image">
-                  <a href=""
-                  ><img
-                          src="https://cdn-main.28tech.com.vn/thumbs/anh-khoa-hoc/anh_dai_dien_khoa_hoc/new/c%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20v%C3%A0%20sql_thumb_500.png"
-                          alt=""
-                  /></a>
-                </div>
-                <div class="inner-content">
-                  <div class="inner-assess">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <p>(120 Đánh Giá)</p>
-                  </div>
-                  <div class="inner-title">Cơ Sở Dữ Liệu Và SQL</div>
-                  <div class="inner-info">
-                    <img
-                            src="https://th.bing.com/th/id/OIP.x0GBD5wzzx3MV8mdcuCojwHaKV?w=211&h=295&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                            alt=""
-                    />
-                    <div class="inner-owner">Đội Ngũ HUBT</div>
-                  </div>
-                  <div class="inner-price">
-                    <div class="price-new">2,400,000<span>đ</span></div>
-                    <div class="price-old">6,000,000<span>đ</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-4 col-sm-6 col-12">
-              <div class="course-card">
-                <div class="inner-image">
-                  <a href=""
-                  ><img
-                          src="https://cdn-main.28tech.com.vn/thumbs/anh-khoa-hoc/anh_dai_dien_khoa_hoc/new/c%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20v%C3%A0%20sql_thumb_500.png"
-                          alt=""
-                  /></a>
-                </div>
-                <div class="inner-content">
-                  <div class="inner-assess">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <p>(120 Đánh Giá)</p>
-                  </div>
-                  <div class="inner-title">Cơ Sở Dữ Liệu Và SQL</div>
-                  <div class="inner-info">
-                    <img
-                            src="https://th.bing.com/th/id/OIP.x0GBD5wzzx3MV8mdcuCojwHaKV?w=211&h=295&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                            alt=""
-                    />
-                    <div class="inner-owner">Đội Ngũ HUBT</div>
-                  </div>
-                  <div class="inner-price">
-                    <div class="price-new">2,400,000<span>đ</span></div>
-                    <div class="price-old">6,000,000<span>đ</span></div>
+                    <div class="price-new">Miễn Phí</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
       <div class="section-three">
