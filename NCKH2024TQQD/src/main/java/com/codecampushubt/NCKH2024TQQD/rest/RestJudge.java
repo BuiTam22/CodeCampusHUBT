@@ -76,7 +76,18 @@ public class RestJudge {
     }
 
     @PostMapping("submit")
-    public CodingSubmissionResponseDTO handleSubmitCode(@RequestBody JudgeRequestDTO request){
+    public ResponseEntity<?> handleSubmitCode(@RequestBody JudgeRequestDTO request){
+
+        // Kiểm tra nếu là contest thì chặn submit lần 2 TRƯỚC KHI xử lý code
+        if (codingExerciseService.isExerciseInContestLesson(request.getExerciseID())) {
+            AttemptInfoDTO existingAttempt = contestExerciseAttemptService.getAttemptInfoDTOByuserIDAndExerciseID(
+                    UserContext.getUserID(), request.getExerciseID(), "coding");
+            if (existingAttempt != null && existingAttempt.getAttemptNumber() != null && existingAttempt.getAttemptNumber() > 0) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(Map.of("error", "already_submitted", "message", "Bạn đã nộp bài tập này rồi. Mỗi bài tập trong cuộc thi chỉ được nộp 1 lần."));
+            }
+        }
+
         Set<ExerciseTestCasesDTO> exerciseTestCases = exerciseTestCaseRepository.getExerciseTestCasesDTOByExerciseID(request.getExerciseID());
         // lấy ra submission để lưu vào DB và trả ra cho client
         CodingSubmissionResponseDTO submission = judgeService.submitUserCode(request, exerciseTestCases);
@@ -100,23 +111,12 @@ public class RestJudge {
         codingSubmission.setSubmittedAt(LocalDateTime.now());
         CodingSubmission newSubmission = codingSubmissionService.save(codingSubmission);
 
-
-        // Kiểm tra nếu là contest thì cho vào attempt
-        if(codingExerciseService.isExerciseInContestLesson(request.getExerciseID()) == true){
-            // CHECK SỐ LẦN NỘP BÀI VÀ LƯU VÀO ContestAttempt
-            AttemptInfoDTO attempInfo = contestExerciseAttemptService.getAttemptInfoDTOByuserIDAndExerciseID(UserContext.getUserID(), request.getExerciseID(), "coding");
-
-
-            if(attempInfo != null && attempInfo.getAttemptNumber() != null && attempInfo.getAttemptNumber() >0){
-                System.out.println("Lần làm bài thứ " + (attempInfo.getAttemptNumber() + 1));
-            }
-
-            if (attempInfo == null){
-                attempInfo = new AttemptInfoDTO();
-                attempInfo.setAttemptNumber(0);
-                attempInfo.setExerciseType("coding");
-                attempInfo.setLessonID(codingExerciseService.getLessonIDByExerciseID(request.getExerciseID()));
-            }
+        // Lưu ContestAttempt nếu là bài tập contest
+        if (codingExerciseService.isExerciseInContestLesson(request.getExerciseID())) {
+            AttemptInfoDTO attempInfo = new AttemptInfoDTO();
+            attempInfo.setAttemptNumber(0);
+            attempInfo.setExerciseType("coding");
+            attempInfo.setLessonID(codingExerciseService.getLessonIDByExerciseID(request.getExerciseID()));
 
             ContestExerciseAttempt exerciseAttempt = new ContestExerciseAttempt();
             exerciseAttempt.setExerciseID(request.getExerciseID());
@@ -127,33 +127,30 @@ public class RestJudge {
             user.setUserID(UserContext.getUserID());
             exerciseAttempt.setUser(user);
             exerciseAttempt.setSubmittedAt(LocalDateTime.now());
-            exerciseAttempt.setExerciseType(attempInfo.getExerciseType());
-            Integer currentAttempt = attempInfo.getAttemptNumber() == null ? 0 : attempInfo.getAttemptNumber();
-            exerciseAttempt.setAttemptNumber(currentAttempt + 1);
+            exerciseAttempt.setExerciseType("coding");
+            exerciseAttempt.setAttemptNumber(1);
             Number score = submission.getScore();
             exerciseAttempt.setScore(score != null ? score.doubleValue() : 0.0);
-
-            // lưu attempt mới
             contestExerciseAttemptService.save(exerciseAttempt);
         }
 
-        return submission;
+        return ResponseEntity.ok(submission);
     }
 
     @PostMapping("/essay/submit")
     public ResponseEntity<?> submitEssayExercise(@RequestBody EssayExerciseSubmissionRequest request) {
-        AttemptInfoDTO attempInfo = contestExerciseAttemptService.getAttemptInfoDTOByuserIDAndExerciseID(UserContext.getUserID(), request.getExerciseID(), "essay");
-
-
-        if(attempInfo != null && attempInfo.getAttemptNumber() != null && attempInfo.getAttemptNumber() >0){
-            System.out.println("Lần làm bài thứ " + (attempInfo.getAttemptNumber() + 1));
+        // Chặn submit lần 2 TRƯỚC KHI gọi Gemini API
+        AttemptInfoDTO existingAttempt = contestExerciseAttemptService.getAttemptInfoDTOByuserIDAndExerciseID(
+                UserContext.getUserID(), request.getExerciseID(), "essay");
+        if (existingAttempt != null && existingAttempt.getAttemptNumber() != null && existingAttempt.getAttemptNumber() > 0) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("error", "already_submitted", "message", "Bạn đã nộp bài tập này rồi. Mỗi bài tập trong cuộc thi chỉ được nộp 1 lần."));
         }
-        if (attempInfo == null){
-            attempInfo = new AttemptInfoDTO();
-            attempInfo.setAttemptNumber(0);
-            attempInfo.setExerciseType("essay");
-            attempInfo.setLessonID(essayExerciseService.getLessonIDByExerciseID(request.getExerciseID()));
-        }
+
+        AttemptInfoDTO attempInfo = new AttemptInfoDTO();
+        attempInfo.setAttemptNumber(0);
+        attempInfo.setExerciseType("essay");
+        attempInfo.setLessonID(essayExerciseService.getLessonIDByExerciseID(request.getExerciseID()));
 
         ContestExerciseAttempt exerciseAttempt = new ContestExerciseAttempt();
         exerciseAttempt.setExerciseID(request.getExerciseID());

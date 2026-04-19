@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDetailDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.service.CodingExerciseServices.CodingExerciseService;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
@@ -58,6 +59,15 @@ public class ContestController {
         model.addAttribute("contests", essayContests);
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/contest/contest";
+    }
+
+    @GetMapping("/lesson/problem/{slug}")
+    public String showContestProblemBySlug(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
+        CodingExerciseDetailDTO exercise = codingExerciseService.getCodingExerciseDetailDTOByExerciseSlug(theSlug);
+        model.addAttribute("exercise", exercise);
+        model.addAttribute("slug", theSlug);
+        model.addAttribute("activePage", "/contest");
+        return "ClientTemplates/coding-exercise/problem";
     }
 
     @GetMapping("/type-essay/{lesson-slug}")
