@@ -66,14 +66,12 @@
                 <th>Start Time</th>
                 <th>End Time</th>
               </tr>
-              <tr>
               <tr th:each="contest : ${contests}" th:attr="data-slug=${contest.slug}" class="clickable-row">
                 <td th:text="${contest.title}">Contest Title</td>
                 <td th:text="${contest.slug}">Contest Slug</td>
                 <td th:text="${contest.userNameOwner}">Owner</td>
                 <td th:text="${#temporals.format(contest.contestStartTime, 'dd/MM/yyyy')}"></td>
                 <td th:text="${#temporals.format(contest.contestEndTime, 'dd/MM/yyyy')}"></td>
-              </tr>
               </tr>
             </table>
           </div>

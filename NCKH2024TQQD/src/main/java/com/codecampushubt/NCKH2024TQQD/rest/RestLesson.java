@@ -91,6 +91,20 @@ public class RestLesson {
         }
     }
 
+    @PutMapping("/contest/update")
+    public ResponseEntity<?> updateContest(@RequestBody UpdateLessonClientDTO body) {
+        try {
+            CourseLesson updated = lessonService.updateContestLesson(body);
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("data", new LessonResponseDTO(updated));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error updating lesson: " + e.getMessage());
+        }
+    }
+
 
 }
 
