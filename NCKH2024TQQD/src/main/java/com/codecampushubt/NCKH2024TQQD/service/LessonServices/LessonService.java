@@ -20,4 +20,7 @@ public interface LessonService {
     Optional<CourseLesson> findById(Long id);
     Long findLessonIdBySlug(String slug);
 
+    // Lấy top N lesson có orderIndex cao nhất cho trang chủ
+    List<HomeLessonDTO> getTopLessonsForHome(int limit);
 }
+

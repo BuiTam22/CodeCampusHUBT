@@ -2,6 +2,7 @@ package com.codecampushubt.NCKH2024TQQD.dao;
 
 import com.codecampushubt.NCKH2024TQQD.dto.CourseModule.CourseModuleFILLDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.*;
+import org.springframework.data.domain.Pageable;
 import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -125,7 +126,15 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
             "where u.userID = :userID")
     List<LessonShowDTOA> findLessonByUserID(@Param("userID") Long userID);
 
-
-
+    // Lấy top N lesson có orderIndex cao nhất cho trang chủ
+    @Query("""
+        SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.HomeLessonDTO(
+            cl.lessonID, cl.title, cl.description, cl.image, cl.slug,
+            cl.orderIndex, cl.creator.userName)
+        FROM CourseLesson cl
+        WHERE cl.isPublished = true
+        ORDER BY cl.orderIndex DESC
+    """)
+    List<HomeLessonDTO> findTopLessonsByOrderIndex(Pageable pageable);
 
 }
