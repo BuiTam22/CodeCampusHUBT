@@ -57,7 +57,7 @@ public interface LessonRepository extends JpaRepository<CourseLesson, Long> {
     //Lấy ra những lesson/contest với username
     @Query("""
         SELECT new com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestManagementShowDTO(
-        cl.title, cl.slug, cl.creator.userName, cl.contestStartTime, cl.contestEndTime)
+        cl.title, cl.slug, cl.type, cl.creator.userName, cl.contestStartTime, cl.contestEndTime)
         FROM CourseLesson cl
         WHERE cl.module.moduleID= :moduleID AND cl.creator.userName = :userName
     """)

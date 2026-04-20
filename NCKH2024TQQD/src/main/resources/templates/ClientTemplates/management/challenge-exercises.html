@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Management Challenges</title>
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+  <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+          crossorigin="anonymous"
+  />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/management.css}" />
+</head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
+
+  <div class="section-one">
+    <div class="inner-title">Quản lý bài tập</div>
+  </div>
+
+  <div class="section-two">
+    <div class="container">
+      <div class="row mb-2">
+        <div class="col-xl-10">
+          <p class="inner-title">
+            Lesson: <strong th:text="${lessonTitle}">Lesson Title</strong>
+            <span> - Type: </span>
+            <strong th:text="${lessonType}">coding</strong>
+          </p>
+        </div>
+        <div class="col-xl-2 text-right">
+          <button id="createExerciseButton" class="btn btn-primary">Thêm exercise</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-three">
+    <div class="container">
+      <div class="row">
+        <table>
+          <tr>
+            <th>Title</th>
+            <th>Difficulty</th>
+            <th>Points</th>
+            <th th:text="${lessonType == 'essay' ? 'Subject' : 'Language'}">Language</th>
+            <th>Actions</th>
+          </tr>
+
+          <tr th:if="${lessonType == 'essay'}" th:each="exercise : ${essayExercises}"
+              th:attr="data-id=${exercise.exerciseID},data-title=${exercise.title},data-description=${exercise.description},data-difficulty=${exercise.difficulty},data-points=${exercise.points},data-extra=${exercise.subjectName}">
+            <td th:text="${exercise.title}">Title</td>
+            <td th:text="${exercise.difficulty}">medium</td>
+            <td th:text="${exercise.points}">0</td>
+            <td th:text="${exercise.subjectName}">subject</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm edit-btn">Sửa</button>
+              <button type="button" class="btn btn-danger btn-sm delete-btn">Xóa</button>
+            </td>
+          </tr>
+
+          <tr th:if="${lessonType != 'essay'}" th:each="exercise : ${codingExercises}"
+              th:attr="data-id=${exercise.exerciseID},data-title=${exercise.title},data-description=${exercise.description},data-difficulty=${exercise.difficulty},data-points=${exercise.points},data-extra=${exercise.programLanguage}">
+            <td th:text="${exercise.title}">Title</td>
+            <td th:text="${exercise.difficulty}">medium</td>
+            <td th:text="${exercise.points}">0</td>
+            <td th:text="${exercise.programLanguage}">language</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm edit-btn">Sửa</button>
+              <button type="button" class="btn btn-danger btn-sm delete-btn">Xóa</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+</div>
+
+<script th:inline="javascript">
+  const lessonSlug = /*[[${lessonSlug}]]*/ "";
+  const lessonType = /*[[${lessonType}]]*/ "coding";
+
+  function promptCreateData() {
+    const title = prompt("Nhập title exercise:");
+    if (!title) return null;
+    const description = prompt("Nhập description:", "") || "";
+    const difficulty = prompt("Nhập difficulty (easy/medium/hard):", "medium") || "medium";
+    const points = parseInt(prompt("Nhập points:", "0") || "0", 10);
+
+    if (lessonType === "essay") {
+      const subjectName = prompt("Nhập subject name:", "") || "";
+      return { title, description, difficulty, points, subjectName };
+    }
+
+    const programmingLanguage = prompt("Nhập programming language:", "java") || "java";
+    return { title, description, difficulty, points, programmingLanguage };
+  }
+
+  function promptUpdateData(row) {
+    const title = prompt("Sửa title:", row.dataset.title || "");
+    if (!title) return null;
+    const description = prompt("Sửa description:", row.dataset.description || "") || "";
+    const difficulty = prompt("Sửa difficulty:", row.dataset.difficulty || "medium") || "medium";
+    const points = parseInt(prompt("Sửa points:", row.dataset.points || "0") || "0", 10);
+
+    if (lessonType === "essay") {
+      const subjectName = prompt("Sửa subject name:", row.dataset.extra || "") || "";
+      return { title, description, difficulty, points, subjectName };
+    }
+
+    const programmingLanguage = prompt("Sửa programming language:", row.dataset.extra || "java") || "java";
+    return { title, description, difficulty, points, programmingLanguage };
+  }
+
+  async function createExercise() {
+    const payload = promptCreateData();
+    if (!payload) return;
+
+    const baseUrl = lessonType === "essay" ? "/api/essay-exercise/management/" : "/api/coding-exercise/management/";
+    const res = await fetch(baseUrl + lessonSlug, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      alert("Tạo exercise thất bại");
+      return;
+    }
+    window.location.reload();
+  }
+
+  async function updateExercise(exerciseID, payload) {
+    const baseUrl = lessonType === "essay" ? "/api/essay-exercise/management/" : "/api/coding-exercise/management/";
+    const res = await fetch(baseUrl + exerciseID, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      alert("Cập nhật exercise thất bại");
+      return;
+    }
+    window.location.reload();
+  }
+
+  async function deleteExercise(exerciseID) {
+    const ok = confirm("Bạn chắc chắn muốn xóa exercise này?");
+    if (!ok) return;
+
+    const baseUrl = lessonType === "essay" ? "/api/essay-exercise/management/" : "/api/coding-exercise/management/";
+    const res = await fetch(baseUrl + exerciseID, { method: "DELETE" });
+
+    if (!res.ok) {
+      alert("Xóa exercise thất bại");
+      return;
+    }
+    window.location.reload();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const createBtn = document.getElementById("createExerciseButton");
+    if (createBtn) {
+      createBtn.addEventListener("click", createExercise);
+    }
+
+    document.querySelectorAll(".edit-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = btn.closest("tr");
+        const exerciseID = row ? row.dataset.id : null;
+        if (!exerciseID || !row) return;
+        const payload = promptUpdateData(row);
+        if (!payload) return;
+        updateExercise(exerciseID, payload);
+      });
+    });
+
+    document.querySelectorAll(".delete-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = btn.closest("tr");
+        const exerciseID = row ? row.dataset.id : null;
+        if (!exerciseID) return;
+        deleteExercise(exerciseID);
+      });
+    });
+  });
+</script>
+
+<script th:src="@{/ClientStatic/js/script.js}"></script>
+</body>
+</html>

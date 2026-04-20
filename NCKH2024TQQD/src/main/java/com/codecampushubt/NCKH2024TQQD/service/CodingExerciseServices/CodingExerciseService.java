@@ -18,4 +18,8 @@ public interface CodingExerciseService {
     boolean isExerciseInContestLesson(Long exerciseID);
 
     Long getLessonIDByExerciseID(Long exerciseID);
+
+    CodingExercise save(CodingExercise codingExercise);
+
+    void deleteById(Long exerciseID);
 }

@@ -52,4 +52,14 @@ public class CodingExerciseServiceImpl implements CodingExerciseService {
         return codingExerciseRepository.getLessonIDByExerciseID(exerciseID);
     }
 
+    @Override
+    public CodingExercise save(CodingExercise codingExercise) {
+        return codingExerciseRepository.save(codingExercise);
+    }
+
+    @Override
+    public void deleteById(Long exerciseID) {
+        codingExerciseRepository.deleteById(exerciseID);
+    }
+
 }
