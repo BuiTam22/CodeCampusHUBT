@@ -293,117 +293,44 @@
           </div>
         </div>
       </div>
+
+      <!-- ============ SECTION SIX: 4 BAI VIET MOI NHAT (DYNAMIC) ============ -->
       <div class="section-six">
         <div class="container-fluid px-5">
           <div class="row">
-            <div class="col-xl-3">
+            <!-- Khi co du lieu tu database -->
+            <div class="col-xl-3" th:each="post : ${latestPosts}">
               <div class="inner-main">
-                <a href=""
-                ><img
-                        src="https://1.bp.blogspot.com/-bHo31vhlrHo/YVk8LGb-1pI/AAAAAAAAITA/MxqsLMuF-mwWT5GlLJJoBVtTmhuetN_vQCLcBGAsYHQ/w377-h220-p-k-no-nu/54%2B%25281%2529.jpg"
-                        alt=""
-                /></a>
-                <p class="inner-category">Design</p>
-                <p class="inner-content">
-                  <a href=""
-                  >Mexico’s President Is Considering Raffling Off The
-                    Presidential Jet</a
-                  >
-                </p>
-                <div class="inner-info">
-                  <div class="info-user">
-                    <i class="fa-solid fa-user"></i>
-                    <div class="name">Tambui</div>
-                  </div>
-                  <div class="info-time">
-                    <i class="fa-regular fa-clock"></i>
-                    <div class="date">March 17,2024</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3">
-              <div class="inner-main">
-                <a href=""
-                ><img
-                        src="https://1.bp.blogspot.com/-_hvpEzVgzsQ/YVk8LWH4U7I/AAAAAAAAITI/1RK0agh4hW0GxWHDsRyzznjMTuGFupQtACLcBGAsYHQ/w377-h220-p-k-no-nu/56%2B%25281%2529.jpg"
-                        alt=""
-                /></a>
-                <p class="inner-category">Design</p>
-                <p class="inner-content">
-                  <a href=""
-                  >Greta Thunberg Joins Youth Activists On TIME Panel At
-                    Davos</a
-                  >
-                </p>
-                <div class="inner-info">
-                  <div class="info-user">
-                    <i class="fa-solid fa-user"></i>
-                    <div class="name">Tambui</div>
-                  </div>
-                  <div class="info-time">
-                    <i class="fa-regular fa-clock"></i>
-                    <div class="date">March 17,2024</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3">
-              <div class="inner-main">
-                <a href="">
-                  <img
-                          src="https://1.bp.blogspot.com/-8j2tNx6A3Fs/YVk8LUn0eeI/AAAAAAAAITE/viU2po0xWTcGZBns5uHIc1wiO2LWXi8oACLcBGAsYHQ/w377-h220-p-k-no-nu/55%2B%25281%2529.jpg"
-                          alt=""
-                  />
+                <a th:href="@{/blog/{slug}(slug=${post.slug})}">
+                  <img th:src="${post.thumbnailUrl}" alt="" />
                 </a>
-                <p class="inner-category">Design</p>
+                <p class="inner-category" th:text="${post.type}">Category</p>
                 <p class="inner-content">
-                  <a href=""
-                  >Mexico’s President Is Considering Raffling Off The
-                    Presidential Jet</a
-                  >
+                  <a th:href="@{/blog/{slug}(slug=${post.slug})}" th:text="${post.title}">Post Title</a>
                 </p>
                 <div class="inner-info">
                   <div class="info-user">
                     <i class="fa-solid fa-user"></i>
-                    <div class="name">Tambui</div>
+                    <div class="name" th:text="${post.authorName}">Author</div>
                   </div>
                   <div class="info-time">
                     <i class="fa-regular fa-clock"></i>
-                    <div class="date">March 17,2024</div>
+                    <div class="date" th:text="${#temporals.format(post.createdAt, 'MMMM dd, yyyy')}">Date</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-xl-3">
-              <div class="inner-main">
-                <a href=""
-                ><img
-                        src="https://1.bp.blogspot.com/-UOyxh-0tURA/YVk8L9J-DBI/AAAAAAAAITM/QwYX3G1jcBsBEVpKaqQkU26UsTLofrFBwCLcBGAsYHQ/w377-h220-p-k-no-nu/57%2B%25281%2529.jpg"
-                        alt=""
-                /></a>
-                <p class="inner-category">Design</p>
-                <p class="inner-content">
-                  <a href=""
-                  >Mexico’s President Is Considering Raffling Off The
-                    Presidential Jet</a
-                  >
-                </p>
-                <div class="inner-info">
-                  <div class="info-user">
-                    <i class="fa-solid fa-user"></i>
-                    <div class="name">Tambui</div>
-                  </div>
-                  <div class="info-time">
-                    <i class="fa-regular fa-clock"></i>
-                    <div class="date">March 17,2024</div>
-                  </div>
-                </div>
+            <!-- Khi khong co du lieu -->
+            <div class="col-xl-12" th:if="${#lists.isEmpty(latestPosts)}">
+              <div style="text-align: center; padding: 40px; color: #888;">
+                <i class="fa-solid fa-newspaper" style="font-size: 48px; margin-bottom: 16px;"></i>
+                <p>Chưa có bài viết nào.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <div class="section-seven">
         <div class="container-fluid px-5">
           <div class="row">
@@ -452,176 +379,52 @@
           </div>
         </div>
       </div>
+
+      <!-- ============ SECTION EIGHT: DANH SACH BAI VIET CHINH + SIDEBAR (DYNAMIC) ============ -->
       <div class="section-eight">
         <div class="container-fluid px-5">
           <div class="row">
             <div class="col-xl-9">
+              <!-- Danh sach bai viet chinh -->
               <div class="row">
-                <div class="col-xl-4">
+                <div class="col-xl-4" th:each="post : ${blogPosts}">
                   <div class="inner-box">
-                    <a href=""
-                    ><img
-                            src="https://1.bp.blogspot.com/-6TGsIPqr6cE/YVk8KKa5z_I/AAAAAAAAIS0/Ih9BBgjUC9Me0MpuEgQ831gPORIdBxFlwCLcBGAsYHQ/w349-h248-p-k-no-nu/51%2B%25281%2529.jpg"
-                            alt=""
-                    /></a>
-                    <div class="inner-category"><a href="">CODING</a></div>
+                    <a th:href="@{/blog/{slug}(slug=${post.slug})}">
+                      <img th:src="${post.thumbnailUrl}" alt="" />
+                    </a>
+                    <div class="inner-category">
+                      <a href="" th:text="${post.type}">CODING</a>
+                    </div>
                     <div class="inner-content">
-                      <a href=""
-                      >Warren And Sanders Spar On Gender Issues At Iowa
-                        Debate</a
-                      >
+                      <a th:href="@{/blog/{slug}(slug=${post.slug})}" th:text="${post.title}">Post Title</a>
                     </div>
                     <div class="inner-info">
                       <div class="info-user">
                         <i class="fa-solid fa-user"></i>
-                        <div class="name"><a href="">Tambui</a></div>
+                        <div class="name">
+                          <a href="" th:text="${post.authorName}">Author</a>
+                        </div>
                       </div>
                       <div class="info-time">
                         <i class="fa-regular fa-clock"></i>
-                        <div class="date">March 17,2024</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xl-4">
-                  <div class="inner-box">
-                    <a href=""
-                    ><img
-                            src="https://1.bp.blogspot.com/-lXn8WdgbomU/YVk8KPywFNI/AAAAAAAAIS4/JQjD9G4ZOj8bJMLq5b7htLOd5RV7uKt6gCLcBGAsYHQ/w349-h248-p-k-no-nu/53%2B%25281%2529.jpg"
-                            alt=""
-                    /></a>
-                    <div class="inner-category"><a href="">HOSTING</a></div>
-                    <div class="inner-content">
-                      <a href=""
-                      >The Week Ahead: Busiest Week Of Earnings Season</a
-                      >
-                    </div>
-                    <div class="inner-info">
-                      <div class="info-user">
-                        <i class="fa-solid fa-user"></i>
-                        <div class="name"><a href="">Manh-Nguyen</a></div>
-                      </div>
-                      <div class="info-time">
-                        <i class="fa-regular fa-clock"></i>
-                        <div class="date">March 17,2024</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xl-4">
-                  <div class="inner-box">
-                    <a href=""
-                    ><img
-                            src="https://1.bp.blogspot.com/-nDr3_rHDk0A/YVk8KRt26kI/AAAAAAAAIS8/BGB0zEApSeAVD6AUc6AEsGLS1y0PVCADwCLcBGAsYHQ/w349-h248-p-k-no-nu/52%2B%25281%2529.jpg"
-                            alt=""
-                    /></a>
-                    <div class="inner-category"><a href="">CODING</a></div>
-                    <div class="inner-content">
-                      <a href=""
-                      >Warren And Sanders Spar On Gender Issues At Iowa
-                        Debate</a
-                      >
-                    </div>
-                    <div class="inner-info">
-                      <div class="info-user">
-                        <i class="fa-solid fa-user"></i>
-                        <div class="name"><a href="">Rick</a></div>
-                      </div>
-                      <div class="info-time">
-                        <i class="fa-regular fa-clock"></i>
-                        <div class="date">March 17,2024</div>
+                        <div class="date" th:text="${#temporals.format(post.createdAt, 'MMMM dd, yyyy')}">Date</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row mt-4">
-                <div class="col-xl-4">
-                  <div class="inner-box">
-                    <a href=""
-                    ><img
-                            src="https://1.bp.blogspot.com/-UOyxh-0tURA/YVk8L9J-DBI/AAAAAAAAITM/QwYX3G1jcBsBEVpKaqQkU26UsTLofrFBwCLcBGAsYHQ/w349-h248-p-k-no-nu/57%2B%25281%2529.jpg"
-                            alt=""
-                    /></a>
-                    <div class="inner-category"><a href="">CODING</a></div>
-                    <div class="inner-content">
-                      <a href=""
-                      >Warren And Sanders Spar On Gender Issues At Iowa
-                        Debate</a
-                      >
-                    </div>
-                    <div class="inner-info">
-                      <div class="info-user">
-                        <i class="fa-solid fa-user"></i>
-                        <div class="name"><a href="">Tambui</a></div>
-                      </div>
-                      <div class="info-time">
-                        <i class="fa-regular fa-clock"></i>
-                        <div class="date">March 17,2024</div>
-                      </div>
-                    </div>
+              <!-- Khi khong co bai viet -->
+              <div class="row" th:if="${#lists.isEmpty(blogPosts)}">
+                <div class="col-xl-12">
+                  <div style="text-align: center; padding: 60px; color: #888;">
+                    <i class="fa-solid fa-pen-to-square" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <p>Chưa có bài viết nào. Hãy tạo bài viết đầu tiên!</p>
                   </div>
                 </div>
-                <div class="col-xl-4">
-                  <div class="inner-box">
-                    <a href=""
-                    ><img
-                            src="https://1.bp.blogspot.com/-6cEHJVeGlOg/YVk8MUDTrUI/AAAAAAAAITQ/6M83mAEE3RciALaTEcUQeHsi_mCtOu93ACLcBGAsYHQ/w349-h248-p-k-no-nu/58%2B%25281%2529.jpg"
-                            alt=""
-                    /></a>
-                    <div class="inner-category"><a href="">CODING</a></div>
-                    <div class="inner-content">
-                      <a href=""
-                      >Warren And Sanders Spar On Gender Issues At Iowa
-                        Debate</a
-                      >
-                    </div>
-                    <div class="inner-info">
-                      <div class="info-user">
-                        <i class="fa-solid fa-user"></i>
-                        <div class="name"><a href="">Tambui</a></div>
-                      </div>
-                      <div class="info-time">
-                        <i class="fa-regular fa-clock"></i>
-                        <div class="date">March 17,2024</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xl-4">
-                  <div class="inner-box">
-                    <a href=""
-                    ><img
-                            src="https://1.bp.blogspot.com/-f1q6MM3pPcA/YVk8MoTUU5I/AAAAAAAAITU/6H8ABCjXPWIuTwZF_5tVR69oG5_kiIkvQCLcBGAsYHQ/w349-h248-p-k-no-nu/59%2B%25281%2529.jpg"
-                            alt=""
-                    /></a>
-                    <div class="inner-category"><a href="">CODING</a></div>
-                    <div class="inner-content">
-                      <a href=""
-                      >Warren And Sanders Spar On Gender Issues At Iowa
-                        Debate</a
-                      >
-                    </div>
-                    <div class="inner-info">
-                      <div class="info-user">
-                        <i class="fa-solid fa-user"></i>
-                        <div class="name"><a href="">Tambui</a></div>
-                      </div>
-                      <div class="info-time">
-                        <i class="fa-regular fa-clock"></i>
-                        <div class="date">March 17,2024</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="inner-btn">
-                <button>
-                  <div class="icon"><i class="fa-solid fa-rotate"></i></div>
-                  <p>LOAD MORE POSTS</p>
-                </button>
               </div>
             </div>
+
+            <!-- SIDEBAR -->
             <div class="col-xl-3">
               <div class="inner-social">
                 <div class="inner-title">Social Plugin</div>
@@ -647,41 +450,17 @@
                 <div class="inner-title">Popular Posts</div>
                 <hr />
                 <div class="inner-Posts">
-                  <a href="">
+                  <!-- Popular posts tu database -->
+                  <a th:each="post : ${popularPosts}" th:href="@{/blog/{slug}(slug=${post.slug})}">
                     <div class="inner-item">
-                      <img
-                              src="https://1.bp.blogspot.com/-bHo31vhlrHo/YVk8LGb-1pI/AAAAAAAAITA/MxqsLMuF-mwWT5GlLJJoBVtTmhuetN_vQCLcBGAsYHQ/w83-h66-p-k-no-nu/54%2B%25281%2529.jpg"
-                              alt=""
-                      />
-                      <div class="inner-desc">
-                        Mexico’s President Is Considering Raffling Off The
-                        Presidential Jet
-                      </div>
+                      <img th:src="${post.thumbnailUrl}" alt="" />
+                      <div class="inner-desc" th:text="${post.title}">Post Title</div>
                     </div>
                   </a>
-                  <a href="">
-                    <div class="inner-item">
-                      <img
-                              src="https://1.bp.blogspot.com/-lXn8WdgbomU/YVk8KPywFNI/AAAAAAAAIS4/JQjD9G4ZOj8bJMLq5b7htLOd5RV7uKt6gCLcBGAsYHQ/w83-h66-p-k-no-nu/53%2B%25281%2529.jpg"
-                              alt=""
-                      />
-                      <div class="inner-desc">
-                        Japan’s Environment Minister Announces History-Making
-                        Personal Decision
-                      </div>
-                    </div>
-                  </a>
-                  <a href="">
-                    <div class="inner-item">
-                      <img
-                              src="https://1.bp.blogspot.com/-nDr3_rHDk0A/YVk8KRt26kI/AAAAAAAAIS8/BGB0zEApSeAVD6AUc6AEsGLS1y0PVCADwCLcBGAsYHQ/w83-h66-p-k-no-nu/52%2B%25281%2529.jpg"
-                              alt=""
-                      />
-                      <div class="inner-desc">
-                        The Week Ahead: Busiest Week Of Earnings Season
-                      </div>
-                    </div>
-                  </a>
+                  <!-- Khi khong co popular posts -->
+                  <div th:if="${#lists.isEmpty(popularPosts)}" style="text-align: center; padding: 20px; color: #888;">
+                    <p>Chưa có bài viết.</p>
+                  </div>
                 </div>
               </div>
               <div class="inner-follow">

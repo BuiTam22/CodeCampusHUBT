@@ -11,12 +11,21 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "PostID")
-//    private Long postId;
+    @Column(name = "PostID")
+    private Long postId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "UserID")
-//    private User user; // Thay "User" bằng tên entity của bảng Users
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserID")
+    private User user;
+
+    @Column(name = "Title", length = 255)
+    private String title;
+
+    @Column(name = "Slug", length = 255, unique = true)
+    private String slug;
+
+    @Column(name = "ThumbnailUrl", length = 500)
+    private String thumbnailUrl;
 
     @Column(name = "Content", columnDefinition = "NVARCHAR(MAX)")
     private String content;
@@ -53,12 +62,14 @@ public class Post {
 
     // Constructors...
 
-
     public Post() {
     }
 
-    public Post( String content, String type, String visibility, String location, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, Integer likesCount, Integer commentsCount, Integer sharesCount, Integer reportsCount) {
-//        this.user = user;
+    public Post(User user, String title, String slug, String thumbnailUrl, String content, String type, String visibility, String location, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, Integer likesCount, Integer commentsCount, Integer sharesCount, Integer reportsCount) {
+        this.user = user;
+        this.title = title;
+        this.slug = slug;
+        this.thumbnailUrl = thumbnailUrl;
         this.content = content;
         this.type = type;
         this.visibility = visibility;
@@ -72,13 +83,47 @@ public class Post {
         this.reportsCount = reportsCount;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    // Getters & Setters
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Long postId) {
+        this.postId = postId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
 
     public String getContent() {
         return content;

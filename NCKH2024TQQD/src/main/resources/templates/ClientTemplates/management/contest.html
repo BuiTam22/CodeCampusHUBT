@@ -30,7 +30,7 @@
           <div class="row mb-3">
             <div class="col-xl-6">
               <div class="inner-role">
-                <a href=""><div class="inner-contest">Quản lý bài học/cuộc thi</div></a>
+                <a th:href="@{/management/contest}"><div class="inner-contest tab-active">Quản lý bài học/cuộc thi</div></a>
                 <a th:href="@{/management/contest/challenge}">
                   <div class="inner-challenges">Quản lý bài tập</div>
                 </a>
@@ -66,14 +66,12 @@
                 <th>Start Time</th>
                 <th>End Time</th>
               </tr>
-              <tr>
               <tr th:each="contest : ${contests}" th:attr="data-slug=${contest.slug}" class="clickable-row">
                 <td th:text="${contest.title}">Contest Title</td>
                 <td th:text="${contest.slug}">Contest Slug</td>
                 <td th:text="${contest.userNameOwner}">Owner</td>
                 <td th:text="${#temporals.format(contest.contestStartTime, 'dd/MM/yyyy')}"></td>
                 <td th:text="${#temporals.format(contest.contestEndTime, 'dd/MM/yyyy')}"></td>
-              </tr>
               </tr>
             </table>
           </div>

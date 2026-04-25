@@ -17,7 +17,11 @@ public interface LessonService {
     List<ContestManagementShowDTO> getContestManagementShowDTO(Long moduleID, String userName);
     CourseLesson save(CourseLesson theLesson);
     EditLessonDTO getEditLessonDTO(Long moduleID, String theSlug);
+    CourseLesson updateContestLesson(UpdateLessonClientDTO dto);
     Optional<CourseLesson> findById(Long id);
     Long findLessonIdBySlug(String slug);
 
+    // Lấy top N lesson có orderIndex cao nhất cho trang chủ
+    List<HomeLessonDTO> getTopLessonsForHome(int limit);
 }
+

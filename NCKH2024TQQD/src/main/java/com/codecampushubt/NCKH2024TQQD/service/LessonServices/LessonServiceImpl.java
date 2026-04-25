@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.PageRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +69,26 @@ public class LessonServiceImpl implements LessonService{
     @Override
     public EditLessonDTO getEditLessonDTO(Long moduleID, String theSlug) {
         return lessonRepository.getEditLessonDTO(moduleID, theSlug);
+    }
+
+    @Override
+    @Transactional
+    public CourseLesson updateContestLesson(UpdateLessonClientDTO dto) {
+        CourseLesson lesson = lessonRepository.findById(dto.getLessonId())
+                .orElseThrow(() -> new RuntimeException("Lesson not found"));
+        User current = userRepository.findByUserName(UserContext.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!lesson.getCreator().getUserId().equals(current.getUserId())) {
+            throw new RuntimeException("Forbidden");
+        }
+        lesson.setTitle(dto.getTitle());
+        lesson.setDescription(dto.getDescription());
+        lesson.setDuration(dto.getDuration());
+        lesson.setType(dto.getType());
+        lesson.setIsContest(dto.getIsContest());
+        lesson.setContestStartTime(dto.getContestStartTime());
+        lesson.setContestEndTime(dto.getContestEndTime());
+        return lessonRepository.save(lesson);
     }
 
     @Override
@@ -139,6 +160,11 @@ public class LessonServiceImpl implements LessonService{
     @Override
     public List<ContestManagementShowDTO> getContestManagementShowDTO(Long moduleID, String userName) {
         return lessonRepository.getContestManagementShowDTO(moduleID, userName);
+    }
+
+    @Override
+    public List<HomeLessonDTO> getTopLessonsForHome(int limit) {
+        return lessonRepository.findTopLessonsByOrderIndex(PageRequest.of(0, limit));
     }
 
 }

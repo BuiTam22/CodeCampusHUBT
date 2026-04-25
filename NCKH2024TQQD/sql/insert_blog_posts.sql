@@ -1,0 +1,122 @@
+INSERT INTO Posts (UserID, Title, Slug, ThumbnailUrl, Content, Type, Visibility, CreatedAt, UpdatedAt, LikesCount, CommentsCount, SharesCount, ReportsCount)
+VALUES
+(
+    18,
+    N'Hướng dẫn học Java Spring Boot từ A đến Z cho người mới bắt đầu',
+    'huong-dan-hoc-java-spring-boot-tu-a-den-z',
+    'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop',
+    N'Spring Boot là một framework mạnh mẽ giúp bạn xây dựng ứng dụng Java nhanh chóng. Trong bài viết này, chúng ta sẽ tìm hiểu về cấu trúc project, cách cấu hình, và xây dựng REST API đầu tiên. Spring Boot tự động cấu hình nhiều thứ cho bạn, giúp giảm thiểu boilerplate code và tập trung vào logic nghiệp vụ.',
+    'question',
+    'public',
+    '2025-04-01 10:30:00',
+    '2025-04-01 10:30:00',
+    45, 12, 8, 0
+),
+(
+    18,
+    N'Top 10 thuật toán cần biết để chinh phục phỏng vấn lập trình',
+    'top-10-thuat-toan-phong-van-lap-trinh',
+    'https://images.unsplash.com/photo-1515879218367-8466d910auj7?w=600&h=400&fit=crop',
+    N'Phỏng vấn lập trình luôn là thử thách lớn. Bài viết này tổng hợp 10 thuật toán quan trọng nhất: Binary Search, Two Pointers, Sliding Window, BFS/DFS, Dynamic Programming, Backtracking, Sorting, Heap, Graph, và Greedy. Mỗi thuật toán đi kèm ví dụ thực tế và bài tập luyện.',
+    'question',
+    'public',
+    '2025-04-03 14:00:00',
+    '2025-04-03 14:00:00',
+    78, 23, 15, 0
+),
+(
+    18,
+    N'Tại sao Docker là công cụ không thể thiếu cho Developer',
+    'tai-sao-docker-khong-the-thieu-cho-developer',
+    'https://images.unsplash.com/photo-1605745341112-85968b19335b?w=600&h=400&fit=crop',
+    N'Docker giúp bạn đóng gói ứng dụng cùng với tất cả dependencies vào một container. Không còn lỗi "it works on my machine" nữa! Bài viết này hướng dẫn cài đặt Docker, viết Dockerfile, sử dụng Docker Compose, và deploy ứng dụng Spring Boot lên container.',
+    'regular',
+    'public',
+    '2025-04-05 09:15:00',
+    '2025-04-05 09:15:00',
+    62, 18, 10, 0
+),
+(
+    18,
+    N'Git và GitHub: Từ cơ bản đến nâng cao cho sinh viên IT',
+    'git-github-co-ban-den-nang-cao',
+    'https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=600&h=400&fit=crop',
+    N'Git là hệ thống quản lý phiên bản phân tán phổ biến nhất hiện nay. Bài viết này giúp bạn hiểu các khái niệm: branch, merge, rebase, cherry-pick, stash và cách giải quyết conflict. Kèm theo hướng dẫn tạo Pull Request và quản lý project trên GitHub.',
+    'question',
+    'public',
+    '2025-04-07 16:45:00',
+    '2025-04-07 16:45:00',
+    93, 318, 22, 0
+),
+(
+    18,
+    N'Xây dựng REST API chuẩn với Spring Boot và JPA Hibernate',
+    'xay-dung-rest-api-chuan-spring-boot-jpa',
+    'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop',
+    N'REST API là xương sống của mọi ứng dụng web hiện đại. Trong bài viết này, chúng ta sẽ xây dựng một REST API hoàn chỉnh với Spring Boot, JPA Hibernate, và SQL Server. Bao gồm CRUD operations, validation, error handling, pagination, và bảo mật với JWT.',
+    'question',
+    'public',
+    '2025-04-10 11:00:00',
+    '2025-04-10 11:00:00',
+    55, 14, 7, 0
+),
+(
+    18,
+    N'CSS Flexbox và Grid Layout: Hướng dẫn toàn diện với ví dụ thực tế',
+    'css-flexbox-grid-layout-huong-dan-toan-dien',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop',
+    N'Flexbox và Grid là hai công cụ CSS mạnh mẽ nhất để tạo layout responsive. Bài viết so sánh khi nào dùng Flexbox, khi nào dùng Grid, kèm theo 10 ví dụ layout phổ biến nhất trong web development. Từ navbar, card grid, đến holy grail layout.',
+    'regular',
+    'public',
+    '2025-04-12 08:30:00',
+    '2025-04-12 08:30:00',
+    418, 9, 5, 0
+),
+(
+    18,
+    N'Cách deploy ứng dụng Spring Boot lên VPS với Nginx và SSL',
+    'deploy-spring-boot-vps-nginx-ssl',
+    'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop',
+    N'Sau khi phát triển xong, bước tiếp theo là deploy. Bài viết hướng dẫn từng bước: mua VPS, cài đặt Java và MySQL, cấu hình Nginx reverse proxy, cài SSL Let''s Encrypt miễn phí, và setup systemd service để app tự khởi động.',
+    'regular',
+    'public',
+    '2025-04-14 13:20:00',
+    '2025-04-14 13:20:00',
+    87, 28, 19, 0
+),
+(
+    18,
+    N'JavaScript ES6+ Features mà mọi lập trình viên cần nắm vững',
+    'javascript-es6-features-can-nam-vung',
+    'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=600&h=400&fit=crop',
+    N'ES6 đã thay đổi hoàn toàn cách viết JavaScript. Arrow functions, destructuring, template literals, modules, promises, async/await, spread operator, Map/Set... Bài viết giải thích từng feature với ví dụ code rõ ràng và so sánh với cách viết cũ.',
+    'question',
+    'public',
+    '2025-04-16 15:00:00',
+    '2025-04-16 15:00:00',
+    69, 20, 13, 0
+),
+(
+    18,
+    N'Bảo mật ứng dụng web: OWASP Top 10 và cách phòng chống',
+    'bao-mat-ung-dung-web-owasp-top-10',
+    'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&h=400&fit=crop',
+    N'Bảo mật là yếu tố sống còn của mọi ứng dụng web. OWASP Top 10 liệt kê 10 lỗ hổng phổ biến nhất: Injection, Broken Auth, XSS, CSRF, SSRF... Bài viết phân tích từng lỗ hổng, demo cách khai thác, và hướng dẫn cách phòng chống trong Spring Boot.',
+    'regular',
+    'public',
+    '2025-04-18 10:00:00',
+    '2025-04-18 10:00:00',
+    102, 35, 25, 0
+),
+(
+    18,
+    N'Thiết kế Database Schema hiệu quả cho ứng dụng thực tế',
+    'thiet-ke-database-schema-hieu-qua',
+    'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&h=400&fit=crop',
+    N'Thiết kế database tốt là nền tảng cho mọi ứng dụng. Bài viết hướng dẫn: phân tích yêu cầu, vẽ ERD, chuẩn hoá (1NF, 2NF, 3NF), đánh index hiệu quả, và tối ưu query. Kèm case study thiết kế database cho hệ thống e-commerce và social media.',
+    'regular',
+    'public',
+    '2025-04-19 09:00:00',
+    '2025-04-19 09:00:00',
+    58, 16, 118, 0
+);

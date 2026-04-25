@@ -1,6 +1,8 @@
 package com.codecampushubt.NCKH2024TQQD.service.CodingExerciseServices;
 
 import com.codecampushubt.NCKH2024TQQD.dao.CodingExerciseRepository;
+import com.codecampushubt.NCKH2024TQQD.dao.CodingSubmissionRepository;
+import com.codecampushubt.NCKH2024TQQD.dao.ContestExerciseAttemptRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.ExerciseTestCaseRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDetailDTO;
@@ -9,6 +11,7 @@ import com.codecampushubt.NCKH2024TQQD.entity.CodingExercise;
 import com.codecampushubt.NCKH2024TQQD.entity.ExerciseTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -17,11 +20,18 @@ import java.util.Set;
 public class CodingExerciseServiceImpl implements CodingExerciseService {
     private final CodingExerciseRepository codingExerciseRepository;
     private final ExerciseTestCaseRepository exerciseTestCaseRepository;
+    private final CodingSubmissionRepository codingSubmissionRepository;
+    private final ContestExerciseAttemptRepository contestExerciseAttemptRepository;
 
     @Autowired
-    public CodingExerciseServiceImpl(CodingExerciseRepository codingExerciseRepository, ExerciseTestCaseRepository exerciseTestCaseRepository) {
+    public CodingExerciseServiceImpl(CodingExerciseRepository codingExerciseRepository,
+                                     ExerciseTestCaseRepository exerciseTestCaseRepository,
+                                     CodingSubmissionRepository codingSubmissionRepository,
+                                     ContestExerciseAttemptRepository contestExerciseAttemptRepository) {
         this.codingExerciseRepository = codingExerciseRepository;
         this.exerciseTestCaseRepository = exerciseTestCaseRepository;
+        this.codingSubmissionRepository = codingSubmissionRepository;
+        this.contestExerciseAttemptRepository = contestExerciseAttemptRepository;
     }
 
     @Override
@@ -52,4 +62,20 @@ public class CodingExerciseServiceImpl implements CodingExerciseService {
         return codingExerciseRepository.getLessonIDByExerciseID(exerciseID);
     }
 
+    @Override
+    public CodingExercise save(CodingExercise codingExercise) {
+        return codingExerciseRepository.save(codingExercise);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long exerciseID) {
+        // Xóa các bản ghi liên quan trước để tránh lỗi FK constraint
+        codingSubmissionRepository.deleteByExerciseID(exerciseID);
+        contestExerciseAttemptRepository.deleteByExerciseID(exerciseID);
+        // Cascade sẽ tự xóa ExerciseTestCases nhờ CascadeType.ALL trên CodingExercise
+        codingExerciseRepository.deleteById(exerciseID);
+    }
+
 }
+

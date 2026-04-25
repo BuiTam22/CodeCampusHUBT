@@ -2,21 +2,28 @@ package com.codecampushubt.NCKH2024TQQD.dto.LessonDTO;
 
 import java.time.LocalDateTime;
 
-public class ContestManagementShowDTO {
+/**
+ * Payload cập nhật bài học/cuộc thi từ trang chỉnh sửa.
+ */
+public class UpdateLessonClientDTO {
+    private Long lessonId;
     private String title;
-    private String slug;
+    private String description;
+    private Integer duration;
     private String type;
-    private String userNameOwner;
+    private Boolean isContest;
     private LocalDateTime contestStartTime;
     private LocalDateTime contestEndTime;
 
-    public ContestManagementShowDTO(String title, String slug, String type, String userNameOwner, LocalDateTime contestStartTime, LocalDateTime contestEndTime) {
-        this.title = title;
-        this.slug = slug;
-        this.type = type;
-        this.userNameOwner = userNameOwner;
-        this.contestStartTime = contestStartTime;
-        this.contestEndTime = contestEndTime;
+    public UpdateLessonClientDTO() {
+    }
+
+    public Long getLessonId() {
+        return lessonId;
+    }
+
+    public void setLessonId(Long lessonId) {
+        this.lessonId = lessonId;
     }
 
     public String getTitle() {
@@ -27,12 +34,20 @@ public class ContestManagementShowDTO {
         this.title = title;
     }
 
-    public String getSlug() {
-        return slug;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSlug(String slug) {
-        this.slug = slug;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public String getType() {
@@ -43,12 +58,12 @@ public class ContestManagementShowDTO {
         this.type = type;
     }
 
-    public String getUserNameOwner() {
-        return userNameOwner;
+    public Boolean getIsContest() {
+        return isContest;
     }
 
-    public void setUserNameOwner(String userNameOwner) {
-        this.userNameOwner = userNameOwner;
+    public void setIsContest(Boolean contest) {
+        this.isContest = contest;
     }
 
     public LocalDateTime getContestStartTime() {

@@ -20,11 +20,13 @@
 }
 .section-two .inner-role .inner-contest {
   padding: 10px;
-  border-bottom: 5px solid green;
-  border-radius: 8px;
 }
 .section-two .inner-role .inner-challenges {
   padding: 10px;
+}
+.section-two .inner-role .tab-active {
+  border-bottom: 5px solid green;
+  border-radius: 8px;
 }
 .section-two .inner-role .inner-contest:hover {
   padding: 10px;

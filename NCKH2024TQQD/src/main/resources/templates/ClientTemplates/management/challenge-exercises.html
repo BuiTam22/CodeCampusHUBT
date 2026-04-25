@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quản lý bài tập</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+        crossorigin="anonymous" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/management.css}" />
+
+  <style>
+    /* ── Modal overlay ── */
+    .ex-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      z-index: 1050;
+      align-items: center;
+      justify-content: center;
+    }
+    .ex-modal-backdrop.active {
+      display: flex;
+    }
+
+    /* ── Modal box ── */
+    .ex-modal {
+      background: #fff;
+      border-radius: 12px;
+      width: 700px;
+      max-width: 95vw;
+      max-height: 90vh;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      animation: slideDown .22s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-24px); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+
+    /* ── Modal header ── */
+    .ex-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      background: linear-gradient(135deg, #1a7f4b 0%, #20d761 100%);
+      color: #fff;
+    }
+    .ex-modal-header h5 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+    .ex-modal-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 4px;
+      transition: opacity .15s;
+    }
+    .ex-modal-close:hover { opacity: .7; }
+
+    /* ── Modal body ── */
+    .ex-modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .ex-form-group {
+      margin-bottom: 18px;
+    }
+    .ex-form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+    .ex-form-group input,
+    .ex-form-group select,
+    .ex-form-group textarea {
+      width: 100%;
+      padding: 9px 13px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: .95rem;
+      color: #111827;
+      background: #f9fafb;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .ex-form-group input:focus,
+    .ex-form-group select:focus,
+    .ex-form-group textarea:focus {
+      border-color: #20d761;
+      box-shadow: 0 0 0 3px rgba(32, 215, 97, .18);
+      background: #fff;
+    }
+    .ex-form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .ex-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* ── Modal footer ── */
+    .ex-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 24px;
+      border-top: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+    .ex-btn-cancel {
+      padding: 9px 20px;
+      border-radius: 8px;
+      border: 1.5px solid #d1d5db;
+      background: #fff;
+      color: #374151;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .ex-btn-cancel:hover { background: #f3f4f6; }
+    .ex-btn-submit {
+      padding: 9px 22px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #1a7f4b, #20d761);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s, transform .1s;
+    }
+    .ex-btn-submit:hover { opacity: .9; }
+    .ex-btn-submit:active { transform: scale(.97); }
+    .ex-btn-submit:disabled { opacity: .55; cursor: not-allowed; }
+
+    /* ── Toast notification ── */
+    .ex-toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 2000;
+      padding: 14px 22px;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 600;
+      font-size: .95rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,.18);
+      display: none;
+      animation: fadeUp .25s ease;
+    }
+    @keyframes fadeUp {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .ex-toast.success { background: #16a34a; }
+    .ex-toast.error   { background: #dc2626; }
+    .ex-toast.show    { display: block; }
+
+    /* ── Delete confirm modal ── */
+    .ex-confirm-modal {
+      width: 380px;
+    }
+    .ex-confirm-body {
+      padding: 28px 24px 18px;
+      text-align: center;
+    }
+    .ex-confirm-body .icon-warn {
+      font-size: 2.8rem;
+      color: #f59e0b;
+      margin-bottom: 12px;
+    }
+    .ex-confirm-body p {
+      color: #374151;
+      font-size: .97rem;
+      margin: 0;
+    }
+    .ex-confirm-body strong { color: #111827; }
+    .ex-btn-delete {
+      padding: 9px 22px;
+      border-radius: 8px;
+      border: none;
+      background: #dc2626;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .ex-btn-delete:hover { opacity: .88; }
+
+    /* ── Test Case Section ── */
+    .tc-section {
+      margin-top: 8px;
+      border-top: 1.5px dashed #d1d5db;
+      padding-top: 14px;
+    }
+    .tc-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .tc-section-header label {
+      font-size: .9rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+    }
+    .tc-add-btn {
+      padding: 5px 14px;
+      border-radius: 6px;
+      border: 1.5px solid #20d761;
+      background: #ecfdf5;
+      color: #16a34a;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .tc-add-btn:hover { background: #d1fae5; }
+    .tc-row {
+      display: grid;
+      grid-template-columns: 2fr 2fr 60px 70px 36px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .tc-row input, .tc-row select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 7px 10px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      font-size: .85rem;
+      background: #f9fafb;
+      outline: none;
+    }
+    .tc-row input:focus { border-color: #20d761; }
+    .tc-row .tc-remove {
+      background: none;
+      border: none;
+      color: #dc2626;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background .15s;
+      text-align: center;
+    }
+    .tc-row .tc-remove:hover { background: #fee2e2; }
+    .tc-labels {
+      display: grid;
+      grid-template-columns: 2fr 2fr 60px 70px 36px;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .tc-labels span {
+      font-size: .78rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+    .tc-list { max-height: 200px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
+
+  <div class="section-one">
+    <div class="inner-title">Quản lý bài tập</div>
+  </div>
+
+  <div class="section-two">
+    <div class="container">
+      <div class="row mb-2">
+        <div class="col-xl-10">
+          <p class="inner-title">
+            Lesson: <strong th:text="${lessonTitle}">Lesson Title</strong>
+            <span> - Type: </span>
+            <strong th:text="${lessonType}">coding</strong>
+          </p>
+        </div>
+        <div class="col-xl-2 text-right">
+          <button id="createExerciseButton" class="btn btn-primary">
+            <i class="fas fa-plus mr-1"></i> Thêm exercise
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-three">
+    <div class="container">
+      <div class="row">
+        <table>
+          <tr>
+            <th>Title</th>
+            <th>Difficulty</th>
+            <th>Points</th>
+            <th th:text="${lessonType == 'essay' ? 'Subject' : 'Language'}">Language</th>
+            <th>Actions</th>
+          </tr>
+
+          <tr th:if="${lessonType == 'essay'}" th:each="exercise : ${essayExercises}"
+              th:attr="data-id=${exercise.exerciseID},data-title=${exercise.title},data-description=${exercise.description},data-difficulty=${exercise.difficulty},data-points=${exercise.points},data-extra=${exercise.subjectName}">
+            <td th:text="${exercise.title}">Title</td>
+            <td th:text="${exercise.difficulty}">medium</td>
+            <td th:text="${exercise.points}">0</td>
+            <td th:text="${exercise.subjectName}">subject</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm edit-btn"><i class="fas fa-edit mr-1"></i>Sửa</button>
+              <button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash mr-1"></i>Xóa</button>
+            </td>
+          </tr>
+
+          <tr th:if="${lessonType != 'essay'}" th:each="exercise : ${codingExercises}"
+              th:attr="data-id=${exercise.exerciseID},data-title=${exercise.title},data-description=${exercise.description},data-difficulty=${exercise.difficulty},data-points=${exercise.points},data-extra=${exercise.programLanguage}">
+            <td th:text="${exercise.title}">Title</td>
+            <td th:text="${exercise.difficulty}">medium</td>
+            <td th:text="${exercise.points}">0</td>
+            <td th:text="${exercise.programLanguage}">language</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm edit-btn"><i class="fas fa-edit mr-1"></i>Sửa</button>
+              <button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash mr-1"></i>Xóa</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL: Thêm / Sửa Exercise
+══════════════════════════════════════════════════ -->
+<div id="exerciseModalBackdrop" class="ex-modal-backdrop">
+  <div class="ex-modal">
+    <div class="ex-modal-header">
+      <h5 id="modalTitle"><i class="fas fa-plus-circle mr-2"></i>Thêm Exercise</h5>
+      <button class="ex-modal-close" id="modalCloseBtn" aria-label="Đóng">&times;</button>
+    </div>
+    <div class="ex-modal-body">
+      <div class="ex-form-group">
+        <label for="exTitle">Tiêu đề <span style="color:#dc2626">*</span></label>
+        <input type="text" id="exTitle" placeholder="Nhập tiêu đề bài tập..." />
+      </div>
+      <div class="ex-form-group">
+        <label for="exDescription">Mô tả</label>
+        <textarea id="exDescription" placeholder="Nhập mô tả (tuỳ chọn)..."></textarea>
+      </div>
+      <div class="ex-form-row">
+        <div class="ex-form-group">
+          <label for="exDifficulty">Độ khó</label>
+          <select id="exDifficulty">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <div class="ex-form-group">
+          <label for="exPoints">Điểm</label>
+          <input type="number" id="exPoints" min="0" value="0" placeholder="0" />
+        </div>
+      </div>
+
+      <!-- Chỉ hiển thị khi essay -->
+      <div id="fieldEssay" style="display:none">
+        <div class="ex-form-group">
+          <label for="exSubject">Subject Name</label>
+          <input type="text" id="exSubject" placeholder="Nhập subject name..." />
+        </div>
+        <div class="ex-form-group">
+          <label for="exExpectedAnswer">Đáp án mẫu (Expected Answer)</label>
+          <textarea id="exExpectedAnswer" placeholder="Nhập đáp án mẫu..." rows="4"></textarea>
+        </div>
+      </div>
+
+      <!-- Chỉ hiển thị khi coding -->
+      <div class="ex-form-group" id="fieldCoding" style="display:none">
+        <label for="exLanguage">Programming Language</label>
+        <select id="exLanguage">
+          <option value="java">Java</option>
+          <option value="python">Python</option>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+          <option value="javascript">JavaScript</option>
+        </select>
+      </div>
+
+      <!-- Coding extra fields -->
+      <div id="fieldCodingExtra" style="display:none">
+        <div class="ex-form-group">
+          <label for="exSolutionCode">Solution Code</label>
+          <textarea id="exSolutionCode" placeholder="Lời giải mẫu..." rows="3"></textarea>
+        </div>
+        <div class="ex-form-row">
+          <div class="ex-form-group">
+            <label for="exTimeLimit">Time Limit (ms)</label>
+            <input type="number" id="exTimeLimit" min="100" value="1000" placeholder="1000" />
+          </div>
+          <div class="ex-form-group">
+            <label for="exMemoryLimit">Memory Limit (MB)</label>
+            <input type="number" id="exMemoryLimit" min="16" value="256" placeholder="256" />
+          </div>
+        </div>
+        <div class="ex-form-group">
+          <label for="exInputFormat">Input Format</label>
+          <textarea id="exInputFormat" placeholder="Định dạng đầu vào..." rows="2"></textarea>
+        </div>
+        <div class="ex-form-group">
+          <label for="exOutputFormat">Output Format</label>
+          <textarea id="exOutputFormat" placeholder="Định dạng đầu ra..." rows="2"></textarea>
+        </div>
+        <div class="ex-form-group">
+          <label for="exConstraintName">Ràng buộc</label>
+          <input type="text" id="exConstraintName" placeholder="Tên ràng buộc..." />
+        </div>
+      </div>
+
+      <!-- Test Cases section (chỉ hiển thị khi coding & create mode) -->
+      <div class="tc-section" id="testCaseSection" style="display:none">
+        <div class="tc-section-header">
+          <label><i class="fas fa-vial mr-1"></i>Test Cases</label>
+          <button type="button" class="tc-add-btn" id="addTestCaseBtn">
+            <i class="fas fa-plus mr-1"></i>Thêm
+          </button>
+        </div>
+        <div class="tc-labels" id="tcLabels" style="display:none">
+          <span>Input</span>
+          <span>Expected Output</span>
+          <span>Public</span>
+          <span>Score</span>
+          <span></span>
+        </div>
+        <div class="tc-list" id="testCaseList"></div>
+      </div>
+    </div>
+    <div class="ex-modal-footer">
+      <button class="ex-btn-cancel" id="modalCancelBtn">Huỷ</button>
+      <button class="ex-btn-submit" id="modalSubmitBtn">
+        <i class="fas fa-save mr-1"></i><span id="submitBtnLabel">Lưu</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL: Xác nhận xóa
+══════════════════════════════════════════════════ -->
+<div id="deleteModalBackdrop" class="ex-modal-backdrop">
+  <div class="ex-modal ex-confirm-modal">
+    <div class="ex-modal-header" style="background: linear-gradient(135deg,#991b1b,#dc2626)">
+      <h5><i class="fas fa-exclamation-triangle mr-2"></i>Xác nhận xóa</h5>
+      <button class="ex-modal-close" id="deleteCloseBtn">&times;</button>
+    </div>
+    <div class="ex-confirm-body">
+      <div class="icon-warn"><i class="fas fa-trash-alt"></i></div>
+      <p>Bạn có chắc chắn muốn xóa exercise<br/><strong id="deleteExerciseName"></strong> không?</p>
+      <p style="font-size:.82rem;color:#9ca3af;margin-top:6px">Hành động này không thể hoàn tác.</p>
+    </div>
+    <div class="ex-modal-footer">
+      <button class="ex-btn-cancel" id="deleteCancelBtn">Huỷ</button>
+      <button class="ex-btn-delete" id="deleteConfirmBtn">
+        <i class="fas fa-trash mr-1"></i>Xóa
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="ex-toast" id="exToast"></div>
+
+<script th:inline="javascript">
+  const lessonSlug = /*[[${lessonSlug}]]*/ "";
+  const lessonType = /*[[${lessonType}]]*/ "coding";
+
+  /* ── Helpers ── */
+  function showToast(message, type = "success") {
+    const toast = document.getElementById("exToast");
+    toast.textContent = message;
+    toast.className = `ex-toast ${type} show`;
+    setTimeout(() => { toast.className = "ex-toast"; }, 3000);
+  }
+
+  /* ── Modal state ── */
+  let currentMode = "create";      // "create" | "edit"
+  let currentExerciseID = null;
+
+  const backdrop   = document.getElementById("exerciseModalBackdrop");
+  const modalTitle = document.getElementById("modalTitle");
+  const submitBtn  = document.getElementById("modalSubmitBtn");
+  const submitLabel = document.getElementById("submitBtnLabel");
+
+  const fTitle       = document.getElementById("exTitle");
+  const fDesc        = document.getElementById("exDescription");
+  const fDifficulty  = document.getElementById("exDifficulty");
+  const fPoints      = document.getElementById("exPoints");
+  const fSubject     = document.getElementById("exSubject");
+  const fLanguage    = document.getElementById("exLanguage");
+
+  const fieldEssay  = document.getElementById("fieldEssay");
+  const fieldCoding = document.getElementById("fieldCoding");
+
+  function openCreateModal() {
+    currentMode = "create";
+    currentExerciseID = null;
+    modalTitle.innerHTML = '<i class="fas fa-plus-circle mr-2"></i>Thêm Exercise';
+    submitLabel.textContent = "Thêm";
+    clearForm();
+    showTypeFields();
+    openBackdrop(backdrop);
+  }
+
+  function openEditModal(row) {
+    currentMode = "edit";
+    currentExerciseID = row.dataset.id;
+    modalTitle.innerHTML = '<i class="fas fa-edit mr-2"></i>Sửa Exercise';
+    submitLabel.textContent = "Cập nhật";
+
+    fTitle.value = row.dataset.title || "";
+    fDesc.value  = row.dataset.description || "";
+    fDifficulty.value = row.dataset.difficulty || "medium";
+    fPoints.value = row.dataset.points || "0";
+
+    if (lessonType === "essay") {
+      fSubject.value = row.dataset.extra || "";
+      // Load expectedAnswer from API
+      fetch(`/api/essay-exercise/management/detail/${currentExerciseID}`)
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById("exExpectedAnswer").value = data.expectedAnswer || "";
+        })
+        .catch(() => {});
+    } else {
+      const lang = row.dataset.extra || "java";
+      const opt = fLanguage.querySelector(`option[value="${lang}"]`);
+      if (opt) fLanguage.value = lang;
+
+      // Load extra fields from API
+      fetch(`/api/coding-exercise/management/detail/${currentExerciseID}`)
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById("exSolutionCode").value = data.solutionCode || "";
+          document.getElementById("exTimeLimit").value = data.timeLimit || "1000";
+          document.getElementById("exMemoryLimit").value = data.memoryLimit || "256";
+          document.getElementById("exInputFormat").value = data.inputFormat || "";
+          document.getElementById("exOutputFormat").value = data.outputFormat || "";
+          document.getElementById("exConstraintName").value = data.constraintName || "";
+        })
+        .catch(() => {});
+
+      // Load existing test cases from API
+      clearTestCases();
+      fetch(`/api/coding-exercise/management/test-cases/${currentExerciseID}`)
+        .then(r => r.json())
+        .then(list => {
+          list.forEach(tc => addTestCaseRow(tc.input || "", tc.expectedOutput || "", tc.isPublic || false, tc.score || 0));
+        })
+        .catch(() => {});
+    }
+
+    showTypeFields();
+    openBackdrop(backdrop);
+  }
+
+  /* ── Test Case helpers ── */
+  const testCaseSection = document.getElementById("testCaseSection");
+  const testCaseList    = document.getElementById("testCaseList");
+  const tcLabels        = document.getElementById("tcLabels");
+  let tcCounter = 0;
+
+  function addTestCaseRow(input = "", expectedOutput = "", isPublic = false, score = 0) {
+    tcCounter++;
+    const row = document.createElement("div");
+    row.className = "tc-row";
+    row.innerHTML = `
+      <input type="text" placeholder="Input..." value="${input}" data-field="input" />
+      <input type="text" placeholder="Expected Output..." value="${expectedOutput}" data-field="expectedOutput" />
+      <select data-field="isPublic">
+        <option value="true" ${isPublic ? 'selected' : ''}>Yes</option>
+        <option value="false" ${!isPublic ? 'selected' : ''}>No</option>
+      </select>
+      <input type="number" min="0" value="${score}" data-field="score" />
+      <button type="button" class="tc-remove" title="Xóa"><i class="fas fa-times"></i></button>
+    `;
+    row.querySelector(".tc-remove").addEventListener("click", () => {
+      row.remove();
+      updateTcLabelsVisibility();
+    });
+    testCaseList.appendChild(row);
+    updateTcLabelsVisibility();
+  }
+
+  function updateTcLabelsVisibility() {
+    tcLabels.style.display = testCaseList.children.length > 0 ? "grid" : "none";
+  }
+
+  function collectTestCases() {
+    const rows = testCaseList.querySelectorAll(".tc-row");
+    const list = [];
+    rows.forEach(row => {
+      list.push({
+        input:          row.querySelector('[data-field="input"]').value,
+        expectedOutput: row.querySelector('[data-field="expectedOutput"]').value,
+        isPublic:       row.querySelector('[data-field="isPublic"]').value === "true",
+        score:          parseInt(row.querySelector('[data-field="score"]').value, 10) || 0,
+      });
+    });
+    return list;
+  }
+
+  function clearTestCases() {
+    testCaseList.innerHTML = "";
+    updateTcLabelsVisibility();
+  }
+
+  document.getElementById("addTestCaseBtn").addEventListener("click", () => addTestCaseRow());
+
+  function showTypeFields() {
+    const codingExtra = document.getElementById("fieldCodingExtra");
+    if (lessonType === "essay") {
+      fieldEssay.style.display  = "block";
+      fieldCoding.style.display = "none";
+      codingExtra.style.display = "none";
+      testCaseSection.style.display = "none";
+    } else {
+      fieldEssay.style.display  = "none";
+      fieldCoding.style.display = "block";
+      codingExtra.style.display = "block";
+      testCaseSection.style.display = "block";
+    }
+  }
+
+  function clearForm() {
+    fTitle.value = "";
+    fDesc.value  = "";
+    fDifficulty.value = "medium";
+    fPoints.value = "0";
+    fSubject.value = "";
+    fLanguage.value = "java";
+    document.getElementById("exExpectedAnswer").value = "";
+    document.getElementById("exSolutionCode").value = "";
+    document.getElementById("exTimeLimit").value = "1000";
+    document.getElementById("exMemoryLimit").value = "256";
+    document.getElementById("exInputFormat").value = "";
+    document.getElementById("exOutputFormat").value = "";
+    document.getElementById("exConstraintName").value = "";
+    clearTestCases();
+  }
+
+  function openBackdrop(el) { el.classList.add("active"); }
+  function closeBackdrop(el) { el.classList.remove("active"); }
+
+  /* ── Close modal on backdrop click ── */
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) closeBackdrop(backdrop);
+  });
+  document.getElementById("modalCloseBtn").addEventListener("click",  () => closeBackdrop(backdrop));
+  document.getElementById("modalCancelBtn").addEventListener("click", () => closeBackdrop(backdrop));
+
+  /* ── Submit ── */
+  submitBtn.addEventListener("click", async () => {
+    const title = fTitle.value.trim();
+    if (!title) {
+      fTitle.focus();
+      fTitle.style.borderColor = "#dc2626";
+      setTimeout(() => fTitle.style.borderColor = "", 1500);
+      return;
+    }
+
+    const payload = {
+      title,
+      description: fDesc.value.trim(),
+      difficulty:  fDifficulty.value,
+      points:      parseInt(fPoints.value, 10) || 0,
+    };
+
+    if (lessonType === "essay") {
+      payload.subjectName = fSubject.value.trim();
+      payload.expectedAnswer = document.getElementById("exExpectedAnswer").value.trim();
+    } else {
+      payload.programmingLanguage = fLanguage.value;
+      payload.solutionCode = document.getElementById("exSolutionCode").value.trim();
+      payload.timeLimit = parseInt(document.getElementById("exTimeLimit").value, 10) || 1000;
+      payload.memoryLimit = parseInt(document.getElementById("exMemoryLimit").value, 10) || 256;
+      payload.inputFormat = document.getElementById("exInputFormat").value.trim();
+      payload.outputFormat = document.getElementById("exOutputFormat").value.trim();
+      payload.constraintName = document.getElementById("exConstraintName").value.trim();
+      payload.testCases = collectTestCases();
+    }
+
+    submitBtn.disabled = true;
+    const baseUrl = lessonType === "essay"
+      ? "/api/essay-exercise/management/"
+      : "/api/coding-exercise/management/";
+
+    try {
+      let res;
+      if (currentMode === "create") {
+        res = await fetch(baseUrl + lessonSlug, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error("Tạo exercise thất bại");
+        showToast("✅ Thêm exercise thành công!");
+      } else {
+        res = await fetch(baseUrl + currentExerciseID, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error("Cập nhật exercise thất bại");
+        showToast("✅ Cập nhật exercise thành công!");
+      }
+      closeBackdrop(backdrop);
+      setTimeout(() => window.location.reload(), 900);
+    } catch (err) {
+      showToast("❌ " + err.message, "error");
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  /* ── Delete modal ── */
+  const deleteBackdrop  = document.getElementById("deleteModalBackdrop");
+  const deleteNameLabel = document.getElementById("deleteExerciseName");
+  const deleteConfirmBtn = document.getElementById("deleteConfirmBtn");
+  let pendingDeleteID = null;
+
+  deleteBackdrop.addEventListener("click", (e) => {
+    if (e.target === deleteBackdrop) closeBackdrop(deleteBackdrop);
+  });
+  document.getElementById("deleteCloseBtn").addEventListener("click",  () => closeBackdrop(deleteBackdrop));
+  document.getElementById("deleteCancelBtn").addEventListener("click", () => closeBackdrop(deleteBackdrop));
+
+  deleteConfirmBtn.addEventListener("click", async () => {
+    if (!pendingDeleteID) return;
+    deleteConfirmBtn.disabled = true;
+    const baseUrl = lessonType === "essay"
+      ? "/api/essay-exercise/management/"
+      : "/api/coding-exercise/management/";
+
+    try {
+      const res = await fetch(baseUrl + pendingDeleteID, { method: "DELETE" });
+      if (!res.ok) throw new Error("Xóa exercise thất bại");
+      showToast("✅ Xóa exercise thành công!");
+      closeBackdrop(deleteBackdrop);
+      setTimeout(() => window.location.reload(), 900);
+    } catch (err) {
+      showToast("❌ " + err.message, "error");
+    } finally {
+      deleteConfirmBtn.disabled = false;
+    }
+  });
+
+  /* ── Wire up buttons ── */
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("createExerciseButton").addEventListener("click", openCreateModal);
+
+    document.querySelectorAll(".edit-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = btn.closest("tr");
+        if (row) openEditModal(row);
+      });
+    });
+
+    document.querySelectorAll(".delete-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = btn.closest("tr");
+        if (!row) return;
+        pendingDeleteID = row.dataset.id;
+        deleteNameLabel.textContent = '"' + (row.dataset.title || "này") + '"';
+        openBackdrop(deleteBackdrop);
+      });
+    });
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+<script th:src="@{/ClientStatic/js/script.js}"></script>
+</body>
+</html>

@@ -22,65 +22,75 @@
   <body>
     <div class="page-wrapper">
       <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
-<!--      <div class="section-one">-->
-<!--        <div class="inner-title">Quản lý</div>-->
-<!--      </div>-->
-<!--      <div class="section-two">-->
-<!--        <div class="container">-->
-<!--          <div class="row mb-3">-->
-<!--            <div class="col-xl-6">-->
-<!--              <div class="inner-role">-->
-<!--                <a href=""><div class="inner-contest">Quản lý bài học/cuộc thi</div></a>-->
-<!--                <a th:href="@{/management/contest/challenge}">-->
-<!--                  <div class="inner-challenges">Quản lý bài tập</div>-->
-<!--                </a>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="col-xl-6">-->
-<!--              <div class="inner-search">-->
-<!--                <i class="fa-solid fa-magnifying-glass"></i>-->
-<!--                <input type="text" placeholder="Start typing..." />-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="row">-->
-<!--            <div class="col-xl-10">-->
-<!--              <p class="inner-title">Các cuộc thi bạn có thể chỉnh sửa nằm bên dưới.</p>-->
-<!--            </div>-->
-<!--            <div class="col-xl-2">-->
-<!--              <div class="inner-button">-->
-<!--                <button id="createContestButton">Tạo bài học</button>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="section-three">-->
-<!--        <div class="container">-->
-<!--          <div class="row">-->
-<!--            <table>-->
-<!--              <tr>-->
-<!--                <th>Contest Name</th>-->
-<!--                <th>Contest Slug</th>-->
-<!--                <th>Contest Owner</th>-->
-<!--                <th>Start Time</th>-->
-<!--                <th>End Time</th>-->
-<!--              </tr>-->
-<!--              <tr>-->
-<!--              <tr th:each="contest : ${contests}" th:attr="data-slug=${contest.slug}" class="clickable-row">-->
-<!--                <td th:text="${contest.title}">Contest Title</td>-->
-<!--                <td th:text="${contest.slug}">Contest Slug</td>-->
-<!--                <td th:text="${contest.userNameOwner}">Owner</td>-->
-<!--                <td th:text="${#temporals.format(contest.contestStartTime, 'dd/MM/yyyy')}"></td>-->
-<!--                <td th:text="${#temporals.format(contest.contestEndTime, 'dd/MM/yyyy')}"></td>-->
-<!--              </tr>-->
-<!--              </tr>-->
-<!--            </table>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
+      <div class="section-one">
+        <div class="inner-title">Quản lý</div>
+      </div>
+      <div class="section-two">
+        <div class="container">
+          <div class="row mb-3">
+            <div class="col-xl-6">
+              <div class="inner-role">
+                <a th:href="@{/management/contest}"><div class="inner-contest">Quản lý bài học/cuộc thi</div></a>
+                <a th:href="@{/management/contest/challenge}">
+                  <div class="inner-challenges tab-active">Quản lý bài tập</div>
+                </a>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="inner-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Start typing..." />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-10">
+              <p class="inner-title">Chọn bài học/cuộc thi để quản lý danh sách challenge bên trong.</p>
+            </div>
+            <div class="col-xl-2">
+              <div class="inner-button">
+                <button id="createContestButton">Tạo bài học</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-three">
+        <div class="container">
+          <div class="row">
+            <table>
+              <tr>
+                <th>Contest Name</th>
+                <th>Contest Slug</th>
+                <th>Contest Owner</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+              </tr>
+              <tr th:each="contest : ${contests}" th:attr="data-slug=${contest.slug},data-type=${contest.type}" class="clickable-row">
+                <td th:text="${contest.title}">Contest Title</td>
+                <td th:text="${contest.slug}">Contest Slug</td>
+                <td th:text="${contest.userNameOwner}">Owner</td>
+                <td th:text="${#temporals.format(contest.contestStartTime, 'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(contest.contestEndTime, 'dd/MM/yyyy')}"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
       <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const rows = document.querySelectorAll(".clickable-row");
+        rows.forEach((row) => {
+          row.addEventListener("click", () => {
+            const slug = row.getAttribute("data-slug");
+            if (!slug) return;
+            window.location.href = `/management/contest/challenge/${slug}`;
+          });
+        });
+      });
+    </script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
