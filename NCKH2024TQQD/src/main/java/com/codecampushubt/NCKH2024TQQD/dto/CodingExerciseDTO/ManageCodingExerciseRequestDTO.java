@@ -8,6 +8,12 @@ public class ManageCodingExerciseRequestDTO {
     private String programmingLanguage;
     private String difficulty;
     private Integer points;
+    private String solutionCode;
+    private Integer timeLimit;
+    private Integer memoryLimit;
+    private String inputFormat;
+    private String outputFormat;
+    private String constraintName;
     private List<TestCaseRequest> testCases;
 
     public String getTitle() {
@@ -48,6 +54,54 @@ public class ManageCodingExerciseRequestDTO {
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public String getSolutionCode() {
+        return solutionCode;
+    }
+
+    public void setSolutionCode(String solutionCode) {
+        this.solutionCode = solutionCode;
+    }
+
+    public Integer getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(Integer timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
+    public Integer getMemoryLimit() {
+        return memoryLimit;
+    }
+
+    public void setMemoryLimit(Integer memoryLimit) {
+        this.memoryLimit = memoryLimit;
+    }
+
+    public String getInputFormat() {
+        return inputFormat;
+    }
+
+    public void setInputFormat(String inputFormat) {
+        this.inputFormat = inputFormat;
+    }
+
+    public String getOutputFormat() {
+        return outputFormat;
+    }
+
+    public void setOutputFormat(String outputFormat) {
+        this.outputFormat = outputFormat;
+    }
+
+    public String getConstraintName() {
+        return constraintName;
+    }
+
+    public void setConstraintName(String constraintName) {
+        this.constraintName = constraintName;
     }
 
     public List<TestCaseRequest> getTestCases() {

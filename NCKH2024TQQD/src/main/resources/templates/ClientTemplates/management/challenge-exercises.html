@@ -32,11 +32,14 @@
     .ex-modal {
       background: #fff;
       border-radius: 12px;
-      width: 520px;
+      width: 700px;
       max-width: 95vw;
+      max-height: 90vh;
       box-shadow: 0 20px 60px rgba(0,0,0,.25);
       animation: slideDown .22s cubic-bezier(.4,0,.2,1);
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
     @keyframes slideDown {
       from { transform: translateY(-24px); opacity: 0; }
@@ -73,6 +76,8 @@
     /* ── Modal body ── */
     .ex-modal-body {
       padding: 24px;
+      overflow-y: auto;
+      flex: 1;
     }
     .ex-form-group {
       margin-bottom: 18px;
@@ -234,12 +239,14 @@
     .tc-add-btn:hover { background: #d1fae5; }
     .tc-row {
       display: grid;
-      grid-template-columns: 1fr 1fr 60px 70px 36px;
+      grid-template-columns: 2fr 2fr 60px 70px 36px;
       gap: 8px;
-      align-items: end;
+      align-items: center;
       margin-bottom: 8px;
     }
     .tc-row input, .tc-row select {
+      width: 100%;
+      box-sizing: border-box;
       padding: 7px 10px;
       border: 1.5px solid #d1d5db;
       border-radius: 6px;
@@ -257,11 +264,12 @@
       padding: 4px;
       border-radius: 4px;
       transition: background .15s;
+      text-align: center;
     }
     .tc-row .tc-remove:hover { background: #fee2e2; }
     .tc-labels {
       display: grid;
-      grid-template-columns: 1fr 1fr 60px 70px 36px;
+      grid-template-columns: 2fr 2fr 60px 70px 36px;
       gap: 8px;
       margin-bottom: 4px;
     }
@@ -394,6 +402,36 @@
         </select>
       </div>
 
+      <!-- Coding extra fields -->
+      <div id="fieldCodingExtra" style="display:none">
+        <div class="ex-form-group">
+          <label for="exSolutionCode">Solution Code</label>
+          <textarea id="exSolutionCode" placeholder="Lời giải mẫu..." rows="3"></textarea>
+        </div>
+        <div class="ex-form-row">
+          <div class="ex-form-group">
+            <label for="exTimeLimit">Time Limit (ms)</label>
+            <input type="number" id="exTimeLimit" min="100" value="1000" placeholder="1000" />
+          </div>
+          <div class="ex-form-group">
+            <label for="exMemoryLimit">Memory Limit (MB)</label>
+            <input type="number" id="exMemoryLimit" min="16" value="256" placeholder="256" />
+          </div>
+        </div>
+        <div class="ex-form-group">
+          <label for="exInputFormat">Input Format</label>
+          <textarea id="exInputFormat" placeholder="Định dạng đầu vào..." rows="2"></textarea>
+        </div>
+        <div class="ex-form-group">
+          <label for="exOutputFormat">Output Format</label>
+          <textarea id="exOutputFormat" placeholder="Định dạng đầu ra..." rows="2"></textarea>
+        </div>
+        <div class="ex-form-group">
+          <label for="exConstraintName">Ràng buộc</label>
+          <input type="text" id="exConstraintName" placeholder="Tên ràng buộc..." />
+        </div>
+      </div>
+
       <!-- Test Cases section (chỉ hiển thị khi coding & create mode) -->
       <div class="tc-section" id="testCaseSection" style="display:none">
         <div class="tc-section-header">
@@ -505,6 +543,28 @@
       const lang = row.dataset.extra || "java";
       const opt = fLanguage.querySelector(`option[value="${lang}"]`);
       if (opt) fLanguage.value = lang;
+
+      // Load extra fields from API
+      fetch(`/api/coding-exercise/management/detail/${currentExerciseID}`)
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById("exSolutionCode").value = data.solutionCode || "";
+          document.getElementById("exTimeLimit").value = data.timeLimit || "1000";
+          document.getElementById("exMemoryLimit").value = data.memoryLimit || "256";
+          document.getElementById("exInputFormat").value = data.inputFormat || "";
+          document.getElementById("exOutputFormat").value = data.outputFormat || "";
+          document.getElementById("exConstraintName").value = data.constraintName || "";
+        })
+        .catch(() => {});
+
+      // Load existing test cases from API
+      clearTestCases();
+      fetch(`/api/coding-exercise/management/test-cases/${currentExerciseID}`)
+        .then(r => r.json())
+        .then(list => {
+          list.forEach(tc => addTestCaseRow(tc.input || "", tc.expectedOutput || "", tc.isPublic || false, tc.score || 0));
+        })
+        .catch(() => {});
     }
 
     showTypeFields();
@@ -565,14 +625,17 @@
   document.getElementById("addTestCaseBtn").addEventListener("click", () => addTestCaseRow());
 
   function showTypeFields() {
+    const codingExtra = document.getElementById("fieldCodingExtra");
     if (lessonType === "essay") {
       fieldEssay.style.display  = "block";
       fieldCoding.style.display = "none";
+      codingExtra.style.display = "none";
       testCaseSection.style.display = "none";
     } else {
       fieldEssay.style.display  = "none";
       fieldCoding.style.display = "block";
-      testCaseSection.style.display = currentMode === "create" ? "block" : "none";
+      codingExtra.style.display = "block";
+      testCaseSection.style.display = "block";
     }
   }
 
@@ -583,6 +646,12 @@
     fPoints.value = "0";
     fSubject.value = "";
     fLanguage.value = "java";
+    document.getElementById("exSolutionCode").value = "";
+    document.getElementById("exTimeLimit").value = "1000";
+    document.getElementById("exMemoryLimit").value = "256";
+    document.getElementById("exInputFormat").value = "";
+    document.getElementById("exOutputFormat").value = "";
+    document.getElementById("exConstraintName").value = "";
     clearTestCases();
   }
 
@@ -617,9 +686,13 @@
       payload.subjectName = fSubject.value.trim();
     } else {
       payload.programmingLanguage = fLanguage.value;
-      if (currentMode === "create") {
-        payload.testCases = collectTestCases();
-      }
+      payload.solutionCode = document.getElementById("exSolutionCode").value.trim();
+      payload.timeLimit = parseInt(document.getElementById("exTimeLimit").value, 10) || 1000;
+      payload.memoryLimit = parseInt(document.getElementById("exMemoryLimit").value, 10) || 256;
+      payload.inputFormat = document.getElementById("exInputFormat").value.trim();
+      payload.outputFormat = document.getElementById("exOutputFormat").value.trim();
+      payload.constraintName = document.getElementById("exConstraintName").value.trim();
+      payload.testCases = collectTestCases();
     }
 
     submitBtn.disabled = true;

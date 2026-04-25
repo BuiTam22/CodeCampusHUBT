@@ -3,6 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.dao;
 import com.codecampushubt.NCKH2024TQQD.dto.ExerciseTestCasesDTO.ExerciseTestCasesDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.ExerciseTestCase;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,8 @@ public interface ExerciseTestCaseRepository extends JpaRepository<ExerciseTestCa
             WHERE et.codingExercise.exerciseID = :theID
             """)
     Set<ExerciseTestCasesDTO> getExerciseTestCasesDTOByExerciseID(@Param("theID") Long exerciseID);
+
+    @Modifying
+    @Query("DELETE FROM ExerciseTestCase et WHERE et.codingExercise.exerciseID = :exerciseID")
+    void deleteByExerciseID(@Param("exerciseID") Long exerciseID);
 }

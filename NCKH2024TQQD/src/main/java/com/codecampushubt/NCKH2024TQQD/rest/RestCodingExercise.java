@@ -13,6 +13,7 @@ import com.github.slugify.Slugify;
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -67,30 +68,24 @@ public class RestCodingExercise {
         exercise.setProgrammingLanguage(requestDTO.getProgrammingLanguage());
         exercise.setDifficulty(requestDTO.getDifficulty() == null || requestDTO.getDifficulty().isBlank() ? "medium" : requestDTO.getDifficulty().trim());
         exercise.setPoints(requestDTO.getPoints() == null ? 0 : requestDTO.getPoints());
-        exercise.setTimeLimit(1000);
-        exercise.setMemoryLimit(256);
+        exercise.setSolutionCode(requestDTO.getSolutionCode());
+        exercise.setTimeLimit(requestDTO.getTimeLimit() != null ? requestDTO.getTimeLimit() : 1000);
+        exercise.setMemoryLimit(requestDTO.getMemoryLimit() != null ? requestDTO.getMemoryLimit() : 256);
+        exercise.setInputFormat(requestDTO.getInputFormat());
+        exercise.setOutputFormat(requestDTO.getOutputFormat());
+        exercise.setConstraintName(requestDTO.getConstraintName());
         exercise.setCreatedAt(now);
         exercise.setUpdatedAt(now);
         exercise.setSlug(generateSlug(requestDTO.getTitle()));
         CodingExercise saved = codingExerciseService.save(exercise);
 
         // Tạo ExerciseTestCases nếu có
-        if (requestDTO.getTestCases() != null && !requestDTO.getTestCases().isEmpty()) {
-            for (ManageCodingExerciseRequestDTO.TestCaseRequest tc : requestDTO.getTestCases()) {
-                ExerciseTestCase testCase = new ExerciseTestCase(
-                        saved,
-                        tc.getInput(),
-                        tc.getExpectedOutput(),
-                        tc.getIsPublic() != null ? tc.getIsPublic() : false,
-                        tc.getScore() != null ? tc.getScore() : 0
-                );
-                exerciseTestCaseRepository.save(testCase);
-            }
-        }
+        saveTestCases(saved, requestDTO.getTestCases());
 
         return ResponseEntity.ok(Map.of("status", "success", "exerciseId", saved.getExerciseID()));
     }
 
+    @Transactional
     @PutMapping("/management/{exerciseID}")
     public ResponseEntity<?> updateCodingExercise(@PathVariable("exerciseID") Long exerciseID,
                                                   @RequestBody ManageCodingExerciseRequestDTO requestDTO) {
@@ -111,9 +106,47 @@ public class RestCodingExercise {
         if (requestDTO.getPoints() != null) {
             exercise.setPoints(requestDTO.getPoints());
         }
+        exercise.setSolutionCode(requestDTO.getSolutionCode());
+        if (requestDTO.getTimeLimit() != null) {
+            exercise.setTimeLimit(requestDTO.getTimeLimit());
+        }
+        if (requestDTO.getMemoryLimit() != null) {
+            exercise.setMemoryLimit(requestDTO.getMemoryLimit());
+        }
+        exercise.setInputFormat(requestDTO.getInputFormat());
+        exercise.setOutputFormat(requestDTO.getOutputFormat());
+        exercise.setConstraintName(requestDTO.getConstraintName());
         exercise.setUpdatedAt(LocalDateTime.now());
         codingExerciseService.save(exercise);
+
+        // Cập nhật test cases: xóa cũ rồi tạo mới
+        if (requestDTO.getTestCases() != null) {
+            exerciseTestCaseRepository.deleteByExerciseID(exerciseID);
+            saveTestCases(exercise, requestDTO.getTestCases());
+        }
+
         return ResponseEntity.ok(Map.of("status", "success"));
+    }
+
+    @GetMapping("/management/test-cases/{exerciseID}")
+    public ResponseEntity<?> getTestCasesByExerciseID(@PathVariable("exerciseID") Long exerciseID) {
+        return ResponseEntity.ok(exerciseTestCaseRepository.getExerciseTestCasesDTOByExerciseID(exerciseID));
+    }
+
+    @GetMapping("/management/detail/{exerciseID}")
+    public ResponseEntity<?> getExerciseDetail(@PathVariable("exerciseID") Long exerciseID) {
+        CodingExercise exercise = codingExerciseService.getExerciseEntityByID(exerciseID);
+        if (exercise == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(Map.of(
+                "solutionCode", exercise.getSolutionCode() != null ? exercise.getSolutionCode() : "",
+                "timeLimit", exercise.getTimeLimit() != null ? exercise.getTimeLimit() : 1000,
+                "memoryLimit", exercise.getMemoryLimit() != null ? exercise.getMemoryLimit() : 256,
+                "inputFormat", exercise.getInputFormat() != null ? exercise.getInputFormat() : "",
+                "outputFormat", exercise.getOutputFormat() != null ? exercise.getOutputFormat() : "",
+                "constraintName", exercise.getConstraintName() != null ? exercise.getConstraintName() : ""
+        ));
     }
 
     @DeleteMapping("/management/{exerciseID}")
@@ -145,6 +178,20 @@ public class RestCodingExercise {
 
     private String generateSlug(String title) {
         return new Slugify().slugify(title + "-" + System.currentTimeMillis());
+    }
+
+    private void saveTestCases(CodingExercise exercise, List<ManageCodingExerciseRequestDTO.TestCaseRequest> testCases) {
+        if (testCases == null || testCases.isEmpty()) return;
+        for (ManageCodingExerciseRequestDTO.TestCaseRequest tc : testCases) {
+            ExerciseTestCase testCase = new ExerciseTestCase(
+                    exercise,
+                    tc.getInput(),
+                    tc.getExpectedOutput(),
+                    tc.getIsPublic() != null ? tc.getIsPublic() : false,
+                    tc.getScore() != null ? tc.getScore() : 0
+            );
+            exerciseTestCaseRepository.save(testCase);
+        }
     }
 }
 
