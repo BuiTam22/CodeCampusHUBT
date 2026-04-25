@@ -385,9 +385,15 @@
       </div>
 
       <!-- Chỉ hiển thị khi essay -->
-      <div class="ex-form-group" id="fieldEssay" style="display:none">
-        <label for="exSubject">Subject Name</label>
-        <input type="text" id="exSubject" placeholder="Nhập subject name..." />
+      <div id="fieldEssay" style="display:none">
+        <div class="ex-form-group">
+          <label for="exSubject">Subject Name</label>
+          <input type="text" id="exSubject" placeholder="Nhập subject name..." />
+        </div>
+        <div class="ex-form-group">
+          <label for="exExpectedAnswer">Đáp án mẫu (Expected Answer)</label>
+          <textarea id="exExpectedAnswer" placeholder="Nhập đáp án mẫu..." rows="4"></textarea>
+        </div>
       </div>
 
       <!-- Chỉ hiển thị khi coding -->
@@ -539,6 +545,13 @@
 
     if (lessonType === "essay") {
       fSubject.value = row.dataset.extra || "";
+      // Load expectedAnswer from API
+      fetch(`/api/essay-exercise/management/detail/${currentExerciseID}`)
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById("exExpectedAnswer").value = data.expectedAnswer || "";
+        })
+        .catch(() => {});
     } else {
       const lang = row.dataset.extra || "java";
       const opt = fLanguage.querySelector(`option[value="${lang}"]`);
@@ -646,6 +659,7 @@
     fPoints.value = "0";
     fSubject.value = "";
     fLanguage.value = "java";
+    document.getElementById("exExpectedAnswer").value = "";
     document.getElementById("exSolutionCode").value = "";
     document.getElementById("exTimeLimit").value = "1000";
     document.getElementById("exMemoryLimit").value = "256";
@@ -684,6 +698,7 @@
 
     if (lessonType === "essay") {
       payload.subjectName = fSubject.value.trim();
+      payload.expectedAnswer = document.getElementById("exExpectedAnswer").value.trim();
     } else {
       payload.programmingLanguage = fLanguage.value;
       payload.solutionCode = document.getElementById("exSolutionCode").value.trim();

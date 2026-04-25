@@ -118,6 +118,19 @@ public class RestEssayExercise {
         return ResponseEntity.ok(Map.of("status", "success"));
     }
 
+    @GetMapping("/management/detail/{exerciseID}")
+    public ResponseEntity<?> getEssayExerciseDetail(@PathVariable("exerciseID") Long exerciseID) {
+        Optional<EssayExercise> exerciseOptional = essayExerciseService.findById(exerciseID);
+        if (exerciseOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        EssayExercise exercise = exerciseOptional.get();
+        return ResponseEntity.ok(Map.of(
+                "expectedAnswer", exercise.getExpectedAnswer() != null ? exercise.getExpectedAnswer() : "",
+                "timeLimit", exercise.getTimeLimit() != null ? exercise.getTimeLimit() : 0
+        ));
+    }
+
     private Optional<CourseLesson> getOwnedLesson(String lessonSlug) {
         Long lessonID = lessonService.findLessonIdBySlug(lessonSlug);
         if (lessonID == null) {
