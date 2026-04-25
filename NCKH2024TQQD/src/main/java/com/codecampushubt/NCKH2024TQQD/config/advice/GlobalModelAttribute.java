@@ -44,6 +44,7 @@ public class GlobalModelAttribute {
             String username = jwtService.extractUsername(token);
             String fullname = userService.getFullName(username);
             model.addAttribute("userFullName", fullname);
+            model.addAttribute("userName", username);
             model.addAttribute("baseUrl", baseUrl);
         }
     }
