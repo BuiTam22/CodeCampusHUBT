@@ -5,13 +5,15 @@ import java.time.LocalDateTime;
 public class ContestManagementShowDTO {
     private String title;
     private String slug;
+    private String type;
     private String userNameOwner;
     private LocalDateTime contestStartTime;
     private LocalDateTime contestEndTime;
 
-    public ContestManagementShowDTO(String title, String slug, String userNameOwner, LocalDateTime contestStartTime, LocalDateTime contestEndTime) {
+    public ContestManagementShowDTO(String title, String slug, String type, String userNameOwner, LocalDateTime contestStartTime, LocalDateTime contestEndTime) {
         this.title = title;
         this.slug = slug;
+        this.type = type;
         this.userNameOwner = userNameOwner;
         this.contestStartTime = contestStartTime;
         this.contestEndTime = contestEndTime;
@@ -31,6 +33,14 @@ public class ContestManagementShowDTO {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getUserNameOwner() {
