@@ -1,10 +1,12 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
+import com.codecampushubt.NCKH2024TQQD.dao.ExerciseTestCaseRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDetailDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.ManageCodingExerciseRequestDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.CodingExercise;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
+import com.codecampushubt.NCKH2024TQQD.entity.ExerciseTestCase;
 import com.codecampushubt.NCKH2024TQQD.service.CodingExerciseServices.CodingExerciseService;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import com.github.slugify.Slugify;
@@ -23,11 +25,15 @@ import java.util.Optional;
 public class RestCodingExercise {
     private final CodingExerciseService codingExerciseService;
     private final LessonService lessonService;
+    private final ExerciseTestCaseRepository exerciseTestCaseRepository;
 
     @Autowired
-    public RestCodingExercise(CodingExerciseService codingExerciseService, LessonService lessonService) {
+    public RestCodingExercise(CodingExerciseService codingExerciseService,
+                              LessonService lessonService,
+                              ExerciseTestCaseRepository exerciseTestCaseRepository) {
         this.codingExerciseService = codingExerciseService;
         this.lessonService = lessonService;
+        this.exerciseTestCaseRepository = exerciseTestCaseRepository;
     }
 
 
@@ -67,6 +73,20 @@ public class RestCodingExercise {
         exercise.setUpdatedAt(now);
         exercise.setSlug(generateSlug(requestDTO.getTitle()));
         CodingExercise saved = codingExerciseService.save(exercise);
+
+        // Tạo ExerciseTestCases nếu có
+        if (requestDTO.getTestCases() != null && !requestDTO.getTestCases().isEmpty()) {
+            for (ManageCodingExerciseRequestDTO.TestCaseRequest tc : requestDTO.getTestCases()) {
+                ExerciseTestCase testCase = new ExerciseTestCase(
+                        saved,
+                        tc.getInput(),
+                        tc.getExpectedOutput(),
+                        tc.getIsPublic() != null ? tc.getIsPublic() : false,
+                        tc.getScore() != null ? tc.getScore() : 0
+                );
+                exerciseTestCaseRepository.save(testCase);
+            }
+        }
 
         return ResponseEntity.ok(Map.of("status", "success", "exerciseId", saved.getExerciseID()));
     }
@@ -127,3 +147,4 @@ public class RestCodingExercise {
         return new Slugify().slugify(title + "-" + System.currentTimeMillis());
     }
 }
+

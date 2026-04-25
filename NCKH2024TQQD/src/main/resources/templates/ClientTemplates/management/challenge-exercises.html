@@ -201,6 +201,76 @@
       transition: opacity .15s;
     }
     .ex-btn-delete:hover { opacity: .88; }
+
+    /* ── Test Case Section ── */
+    .tc-section {
+      margin-top: 8px;
+      border-top: 1.5px dashed #d1d5db;
+      padding-top: 14px;
+    }
+    .tc-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .tc-section-header label {
+      font-size: .9rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+    }
+    .tc-add-btn {
+      padding: 5px 14px;
+      border-radius: 6px;
+      border: 1.5px solid #20d761;
+      background: #ecfdf5;
+      color: #16a34a;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .tc-add-btn:hover { background: #d1fae5; }
+    .tc-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 60px 70px 36px;
+      gap: 8px;
+      align-items: end;
+      margin-bottom: 8px;
+    }
+    .tc-row input, .tc-row select {
+      padding: 7px 10px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      font-size: .85rem;
+      background: #f9fafb;
+      outline: none;
+    }
+    .tc-row input:focus { border-color: #20d761; }
+    .tc-row .tc-remove {
+      background: none;
+      border: none;
+      color: #dc2626;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background .15s;
+    }
+    .tc-row .tc-remove:hover { background: #fee2e2; }
+    .tc-labels {
+      display: grid;
+      grid-template-columns: 1fr 1fr 60px 70px 36px;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .tc-labels span {
+      font-size: .78rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+    .tc-list { max-height: 200px; overflow-y: auto; }
   </style>
 </head>
 <body>
@@ -323,6 +393,24 @@
           <option value="javascript">JavaScript</option>
         </select>
       </div>
+
+      <!-- Test Cases section (chỉ hiển thị khi coding & create mode) -->
+      <div class="tc-section" id="testCaseSection" style="display:none">
+        <div class="tc-section-header">
+          <label><i class="fas fa-vial mr-1"></i>Test Cases</label>
+          <button type="button" class="tc-add-btn" id="addTestCaseBtn">
+            <i class="fas fa-plus mr-1"></i>Thêm
+          </button>
+        </div>
+        <div class="tc-labels" id="tcLabels" style="display:none">
+          <span>Input</span>
+          <span>Expected Output</span>
+          <span>Public</span>
+          <span>Score</span>
+          <span></span>
+        </div>
+        <div class="tc-list" id="testCaseList"></div>
+      </div>
     </div>
     <div class="ex-modal-footer">
       <button class="ex-btn-cancel" id="modalCancelBtn">Huỷ</button>
@@ -423,13 +511,68 @@
     openBackdrop(backdrop);
   }
 
+  /* ── Test Case helpers ── */
+  const testCaseSection = document.getElementById("testCaseSection");
+  const testCaseList    = document.getElementById("testCaseList");
+  const tcLabels        = document.getElementById("tcLabels");
+  let tcCounter = 0;
+
+  function addTestCaseRow(input = "", expectedOutput = "", isPublic = false, score = 0) {
+    tcCounter++;
+    const row = document.createElement("div");
+    row.className = "tc-row";
+    row.innerHTML = `
+      <input type="text" placeholder="Input..." value="${input}" data-field="input" />
+      <input type="text" placeholder="Expected Output..." value="${expectedOutput}" data-field="expectedOutput" />
+      <select data-field="isPublic">
+        <option value="true" ${isPublic ? 'selected' : ''}>Yes</option>
+        <option value="false" ${!isPublic ? 'selected' : ''}>No</option>
+      </select>
+      <input type="number" min="0" value="${score}" data-field="score" />
+      <button type="button" class="tc-remove" title="Xóa"><i class="fas fa-times"></i></button>
+    `;
+    row.querySelector(".tc-remove").addEventListener("click", () => {
+      row.remove();
+      updateTcLabelsVisibility();
+    });
+    testCaseList.appendChild(row);
+    updateTcLabelsVisibility();
+  }
+
+  function updateTcLabelsVisibility() {
+    tcLabels.style.display = testCaseList.children.length > 0 ? "grid" : "none";
+  }
+
+  function collectTestCases() {
+    const rows = testCaseList.querySelectorAll(".tc-row");
+    const list = [];
+    rows.forEach(row => {
+      list.push({
+        input:          row.querySelector('[data-field="input"]').value,
+        expectedOutput: row.querySelector('[data-field="expectedOutput"]').value,
+        isPublic:       row.querySelector('[data-field="isPublic"]').value === "true",
+        score:          parseInt(row.querySelector('[data-field="score"]').value, 10) || 0,
+      });
+    });
+    return list;
+  }
+
+  function clearTestCases() {
+    testCaseList.innerHTML = "";
+    updateTcLabelsVisibility();
+  }
+
+  document.getElementById("addTestCaseBtn").addEventListener("click", () => addTestCaseRow());
+
   function showTypeFields() {
     if (lessonType === "essay") {
       fieldEssay.style.display  = "block";
       fieldCoding.style.display = "none";
+      testCaseSection.style.display = "none";
     } else {
       fieldEssay.style.display  = "none";
       fieldCoding.style.display = "block";
+      testCaseSection.style.display = currentMode === "create" ? "block" : "none";
     }
   }
 
@@ -440,6 +583,7 @@
     fPoints.value = "0";
     fSubject.value = "";
     fLanguage.value = "java";
+    clearTestCases();
   }
 
   function openBackdrop(el) { el.classList.add("active"); }
@@ -473,6 +617,9 @@
       payload.subjectName = fSubject.value.trim();
     } else {
       payload.programmingLanguage = fLanguage.value;
+      if (currentMode === "create") {
+        payload.testCases = collectTestCases();
+      }
     }
 
     submitBtn.disabled = true;
