@@ -2,21 +2,206 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <title>Management Challenges</title>
-  <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-  />
-  <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
-          crossorigin="anonymous"
-  />
+  <title>Quản lý bài tập</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+        crossorigin="anonymous" />
   <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}" />
   <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}" />
   <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}" />
   <link rel="stylesheet" th:href="@{/ClientStatic/css/management.css}" />
+
+  <style>
+    /* ── Modal overlay ── */
+    .ex-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      z-index: 1050;
+      align-items: center;
+      justify-content: center;
+    }
+    .ex-modal-backdrop.active {
+      display: flex;
+    }
+
+    /* ── Modal box ── */
+    .ex-modal {
+      background: #fff;
+      border-radius: 12px;
+      width: 520px;
+      max-width: 95vw;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      animation: slideDown .22s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-24px); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+
+    /* ── Modal header ── */
+    .ex-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      background: linear-gradient(135deg, #1a7f4b 0%, #20d761 100%);
+      color: #fff;
+    }
+    .ex-modal-header h5 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+    .ex-modal-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 4px;
+      transition: opacity .15s;
+    }
+    .ex-modal-close:hover { opacity: .7; }
+
+    /* ── Modal body ── */
+    .ex-modal-body {
+      padding: 24px;
+    }
+    .ex-form-group {
+      margin-bottom: 18px;
+    }
+    .ex-form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+    .ex-form-group input,
+    .ex-form-group select,
+    .ex-form-group textarea {
+      width: 100%;
+      padding: 9px 13px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: .95rem;
+      color: #111827;
+      background: #f9fafb;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .ex-form-group input:focus,
+    .ex-form-group select:focus,
+    .ex-form-group textarea:focus {
+      border-color: #20d761;
+      box-shadow: 0 0 0 3px rgba(32, 215, 97, .18);
+      background: #fff;
+    }
+    .ex-form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .ex-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* ── Modal footer ── */
+    .ex-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 24px;
+      border-top: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+    .ex-btn-cancel {
+      padding: 9px 20px;
+      border-radius: 8px;
+      border: 1.5px solid #d1d5db;
+      background: #fff;
+      color: #374151;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .ex-btn-cancel:hover { background: #f3f4f6; }
+    .ex-btn-submit {
+      padding: 9px 22px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #1a7f4b, #20d761);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s, transform .1s;
+    }
+    .ex-btn-submit:hover { opacity: .9; }
+    .ex-btn-submit:active { transform: scale(.97); }
+    .ex-btn-submit:disabled { opacity: .55; cursor: not-allowed; }
+
+    /* ── Toast notification ── */
+    .ex-toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 2000;
+      padding: 14px 22px;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 600;
+      font-size: .95rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,.18);
+      display: none;
+      animation: fadeUp .25s ease;
+    }
+    @keyframes fadeUp {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .ex-toast.success { background: #16a34a; }
+    .ex-toast.error   { background: #dc2626; }
+    .ex-toast.show    { display: block; }
+
+    /* ── Delete confirm modal ── */
+    .ex-confirm-modal {
+      width: 380px;
+    }
+    .ex-confirm-body {
+      padding: 28px 24px 18px;
+      text-align: center;
+    }
+    .ex-confirm-body .icon-warn {
+      font-size: 2.8rem;
+      color: #f59e0b;
+      margin-bottom: 12px;
+    }
+    .ex-confirm-body p {
+      color: #374151;
+      font-size: .97rem;
+      margin: 0;
+    }
+    .ex-confirm-body strong { color: #111827; }
+    .ex-btn-delete {
+      padding: 9px 22px;
+      border-radius: 8px;
+      border: none;
+      background: #dc2626;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .ex-btn-delete:hover { opacity: .88; }
+  </style>
 </head>
 <body>
 <div class="page-wrapper">
@@ -37,7 +222,9 @@
           </p>
         </div>
         <div class="col-xl-2 text-right">
-          <button id="createExerciseButton" class="btn btn-primary">Thêm exercise</button>
+          <button id="createExerciseButton" class="btn btn-primary">
+            <i class="fas fa-plus mr-1"></i> Thêm exercise
+          </button>
         </div>
       </div>
     </div>
@@ -62,8 +249,8 @@
             <td th:text="${exercise.points}">0</td>
             <td th:text="${exercise.subjectName}">subject</td>
             <td>
-              <button type="button" class="btn btn-warning btn-sm edit-btn">Sửa</button>
-              <button type="button" class="btn btn-danger btn-sm delete-btn">Xóa</button>
+              <button type="button" class="btn btn-warning btn-sm edit-btn"><i class="fas fa-edit mr-1"></i>Sửa</button>
+              <button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash mr-1"></i>Xóa</button>
             </td>
           </tr>
 
@@ -74,8 +261,8 @@
             <td th:text="${exercise.points}">0</td>
             <td th:text="${exercise.programLanguage}">language</td>
             <td>
-              <button type="button" class="btn btn-warning btn-sm edit-btn">Sửa</button>
-              <button type="button" class="btn btn-danger btn-sm delete-btn">Xóa</button>
+              <button type="button" class="btn btn-warning btn-sm edit-btn"><i class="fas fa-edit mr-1"></i>Sửa</button>
+              <button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash mr-1"></i>Xóa</button>
             </td>
           </tr>
         </table>
@@ -86,117 +273,302 @@
   <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 </div>
 
+<!-- ══════════════════════════════════════════════════
+     MODAL: Thêm / Sửa Exercise
+══════════════════════════════════════════════════ -->
+<div id="exerciseModalBackdrop" class="ex-modal-backdrop">
+  <div class="ex-modal">
+    <div class="ex-modal-header">
+      <h5 id="modalTitle"><i class="fas fa-plus-circle mr-2"></i>Thêm Exercise</h5>
+      <button class="ex-modal-close" id="modalCloseBtn" aria-label="Đóng">&times;</button>
+    </div>
+    <div class="ex-modal-body">
+      <div class="ex-form-group">
+        <label for="exTitle">Tiêu đề <span style="color:#dc2626">*</span></label>
+        <input type="text" id="exTitle" placeholder="Nhập tiêu đề bài tập..." />
+      </div>
+      <div class="ex-form-group">
+        <label for="exDescription">Mô tả</label>
+        <textarea id="exDescription" placeholder="Nhập mô tả (tuỳ chọn)..."></textarea>
+      </div>
+      <div class="ex-form-row">
+        <div class="ex-form-group">
+          <label for="exDifficulty">Độ khó</label>
+          <select id="exDifficulty">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <div class="ex-form-group">
+          <label for="exPoints">Điểm</label>
+          <input type="number" id="exPoints" min="0" value="0" placeholder="0" />
+        </div>
+      </div>
+
+      <!-- Chỉ hiển thị khi essay -->
+      <div class="ex-form-group" id="fieldEssay" style="display:none">
+        <label for="exSubject">Subject Name</label>
+        <input type="text" id="exSubject" placeholder="Nhập subject name..." />
+      </div>
+
+      <!-- Chỉ hiển thị khi coding -->
+      <div class="ex-form-group" id="fieldCoding" style="display:none">
+        <label for="exLanguage">Programming Language</label>
+        <select id="exLanguage">
+          <option value="java">Java</option>
+          <option value="python">Python</option>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+          <option value="javascript">JavaScript</option>
+        </select>
+      </div>
+    </div>
+    <div class="ex-modal-footer">
+      <button class="ex-btn-cancel" id="modalCancelBtn">Huỷ</button>
+      <button class="ex-btn-submit" id="modalSubmitBtn">
+        <i class="fas fa-save mr-1"></i><span id="submitBtnLabel">Lưu</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL: Xác nhận xóa
+══════════════════════════════════════════════════ -->
+<div id="deleteModalBackdrop" class="ex-modal-backdrop">
+  <div class="ex-modal ex-confirm-modal">
+    <div class="ex-modal-header" style="background: linear-gradient(135deg,#991b1b,#dc2626)">
+      <h5><i class="fas fa-exclamation-triangle mr-2"></i>Xác nhận xóa</h5>
+      <button class="ex-modal-close" id="deleteCloseBtn">&times;</button>
+    </div>
+    <div class="ex-confirm-body">
+      <div class="icon-warn"><i class="fas fa-trash-alt"></i></div>
+      <p>Bạn có chắc chắn muốn xóa exercise<br/><strong id="deleteExerciseName"></strong> không?</p>
+      <p style="font-size:.82rem;color:#9ca3af;margin-top:6px">Hành động này không thể hoàn tác.</p>
+    </div>
+    <div class="ex-modal-footer">
+      <button class="ex-btn-cancel" id="deleteCancelBtn">Huỷ</button>
+      <button class="ex-btn-delete" id="deleteConfirmBtn">
+        <i class="fas fa-trash mr-1"></i>Xóa
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="ex-toast" id="exToast"></div>
+
 <script th:inline="javascript">
   const lessonSlug = /*[[${lessonSlug}]]*/ "";
   const lessonType = /*[[${lessonType}]]*/ "coding";
 
-  function promptCreateData() {
-    const title = prompt("Nhập title exercise:");
-    if (!title) return null;
-    const description = prompt("Nhập description:", "") || "";
-    const difficulty = prompt("Nhập difficulty (easy/medium/hard):", "medium") || "medium";
-    const points = parseInt(prompt("Nhập points:", "0") || "0", 10);
+  /* ── Helpers ── */
+  function showToast(message, type = "success") {
+    const toast = document.getElementById("exToast");
+    toast.textContent = message;
+    toast.className = `ex-toast ${type} show`;
+    setTimeout(() => { toast.className = "ex-toast"; }, 3000);
+  }
+
+  /* ── Modal state ── */
+  let currentMode = "create";      // "create" | "edit"
+  let currentExerciseID = null;
+
+  const backdrop   = document.getElementById("exerciseModalBackdrop");
+  const modalTitle = document.getElementById("modalTitle");
+  const submitBtn  = document.getElementById("modalSubmitBtn");
+  const submitLabel = document.getElementById("submitBtnLabel");
+
+  const fTitle       = document.getElementById("exTitle");
+  const fDesc        = document.getElementById("exDescription");
+  const fDifficulty  = document.getElementById("exDifficulty");
+  const fPoints      = document.getElementById("exPoints");
+  const fSubject     = document.getElementById("exSubject");
+  const fLanguage    = document.getElementById("exLanguage");
+
+  const fieldEssay  = document.getElementById("fieldEssay");
+  const fieldCoding = document.getElementById("fieldCoding");
+
+  function openCreateModal() {
+    currentMode = "create";
+    currentExerciseID = null;
+    modalTitle.innerHTML = '<i class="fas fa-plus-circle mr-2"></i>Thêm Exercise';
+    submitLabel.textContent = "Thêm";
+    clearForm();
+    showTypeFields();
+    openBackdrop(backdrop);
+  }
+
+  function openEditModal(row) {
+    currentMode = "edit";
+    currentExerciseID = row.dataset.id;
+    modalTitle.innerHTML = '<i class="fas fa-edit mr-2"></i>Sửa Exercise';
+    submitLabel.textContent = "Cập nhật";
+
+    fTitle.value = row.dataset.title || "";
+    fDesc.value  = row.dataset.description || "";
+    fDifficulty.value = row.dataset.difficulty || "medium";
+    fPoints.value = row.dataset.points || "0";
 
     if (lessonType === "essay") {
-      const subjectName = prompt("Nhập subject name:", "") || "";
-      return { title, description, difficulty, points, subjectName };
+      fSubject.value = row.dataset.extra || "";
+    } else {
+      const lang = row.dataset.extra || "java";
+      const opt = fLanguage.querySelector(`option[value="${lang}"]`);
+      if (opt) fLanguage.value = lang;
     }
 
-    const programmingLanguage = prompt("Nhập programming language:", "java") || "java";
-    return { title, description, difficulty, points, programmingLanguage };
+    showTypeFields();
+    openBackdrop(backdrop);
   }
 
-  function promptUpdateData(row) {
-    const title = prompt("Sửa title:", row.dataset.title || "");
-    if (!title) return null;
-    const description = prompt("Sửa description:", row.dataset.description || "") || "";
-    const difficulty = prompt("Sửa difficulty:", row.dataset.difficulty || "medium") || "medium";
-    const points = parseInt(prompt("Sửa points:", row.dataset.points || "0") || "0", 10);
+  function showTypeFields() {
+    if (lessonType === "essay") {
+      fieldEssay.style.display  = "block";
+      fieldCoding.style.display = "none";
+    } else {
+      fieldEssay.style.display  = "none";
+      fieldCoding.style.display = "block";
+    }
+  }
+
+  function clearForm() {
+    fTitle.value = "";
+    fDesc.value  = "";
+    fDifficulty.value = "medium";
+    fPoints.value = "0";
+    fSubject.value = "";
+    fLanguage.value = "java";
+  }
+
+  function openBackdrop(el) { el.classList.add("active"); }
+  function closeBackdrop(el) { el.classList.remove("active"); }
+
+  /* ── Close modal on backdrop click ── */
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) closeBackdrop(backdrop);
+  });
+  document.getElementById("modalCloseBtn").addEventListener("click",  () => closeBackdrop(backdrop));
+  document.getElementById("modalCancelBtn").addEventListener("click", () => closeBackdrop(backdrop));
+
+  /* ── Submit ── */
+  submitBtn.addEventListener("click", async () => {
+    const title = fTitle.value.trim();
+    if (!title) {
+      fTitle.focus();
+      fTitle.style.borderColor = "#dc2626";
+      setTimeout(() => fTitle.style.borderColor = "", 1500);
+      return;
+    }
+
+    const payload = {
+      title,
+      description: fDesc.value.trim(),
+      difficulty:  fDifficulty.value,
+      points:      parseInt(fPoints.value, 10) || 0,
+    };
 
     if (lessonType === "essay") {
-      const subjectName = prompt("Sửa subject name:", row.dataset.extra || "") || "";
-      return { title, description, difficulty, points, subjectName };
+      payload.subjectName = fSubject.value.trim();
+    } else {
+      payload.programmingLanguage = fLanguage.value;
     }
 
-    const programmingLanguage = prompt("Sửa programming language:", row.dataset.extra || "java") || "java";
-    return { title, description, difficulty, points, programmingLanguage };
-  }
+    submitBtn.disabled = true;
+    const baseUrl = lessonType === "essay"
+      ? "/api/essay-exercise/management/"
+      : "/api/coding-exercise/management/";
 
-  async function createExercise() {
-    const payload = promptCreateData();
-    if (!payload) return;
-
-    const baseUrl = lessonType === "essay" ? "/api/essay-exercise/management/" : "/api/coding-exercise/management/";
-    const res = await fetch(baseUrl + lessonSlug, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      alert("Tạo exercise thất bại");
-      return;
+    try {
+      let res;
+      if (currentMode === "create") {
+        res = await fetch(baseUrl + lessonSlug, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error("Tạo exercise thất bại");
+        showToast("✅ Thêm exercise thành công!");
+      } else {
+        res = await fetch(baseUrl + currentExerciseID, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error("Cập nhật exercise thất bại");
+        showToast("✅ Cập nhật exercise thành công!");
+      }
+      closeBackdrop(backdrop);
+      setTimeout(() => window.location.reload(), 900);
+    } catch (err) {
+      showToast("❌ " + err.message, "error");
+    } finally {
+      submitBtn.disabled = false;
     }
-    window.location.reload();
-  }
+  });
 
-  async function updateExercise(exerciseID, payload) {
-    const baseUrl = lessonType === "essay" ? "/api/essay-exercise/management/" : "/api/coding-exercise/management/";
-    const res = await fetch(baseUrl + exerciseID, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+  /* ── Delete modal ── */
+  const deleteBackdrop  = document.getElementById("deleteModalBackdrop");
+  const deleteNameLabel = document.getElementById("deleteExerciseName");
+  const deleteConfirmBtn = document.getElementById("deleteConfirmBtn");
+  let pendingDeleteID = null;
 
-    if (!res.ok) {
-      alert("Cập nhật exercise thất bại");
-      return;
+  deleteBackdrop.addEventListener("click", (e) => {
+    if (e.target === deleteBackdrop) closeBackdrop(deleteBackdrop);
+  });
+  document.getElementById("deleteCloseBtn").addEventListener("click",  () => closeBackdrop(deleteBackdrop));
+  document.getElementById("deleteCancelBtn").addEventListener("click", () => closeBackdrop(deleteBackdrop));
+
+  deleteConfirmBtn.addEventListener("click", async () => {
+    if (!pendingDeleteID) return;
+    deleteConfirmBtn.disabled = true;
+    const baseUrl = lessonType === "essay"
+      ? "/api/essay-exercise/management/"
+      : "/api/coding-exercise/management/";
+
+    try {
+      const res = await fetch(baseUrl + pendingDeleteID, { method: "DELETE" });
+      if (!res.ok) throw new Error("Xóa exercise thất bại");
+      showToast("✅ Xóa exercise thành công!");
+      closeBackdrop(deleteBackdrop);
+      setTimeout(() => window.location.reload(), 900);
+    } catch (err) {
+      showToast("❌ " + err.message, "error");
+    } finally {
+      deleteConfirmBtn.disabled = false;
     }
-    window.location.reload();
-  }
+  });
 
-  async function deleteExercise(exerciseID) {
-    const ok = confirm("Bạn chắc chắn muốn xóa exercise này?");
-    if (!ok) return;
-
-    const baseUrl = lessonType === "essay" ? "/api/essay-exercise/management/" : "/api/coding-exercise/management/";
-    const res = await fetch(baseUrl + exerciseID, { method: "DELETE" });
-
-    if (!res.ok) {
-      alert("Xóa exercise thất bại");
-      return;
-    }
-    window.location.reload();
-  }
-
+  /* ── Wire up buttons ── */
   document.addEventListener("DOMContentLoaded", () => {
-    const createBtn = document.getElementById("createExerciseButton");
-    if (createBtn) {
-      createBtn.addEventListener("click", createExercise);
-    }
+    document.getElementById("createExerciseButton").addEventListener("click", openCreateModal);
 
     document.querySelectorAll(".edit-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         const row = btn.closest("tr");
-        const exerciseID = row ? row.dataset.id : null;
-        if (!exerciseID || !row) return;
-        const payload = promptUpdateData(row);
-        if (!payload) return;
-        updateExercise(exerciseID, payload);
+        if (row) openEditModal(row);
       });
     });
 
     document.querySelectorAll(".delete-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         const row = btn.closest("tr");
-        const exerciseID = row ? row.dataset.id : null;
-        if (!exerciseID) return;
-        deleteExercise(exerciseID);
+        if (!row) return;
+        pendingDeleteID = row.dataset.id;
+        deleteNameLabel.textContent = '"' + (row.dataset.title || "này") + '"';
+        openBackdrop(deleteBackdrop);
       });
     });
   });
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
 <script th:src="@{/ClientStatic/js/script.js}"></script>
 </body>
 </html>
