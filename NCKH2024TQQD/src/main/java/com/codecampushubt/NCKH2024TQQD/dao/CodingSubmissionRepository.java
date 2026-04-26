@@ -1,6 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
 import com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission.CodingSubmissionShow;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ExerciseSubmissionDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.LessonProgressDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.CodingSubmission;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,7 +39,7 @@ public interface CodingSubmissionRepository extends JpaRepository<CodingSubmissi
     @Query("""
             SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.LessonProgressDTO(
                 l.title, l.slug, l.type,
-                0L,
+                (SELECT COUNT(e2) FROM CodingExercise e2 WHERE e2.lesson = l),
                 COUNT(DISTINCT cs.exercise.exerciseID),
                 CAST(COALESCE(SUM(cs.score), 0) AS double)
             )
@@ -50,5 +51,38 @@ public interface CodingSubmissionRepository extends JpaRepository<CodingSubmissi
             GROUP BY l.lessonID, l.title, l.slug, l.type
             """)
     List<LessonProgressDTO> getLessonProgressByUserName(@Param("userName") String userName);
+
+    /**
+     * Lấy danh sách exercise đã làm (accepted) của user trong một lesson cụ thể.
+     * Chỉ lấy submission mới nhất (điểm cao nhất) cho mỗi exercise.
+     */
+    @Query("""
+            SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ExerciseSubmissionDTO(
+                cs.exercise.title,
+                cs.exercise.slug,
+                'coding',
+                CAST(cs.score AS double),
+                cs.status,
+                cs.submittedAt
+            )
+            FROM CodingSubmission cs
+            JOIN cs.exercise e
+            JOIN e.lesson l
+            WHERE cs.user.userName = :userName
+              AND l.slug = :lessonSlug
+              AND cs.status = 'accepted'
+              AND cs.submittedAt = (
+                  SELECT MAX(cs2.submittedAt)
+                  FROM CodingSubmission cs2
+                  WHERE cs2.user.userName = :userName
+                    AND cs2.exercise.exerciseID = cs.exercise.exerciseID
+                    AND cs2.status = 'accepted'
+              )
+            ORDER BY cs.submittedAt DESC
+            """)
+    List<ExerciseSubmissionDTO> getAcceptedExercisesByLessonSlugAndUser(
+            @Param("userName") String userName,
+            @Param("lessonSlug") String lessonSlug);
 }
+
 
