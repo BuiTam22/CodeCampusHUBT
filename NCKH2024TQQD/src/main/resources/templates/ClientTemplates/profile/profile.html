@@ -89,27 +89,94 @@
 
       <!-- Lesson cards -->
       <div class="lesson-grid" th:if="${!lessonProgress.isEmpty()}">
-        <a th:each="lp : ${lessonProgress}"
-           th:href="${lp.lessonType == 'essay'} ? @{/contest/type-essay/{slug}(slug=${lp.lessonSlug})} : @{/practice/lesson/{slug}(slug=${lp.lessonSlug})}"
-           class="lesson-card">
-          <div class="lesson-card-header">
-            <div class="lesson-card-title" th:text="${lp.lessonTitle}">Tên lesson</div>
-            <span class="lesson-type-badge"
-                  th:classappend="${lp.lessonType == 'essay' ? 'essay' : 'coding'}"
-                  th:text="${lp.lessonType == 'essay' ? 'Essay' : 'Coding'}">Coding</span>
+        <div th:each="lp, lpStat : ${lessonProgress}"
+             class="lesson-card-wrapper">
+
+          <!-- ── Card header (click để toggle) ── -->
+          <div class="lesson-card"
+               th:id="'lesson-card-' + ${lpStat.index}"
+               th:attr="data-target='exercises-' + ${lpStat.index}"
+               onclick="toggleExercises(this)"
+               role="button"
+               tabindex="0">
+            <div class="lesson-card-header">
+              <div class="lesson-card-title" th:text="${lp.lessonTitle}">Tên lesson</div>
+              <div class="lesson-card-right">
+                <span class="lesson-type-badge"
+                      th:classappend="${lp.lessonType == 'essay' ? 'essay' : 'coding'}"
+                      th:text="${lp.lessonType == 'essay' ? 'Essay' : 'Coding'}">Coding</span>
+                <i class="fas fa-chevron-down lesson-toggle-icon"></i>
+              </div>
+            </div>
+            <div class="lesson-card-stats">
+              <span>
+                <i class="fas fa-check-circle" style="color:#16a34a"></i>
+                <span th:text="${lp.completedCount}">0</span> bài đã làm
+              </span>
+              <span class="score">
+                <i class="fas fa-star" style="color:#f59e0b"></i>
+                <span th:text="${#numbers.formatDecimal(lp.totalScore, 0, 1)}">0</span> điểm
+              </span>
+            </div>
+            <!-- Progress bar -->
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-fill"
+                   th:style="'width:' + ${lp.progressPercent} + '%'"></div>
+            </div>
           </div>
-          <div class="lesson-card-stats">
-            <span>
-              <i class="fas fa-check-circle" style="color:#16a34a"></i>
-              <span th:text="${lp.completedCount}">0</span> bài đã làm
-            </span>
-            <span class="score">
-              <i class="fas fa-star" style="color:#f59e0b"></i>
-              <span th:text="${#numbers.formatDecimal(lp.totalScore, 0, 1)}">0</span> điểm
-            </span>
+
+          <!-- ── Exercise expand panel ── -->
+          <div class="exercise-panel"
+               th:id="'exercises-' + ${lpStat.index}">
+
+            <!-- Không có exercise nào (edge case) -->
+            <div th:if="${lp.exercises.isEmpty()}" class="exercise-empty">
+              <i class="fas fa-inbox"></i> Chưa có bài tập nào.
+            </div>
+
+            <!-- Danh sách exercise -->
+            <div th:each="ex, exStat : ${lp.exercises}" class="exercise-item">
+              <div class="exercise-item-left">
+                <span class="exercise-index" th:text="${exStat.index + 1}">1</span>
+                <div class="exercise-info">
+                  <a th:href="${lp.lessonType == 'essay'}
+                              ? @{/contest/type-essay/{slug}(slug=${ex.exerciseSlug})}
+                              : @{/practice/lesson/problem/{slug}(slug=${ex.exerciseSlug})}"
+                     class="exercise-title"
+                     th:text="${ex.exerciseTitle}">Tên bài</a>
+                  <span class="exercise-date"
+                        th:if="${ex.submittedAt != null}"
+                        th:text="${#temporals.format(ex.submittedAt, 'dd/MM/yyyy HH:mm')}">
+                    01/01/2024
+                  </span>
+                </div>
+              </div>
+              <div class="exercise-item-right">
+                <!-- Badge trạng thái -->
+                <span class="exercise-status-badge"
+                      th:classappend="${ex.status == 'accepted' ? 'accepted' : (ex.status == 'submitted' ? 'submitted' : 'failed')}"
+                      th:text="${ex.status == 'accepted' ? 'Accepted' : (ex.status == 'submitted' ? 'Đã nộp' : ex.status)}">
+                  Accepted
+                </span>
+                <!-- Điểm -->
+                <span class="exercise-score">
+                  <i class="fas fa-star" style="color:#f59e0b; font-size:.75rem;"></i>
+                  <span th:text="${#numbers.formatDecimal(ex.score, 0, 1)}">0</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Link xem toàn bộ lesson -->
+            <div class="exercise-panel-footer">
+              <a th:href="${lp.lessonType == 'essay'} ? @{/contest/type-essay/{slug}(slug=${lp.lessonSlug})} : @{/practice/lesson/{slug}(slug=${lp.lessonSlug})}"
+                 class="btn-view-lesson">
+                <i class="fas fa-external-link-alt"></i> Xem lesson
+              </a>
+            </div>
           </div>
-        </a>
-      </div>
+
+        </div><!-- end .lesson-card-wrapper -->
+      </div><!-- end .lesson-grid -->
     </div>
   </div>
 
@@ -123,5 +190,49 @@
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
         crossorigin="anonymous"></script>
 <script th:src="@{/ClientStatic/js/script.js}"></script>
+
+<script>
+  /**
+   * Toggle expand/collapse danh sách exercise dưới lesson card.
+   * @param {HTMLElement} card - phần tử .lesson-card được click
+   */
+  function toggleExercises(card) {
+    const targetId = card.getAttribute('data-target');
+    const panel = document.getElementById(targetId);
+    const icon  = card.querySelector('.lesson-toggle-icon');
+
+    if (!panel) return;
+
+    const isOpen = panel.classList.contains('open');
+
+    // Đóng tất cả panels khác
+    document.querySelectorAll('.exercise-panel.open').forEach(p => {
+      p.classList.remove('open');
+      const c = p.previousElementSibling;
+      if (c) {
+        c.classList.remove('active');
+        const i = c.querySelector('.lesson-toggle-icon');
+        if (i) i.classList.remove('rotated');
+      }
+    });
+
+    // Toggle panel hiện tại
+    if (!isOpen) {
+      panel.classList.add('open');
+      card.classList.add('active');
+      if (icon) icon.classList.add('rotated');
+    }
+  }
+
+  // Hỗ trợ keyboard (Enter/Space)
+  document.querySelectorAll('.lesson-card[role="button"]').forEach(card => {
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleExercises(card);
+      }
+    });
+  });
+</script>
 </body>
 </html>
