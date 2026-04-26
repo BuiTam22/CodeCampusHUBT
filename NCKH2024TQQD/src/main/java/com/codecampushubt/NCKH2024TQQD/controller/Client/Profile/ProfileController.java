@@ -3,6 +3,7 @@ package com.codecampushubt.NCKH2024TQQD.controller.Client.Profile;
 import com.codecampushubt.NCKH2024TQQD.dao.CodingSubmissionRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.EssaySubmissionRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ExerciseSubmissionDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.LessonProgressDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.UserProfileDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.User;
@@ -64,6 +65,19 @@ public class ProfileController {
         }
 
         List<LessonProgressDTO> allProgress = new ArrayList<>(progressMap.values());
+
+        // Attach danh sách exercises đã làm vào từng lesson (để hiển thị expand panel)
+        for (LessonProgressDTO lp : allProgress) {
+            List<ExerciseSubmissionDTO> exercises;
+            if ("essay".equalsIgnoreCase(lp.getLessonType())) {
+                exercises = essaySubmissionRepository
+                        .getEssayExercisesByLessonSlugAndUser(username, lp.getLessonSlug());
+            } else {
+                exercises = codingSubmissionRepository
+                        .getAcceptedExercisesByLessonSlugAndUser(username, lp.getLessonSlug());
+            }
+            lp.setExercises(exercises);
+        }
 
         // Tính tổng thống kê
         double totalScore = allProgress.stream()

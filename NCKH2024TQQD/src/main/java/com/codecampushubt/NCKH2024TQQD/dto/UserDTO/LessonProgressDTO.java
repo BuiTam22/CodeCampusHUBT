@@ -1,5 +1,8 @@
 package com.codecampushubt.NCKH2024TQQD.dto.UserDTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LessonProgressDTO {
     private String lessonTitle;
     private String lessonSlug;
@@ -7,6 +10,9 @@ public class LessonProgressDTO {
     private Long exerciseCount;
     private Long completedCount;
     private Double totalScore;
+
+    /** Danh sách chi tiết các exercise đã làm – được set sau khi tạo object */
+    private List<ExerciseSubmissionDTO> exercises = new ArrayList<>();
 
     public LessonProgressDTO(String lessonTitle, String lessonSlug, String lessonType,
                              Long exerciseCount, Long completedCount, Double totalScore) {
@@ -36,6 +42,10 @@ public class LessonProgressDTO {
     public Long getExerciseCount() { return exerciseCount; }
     public Long getCompletedCount() { return completedCount; }
     public Double getTotalScore() { return totalScore; }
+    public List<ExerciseSubmissionDTO> getExercises() { return exercises; }
+    public void setExercises(List<ExerciseSubmissionDTO> exercises) {
+        this.exercises = exercises != null ? exercises : new ArrayList<>();
+    }
 
     public int getProgressPercent() {
         if (exerciseCount == null || exerciseCount == 0) return 0;

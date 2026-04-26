@@ -1,3 +1,12 @@
+html, body {
+  background-color: #f3f3f3;
+}
+
+.page-wrapper {
+  background-color: #f3f3f3;
+  min-height: calc(100vh - 60px);
+}
+
 .section-one {
 /* padding: 30px 0;*/
 background-color: #F3F3F3;
@@ -171,7 +180,7 @@ width: 100%;
     .code-section pre {
         font-size: 12px;
     }
-}it st
+}
 /*end css cho result detail*/
 
 

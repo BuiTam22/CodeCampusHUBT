@@ -273,3 +273,211 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ══════════════════════════════════════════════════
+   LESSON CARD – EXPAND PANEL
+══════════════════════════════════════════════════ */
+
+/* Wrapper bọc card + panel */
+.lesson-card-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card header – bỏ <a>, dùng div clickable */
+.lesson-card {
+  cursor: pointer;
+  user-select: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0;
+}
+.lesson-card:focus {
+  outline: 2px solid #20d761;
+  outline-offset: 2px;
+}
+.lesson-card.active {
+  border-color: #20d761;
+  border-bottom-color: transparent;
+  box-shadow: 0 4px 16px rgba(32,215,97,.12);
+}
+
+/* Header row trong card */
+.lesson-card-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Toggle icon – xoay khi mở */
+.lesson-toggle-icon {
+  font-size: .8rem;
+  color: #94a3b8;
+  transition: transform .25s ease;
+}
+.lesson-toggle-icon.rotated {
+  transform: rotate(180deg);
+  color: #20d761;
+}
+
+/* ── Exercise Expand Panel ── */
+.exercise-panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height .35s ease, opacity .25s ease;
+  pointer-events: none;
+}
+.exercise-panel.open {
+  max-height: 1000px;
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+
+/* Trống */
+.exercise-empty {
+  padding: 20px 24px;
+  color: #9ca3af;
+  font-size: .88rem;
+  text-align: center;
+}
+.exercise-empty i {
+  margin-right: 6px;
+}
+
+/* ── Exercise Item ── */
+.exercise-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 12px;
+  transition: background .15s;
+}
+.exercise-item:last-of-type {
+  border-bottom: none;
+}
+.exercise-item:hover {
+  background: #f8fafc;
+}
+
+.exercise-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Số thứ tự */
+.exercise-index {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #6b7280;
+  font-size: .75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.exercise-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.exercise-title {
+  font-size: .9rem;
+  font-weight: 600;
+  color: #111827;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .15s;
+}
+.exercise-title:hover {
+  color: #20d761;
+  text-decoration: none;
+}
+.exercise-date {
+  font-size: .75rem;
+  color: #9ca3af;
+  margin-top: 1px;
+}
+
+.exercise-item-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Badge trạng thái */
+.exercise-status-badge {
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+.exercise-status-badge.accepted {
+  background: #ecfdf5;
+  color: #16a34a;
+}
+.exercise-status-badge.submitted {
+  background: #eff6ff;
+  color: #2563eb;
+}
+.exercise-status-badge.failed {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* Điểm */
+.exercise-score {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 42px;
+  justify-content: flex-end;
+}
+
+/* Footer panel – nút link đến lesson */
+.exercise-panel-footer {
+  padding: 10px 24px 14px;
+  text-align: right;
+  border-top: 1px solid #f1f5f9;
+}
+.btn-view-lesson {
+  font-size: .8rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color .15s;
+}
+.btn-view-lesson:hover {
+  color: #20d761;
+  text-decoration: none;
+}
+.btn-view-lesson i {
+  font-size: .72rem;
+}
+

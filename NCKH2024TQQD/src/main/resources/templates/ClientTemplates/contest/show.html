@@ -15,6 +15,106 @@
     <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}">
+    <style>
+        /* ── Attempt badge ── */
+        .attempt-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: .72rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: #fef9c3;
+            color: #92400e;
+            margin-bottom: 6px;
+        }
+        .attempt-badge i { font-size: .7rem; }
+
+        /* ── Modal overlay ── */
+        .attempt-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .attempt-modal-overlay.show {
+            display: flex;
+        }
+        .attempt-modal {
+            background: #fff;
+            border-radius: 16px;
+            padding: 36px 32px 28px;
+            max-width: 440px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,.25);
+            text-align: center;
+            animation: modalIn .25s ease;
+        }
+        @keyframes modalIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to   { transform: translateY(0);     opacity: 1; }
+        }
+        .attempt-modal-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fef3c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 1.6rem;
+            color: #d97706;
+        }
+        .attempt-modal h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+        .attempt-modal p {
+            font-size: .9rem;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .attempt-modal p strong { color: #111827; }
+        .attempt-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .btn-modal-cancel {
+            flex: 1;
+            padding: 10px 0;
+            border-radius: 8px;
+            border: 1.5px solid #e5e7eb;
+            background: #fff;
+            color: #374151;
+            font-weight: 600;
+            font-size: .9rem;
+            cursor: pointer;
+            transition: background .15s;
+        }
+        .btn-modal-cancel:hover { background: #f9fafb; }
+        .btn-modal-confirm {
+            flex: 1;
+            padding: 10px 0;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            font-weight: 700;
+            font-size: .9rem;
+            cursor: pointer;
+            transition: opacity .15s;
+        }
+        .btn-modal-confirm:hover { opacity: .9; }
+    </style>
 </head>
 
 <body>
@@ -43,6 +143,13 @@
                     <div class="inner-box" th:each="exercise : ${exercises}">
                         <div class="inner-content">
                             <h3 class="inner-title" th:text="${exercise.title}">Tiêu đề bài tập</h3>
+                            <!-- Badge số lần đã làm -->
+                            <div th:if="${attemptMap != null and attemptMap.containsKey(exercise.exerciseID)}"
+                                 class="attempt-badge">
+                                <i class="fas fa-history"></i>
+                                Đã làm
+                                <span th:text="${attemptMap.get(exercise.exerciseID)}">1</span> lần
+                            </div>
                             <p>
                                 <span th:text="${exercise.difficulty}">Độ khó</span>.
                                 <span th:text="${exercise.programLanguage}">Ngôn ngữ</span>.
@@ -52,7 +159,20 @@
                         </div>
                         <div class="inner-right">
                             <div class="inner-icon"><i class="fa-solid fa-star"></i></div>
-                            <a th:href="@{'/contest/lesson/problem/' + ${exercise.slug}}">
+
+                            <!-- Nếu đã làm → dùng button trigger modal; chưa làm → link thẳng -->
+                            <button th:if="${attemptMap != null and attemptMap.containsKey(exercise.exerciseID)}"
+                                    class="button button-one"
+                                    th:attr="
+                                        data-href=@{'/contest/lesson/problem/' + ${exercise.slug}},
+                                        data-title=${exercise.title},
+                                        data-attempt=${attemptMap.get(exercise.exerciseID)}"
+                                    onclick="openAttemptModal(this)"
+                                    style="border:none;cursor:pointer;">
+                                Làm lại
+                            </button>
+                            <a th:if="${attemptMap == null or !attemptMap.containsKey(exercise.exerciseID)}"
+                               th:href="@{'/contest/lesson/problem/' + ${exercise.slug}}">
                                 <div class="button button-one">Làm bài</div>
                             </a>
                         </div>
@@ -152,5 +272,59 @@
     <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
     <script th:src="@{/ClientStatic/js/script.js}"></script>
 </div>
+
+<!-- ══ Modal cảnh báo đã làm bài ══ -->
+<div class="attempt-modal-overlay" id="attemptModalOverlay" onclick="closeOnBackdrop(event)">
+    <div class="attempt-modal" role="dialog" aria-modal="true">
+        <div class="attempt-modal-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 id="modalTitle">Bạn đã làm bài này rồi!</h3>
+        <p id="modalBody">
+            Bạn đã hoàn thành bài <strong id="modalExName"></strong> được
+            <strong id="modalAttemptCount"></strong> lần.<br>
+            Nếu bạn làm lại, kết quả mới sẽ được ghi nhận.<br>
+            Bạn có chắc chắn muốn tiếp tục không?
+        </p>
+        <div class="attempt-modal-actions">
+            <button class="btn-modal-cancel" onclick="closeAttemptModal()">Huỷ bỏ</button>
+            <button class="btn-modal-confirm" id="modalConfirmBtn" onclick="confirmProceed()">Làm lại</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let _pendingHref = '';
+
+    function openAttemptModal(btn) {
+        _pendingHref = btn.getAttribute('data-href');
+        const title   = btn.getAttribute('data-title');
+        const attempt = btn.getAttribute('data-attempt');
+
+        document.getElementById('modalExName').textContent       = title;
+        document.getElementById('modalAttemptCount').textContent = attempt;
+        document.getElementById('attemptModalOverlay').classList.add('show');
+    }
+
+    function closeAttemptModal() {
+        document.getElementById('attemptModalOverlay').classList.remove('show');
+        _pendingHref = '';
+    }
+
+    function closeOnBackdrop(e) {
+        if (e.target === document.getElementById('attemptModalOverlay')) {
+            closeAttemptModal();
+        }
+    }
+
+    function confirmProceed() {
+        if (_pendingHref) window.location.href = _pendingHref;
+    }
+
+    // Đóng bằng ESC
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeAttemptModal();
+    });
+</script>
 </body>
 </html>
