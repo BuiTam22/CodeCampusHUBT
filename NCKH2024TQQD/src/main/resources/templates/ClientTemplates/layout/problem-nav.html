@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- problem-nav.html -->
+
+<!-- Fragment dùng cho coding exercise (4 tabs) -->
 <nav class="problem-nav" th:fragment="problemNav(slug, basePath)">
     <div class="nav-tabs">
         <a th:href="@{${basePath + '/problem/' + slug}}" class="nav-tab problem-tab active">Bài Tập</a>
@@ -9,5 +11,14 @@
         <a th:href="@{${basePath + '/tutorial/' + slug}}" class="nav-tab tutorial-tab">Hướng dẫn</a>
     </div>
 </nav>
+
+<!-- Fragment riêng cho essay exercise (chỉ Bài Tập + Đã nộp) -->
+<nav class="problem-nav" th:fragment="problemNavEssay(slug, basePath)">
+    <div class="nav-tabs">
+        <a th:href="@{${basePath + '/problem/' + slug}}" class="nav-tab problem-tab active">Bài Tập</a>
+        <a th:href="@{${basePath + '/submissions/' + slug}}" class="nav-tab submissions-tab">Đã nộp</a>
+    </div>
+</nav>
+
 <script th:src="@{/ClientStatic/js/script.js}"></script>
 </html>
