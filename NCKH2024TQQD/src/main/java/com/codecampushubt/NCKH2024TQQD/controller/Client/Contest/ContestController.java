@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
+import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseListShowDTO;
 import com.codecampushubt.NCKH2024TQQD.service.EssayExerciseServices.EssayExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDetailDTO;
+import com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission.CodingSubmissionShow;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.ContestShowDTO;
 import com.codecampushubt.NCKH2024TQQD.service.CodingExerciseServices.CodingExerciseService;
+import com.codecampushubt.NCKH2024TQQD.service.CodingSubmissionServices.CodingSubmissionService;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,12 +30,15 @@ public class ContestController {
     private final LessonService lessonService;
     private final CodingExerciseService codingExerciseService;
     private final EssayExerciseService essayExerciseService;
+    private final CodingSubmissionService codingSubmissionService;
 
     @Autowired
-    public ContestController(LessonService lessonService, CodingExerciseService codingExerciseService, EssayExerciseService essayExerciseService) {
+    public ContestController(LessonService lessonService, CodingExerciseService codingExerciseService,
+                             EssayExerciseService essayExerciseService, CodingSubmissionService codingSubmissionService) {
         this.lessonService = lessonService;
         this.codingExerciseService = codingExerciseService;
         this.essayExerciseService = essayExerciseService;
+        this.codingSubmissionService = codingSubmissionService;
     }
 
     @GetMapping("")
@@ -67,7 +73,36 @@ public class ContestController {
         model.addAttribute("exercise", exercise);
         model.addAttribute("slug", theSlug);
         model.addAttribute("activePage", "/contest");
+        model.addAttribute("basePath", "/contest/lesson");
         return "ClientTemplates/coding-exercise/problem";
+    }
+
+    @GetMapping("/lesson/submissions/{slug}")
+    public String showContestSubmissions(@PathVariable("slug") String theSlug, Model model){
+        List<CodingSubmissionShow> submissions = codingSubmissionService.getCodingSubmissionShowByUserName(UserContext.getUsername(), theSlug);
+        model.addAttribute("submissions", submissions);
+        model.addAttribute("slug", theSlug);
+        model.addAttribute("activePage", "/contest");
+        model.addAttribute("basePath", "/contest/lesson");
+        return "ClientTemplates/coding-exercise/submission";
+    }
+
+    @GetMapping("/lesson/leaderboard/{slug}")
+    public String showContestLeaderBoard(@PathVariable("slug") String theSlug, Model model){
+        List<CodingSubmissionShow> submissions = codingSubmissionService.getCodingSubmissionShowBySlugExercise(theSlug);
+        model.addAttribute("submissions", submissions);
+        model.addAttribute("slug", theSlug);
+        model.addAttribute("activePage", "/contest");
+        model.addAttribute("basePath", "/contest/lesson");
+        return "ClientTemplates/coding-exercise/leaderboard";
+    }
+
+    @GetMapping("/lesson/tutorial/{slug}")
+    public String showContestTutorial(@PathVariable("slug") String theSlug, Model model){
+        model.addAttribute("slug", theSlug);
+        model.addAttribute("activePage", "/contest");
+        model.addAttribute("basePath", "/contest/lesson");
+        return "ClientTemplates/coding-exercise/tutorial";
     }
 
     @GetMapping("/type-essay/{lesson-slug}")

@@ -26,7 +26,7 @@
 <!-- Header -->
 <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
 <!-- Problem Navigation -->
-<div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav(slug=${slug})}"></div>
+<div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav(slug=${slug}, basePath=${basePath != null ? basePath : '/practice/lesson'})}"></div>
 <div class="page-wrapper">
     <div class="inner-head">
         <div class="container">

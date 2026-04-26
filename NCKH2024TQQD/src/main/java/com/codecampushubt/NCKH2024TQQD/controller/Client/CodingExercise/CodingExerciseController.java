@@ -48,6 +48,7 @@ public class CodingExerciseController {
         model.addAttribute("exercise", exercise);
         model.addAttribute("slug", theSlug);
         model.addAttribute("activePage", request.getRequestURI());
+        model.addAttribute("basePath", "/practice/lesson");
         return "ClientTemplates/coding-exercise/problem";
     }
 
@@ -57,6 +58,7 @@ public class CodingExerciseController {
         model.addAttribute("submissions", submissions);
         model.addAttribute("slug", theSlug);
         model.addAttribute("activePage", request.getRequestURI());
+        model.addAttribute("basePath", "/practice/lesson");
         return "ClientTemplates/coding-exercise/submission";
     }
 
@@ -67,12 +69,15 @@ public class CodingExerciseController {
         model.addAttribute("submissions", submissions);
         model.addAttribute("slug", theSlug);
         model.addAttribute("activePage", request.getRequestURI());
+        model.addAttribute("basePath", "/practice/lesson");
         return "ClientTemplates/coding-exercise/leaderboard";
     }
 
     @GetMapping("/tutorial/{slug}")
     public String showTutorial(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
+        model.addAttribute("slug", theSlug);
         model.addAttribute("activePage", request.getRequestURI());
+        model.addAttribute("basePath", "/practice/lesson");
         return "ClientTemplates/coding-exercise/tutorial";
     }
 
