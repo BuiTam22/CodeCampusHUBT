@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title th:text="'Hồ sơ - ' + ${profile.fullName}">Hồ sơ người dùng</title>
+  <meta name="description" th:content="'Trang hồ sơ của ' + ${profile.fullName} + ' trên CodeHUBT'" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+        crossorigin="anonymous" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/profile.css}" />
+</head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
+
+  <!-- ══════ Hero Section ══════ -->
+  <div class="profile-hero">
+    <div class="container">
+      <div class="profile-card">
+        <img class="profile-avatar"
+             th:src="${profile.image != null && !profile.image.isEmpty() ? profile.image : 'https://cdn-main.28tech.com.vn/media/core/icons/user.png'}"
+             th:alt="${profile.fullName}" />
+        <div class="profile-info">
+          <h1 class="profile-name" th:text="${profile.fullName}">Nguyễn Văn A</h1>
+          <p class="profile-username">
+            <i class="fas fa-at"></i> <span th:text="${profile.userName}">username</span>
+          </p>
+          <p class="profile-bio" th:if="${profile.bio != null && !profile.bio.isEmpty()}" th:text="${profile.bio}">
+            Bio của người dùng...
+          </p>
+          <div class="profile-meta">
+            <div class="profile-meta-item" th:if="${profile.school != null && !profile.school.isEmpty()}">
+              <i class="fas fa-graduation-cap"></i>
+              <span th:text="${profile.school}">Trường học</span>
+            </div>
+            <div class="profile-meta-item" th:if="${profile.email != null}">
+              <i class="fas fa-envelope"></i>
+              <span th:text="${profile.email}">email@example.com</span>
+            </div>
+            <div class="profile-meta-item" th:if="${profile.createdAt != null}">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Tham gia <span th:text="${#temporals.format(profile.createdAt, 'dd/MM/yyyy')}">01/01/2024</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ Stats Bar ══════ -->
+  <div class="profile-stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value" th:text="${lessonProgress.size()}">0</div>
+          <div class="stat-label">Lessons đã làm</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value green"
+               th:text="${#numbers.formatDecimal(totalScore, 0, 1)}">0</div>
+          <div class="stat-label">Tổng điểm</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value blue"
+               th:text="${totalCompleted}">0</div>
+          <div class="stat-label">Bài đã hoàn thành</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ Lesson Progress ══════ -->
+  <div class="profile-progress">
+    <div class="container">
+      <div class="progress-title">
+        <i class="fas fa-chart-line"></i> Tiến trình học tập
+      </div>
+
+      <!-- Empty state -->
+      <div th:if="${lessonProgress.isEmpty()}" class="empty-state">
+        <i class="fas fa-folder-open"></i>
+        <p>Chưa có bài tập nào được hoàn thành.</p>
+      </div>
+
+      <!-- Lesson cards -->
+      <div class="lesson-grid" th:if="${!lessonProgress.isEmpty()}">
+        <a th:each="lp : ${lessonProgress}"
+           th:href="${lp.lessonType == 'essay'} ? @{/contest/type-essay/{slug}(slug=${lp.lessonSlug})} : @{/practice/lesson/{slug}(slug=${lp.lessonSlug})}"
+           class="lesson-card">
+          <div class="lesson-card-header">
+            <div class="lesson-card-title" th:text="${lp.lessonTitle}">Tên lesson</div>
+            <span class="lesson-type-badge"
+                  th:classappend="${lp.lessonType == 'essay' ? 'essay' : 'coding'}"
+                  th:text="${lp.lessonType == 'essay' ? 'Essay' : 'Coding'}">Coding</span>
+          </div>
+          <div class="lesson-card-stats">
+            <span>
+              <i class="fas fa-check-circle" style="color:#16a34a"></i>
+              <span th:text="${lp.completedCount}">0</span> bài đã làm
+            </span>
+            <span class="score">
+              <i class="fas fa-star" style="color:#f59e0b"></i>
+              <span th:text="${#numbers.formatDecimal(lp.totalScore, 0, 1)}">0</span> điểm
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+<script th:src="@{/ClientStatic/js/script.js}"></script>
+</body>
+</html>

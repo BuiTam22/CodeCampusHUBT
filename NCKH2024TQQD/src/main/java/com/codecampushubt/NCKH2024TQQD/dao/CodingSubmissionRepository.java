@@ -1,6 +1,7 @@
 package com.codecampushubt.NCKH2024TQQD.dao;
 
 import com.codecampushubt.NCKH2024TQQD.dto.CodingSubmission.CodingSubmissionShow;
+import com.codecampushubt.NCKH2024TQQD.dto.UserDTO.LessonProgressDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.CodingSubmission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -33,5 +34,21 @@ public interface CodingSubmissionRepository extends JpaRepository<CodingSubmissi
     @Modifying
     @Query("DELETE FROM CodingSubmission cs WHERE cs.exercise.exerciseID = :exerciseID")
     void deleteByExerciseID(@Param("exerciseID") Long exerciseID);
+
+    @Query("""
+            SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.LessonProgressDTO(
+                l.title, l.slug, l.type,
+                0L,
+                COUNT(DISTINCT cs.exercise.exerciseID),
+                CAST(COALESCE(SUM(cs.score), 0) AS double)
+            )
+            FROM CodingSubmission cs
+            JOIN cs.exercise e
+            JOIN e.lesson l
+            WHERE cs.user.userName = :userName
+              AND cs.status = 'accepted'
+            GROUP BY l.lessonID, l.title, l.slug, l.type
+            """)
+    List<LessonProgressDTO> getLessonProgressByUserName(@Param("userName") String userName);
 }
 
