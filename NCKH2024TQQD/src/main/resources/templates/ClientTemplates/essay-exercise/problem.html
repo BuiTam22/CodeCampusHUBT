@@ -17,8 +17,8 @@
 <!-- Header -->
 <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
 
-<!-- Problem Navigation -->
-<div th:replace="~{ClientTemplates/layout/problem-nav :: problemNav(slug=${slug}, basePath=${basePath != null ? basePath : '/practice/lesson'})}"></div>
+<!-- Problem Navigation (essay: chỉ Bài Tập + Đã nộp) -->
+<div th:replace="~{ClientTemplates/layout/problem-nav :: problemNavEssay(slug=${slug}, basePath=${basePath})}"></div>
 
 <div class="content-wrapper">
     <div class="section-one">

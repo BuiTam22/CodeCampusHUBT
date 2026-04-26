@@ -62,5 +62,27 @@ public interface EssaySubmissionRepository extends JpaRepository<EssaySubmission
     List<ExerciseSubmissionDTO> getEssayExercisesByLessonSlugAndUser(
             @Param("userName") String userName,
             @Param("lessonSlug") String lessonSlug);
+
+    /**
+     * Lấy tất cả các lần nộp của user cho một exercise cụ thể (theo slug),
+     * sắp xếp mới nhất lên đầu. Dùng cho trang "Đã nộp" của essay exercise.
+     */
+    @Query("""
+            SELECT new com.codecampushubt.NCKH2024TQQD.dto.UserDTO.ExerciseSubmissionDTO(
+                es.exercise.title,
+                es.exercise.slug,
+                'essay',
+                es.score,
+                'submitted',
+                es.submittedAt
+            )
+            FROM EssaySubmission es
+            WHERE es.user.userName = :userName
+              AND es.exercise.slug = :exerciseSlug
+            ORDER BY es.submittedAt DESC
+            """)
+    List<ExerciseSubmissionDTO> getSubmissionsByUserAndExerciseSlug(
+            @Param("userName") String userName,
+            @Param("exerciseSlug") String exerciseSlug);
 }
 
