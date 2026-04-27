@@ -14,17 +14,17 @@ public class Comment {
     @Column(name = "CommentID")
     private Long commentId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "PostID")
-//    private Post post;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "UserID")
-//    private User user;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "ParentCommentID")
-//    private Comment parentComment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PostID")
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserID")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ParentCommentID")
+    private Comment parentComment;
 
     @Column(name = "Content", columnDefinition = "NVARCHAR(MAX)")
     private String content;
@@ -76,6 +76,30 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Comment getParentComment() {
+        return parentComment;
+    }
+
+    public void setParentComment(Comment parentComment) {
+        this.parentComment = parentComment;
     }
 
     public Integer getLikesCount() {

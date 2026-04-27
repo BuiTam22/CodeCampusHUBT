@@ -13,13 +13,13 @@ public class CommentLike {
     @Column(name = "CommentLikeID")
     private Long commentLikeId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "CommentID")
-//    private Comment comment;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "UserID")
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CommentID")
+    private Comment comment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserID")
+    private User user;
 
     @Column(name = "CreatedAt")
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -38,6 +38,22 @@ public class CommentLike {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     public CommentLike() {}
     public CommentLike(Long commentLikeId, LocalDateTime createdAt) {
