@@ -76,6 +76,24 @@
     margin-bottom: 20px;
 }
 
+.blog-edit-top-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f3f0ff;
+    color: #5b41d1;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.blog-edit-top-btn:hover {
+    color: #fff;
+    background: #5b41d1;
+    text-decoration: none;
+}
+
 /* --- Meta info --- */
 .blog-detail-meta {
     display: flex;
@@ -199,6 +217,124 @@
     background: #555;
     color: white;
     text-decoration: none;
+}
+
+.blog-comment-section {
+    margin-top: 36px;
+    border-top: 2px solid #f0f0f0;
+    padding-top: 24px;
+}
+
+.comment-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.comment-form textarea {
+    border-radius: 8px;
+}
+
+.comment-login-hint {
+    color: #666;
+    margin-bottom: 16px;
+}
+
+.comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.comment-item {
+    border: 1px solid #ececec;
+    border-radius: 10px;
+    padding: 14px;
+    background: #fff;
+}
+
+.comment-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.comment-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-author img,
+.comment-avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-avatar-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #4a90e2, #7b61ff);
+    color: #fff;
+}
+
+.comment-time {
+    font-size: 12px;
+    color: #888;
+}
+
+.comment-like-btn {
+    border: none;
+    background: #ffeef1;
+    color: #d94862;
+    border-radius: 20px;
+    padding: 4px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.comment-like-btn.liked {
+    background: #d94862;
+    color: #fff;
+}
+
+.comment-content {
+    margin-top: 10px;
+    white-space: pre-line;
+    color: #333;
+}
+
+.comment-empty {
+    color: #888;
+    font-style: italic;
+}
+
+.blog-edit-box {
+    max-width: 820px;
+    margin: 0 auto;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    padding: 24px;
+    background: #fff;
+    box-shadow: 0 2px 18px rgba(0, 0, 0, 0.06);
+}
+
+.blog-edit-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.blog-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 /* ===== SIDEBAR ===== */
