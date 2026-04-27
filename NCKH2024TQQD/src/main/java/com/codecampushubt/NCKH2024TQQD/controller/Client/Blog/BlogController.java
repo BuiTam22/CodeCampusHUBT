@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.controller.Client.Blog;
 
+import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.BlogDTO.BlogPostDTO;
 import com.codecampushubt.NCKH2024TQQD.service.PostServices.PostService;
 import com.codecampushubt.NCKH2024TQQD.util.JsonUtil;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -46,6 +50,34 @@ public class BlogController {
         LOGGER.info("BlogController showHome popularPosts: {}", JsonUtil.toJson(popularPosts));
 
         return "ClientTemplates/blog/blog";
+    }
+
+    @GetMapping("/create")
+    public String showCreatePage(Model model) {
+        model.addAttribute("activePage", "/blog");
+        return "ClientTemplates/blog/blog-create";
+    }
+
+    @PostMapping("/create")
+    public String createBlog(@RequestParam String title,
+                             @RequestParam(required = false) String thumbnailUrl,
+                             @RequestParam String content,
+                             @RequestParam(defaultValue = "regular") String type,
+                             RedirectAttributes redirectAttributes) {
+        Long userId = UserContext.getUserID();
+        if (userId == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Bạn cần đăng nhập để tạo bài viết.");
+            return "redirect:/login/show";
+        }
+
+        if (title == null || title.isBlank() || content == null || content.isBlank()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Tiêu đề và nội dung là bắt buộc.");
+            return "redirect:/blog/create";
+        }
+
+        postService.createBlogPost(userId, title, thumbnailUrl, content, type);
+        redirectAttributes.addFlashAttribute("successMessage", "Tạo bài viết thành công.");
+        return "redirect:/blog";
     }
 
     @GetMapping("/{slug}")

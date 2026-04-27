@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Tạo bài viết blog</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+            integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+            crossorigin="anonymous"
+    />
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}"/>
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}"/>
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/blog.css}"/>
+</head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
+
+    <section class="blog-create-page">
+        <div class="container-fluid px-5 py-5">
+            <div class="row justify-content-center">
+                <div class="col-xl-9">
+                    <div class="create-blog-box">
+                        <div class="create-blog-header">
+                            <p class="create-blog-chip">BLOG CREATOR</p>
+                            <h2>Chia sẻ kiến thức của bạn</h2>
+                            <p class="desc">
+                                Viết bài mới để chia sẻ kinh nghiệm học tập, mẹo code và góc nhìn cá nhân với cộng đồng.
+                            </p>
+                        </div>
+
+                        <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+                        <form th:action="@{/blog/create}" method="post" class="create-blog-form">
+                            <div class="form-group">
+                                <label for="title">Tiêu đề bài viết *</label>
+                                <input type="text" id="title" name="title" class="form-control"
+                                       placeholder="Ví dụ: 10 mẹo học Java hiệu quả" required maxlength="255"/>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="type">Chuyên mục *</label>
+                                    <select id="type" name="type" class="form-control" required>
+                                        <option value="regular">General</option>
+                                        <option value="coding">Coding</option>
+                                        <option value="career">Career</option>
+                                        <option value="learning">Learning</option>
+                                        <option value="tips">Tips</option>
+                                        <option value="news">News</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="thumbnailUrl">Ảnh đại diện (URL)</label>
+                                    <input type="url" id="thumbnailUrl" name="thumbnailUrl" class="form-control"
+                                           placeholder="https://example.com/image.jpg"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="content">Nội dung *</label>
+                                <textarea id="content" name="content" rows="10" class="form-control"
+                                          placeholder="Nội dung bài viết..." required></textarea>
+                            </div>
+
+                            <div class="create-actions">
+                                <a th:href="@{/blog}" class="btn btn-outline-secondary">Quay lại blog</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-paper-plane"></i> Đăng bài viết
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
+</div>
+</body>
+</html>
