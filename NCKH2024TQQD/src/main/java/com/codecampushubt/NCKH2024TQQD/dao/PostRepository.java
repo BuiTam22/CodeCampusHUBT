@@ -45,4 +45,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     // Tim bai viet theo slug
     Optional<Post> findBySlugAndDeletedAtIsNull(String slug);
+
+    boolean existsBySlug(String slug);
 }

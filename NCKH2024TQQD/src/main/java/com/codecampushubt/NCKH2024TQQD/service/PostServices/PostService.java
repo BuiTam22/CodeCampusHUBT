@@ -9,4 +9,5 @@ public interface PostService {
     List<BlogPostDTO> getPopularPosts(int limit);
     List<BlogPostDTO> getLatestPosts(int limit);
     BlogPostDTO getBlogPostBySlug(String slug);
+    void createBlogPost(Long userId, String title, String thumbnailUrl, String content, String type);
 }
