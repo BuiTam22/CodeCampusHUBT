@@ -2,7 +2,6 @@ package com.codecampushubt.NCKH2024TQQD.controller.Client.Blog;
 
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.BlogDTO.BlogCommentDTO;
-import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.BlogDTO.BlogPostDTO;
 import com.codecampushubt.NCKH2024TQQD.service.PostServices.PostService;
 import com.codecampushubt.NCKH2024TQQD.util.JsonUtil;
@@ -16,10 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;

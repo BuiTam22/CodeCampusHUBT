@@ -4,7 +4,6 @@ import com.codecampushubt.NCKH2024TQQD.dao.CommentLikeRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.CommentRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.PostRepository;
 import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
-import com.codecampushubt.NCKH2024TQQD.dao.UserRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.BlogDTO.BlogCommentDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.BlogDTO.BlogPostDTO;
 import com.codecampushubt.NCKH2024TQQD.entity.Comment;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,16 +27,13 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository) {
     public PostServiceImpl(PostRepository postRepository,
                            UserRepository userRepository,
                            CommentRepository commentRepository,
                            CommentLikeRepository commentLikeRepository) {
         this.postRepository = postRepository;
-        this.userRepository = userRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.commentLikeRepository = commentLikeRepository;
@@ -189,15 +184,6 @@ public class PostServiceImpl implements PostService {
     private Post getPostBySlugOrThrow(String slug) {
         return postRepository.findBySlugAndDeletedAtIsNull(slug)
                 .orElseThrow(() -> new RuntimeException("Bài viết không tồn tại: " + slug));
-    }
-
-    private String normalizeToSlug(String value) {
-        String normalized = value.toLowerCase(Locale.ROOT).trim();
-        normalized = normalized.replaceAll("[^a-z0-9\\s-]", "");
-        normalized = normalized.replaceAll("\\s+", "-");
-        normalized = normalized.replaceAll("-+", "-");
-        normalized = normalized.replaceAll("^-|-$", "");
-        return normalized.isBlank() ? "blog-post" : normalized;
     }
 
     @Override
