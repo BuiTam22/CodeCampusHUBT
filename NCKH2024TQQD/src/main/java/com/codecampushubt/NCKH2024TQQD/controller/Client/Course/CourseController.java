@@ -2,7 +2,6 @@ package com.codecampushubt.NCKH2024TQQD.controller.Client.Course;
 
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseModuleDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO;
-import com.codecampushubt.NCKH2024TQQD.entity.Course;
 import com.codecampushubt.NCKH2024TQQD.service.CourseServices.CourseService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +34,13 @@ public class CourseController {
     }
 
     @GetMapping("/{slug}")
-    public String showDetailCourse(@PathVariable("slug") String theSlug,Model model, HttpServletRequest request){
+    public String showDetailCourse(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
+        CourseShowDTO course = courseService.getCourseShowDTOBySlug(theSlug);
         List<CourseModuleDTO> courseModules = courseService.getCourseModuleByCourseSlug(theSlug);
-        List<CourseShowDTO> courses = courseService.getCourseShowDTO();
-        model.addAttribute("courses", courses);
+        List<CourseShowDTO> relatedCourses = courseService.getCourseShowDTO();
+        model.addAttribute("course", course);
         model.addAttribute("courseModules", courseModules);
+        model.addAttribute("relatedCourses", relatedCourses);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/course/course-module";
     }

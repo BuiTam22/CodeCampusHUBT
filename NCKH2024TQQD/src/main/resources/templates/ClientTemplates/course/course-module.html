@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
-    <title>CodeHubt</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title th:text="${course != null ? course.title + ' | CodeHubt' : 'CodeHubt'}">CodeHubt</title>
+    <meta name="description" th:content="${course != null ? course.shortDescription : 'Chi tiết khóa học tại CodeHubt'}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" th:href="@{/ClientStatic/css/show-course.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}">
@@ -15,52 +20,101 @@
 <body>
 <!-- Header -->
 <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
+
+<!-- ===== HERO / HEADER BOTTOM ===== -->
 <div class="header-bottom">
-    <h1 class="inner-title">Java cơ bản</h1>
-    <div class="inner-desc">This course covers the basics of Java programming.</div>
+    <h1 class="inner-title" th:text="${course != null ? course.title : 'Khóa học'}">Tên khóa học</h1>
+
+    <div class="inner-desc" th:text="${course != null ? course.shortDescription : ''}">
+        Mô tả ngắn về khóa học
+    </div>
+
     <div class="inner-rating">
         <div class="star-rating">
-            <div class="number-rating">5.0</div>
+            <!-- Hiển thị số rating -->
+            <div class="number-rating"
+                 th:text="${course != null and course.rating != null ? #numbers.formatDecimal(course.rating, 1, 1) : '0.0'}">
+                0.0
+            </div>
+            <!-- Sao động dựa trên rating -->
             <div class="star">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
+                <th:block th:if="${course != null and course.rating != null}">
+                    <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                        <i th:class="${course.rating.doubleValue() >= i ? 'fa-solid fa-star' :
+                                      (course.rating.doubleValue() >= i - 0.5 ? 'fa-solid fa-star-half-stroke' :
+                                       'fa-regular fa-star')}"></i>
+                    </th:block>
+                </th:block>
+                <th:block th:unless="${course != null and course.rating != null}">
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </th:block>
             </div>
         </div>
-        <div class="sum-rating">
-            120 đánh giá
-        </div>
     </div>
+
     <div class="inner-dev">
         <div class="inner-image">
-            <img src="https://th.bing.com/th/id/OIP.jl3dFoX1fcADXwrul0BJLwHaE8?w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" alt="">
+            <!-- Avatar placeholder vì chưa có avatar instructor trong DTO -->
+            <img src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=CodeHubt&size=64" alt="Instructor">
         </div>
-        <div class="inner-instructorUserName">
-            tambui
+        <div class="inner-instructorUserName"
+             th:text="${course != null and course.instructorUserName != null ? course.instructorUserName : 'CodeHubt Team'}">
+            Giảng viên
         </div>
     </div>
 </div>
+
+<!-- ===== NAV TABS ===== -->
 <ul class="nav">
     <li><a href="#section1">Tổng Quan</a></li>
     <li><a href="#section2">Lộ Trình</a></li>
-    <li><a href="#section3">Khoá Học Liên Quan</a></li>
+    <li><a href="#section3">Khóa Học Liên Quan</a></li>
 </ul>
-<!-- thanh bên trái  -->
+
+<!-- ===== SIDEBAR (Referral bar) ===== -->
 <div class="Referral-bar">
     <div class="inner-wrap">
         <div class="inner-image">
-            <img
-                    src="https://cdn-main.28tech.com.vn/media/anh-khoa-hoc/anh_dai_dien_khoa_hoc/l%E1%BA%ADp%20tr%C3%ACnh%20%20h%C6%B0%E1%BB%9Bng%20%C4%91%E1%BB%91i%20t%C6%B0%E1%BB%A3ng%20java.png"
-                    alt=""
-            />
+            <img th:if="${course != null and course.imageUrl != null}"
+                 th:src="${course.imageUrl}"
+                 alt="Ảnh khóa học">
+            <div th:unless="${course != null and course.imageUrl != null}"
+                 style="width:100%;height:180px;background:#1e293b;display:flex;align-items:center;justify-content:center;border-radius:8px;">
+                <i class="fa-solid fa-laptop-code" style="font-size:3rem;color:#64748b;"></i>
+            </div>
         </div>
-        <div class="inner-price">
-            <div class="inner-price-new">2,800,000 đ</div>
-            <div class="inner-price-old"><a href="">6,000,000 đ</a></div>
+
+        <div class="inner-price" th:if="${course != null}">
+            <!-- Có giảm giá -->
+            <div th:if="${course.discountPrice != null}">
+                <div class="inner-price-new"
+                     th:text="'₫' + ${#numbers.formatDecimal(course.discountPrice, 1, 0, 'COMMA')}">
+                    Giá khuyến mãi
+                </div>
+                <div class="inner-price-old">
+                    <del th:text="'₫' + ${#numbers.formatDecimal(course.price, 1, 0, 'COMMA')}">Giá gốc</del>
+                </div>
+            </div>
+            <!-- Miễn phí -->
+            <div th:if="${course.discountPrice == null and course.price != null and course.price.doubleValue() == 0}">
+                <div class="inner-price-new free-badge">MIỄN PHÍ</div>
+            </div>
+            <!-- Giá bình thường -->
+            <div th:if="${course.discountPrice == null and (course.price == null or course.price.doubleValue() > 0)}">
+                <div class="inner-price-new"
+                     th:text="'₫' + ${#numbers.formatDecimal(course.price, 1, 0, 'COMMA')}">
+                    Giá
+                </div>
+            </div>
         </div>
-        <a href=""><div class="button">Đăng Ký khoá học</div></a>
+
+        <a th:href="@{'/course/' + ${course != null ? course.slug : ''} + '/enroll'}">
+            <div class="button">Đăng Ký Khóa Học</div>
+        </a>
         <div class="inner-donate">
             Sự ủng hộ của các bạn là động lực của chúng tôi
         </div>
@@ -69,40 +123,38 @@
         </div>
     </div>
 </div>
-<!--kết thúc thanh bên trái  -->
+
+<!-- ===== SECTION 1: TỔNG QUAN ===== -->
 <section id="section1">
     <div class="container">
         <div class="inner-wrap">
-            <h3 class="inner-title">course.title</h3>
-            <div class="inner-desc">
-                course.description
+            <h3 class="inner-title" th:text="${course != null ? course.title : 'Tổng quan khóa học'}">
+                Tổng quan
+            </h3>
+            <div class="inner-desc" th:text="${course != null ? course.description : ''}">
+                Mô tả chi tiết khóa học
             </div>
-            <input type="checkbox" id="toggle" hidden />
+
+            <input type="checkbox" id="toggle" hidden/>
             <div class="toggle-wrapper">
                 <div class="content">
                     <p>
-                        <span class="inner-label">Thời lượng</span>:
-                        <span class="inner-value">100 giờ</span>
+                        <span class="inner-label">Giảng viên</span>:
+                        <span class="inner-value"
+                              th:text="${course != null and course.instructorUserName != null ? course.instructorUserName : 'CodeHubt Team'}">
+                            Giảng viên
+                        </span>
+                    </p>
+                    <p th:if="${course != null and course.rating != null}">
+                        <span class="inner-label">Đánh giá</span>:
+                        <span class="inner-value"
+                              th:text="${#numbers.formatDecimal(course.rating, 1, 1) + ' / 5.0'}">
+                            0.0 / 5.0
+                        </span>
                     </p>
                     <p>
-                        <span class="inner-label">Thời gian học</span>:
-                        <span class="inner-value">1 tháng</span>
-                    </p>
-                    <p>
-                        <span class="inner-label">Hình thức học</span>:
-                        <span class="inner-value">Online qua Zoom</span>
-                    </p>
-                    <p>
-                        <span class="inner-label">Số buổi trên tuần</span>:
-                        <span class="inner-value">3 buổi (2h/buổi)</span>
-                    </p>
-                    <p>
-                        <span class="inner-label">Số lượng bài tập</span>:
-                        <span class="inner-value">150 bài tập</span>
-                    </p>
-                    <p>
-                        <span class="inner-label">Số lượng project</span>:
-                        <span class="inner-value">3</span>
+                        <span class="inner-label">Ngôn ngữ</span>:
+                        <span class="inner-value">Tiếng Việt</span>
                     </p>
                 </div>
                 <div class="buttons">
@@ -113,250 +165,150 @@
         </div>
     </div>
 </section>
+
+<!-- ===== SECTION 2: LỘ TRÌNH ===== -->
 <section id="section2">
     <div class="container">
         <div class="inner-wrap">
-            <h3 class="inner-title">
-                Lộ trình khóa học
-            </h3>
-            <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <div class="post-name">
-                                    Phần 1:Kiểu Dữ Liệu,Vòng Lặp,Hàm
-                                </div>
-                            </button>
-                        </h2>
-                    </div>
+            <h3 class="inner-title">Lộ trình khóa học</h3>
 
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <div class="card-body">
-                            <div class="inner-box">
-                                <div class="inner-logo">
-                                    <i class="fa-regular fa-circle-play"></i>
-                                </div>
-                                <div class="inner-title-lesson">
-                                    Bài 1:Kiểu dữ liệu toán tử cấu trúc rẽ nhánh
-                                </div>
-                            </div>
-                            <p>
-                    <span class="lesson-details">
-                      -Cài Đặt công cụ lập trình
-                    </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
+            <!-- Nếu có modules từ DB -->
+            <div class="accordion" id="accordionCourseModules" th:if="${courseModules != null and !courseModules.isEmpty()}">
+                <div class="card" th:each="module, iterStat : ${courseModules}">
+                    <div class="card-header" th:id="'heading-' + ${iterStat.index}">
                         <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Collapsible Group Item #2
+                            <button class="btn btn-link btn-block text-left"
+                                    th:classappend="${iterStat.first ? '' : ' collapsed'}"
+                                    type="button"
+                                    data-toggle="collapse"
+                                    th:data-target="'#collapse-' + ${iterStat.index}"
+                                    th:aria-expanded="${iterStat.first ? 'true' : 'false'}"
+                                    th:aria-controls="'collapse-' + ${iterStat.index}">
+                                <div class="post-name">
+                                    <span th:text="'Phần ' + ${iterStat.count} + ': ' + ${module.title}">
+                                        Tên chương
+                                    </span>
+                                </div>
                             </button>
                         </h2>
                     </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div th:id="'collapse-' + ${iterStat.index}"
+                         class="collapse"
+                         th:classappend="${iterStat.first ? ' show' : ''}"
+                         th:aria-labelledby="'heading-' + ${iterStat.index}"
+                         data-parent="#accordionCourseModules">
                         <div class="card-body">
                             <div class="inner-box">
                                 <div class="inner-logo">
                                     <i class="fa-regular fa-circle-play"></i>
                                 </div>
-                                <div class="inner-title-lesson">
-                                    Bài 1:Kiểu dữ liệu toán tử cấu trúc rẽ nhánh
+                                <div class="inner-title-lesson" th:text="${module.description}">
+                                    Mô tả chương
                                 </div>
                             </div>
-                            <p>
-                    <span class="lesson-details">
-                      -Cài Đặt công cụ lập trình
-                    </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Collapsible Group Item #3
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                        <div class="card-body">
-                            <div class="inner-box">
-                                <div class="inner-logo">
-                                    <i class="fa-regular fa-circle-play"></i>
-                                </div>
-                                <div class="inner-title-lesson">
-                                    Bài 1:Kiểu dữ liệu toán tử cấu trúc rẽ nhánh
-                                </div>
-                            </div>
-                            <p>
-                    <span class="lesson-details">
-                      -Cài Đặt công cụ lập trình
-                    </span>
+                            <p th:if="${module.duration != null}">
+                                <span class="lesson-details"
+                                      th:text="'Thời lượng: ' + ${module.duration} + ' phút'">
+                                </span>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Nếu chưa có modules -->
+            <div th:if="${courseModules == null or courseModules.isEmpty()}"
+                 style="text-align:center;padding:2rem;color:#64748b;">
+                <i class="fa-solid fa-book-open" style="font-size:2rem;margin-bottom:0.5rem;"></i>
+                <p>Nội dung lộ trình đang được cập nhật.</p>
+            </div>
         </div>
     </div>
 </section>
+
+<!-- ===== SECTION 3: KHÓA HỌC LIÊN QUAN ===== -->
 <section id="section3">
     <div class="section-two">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="box-head">
-                        <div class="inner-title">Khóa Học Tại HUBT</div>
+                        <div class="inner-title">Khóa Học Liên Quan</div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xl-4 col-md-4 col-sm-6 col-12">
+
+            <!-- Dynamic related courses -->
+            <div class="row" th:if="${relatedCourses != null and !relatedCourses.isEmpty()}">
+                <div class="col-xl-4 col-md-4 col-sm-6 col-12"
+                     th:each="rc : ${relatedCourses}"
+                     th:unless="${course != null and rc.slug == course.slug}">
                     <div class="course-card">
                         <div class="inner-image">
-                            <a href=""
-                            ><img
-                                    src="https://cdn-main.28tech.com.vn/thumbs/anh-khoa-hoc/anh_dai_dien_khoa_hoc/new/c%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20v%C3%A0%20sql_thumb_500.png"
-                                    alt=""
-                            /></a>
+                            <a th:href="@{/course/{slug}(slug=${rc.slug})}">
+                                <img th:if="${rc.imageUrl != null}"
+                                     th:src="${rc.imageUrl}"
+                                     th:alt="${rc.title}">
+                                <div th:unless="${rc.imageUrl != null}"
+                                     style="width:100%;height:140px;background:#1e293b;display:flex;align-items:center;justify-content:center;">
+                                    <i class="fa-solid fa-laptop-code" style="color:#64748b;font-size:2rem;"></i>
+                                </div>
+                            </a>
                         </div>
                         <div class="inner-content">
                             <div class="inner-assess">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <p>(120 Đánh Giá)</p>
+                                <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                    <i th:class="${rc.rating != null and rc.rating.doubleValue() >= i
+                                                   ? 'fa-solid fa-star'
+                                                   : 'fa-regular fa-star'}"></i>
+                                </th:block>
+                                <p th:text="'(' + ${rc.rating != null ? #numbers.formatDecimal(rc.rating, 1, 1) : '0.0'} + ')'">
+                                    (0.0)
+                                </p>
                             </div>
-                            <div class="inner-title">Cơ Sở Dữ Liệu Và SQL</div>
+                            <div class="inner-title" th:text="${rc.title}">Tên khóa học</div>
                             <div class="inner-info">
-                                <img
-                                        src="https://th.bing.com/th/id/OIP.x0GBD5wzzx3MV8mdcuCojwHaKV?w=211&h=295&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                                        alt=""
-                                />
-                                <div class="inner-owner">Đội Ngũ HUBT</div>
+                                <div class="inner-owner"
+                                     th:text="${rc.instructorUserName != null ? rc.instructorUserName : 'CodeHubt Team'}">
+                                    Giảng viên
+                                </div>
                             </div>
                             <div class="inner-price">
-                                <div class="price-new">2,400,000<span>đ</span></div>
-                                <div class="price-old">6,000,000<span>đ</span></div>
+                                <div th:if="${rc.discountPrice != null}">
+                                    <div class="price-new"
+                                         th:text="'₫' + ${#numbers.formatDecimal(rc.discountPrice, 1, 0, 'COMMA')}">
+                                    </div>
+                                    <div class="price-old">
+                                        <del th:text="'₫' + ${#numbers.formatDecimal(rc.price, 1, 0, 'COMMA')}"></del>
+                                    </div>
+                                </div>
+                                <div th:if="${rc.discountPrice == null and rc.price != null and rc.price.doubleValue() == 0}">
+                                    <div class="price-new free-badge">MIỄN PHÍ</div>
+                                </div>
+                                <div th:if="${rc.discountPrice == null and (rc.price == null or rc.price.doubleValue() > 0)}">
+                                    <div class="price-new"
+                                         th:text="'₫' + ${#numbers.formatDecimal(rc.price, 1, 0, 'COMMA')}">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-md-4 col-sm-6 col-12">
-                    <div class="course-card">
-                        <div class="inner-image">
-                            <a href=""
-                            ><img
-                                    src="https://cdn-main.28tech.com.vn/thumbs/anh-khoa-hoc/anh_dai_dien_khoa_hoc/new/c%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20v%C3%A0%20sql_thumb_500.png"
-                                    alt=""
-                            /></a>
-                        </div>
-                        <div class="inner-content">
-                            <div class="inner-assess">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <p>(120 Đánh Giá)</p>
-                            </div>
-                            <div class="inner-title">Cơ Sở Dữ Liệu Và SQL</div>
-                            <div class="inner-info">
-                                <img
-                                        src="https://th.bing.com/th/id/OIP.x0GBD5wzzx3MV8mdcuCojwHaKV?w=211&h=295&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                                        alt=""
-                                />
-                                <div class="inner-owner">Đội Ngũ HUBT</div>
-                            </div>
-                            <div class="inner-price">
-                                <div class="price-new">2,400,000<span>đ</span></div>
-                                <div class="price-old">6,000,000<span>đ</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-4 col-sm-6 col-12">
-                    <div class="course-card">
-                        <div class="inner-image">
-                            <a href=""
-                            ><img
-                                    src="https://cdn-main.28tech.com.vn/thumbs/anh-khoa-hoc/anh_dai_dien_khoa_hoc/new/c%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20v%C3%A0%20sql_thumb_500.png"
-                                    alt=""
-                            /></a>
-                        </div>
-                        <div class="inner-content">
-                            <div class="inner-assess">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <p>(120 Đánh Giá)</p>
-                            </div>
-                            <div class="inner-title">Cơ Sở Dữ Liệu Và SQL</div>
-                            <div class="inner-info">
-                                <img
-                                        src="https://th.bing.com/th/id/OIP.x0GBD5wzzx3MV8mdcuCojwHaKV?w=211&h=295&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                                        alt=""
-                                />
-                                <div class="inner-owner">Đội Ngũ HUBT</div>
-                            </div>
-                            <div class="inner-price">
-                                <div class="price-new">2,400,000<span>đ</span></div>
-                                <div class="price-old">6,000,000<span>đ</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-4 col-sm-6 col-12">
-                    <div class="course-card">
-                        <div class="inner-image">
-                            <a href=""
-                            ><img
-                                    src="https://cdn-main.28tech.com.vn/thumbs/anh-khoa-hoc/anh_dai_dien_khoa_hoc/new/c%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20v%C3%A0%20sql_thumb_500.png"
-                                    alt=""
-                            /></a>
-                        </div>
-                        <div class="inner-content">
-                            <div class="inner-assess">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <p>(120 Đánh Giá)</p>
-                            </div>
-                            <div class="inner-title">Cơ Sở Dữ Liệu Và SQL</div>
-                            <div class="inner-info">
-                                <img
-                                        src="https://th.bing.com/th/id/OIP.x0GBD5wzzx3MV8mdcuCojwHaKV?w=211&h=295&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                                        alt=""
-                                />
-                                <div class="inner-owner">Đội Ngũ HUBT</div>
-                            </div>
-                            <div class="inner-price">
-                                <div class="price-new">2,400,000<span>đ</span></div>
-                                <div class="price-old">6,000,000<span>đ</span></div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+
+            <!-- Không có khóa học liên quan -->
+            <div class="row" th:if="${relatedCourses == null or relatedCourses.isEmpty()}">
+                <div class="col-12" style="text-align:center;padding:2rem;color:#64748b;">
+                    <p>Chưa có khóa học liên quan.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!--footer-->
+
+<!-- Footer -->
 <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
-<!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>-->
-<!--<script th:src="@{/ClientStatic/js/script.js}"></script>-->
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
