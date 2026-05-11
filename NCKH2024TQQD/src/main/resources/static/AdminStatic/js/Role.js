@@ -1,190 +1,148 @@
-fetch(`/admin/api/role/show`)
-    .then(res => res.json())
-    .then(data => {
-        const tableBody = document.getElementById("permissionTableBody");
-        tableBody.innerHTML = "";
+/**
+ * Role.js — CODEHUBT Admin Role & Permissions Management
+ * Refactored: uses AdminNotify instead of alert()/confirm()
+ */
 
-        data.forEach(permission  => {
-            const row = `
-                <tr id="row-${permission.roleName}-${permission.permissionName}">
-                    <td>${permission.roleName}</td>
-                    <td id="permissionCell-${permission.roleName}-${permission.permissionName}">
-                        ${permission.permissionName}
-                    </td>
-                    <td id="actionCell-${permission.roleName}-${permission.permissionName}">
-                        <button class="btn btn-warning mx-2" onclick="editPermission('${permission.roleName}', '${permission.permissionName}')">Sửa</button>
-                        <button class="btn btn-danger" onclick="softDeleteRolePermission('${permission.roleName}', '${permission.permissionName}')">Xóa</button>
-                    </td>                                                     
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
-    })
-    .catch(err => {
-        console.error("Lỗi khi lấy danh sách role:", err);
-    });
+let allPermissions = [];
+let filteredPermissions = [];
 
-function hideAllForms() {
-    document.getElementById("RoleAddForm").style.display = "none";
-    document.getElementById("rolePermissionTable").style.display = "none"; // r thường
+async function loadPermissions() {
+    try {
+        const res = await fetch('/admin/api/role/show');
+        allPermissions = await res.json();
+        filteredPermissions = [...allPermissions];
+        renderPermissions(filteredPermissions);
+    } catch (e) {
+        AdminNotify.error('Không thể tải danh sách phân quyền.');
+        console.error(e);
+    }
 }
 
-function showRoleList() {
-    hideAllForms();
-    document.getElementById("rolePermissionTable").style.display = "block"; // r thường
+function renderPermissions(list) {
+    const tbody = document.getElementById('permissionTableBody');
+    if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--text-muted)">Không có dữ liệu.</td></tr>`;
+        return;
+    }
+
+    const roleColors = { ADMIN: 'badge-red', TEACHER: 'badge-blue', STUDENT: 'badge-green' };
+
+    tbody.innerHTML = list.map((p, i) => `
+        <tr id="row-${p.roleName}-${p.permissionName}">
+            <td style="color:var(--text-muted)">${i + 1}</td>
+            <td><span class="badge-admin ${roleColors[p.roleName] || 'badge-gray'}">${p.roleName}</span></td>
+            <td>
+                <code style="background:var(--bg-muted);padding:3px 8px;border-radius:4px;font-size:12px">
+                    ${p.permissionName}
+                </code>
+            </td>
+            <td>
+                <div style="display:flex;gap:6px">
+                    <button class="btn-admin btn-sm-admin btn-outline-admin btn-icon-admin"
+                            onclick="openEditRoleModal('${p.roleName}', '${p.permissionName}')" title="Sửa">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="btn-admin btn-sm-admin btn-danger-admin btn-icon-admin"
+                            onclick="deletePermission('${p.roleName}', '${p.permissionName}')" title="Xóa">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
 }
 
-function showAddRoleFormOnly() {
-    hideAllForms();
-    document.getElementById("RoleAddForm").style.display = "block";
+function filterRoles(query) {
+    const q = query.toLowerCase();
+    filteredPermissions = allPermissions.filter(p =>
+        (p.roleName || '').toLowerCase().includes(q) ||
+        (p.permissionName || '').toLowerCase().includes(q)
+    );
+    renderPermissions(filteredPermissions);
 }
 
-//add permissions
-document.getElementById("addRoleForm").addEventListener('submit',function (e){
-    e.preventDefault();
-    const formdata = new FormData(this);
+// ─── Add Permission ───────────────────────────────────────────────────────────
+async function submitAddRole(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
     const data = {
-        roleName: formdata.get("roleName"),
-        permissionName: formdata.get("permissionName")
-    }
-    fetch('/admin/api/role/permissionsAdd',{
-        method:"POST",
-        headers:{
-            'content-Type' : 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-        .then(res =>{
-            if (res.ok){
-                alert("Thêm Thành Công ")
-                showRoleList()
-                location.reload()
-            }else {
-                return res.json().then(err=>{throw err;})
-            }
-        })
-        .catch(err => {
-            console.log("Lỗi", err)
-            alert("Lỗi")
-        })
-})
-
-
-// Xóa
-function softDeleteRolePermission(roleName , permissionName){
-    const url = `/admin/api/role/delete?roleName=${encodeURIComponent(roleName)}&permissionName=${encodeURIComponent(permissionName)}`;
-    console.log(roleName)
-    console.log(permissionName)
-    console.log(url)
-    if (confirm("Bạn có chắc chắn muốn Xóa Quyền Này chứ ?")){
-        fetch(url,{
-            method:"DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-
-
-        })
-
-            .then(res => {
-                    if (res.ok) {
-                        alert("Xóa thành công!");
-                        location.reload();
-                    } else {
-                        return res.json().then(errorData => {
-                            alert("Xóa thất bại: " + (errorData.message || "Không rõ lỗi"));
-                            console.error("Chi tiết lỗi từ backend:", errorData);
-                        });
-                    }
-                })
-
-
-            .catch(err => {
-                console.error("Lỗi khi gọi Api ",err)
-                alert("Đã xảy ra Lỗi ")
-            })
-
+        roleName:       formData.get('roleName'),
+        permissionName: formData.get('permissionName'),
+    };
+    try {
+        const res = await fetch('/admin/api/role/permissionsAdd', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        if (res.ok) {
+            AdminNotify.success('Thêm phân quyền thành công!');
+            AdminNotify.closeModal('modal-add-role');
+            event.target.reset();
+            await loadPermissions();
+        } else {
+            const msg = await res.text();
+            AdminNotify.error('Lỗi: ' + msg);
+        }
+    } catch (e) {
+        AdminNotify.error('Lỗi kết nối: ' + e.message);
     }
 }
-// end Xóa
-function editPermission(roleName, permissionName){
-    const permissionCell = document.getElementById(`permissionCell-${roleName}-${permissionName}`)
-    const actionCell = document.getElementById(`actionCell-${roleName}-${permissionName}`)
-    // console.log(editPermission,actionCell)
-//     Lưu Lại Giá Trị hiện tại để có thể khôi phục khi ấn nut Hủy
-    const currentPermissionName = permissionCell.textContent.trim();
-    // console.log(currentPermissionName)
 
-//     tạo input để suawra
-    const inputElement  = document.createElement('input');
-    inputElement.type="text";
-    inputElement.value=currentPermissionName;
-    inputElement.classList.add('form-control','form-control-sm')
+// ─── Edit Permission ──────────────────────────────────────────────────────────
+function openEditRoleModal(roleName, permissionName) {
+    document.getElementById('edit-roleName').value      = roleName;
+    document.getElementById('edit-oldPermission').value = permissionName;
+    document.getElementById('edit-roleDisplay').value   = roleName;
+    document.getElementById('edit-newPermission').value = permissionName;
+    AdminNotify.openModal('modal-edit-role');
+}
 
-    permissionCell.innerHTML=''
-    permissionCell.appendChild(inputElement)
+async function submitEditRole() {
+    const roleName         = document.getElementById('edit-roleName').value;
+    const oldPermissionName = document.getElementById('edit-oldPermission').value;
+    const newPermissionName = document.getElementById('edit-newPermission').value.trim();
 
-//     taoj nut luu
-    const saveButton = document.createElement('button');
-    saveButton.textContent= 'Lưu';
-    saveButton.classList.add("btn",'btn-success','mx-2');
-    saveButton.onclick=function (){
-        const newPermissionName = inputElement.value.trim();
-        savePermission (roleName,currentPermissionName,newPermissionName)
-    }
+    if (!newPermissionName) { AdminNotify.warn('Tên quyền không được để trống!'); return; }
 
-    // tạo nút đóng
-    const cancelButton = document.createElement('button');
-    cancelButton.textContent='Hủy';
-    cancelButton.classList.add('btn','btn-secondary')
-    cancelButton.onclick=function (){
-    //     khôi phục lại data cho permissionName
-        permissionCell.textContent = currentPermissionName
-        actionCell.innerHTML=`
-               
-            <button class="btn btn-warning mx-2" onclick="editPermission('${roleName}', '${currentPermissionName}')">Sửa</button>
-            <button class="btn btn-danger" onclick="softDeleteRolePermission('${roleName}', '${currentPermissionName}')">Xóa</button>
-        `
-    }
-
-    // thay thế nút sửa
-    actionCell.innerHTML=''
-    actionCell.appendChild(saveButton)
-    actionCell.appendChild(cancelButton)
-
-    function savePermission(roleName , olePermissionName,newPermissionName){
-        // console.log(roleName,olePermissionName,newPermissionName)
-
-        fetch(`/admin/api/role/update`,{
+    try {
+        const res = await fetch('/admin/api/role/update', {
             method: 'PUT',
-            headers:{
-                'Content-Type' : 'application/json',
-            },
-            body: JSON.stringify({
-                roleName: roleName,
-                oldPermissionName: olePermissionName,
-                newPermissionName: newPermissionName
-            }),
-        })
-            .then(res=>res.json())
-            .then(data => {
-                alert("Thành Công")
-                location.reload()
-            } )
-            .catch(er =>{
-                console.error(er)
-            })
-
-
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ roleName, oldPermissionName, newPermissionName }),
+        });
+        if (res.ok) {
+            AdminNotify.success('Cập nhật quyền thành công!');
+            AdminNotify.closeModal('modal-edit-role');
+            await loadPermissions();
+        } else {
+            AdminNotify.error('Cập nhật thất bại!');
+        }
+    } catch (e) {
+        AdminNotify.error('Lỗi kết nối: ' + e.message);
     }
-
-
-
-
 }
 
+// ─── Delete Permission ────────────────────────────────────────────────────────
+function deletePermission(roleName, permissionName) {
+    AdminNotify.confirm(
+        `Bạn có chắc muốn xóa quyền <strong>${permissionName}</strong> khỏi vai trò <strong>${roleName}</strong>?`,
+        async () => {
+            const url = `/admin/api/role/delete?roleName=${encodeURIComponent(roleName)}&permissionName=${encodeURIComponent(permissionName)}`;
+            try {
+                const res = await fetch(url, { method: 'DELETE' });
+                if (res.ok) {
+                    AdminNotify.success('Đã xóa quyền thành công!');
+                    await loadPermissions();
+                } else {
+                    AdminNotify.error('Xóa thất bại!');
+                }
+            } catch (e) {
+                AdminNotify.error('Lỗi kết nối: ' + e.message);
+            }
+        }
+    );
+}
 
-
-
-
-
+// Init
+loadPermissions();

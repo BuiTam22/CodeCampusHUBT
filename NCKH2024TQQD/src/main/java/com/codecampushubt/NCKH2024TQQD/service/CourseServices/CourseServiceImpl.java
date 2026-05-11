@@ -41,9 +41,12 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Course save(Course theCourse) {
-        String baseSlug = new Slugify().slugify(theCourse.getTitle());
-        String uniqueSlug = generateUniqueSlug(baseSlug);
-        theCourse.setSlug(uniqueSlug);
+        // Chỉ tạo slug khi course mới (slug chưa có)
+        if (theCourse.getSlug() == null || theCourse.getSlug().isBlank()) {
+            String baseSlug = new Slugify().slugify(theCourse.getTitle());
+            String uniqueSlug = generateUniqueSlug(baseSlug);
+            theCourse.setSlug(uniqueSlug);
+        }
         return courseRepository.save(theCourse);
     }
 

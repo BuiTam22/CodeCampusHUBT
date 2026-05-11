@@ -1,25 +1,67 @@
-<div th:fragment="sidebar">
-    <div class="nav">
-        <div class="sb-sidenav-menu-heading">Core</div>
-        <a class="nav-link" href="/admin/dashboard/show">
-            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-            Dashboard
+<!-- SIDEBAR FRAGMENT -->
+<div th:fragment="sidebar(activePage)">
+    <aside class="admin-sidebar">
+        <!-- Brand -->
+        <a href="/admin/dashboard/show" class="sidebar-brand">
+            <div class="sidebar-brand-icon">C</div>
+            <div class="sidebar-brand-text">
+                CODEHUBT
+                <span>Admin Panel</span>
+            </div>
         </a>
-        <a class="nav-link" href="/admin/user/show">
-            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-            User
-        </a>
-        <a class="nav-link" href="/admin/course/show">
-            <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
-            Course
-        </a>
-        <a class="nav-link" href="/admin/role/show">
-            <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
-            Role
-        </a>
-        <a class="nav-link" href="/admin/lesson/show">
-            <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
-            Lesson
-        </a>
-    </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+            <div class="sidebar-section-label">Tổng quan</div>
+
+            <a href="/admin/dashboard/show"
+               th:classappend="${activePage == 'dashboard'} ? 'active' : ''"
+               class="sidebar-link">
+                <i class="fas fa-chart-pie sidebar-icon"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <div class="sidebar-section-label">Quản lý</div>
+
+            <a href="/admin/user/show"
+               th:classappend="${activePage == 'user'} ? 'active' : ''"
+               class="sidebar-link">
+                <i class="fas fa-users sidebar-icon"></i>
+                <span>Người dùng</span>
+            </a>
+
+            <a href="/admin/course/show"
+               th:classappend="${activePage == 'course'} ? 'active' : ''"
+               class="sidebar-link">
+                <i class="fas fa-graduation-cap sidebar-icon"></i>
+                <span>Khóa học</span>
+            </a>
+
+            <a href="/admin/lesson/show"
+               th:classappend="${activePage == 'lesson'} ? 'active' : ''"
+               class="sidebar-link">
+                <i class="fas fa-book-open sidebar-icon"></i>
+                <span>Bài học</span>
+            </a>
+
+            <a href="/admin/role/show"
+               th:classappend="${activePage == 'role'} ? 'active' : ''"
+               class="sidebar-link">
+                <i class="fas fa-shield-halved sidebar-icon"></i>
+                <span>Vai trò &amp; Quyền</span>
+            </a>
+        </nav>
+
+        <!-- Sidebar Footer: logged-in user -->
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-avatar"
+                     th:text="${username != null ? username.substring(0,1).toUpperCase() : 'A'}">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" th:text="${username != null ? username : 'Admin'}">Admin</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </aside>
 </div>

@@ -1,111 +1,133 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>CODEHUBT_ADMIN</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link th:href="@{/AdminStatic/css/style.css}" rel="stylesheet" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Vai trò &amp; Phân quyền | CODEHUBT Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/AdminStatic/css/admin-theme.css}" rel="stylesheet"/>
 </head>
-<body class="sb-nav-fixed">
+<body>
 
-<!-- Header -->
-<div th:replace="AdminTemplates/layout/header :: header"></div>
+<div th:replace="~{AdminTemplates/layout/sidebar :: sidebar('role')}"></div>
 
-<div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            <div class="sb-sidenav-menu">
+<div class="admin-wrapper" style="margin-left: var(--sidebar-width);">
+    <div th:replace="~{AdminTemplates/layout/header :: header('Vai trò &amp; Phân quyền', 'role')}"></div>
 
-                <!-- Sidebar -->
-                <div th:replace="AdminTemplates/layout/sidebar :: sidebar"></div>
+    <main class="admin-content">
+        <div class="page-header d-flex justify-between align-center">
+            <div>
+                <h1 class="page-title">Vai trò &amp; Phân quyền</h1>
+                <p class="page-subtitle">Quản lý vai trò và các quyền truy cập trong hệ thống.</p>
             </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                CODEHUBT
-            </div>
-        </nav>
-    </div>
+            <button class="btn-admin btn-primary-admin" onclick="AdminNotify.openModal('modal-add-role')">
+                <i class="fas fa-plus"></i> Thêm phân quyền
+            </button>
+        </div>
 
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-4">
-                <h1 class="mt-4">Role</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Role</li>
-                </ol>
-            </div>
-
-            <h2>Danh sách quyền theo vai trò</h2>
-
-            <div class="container mt-5">
-
-                <div class="d-flex justify-content-between mb-3 ">
-                    <h3>Table ROLE </h3>
-                    <button onclick="showAddRoleFormOnly()" class="btn btn-primary">Create a Role</button>
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <span class="admin-card-title">Danh sách quyền theo vai trò</span>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-role" placeholder="Tìm kiếm vai trò..." oninput="filterRoles(this.value)"/>
                 </div>
-                <hr/>
-                <div id="rolePermissionTable" style="display: block;" >
-                    <table class="table table-bordered table-hover">
-                        <thead>
+            </div>
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
                         <tr>
-                            <th>RoleName</th>
-                            <th>Pesmissions</th>
-                            <th>Hành Động</th>
+                            <th>#</th>
+                            <th>Vai trò</th>
+                            <th>Quyền (Permission)</th>
+                            <th>Thao tác</th>
                         </tr>
-                        </thead>
-                        <tbody id="permissionTableBody">
-
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div id="RoleAddForm" style="display: none; margin-top: 20px;">
-                    <h3>Thêm người dùng</h3>
-                    <form id="addRoleForm">
-                        <label>Quyền:
-                            <select name="roleName">
-                                <option value="ADMIN">ADMIN</option>
-                                <option value="STUDENT">STUDENT</option>
-                                <option value="TEACHER">TEACHER</option>
-                            </select>
-                        </label>
-                        <label> PermissionName
-                            <input type="text" name="permissionName">
-                        </label>
-
-                        <div class="button-group">
-                            <button type="button" onclick="showRoleList()">Đóng</button>
-                            <button type="submit">Thêm Người Dùng</button>
-                        </div>
-                    </form>
-                </div>
-
-
-
-
+                    </thead>
+                    <tbody id="permissionTableBody">
+                        <tr>
+                            <td colspan="4" style="text-align:center;padding:32px;color:var(--text-muted)">
+                                <i class="fas fa-spinner fa-spin"></i> Đang tải...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
 
-        </main>
+        <div th:replace="~{AdminTemplates/layout/footer :: footer}"></div>
+    </main>
+</div>
 
-        <!-- Footer -->
-        <div th:replace="AdminTemplates/layout/footer :: footer"></div>
+<!-- MODAL: ADD ROLE PERMISSION -->
+<div class="modal-overlay" id="modal-add-role">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-shield-halved" style="color:var(--primary);margin-right:8px"></i>Thêm phân quyền</span>
+            <button class="modal-close" onclick="AdminNotify.closeModal('modal-add-role')">×</button>
+        </div>
+        <div class="modal-body">
+            <form id="addRoleForm" onsubmit="submitAddRole(event)">
+                <div class="form-group">
+                    <label class="form-label">Vai trò *</label>
+                    <select class="form-control-admin" name="roleName">
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="STUDENT">STUDENT</option>
+                        <option value="TEACHER">TEACHER</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tên quyền (Permission) *</label>
+                    <input class="form-control-admin" type="text" name="permissionName" required
+                           placeholder="vd: VIEW_COURSE, EDIT_LESSON"/>
+                    <small style="font-size:11px;color:var(--text-muted);margin-top:4px;display:block">
+                        Dùng chữ HOA và dấu gạch dưới. VD: VIEW_COURSE
+                    </small>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin btn-outline-admin" onclick="AdminNotify.closeModal('modal-add-role')">Hủy</button>
+            <button class="btn-admin btn-primary-admin" onclick="document.getElementById('addRoleForm').requestSubmit()">
+                <i class="fas fa-save"></i> Lưu
+            </button>
+        </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script th:src="@{/AdminStatic/js/scripts.js}"></script>
-<script th:src="@{/AdminStatic/js/Role.js}"></script>
+<!-- MODAL: EDIT ROLE PERMISSION -->
+<div class="modal-overlay" id="modal-edit-role">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-pen" style="color:var(--primary);margin-right:8px"></i>Sửa phân quyền</span>
+            <button class="modal-close" onclick="AdminNotify.closeModal('modal-edit-role')">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-roleName"/>
+            <input type="hidden" id="edit-oldPermission"/>
+            <div class="form-group">
+                <label class="form-label">Vai trò</label>
+                <input class="form-control-admin" id="edit-roleDisplay" disabled/>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tên quyền mới *</label>
+                <input class="form-control-admin" type="text" id="edit-newPermission" required
+                       placeholder="Tên quyền mới"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin btn-outline-admin" onclick="AdminNotify.closeModal('modal-edit-role')">Hủy</button>
+            <button class="btn-admin btn-primary-admin" onclick="submitEditRole()">
+                <i class="fas fa-save"></i> Cập nhật
+            </button>
+        </div>
+    </div>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<!--<script th:src="@{/AdminStatic/js/chart-area-demo.js}"></script>-->
-<!--<script th:src="@{/AdminStatic/js/chart-bar-demo.js}"></script>-->
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script  th:src="@{/AdminStatic/js/datatables-simple-demo.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/AdminStatic/js/admin-notify.js}"></script>
+<script th:src="@{/AdminStatic/js/Role.js}"></script>
 </body>
 </html>
