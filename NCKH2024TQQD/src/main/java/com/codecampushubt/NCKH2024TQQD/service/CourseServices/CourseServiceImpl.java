@@ -59,6 +59,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public CourseShowDTO getCourseShowDTOBySlug(String slug) {
+        return courseRepository.getCourseShowDTOBySlug(slug);
+    }
+
+    @Override
     public List<CourseModuleDTO> getCourseModuleByCourseSlug(String theSlug) {
         return courseModuleRepository.getCourseModuleByCourseSlug(theSlug);
     }

@@ -16,8 +16,14 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO(" +
             "c.courseID, c.title, c.slug, c.description, c.shortDescription, " +
             "c.instructor.userName, c.rating, c.price, c.discountPrice, c.imageUrl) " +
-            "FROM Course c")
+            "FROM Course c WHERE c.isPublished = true")
     List<CourseShowDTO> getCourseShowDTO();
+
+    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO(" +
+            "c.courseID, c.title, c.slug, c.description, c.shortDescription, " +
+            "c.instructor.userName, c.rating, c.price, c.discountPrice, c.imageUrl) " +
+            "FROM Course c WHERE c.slug = :slug")
+    CourseShowDTO getCourseShowDTOBySlug(@Param("slug") String slug);
 
     // Hàm này tương đương: SELECT COUNT(*) > 0 FROM courses WHERE slug = :slug
     boolean existsBySlug(String slug);
