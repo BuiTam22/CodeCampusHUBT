@@ -1,110 +1,179 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>CODEHUBT_ADMIN</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link th:href="@{/AdminStatic/css/style.css}" rel="stylesheet" />
-    <link th:href="@{/AdminStatic/css/lesson.css}" rel="stylesheet" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Quản lý bài học | CODEHUBT Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/AdminStatic/css/admin-theme.css}" rel="stylesheet"/>
 </head>
-<body class="sb-nav-fixed">
+<body>
 
-<!-- Header -->
-<div th:replace="~{AdminTemplates/layout/header :: header}"></div>
+<div th:replace="~{AdminTemplates/layout/sidebar :: sidebar('lesson')}"></div>
 
-<div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            <div class="sb-sidenav-menu">
+<div class="admin-wrapper" style="margin-left: var(--sidebar-width);">
+    <div th:replace="~{AdminTemplates/layout/header :: header('Quản lý bài học', 'lesson')}"></div>
 
-                <!-- Sidebar -->
-                <div th:replace="~{AdminTemplates/layout/sidebar :: sidebar}"></div>
+    <main class="admin-content">
+        <div class="page-header d-flex justify-between align-center">
+            <div>
+                <h1 class="page-title">Bài học</h1>
+                <p class="page-subtitle">Quản lý toàn bộ bài học trong hệ thống.</p>
             </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                CODEHUBT
-            </div>
-        </nav>
-    </div>
+            <button class="btn-admin btn-primary-admin" onclick="AdminNotify.openModal('modal-add-lesson')">
+                <i class="fas fa-plus"></i> Thêm bài học
+            </button>
+        </div>
 
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-4">
-                <h1 class="mt-4">LESSON</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">LESSON</li>
-                </ol>
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <span class="admin-card-title">Danh sách bài học</span>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-lesson" placeholder="Tìm kiếm bài học..." oninput="filterLessons(this.value)"/>
+                </div>
             </div>
-            <button onclick="showAddlessonFormOnly()" class="btn btn-primary">Create a Lesson</button>
-            <div id="CourseLessonList">
-                <p>Đang tải Câu hỏi </p>
+            <div id="CourseLessonList" class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tiêu đề</th>
+                            <th>Khóa học</th>
+                            <th>Loại</th>
+                            <th>Thời lượng</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lessonTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">
+                                <i class="fas fa-spinner fa-spin"></i> Đang tải...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
 
-            <div class="form-container" id="lesson_add" style="display: none">
-                <h2>Thêm Bài Học Mới</h2>
-                <form id="lesson-form-add">
-                    <label type="text" class="form-field">Tiêu Đề</label>
-                    <input type="text" name="title" required placeholder="Nhập Tiêu Đề Cho Câu Hỏi" class="form-field">
+        <div th:replace="~{AdminTemplates/layout/footer :: footer}"></div>
+    </main>
+</div>
 
-                    <div id="courseLabel">
-                        <label class="form-field" id="">Khóa Học Đi Cùng</label>
-                        <select name="course" id="Course" class="form-field">
-                            <option value="tong-quat-khoa-hoc-chung">Chọn Khóa Học</option>
+<!-- MODAL: ADD LESSON -->
+<div class="modal-overlay" id="modal-add-lesson">
+    <div class="modal-box modal-lg">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-book-open" style="color:var(--primary);margin-right:8px"></i>Thêm bài học mới</span>
+            <button class="modal-close" onclick="AdminNotify.closeModal('modal-add-lesson')">×</button>
+        </div>
+        <div class="modal-body">
+            <form id="lesson-form-add" onsubmit="submitAddLesson(event)">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Tiêu đề *</label>
+                        <input class="form-control-admin" type="text" name="title" required placeholder="Nhập tiêu đề bài học"/>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Khóa học *</label>
+                        <select name="course" id="Course" class="form-control-admin">
+                            <option value="">— Chọn khóa học —</option>
                         </select>
                     </div>
-
-                    <label type="text" class="form-field">Mô Tả Câu Hỏi</label>
-                    <textarea name="description" placeholder="Nhập Mô Tả Câu Hỏi" class="form-field"></textarea>
-                    <label type="text" class="form-field" > Content</label>
-                    <input name="content" class="form-field">
-
-                    <label class="form-field">Loại Bài Học</label>
-                    <select name="type" class="form-field">
-                        <option name="video">Video</option>
-                        <option name="text">text</option>
-                        <option name="quiz">quiz</option>
-                        <option name="assignment">assignment</option>
-                        <option name="coding">coding</option>
-                    </select>
-
-                    <label class="form-field">Thời Gian</label>
-                    <input name="duration" type="number" id="duration" min="1" class="form-field">
-
-                    <div class="image-upload">
-                        <label for="image">Ảnh:</label>
-                        <input type="file" name="image" id="image" class="custom-file-input" accept="image/*">
-                        <span class="file-name" id="file-name">Chưa có file nào được chọn</span>
-                        <img id="preview" style="display:none; width:100px;">
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Mô tả</label>
+                        <textarea class="form-control-admin" name="description" rows="3" placeholder="Mô tả ngắn về bài học..."></textarea>
                     </div>
-                    <label class="form-field">Thứ Tự Sắp Xếp </label>
-                    <input name="OrderIndex" type="number" id="OrderIndex" min="1" class="form-field">
-
-                    <div class="button-group">
-                        <button type="submit" id="submitlessonadd">SAVE</button>
-                        <button type="button" onclick="cancelAddLesson()">Exit</button>
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Content (URL / nội dung)</label>
+                        <input class="form-control-admin" name="content" placeholder="Link video hoặc nội dung"/>
                     </div>
-                </form>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <div th:replace="~{AdminTemplates/layout/footer :: footer}"></div>
+                    <div class="form-group">
+                        <label class="form-label">Loại bài học</label>
+                        <select name="type" class="form-control-admin">
+                            <option value="video">Video</option>
+                            <option value="text">Text</option>
+                            <option value="quiz">Quiz</option>
+                            <option value="assignment">Assignment</option>
+                            <option value="coding">Coding</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Thời lượng (phút)</label>
+                        <input class="form-control-admin" name="duration" type="number" min="1" placeholder="30"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Thứ tự sắp xếp</label>
+                        <input class="form-control-admin" name="OrderIndex" type="number" min="1" placeholder="1"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ảnh bài học</label>
+                        <input class="form-control-admin" type="file" name="image" id="lesson-image" accept="image/*"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin btn-outline-admin" onclick="AdminNotify.closeModal('modal-add-lesson')">Hủy</button>
+            <button class="btn-admin btn-primary-admin" onclick="document.getElementById('lesson-form-add').requestSubmit()">
+                <i class="fas fa-save"></i> Lưu bài học
+            </button>
+        </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script th:src="@{/AdminStatic/js/scripts.js}"></script>
-<script th:src="@{/AdminStatic/js/lesson.js}"></script>
+<!-- MODAL: EDIT LESSON -->
+<div class="modal-overlay" id="modal-edit-lesson">
+    <div class="modal-box modal-lg">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-pen" style="color:var(--primary);margin-right:8px"></i>Chỉnh sửa bài học</span>
+            <button class="modal-close" onclick="AdminNotify.closeModal('modal-edit-lesson')">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-lessonId"/>
+            <div class="form-group">
+                <label class="form-label">Tiêu đề *</label>
+                <input class="form-control-admin" type="text" id="edit-lessonTitle" placeholder="Tiêu đề bài học"/>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Mô tả</label>
+                <textarea class="form-control-admin" id="edit-lessonDesc" rows="3" placeholder="Mô tả bài học"></textarea>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div class="form-group">
+                    <label class="form-label">Loại bài học</label>
+                    <select class="form-control-admin" id="edit-lessonType">
+                        <option value="video">Video</option>
+                        <option value="text">Text</option>
+                        <option value="quiz">Quiz</option>
+                        <option value="assignment">Assignment</option>
+                        <option value="coding">Coding</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Thời lượng (phút)</label>
+                    <input class="form-control-admin" type="number" id="edit-lessonDuration" min="1" placeholder="30"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Content (URL / nội dung)</label>
+                <input class="form-control-admin" type="text" id="edit-lessonContent" placeholder="Link video hoặc nội dung"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin btn-outline-admin" onclick="AdminNotify.closeModal('modal-edit-lesson')">Hủy</button>
+            <button class="btn-admin btn-primary-admin" onclick="submitEditLesson()">
+                <i class="fas fa-save"></i> Cập nhật
+            </button>
+        </div>
+    </div>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<!--<script th:src="@{/AdminStatic/js/chart-area-demo.js}"></script>-->
-<!--<script th:src="@{/AdminStatic/js/chart-bar-demo.js}"></script>-->
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script  th:src="@{/AdminStatic/js/datatables-simple-demo.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/AdminStatic/js/admin-notify.js}"></script>
+<script th:src="@{/AdminStatic/js/lesson.js}"></script>
 </body>
 </html>
