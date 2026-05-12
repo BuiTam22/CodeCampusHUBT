@@ -100,6 +100,7 @@ public class JwtFilter extends OncePerRequestFilter { // Kế thừa từ OncePe
                 path.equals("/api/user/reset-password") ||
                 path.equals("/api/user/logout") || // Kiểm tra endpoint đăng xuất API
                 path.startsWith("/api/test/") ||
+                path.startsWith("/api/internal/") || // Internal service-to-service calls (Judge Service callback)
                 path.equals("/login/show") ||     // Kiểm tra endpoint trang đăng nhập
                 path.startsWith("/AdminStatic/") || // Kiểm tra tài nguyên static cho admin
                 path.startsWith("/ClientStatic/") ||  // Kiểm tra tài nguyên static cho client
