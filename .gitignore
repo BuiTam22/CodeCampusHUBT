@@ -1,5 +1,8 @@
 HELP.md
 target/
+
+# Judge Service có repo git riêng
+judge-service/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
