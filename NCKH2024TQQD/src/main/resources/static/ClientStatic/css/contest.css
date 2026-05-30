@@ -46,11 +46,16 @@
   font-size: 20px;
   position: relative;
   padding: 5px 0;
-  transition: color 0.3s;
+  text-decoration: none;
+  transition: color 0.3s, border-color 0.3s;
 }
-.section-two .inner-classify ul li a:focus,
-.section-two .inner-classify ul li a:active{
+.section-two .inner-classify ul li a.active{
+  color: #007bff;
+  font-weight: 700;
   border-bottom: 2px solid #007bff;
+}
+.section-two .inner-classify ul li a:hover{
+  color: #007bff;
 }
 .section-two .inner-search input{
   padding: 10px;

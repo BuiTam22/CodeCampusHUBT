@@ -1,7 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.controller.Client.Lesson;
 
-import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
-import com.codecampushubt.NCKH2024TQQD.dao.LessonRepository;
+import com.codecampushubt.NCKH2024TQQD.Constant.Constants;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.LessonShowDTO;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,10 +41,10 @@ public class LessonCommon {
         if(search!=null || status!=null || difficulty!=null){
             // lấy moduleID là 1 cố định vì đây là lấy ra module common chứa các lessoncommon
             // truyền vào Param search
-            lessons = lessonService.getLessonShowDTOByModuleIDAndSlug(Constant.ID_MODULE_COMMON, search);
+            lessons = lessonService.getLessonShowDTOByModuleIDAndSlug(Constants.ID_MODULE_COMMON, search);
         }else{
             // lấy moduleID là 1 cố định vì đây là lấy ra module common chứa các lessoncommon
-            lessons = lessonService.getLessonShowDTO(Constant.ID_MODULE_COMMON);
+            lessons = lessonService.getLessonShowDTO(Constants.ID_MODULE_COMMON);
         }
 
         LOGGER.info("lessons: {}", lessons);

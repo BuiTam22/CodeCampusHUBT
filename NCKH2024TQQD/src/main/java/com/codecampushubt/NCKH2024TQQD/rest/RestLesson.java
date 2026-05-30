@@ -1,6 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.rest;
 
-import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
+import com.codecampushubt.NCKH2024TQQD.Constant.Constants;
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.LessonDTO.*;
 import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
@@ -10,7 +10,6 @@ import com.codecampushubt.NCKH2024TQQD.service.CourseModuleServices.CourseModule
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import com.codecampushubt.NCKH2024TQQD.service.UserServices.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/lesson")
@@ -72,7 +70,7 @@ public class RestLesson {
                     .orElseThrow(() -> new RuntimeException("User not found"));
             lesson.setCreator(user);
 
-            CourseModule module = courseModuleService.findByModuleID(Constant.ID_MODULE_COMMON)
+            CourseModule module = courseModuleService.findByModuleID(Constants.ID_MODULE_COMMON)
                     .orElseThrow(() -> new RuntimeException("Module not found"));
             lesson.setModule(module);
 

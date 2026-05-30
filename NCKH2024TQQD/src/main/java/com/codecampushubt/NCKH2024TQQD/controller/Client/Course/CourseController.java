@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -26,8 +27,11 @@ public class CourseController {
 
 
     @GetMapping("")
-    public String showCourse(Model model, HttpServletRequest request){
-        List<CourseShowDTO> courses = courseService.getCourseShowDTO();
+    public String showCourse(
+            @RequestParam(required = false) String search,
+            Model model,
+            HttpServletRequest request) {
+        List<CourseShowDTO> courses = courseService.getClientCourseShowDTO(search);
         model.addAttribute("courses", courses);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/course/show";
@@ -37,7 +41,7 @@ public class CourseController {
     public String showDetailCourse(@PathVariable("slug") String theSlug, Model model, HttpServletRequest request){
         CourseShowDTO course = courseService.getCourseShowDTOBySlug(theSlug);
         List<CourseModuleDTO> courseModules = courseService.getCourseModuleByCourseSlug(theSlug);
-        List<CourseShowDTO> relatedCourses = courseService.getCourseShowDTO();
+        List<CourseShowDTO> relatedCourses = courseService.getClientCourseShowDTO(null);
         model.addAttribute("course", course);
         model.addAttribute("courseModules", courseModules);
         model.addAttribute("relatedCourses", relatedCourses);
