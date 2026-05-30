@@ -1,5 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.service.CourseServices;
 
+import com.codecampushubt.NCKH2024TQQD.Constant.Constants;
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dao.CourseModuleRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseModuleDTO;
@@ -59,6 +60,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseShowDTO> getCourseShowDTO() {
         return courseRepository.getCourseShowDTO();
+    }
+
+    @Override
+    public List<CourseShowDTO> getClientCourseShowDTO(String search) {
+        return courseRepository.getClientCourseShowDTO(Constants.ID_MODULE_COMMON, search);
     }
 
     @Override

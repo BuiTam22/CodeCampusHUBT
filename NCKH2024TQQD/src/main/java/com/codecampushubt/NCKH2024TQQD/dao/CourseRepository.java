@@ -22,6 +22,19 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO(" +
             "c.courseID, c.title, c.slug, c.description, c.shortDescription, " +
             "c.instructor.userName, c.rating, c.price, c.discountPrice, c.imageUrl) " +
+            "FROM Course c " +
+            "WHERE c.deletedAt IS NULL " +
+            "AND c.courseID NOT IN (" +
+            "  SELECT cm.course.courseID FROM CourseModule cm WHERE cm.moduleID = :commonModuleId" +
+            ") " +
+            "AND (:search IS NULL OR :search = '' OR LOWER(c.title) LIKE LOWER(CONCAT('%', :search, '%')))")
+    List<CourseShowDTO> getClientCourseShowDTO(
+            @Param("commonModuleId") Long commonModuleId,
+            @Param("search") String search);
+
+    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO(" +
+            "c.courseID, c.title, c.slug, c.description, c.shortDescription, " +
+            "c.instructor.userName, c.rating, c.price, c.discountPrice, c.imageUrl) " +
             "FROM Course c WHERE c.slug = :slug")
     CourseShowDTO getCourseShowDTOBySlug(@Param("slug") String slug);
 

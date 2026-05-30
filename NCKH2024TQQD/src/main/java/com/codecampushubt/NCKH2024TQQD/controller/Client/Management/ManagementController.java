@@ -1,6 +1,6 @@
 package com.codecampushubt.NCKH2024TQQD.controller.Client.Management;
 
-import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
+import com.codecampushubt.NCKH2024TQQD.Constant.Constants;
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dto.CodingExerciseDTO.CodingExerciseDTO;
 import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseListShowDTO;
@@ -49,7 +49,7 @@ public class ManagementController {
 
     @GetMapping("/contest")
     public String showCourse(Model model, HttpServletRequest request){
-        List<ContestManagementShowDTO> contests = lessonService.getContestManagementShowDTO(Constant.ID_MODULE_COMMON, UserContext.getUsername());
+        List<ContestManagementShowDTO> contests = lessonService.getContestManagementShowDTO(Constants.ID_MODULE_COMMON, UserContext.getUsername());
         model.addAttribute("contests",contests);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest";
@@ -57,7 +57,7 @@ public class ManagementController {
 
     @GetMapping("/contest/challenge")
     public String showChallenge(Model model, HttpServletRequest request){
-        List<ContestManagementShowDTO> contests = lessonService.getContestManagementShowDTO(Constant.ID_MODULE_COMMON, UserContext.getUsername());
+        List<ContestManagementShowDTO> contests = lessonService.getContestManagementShowDTO(Constants.ID_MODULE_COMMON, UserContext.getUsername());
         model.addAttribute("contests",contests);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/challenge";
@@ -105,7 +105,7 @@ public class ManagementController {
 
     @GetMapping("/contest/edit/{lessonSlug}")
     public String editConteset(@PathVariable("lessonSlug") String theSlug, Model model, HttpServletRequest request){
-        EditLessonDTO lesson = lessonService.getEditLessonDTO(Constant.ID_MODULE_COMMON, theSlug);
+        EditLessonDTO lesson = lessonService.getEditLessonDTO(Constants.ID_MODULE_COMMON, theSlug);
         model.addAttribute("lesson", lesson);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest-edit";
