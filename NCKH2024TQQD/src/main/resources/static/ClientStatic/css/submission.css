@@ -183,4 +183,137 @@ width: 100%;
 }
 /*end css cho result detail*/
 
+/* Modern submissions */
+html,
+body,
+.page-wrapper {
+  background: var(--color-bg, #f5f7fb);
+  color: var(--color-text, #111827);
+  font-family: var(--font, sans-serif);
+}
+
+.inner-head {
+  margin-top: 116px;
+  padding: 28px 0;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+}
+
+.inner-title {
+  margin-bottom: 0;
+  color: #ffffff;
+  font-size: 30px;
+  line-height: 1.25;
+}
+
+.section-one {
+  padding: 30px 0 64px;
+  background: var(--color-bg, #f5f7fb);
+}
+
+.inner-box,
+.help-box,
+.submission-detail .card {
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.custom-table {
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.custom-table thead th {
+  padding: 14px 12px;
+  background: #f8fafc;
+  color: #475569;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.custom-table tbody td {
+  padding: 15px 12px;
+  border-top: 1px solid #edf2f7;
+  color: #334155;
+}
+
+.custom-table tbody tr:hover td {
+  background: #f8fafc;
+}
+
+.result-false,
+.result-true {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 112px;
+  padding: 5px 10px !important;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.result-true {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.result-false {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.view-results {
+  color: var(--color-primary, #2563eb);
+  font-weight: 800;
+}
+
+.help-title {
+  color: var(--color-text, #111827);
+  font-weight: 800;
+}
+
+.help-link {
+  padding: 10px 0;
+  color: var(--color-primary, #2563eb);
+  font-weight: 700;
+}
+
+.help-link i {
+  color: var(--color-primary, #2563eb);
+}
+
+hr {
+  height: 1px;
+  background-color: var(--color-border, #e5e7eb);
+}
+
+.submission-detail .card {
+  overflow: hidden;
+}
+
+.submission-detail .card-header {
+  background: var(--color-primary, #2563eb) !important;
+}
+
+.code-section,
+.code-section pre {
+  border-color: var(--color-border, #e5e7eb);
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .inner-head {
+    margin-top: 116px;
+  }
+
+  .inner-box {
+    overflow-x: auto;
+  }
+}
 

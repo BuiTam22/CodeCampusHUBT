@@ -95,3 +95,128 @@
 }
 /*ket thuc them hieu ung khi tro chuot vao management contest*/
 
+/* Modern management pages */
+body {
+  background: var(--color-bg, #f5f7fb);
+  color: var(--color-text, #111827);
+  font-family: var(--font, sans-serif);
+}
+
+.section-one {
+  margin-top: 64px;
+  padding: 36px 24px;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+}
+
+.section-one .inner-title {
+  max-width: 1180px;
+  margin: 0 auto;
+  color: #ffffff;
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.section-two {
+  max-width: 1180px;
+  margin: 28px auto 0;
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.section-two .inner-role {
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 15px;
+}
+
+.section-two .inner-role .inner-contest,
+.section-two .inner-role .inner-challenges {
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #475569;
+  font-weight: 800;
+}
+
+.section-two .inner-role .tab-active,
+.section-two .inner-role .inner-contest:hover,
+.section-two .inner-role .inner-challenges:hover {
+  border-bottom: 0;
+  background: #eff6ff;
+  color: var(--color-primary, #2563eb);
+}
+
+.section-two .inner-search input {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  outline: none;
+}
+
+.section-two .inner-title {
+  color: var(--color-muted, #64748b);
+}
+
+.section-three {
+  max-width: 1180px;
+  margin: 22px auto 56px;
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.section-three table,
+.section-three table tr th,
+.section-three table td {
+  border: 0;
+}
+
+.section-three table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.section-three table th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.section-three table td {
+  color: #334155;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.clickable-row:hover {
+  background: #f8fafc;
+}
+
+.inner-button button {
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-primary, #2563eb);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.inner-button button:hover {
+  background: var(--color-primary-dark, #1d4ed8);
+}
+
+@media (max-width: 768px) {
+  .section-two,
+  .section-three {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+}

@@ -2,7 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeHubt Login</title>
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/login.css}">
 </head>
 
@@ -55,9 +58,8 @@
         <div class="wrap">
             <button type="submit" id="submitRegister">
                 <span class="button-text">Submit</span>
-                <button onclick="showFormLogin()">Back to Login</button>
-
             </button>
+            <button type="button" class="secondary-button" onclick="showFormLogin()">Back to Login</button>
         </div>
 
     </form>
@@ -89,9 +91,8 @@
         <div class="wrap">
             <button type="submit" id="submitforgot">
                 <span class="button-text">Submit</span>
-                <button onclick="showFormLogin()">Back to Login</button>
-
             </button>
+            <button type="button" class="secondary-button" onclick="showFormLogin()">Back to Login</button>
         </div>
     </form>
 
