@@ -2,11 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeHubt - Essay</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
           integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
           crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/problem-show.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/problem_nav.css}">
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}">
@@ -56,6 +58,13 @@
 <!-- Buttons -->
 <div class="button-group">
     <button class="submit-button">Nộp Bài</button>
+</div>
+
+<!-- Kết quả chấm bài -->
+<div class="test-cases" style="padding: 0 2rem;">
+    <div class="test-result" id="essayResultContainer" style="display: none;">
+        <!-- JS sẽ render kết quả chấm essay ở đây -->
+    </div>
 </div>
 
 <!-- Footer -->

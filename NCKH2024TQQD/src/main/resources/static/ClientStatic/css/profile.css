@@ -481,3 +481,51 @@
   font-size: .72rem;
 }
 
+/* Modern profile refinement */
+body {
+  background: var(--color-bg, #f5f7fb);
+  font-family: var(--font, sans-serif);
+}
+
+.profile-hero {
+  margin-top: 64px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 65%, #0f766e 100%);
+}
+
+.profile-hero::before,
+.profile-hero::after {
+  display: none;
+}
+
+.profile-avatar {
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.25);
+}
+
+.profile-progress {
+  background: var(--color-bg, #f5f7fb);
+}
+
+.lesson-card {
+  border-radius: var(--radius-card, 8px) var(--radius-card, 8px) 0 0;
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.lesson-card:hover,
+.lesson-card.active,
+.exercise-panel.open {
+  box-shadow: var(--shadow-card, 0 10px 26px rgba(15, 23, 42, 0.1));
+  border-color: #bfdbfe;
+}
+
+.exercise-title:hover,
+.btn-view-lesson:hover,
+.lesson-toggle-icon.rotated,
+.progress-title i,
+.profile-meta-item i {
+  color: var(--color-primary, #2563eb);
+}
+
+.progress-bar-fill {
+  background: linear-gradient(90deg, var(--color-primary, #2563eb), var(--color-accent, #10b981));
+}

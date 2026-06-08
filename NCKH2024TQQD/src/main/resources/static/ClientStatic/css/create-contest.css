@@ -100,3 +100,135 @@ input:focus {
   100% { opacity: 1; }
 }
 
+/* Modern create/edit contest form */
+body {
+  background: var(--color-bg, #f5f7fb);
+  color: var(--color-text, #111827);
+  font-family: var(--font, sans-serif);
+}
+
+.section-one {
+  margin-top: 64px;
+  padding: 38px 24px;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+}
+
+.section-one .inner-title,
+.section-one .inner-desc {
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-one .inner-title {
+  color: #ffffff;
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.section-one .inner-desc {
+  color: #dbeafe;
+  line-height: 1.7;
+}
+
+.section-two {
+  padding: 32px 18px 64px;
+}
+
+.section-two .container {
+  max-width: 980px;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+form {
+  max-width: none;
+  margin-top: 0;
+}
+
+.inner-content {
+  grid-template-columns: 180px 1fr;
+  gap: 12px 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.inner-content .at,
+.section-two .inner-content .itc {
+  margin-left: 0;
+}
+
+label {
+  color: #334155;
+  font-weight: 800;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="file"],
+.section-two .inner-content select {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--color-text, #111827);
+  outline: none;
+}
+
+input[type="time"] {
+  width: 100%;
+}
+
+input:focus,
+.section-two .inner-content select:focus {
+  border-color: var(--color-primary, #2563eb);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.section-two .inner-check {
+  justify-content: flex-start;
+  gap: 22px;
+  padding: 10px 0;
+}
+
+.inner-button {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.inner-button button {
+  border: 0;
+  background: var(--color-primary, #2563eb);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.inner-button button:hover {
+  background: var(--color-primary-dark, #1d4ed8);
+}
+
+.inner-button .button-core {
+  margin-left: 0;
+  background: #eef2ff;
+  color: var(--color-primary, #2563eb);
+}
+
+@media (max-width: 720px) {
+  .inner-content {
+    grid-template-columns: 1fr;
+  }
+
+  .inner-button {
+    flex-direction: column;
+  }
+
+  .inner-button button {
+    width: 100%;
+  }
+}

@@ -411,3 +411,118 @@
 .sidebar-social .fa-x-twitter { color: #000; }
 .sidebar-social .fa-square-instagram { color: #e1306c; }
 .sidebar-social .fa-youtube { color: #ff0000; }
+
+/* Modern blog detail refresh */
+body {
+    background: var(--color-bg, #f5f7fb);
+    color: var(--color-text, #111827);
+    font-family: var(--font, sans-serif);
+}
+
+.blog-detail-wrapper {
+    padding-top: 104px;
+}
+
+.blog-detail-breadcrumb {
+    color: var(--color-muted, #64748b);
+}
+
+.blog-detail-breadcrumb a {
+    color: var(--color-primary, #2563eb);
+    font-weight: 700;
+}
+
+.blog-detail-main {
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: var(--radius-card, 8px);
+    box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.blog-detail-thumbnail {
+    border-radius: var(--radius-card, 8px);
+    box-shadow: none;
+}
+
+.blog-detail-category {
+    background: #dbeafe;
+    color: var(--color-primary, #2563eb);
+    letter-spacing: 0;
+}
+
+.blog-detail-title {
+    color: var(--color-text, #111827);
+    font-size: 40px;
+    line-height: 1.18;
+}
+
+.blog-detail-meta {
+    color: var(--color-muted, #64748b);
+    border-bottom-color: var(--color-border, #e5e7eb);
+}
+
+.blog-detail-meta i {
+    color: var(--color-primary, #2563eb);
+}
+
+.blog-detail-content {
+    color: #334155;
+}
+
+.blog-detail-actions,
+.blog-comment-section {
+    border-top-color: var(--color-border, #e5e7eb);
+}
+
+.blog-detail-actions .btn-action,
+.comment-like-btn,
+.blog-edit-top-btn {
+    border-radius: 8px;
+    font-weight: 800;
+}
+
+.comment-form textarea,
+.blog-edit-box .form-control {
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: 8px;
+}
+
+.comment-item,
+.blog-edit-box,
+.sidebar-card {
+    border: 1px solid var(--color-border, #e5e7eb);
+    border-radius: var(--radius-card, 8px);
+    box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.sidebar-card .sidebar-title,
+.comment-title,
+.blog-edit-title {
+    color: var(--color-text, #111827);
+    font-weight: 800;
+}
+
+.popular-post-item:hover {
+    color: var(--color-primary, #2563eb);
+}
+
+@media (max-width: 960px) {
+    .blog-detail-layout {
+        flex-direction: column;
+    }
+
+    .blog-detail-sidebar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .blog-detail-main {
+        padding: 20px;
+    }
+
+    .blog-detail-title {
+        font-size: 30px;
+    }
+}

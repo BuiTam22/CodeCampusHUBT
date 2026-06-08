@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Về Chúng Tôi - CodeHUBT</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}">
   <style>
     :root {
         --primary-color: #2563eb;
@@ -603,6 +604,59 @@
         .nav-links {
             display: none;
         }
+    }
+    /* Modern refresh */
+    body {
+        font-family: 'Inter', 'Roboto', system-ui, sans-serif;
+        background: #f5f7fb;
+    }
+
+    header {
+        background: rgba(255, 255, 255, 0.94);
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        backdrop-filter: blur(14px);
+    }
+
+    .navbar {
+        min-height: 64px;
+    }
+
+    .hero {
+        background:
+          linear-gradient(90deg, rgba(15, 23, 42, 0.88), rgba(30, 64, 175, 0.55)),
+          var(--primary-color);
+    }
+
+    .hero h1 {
+        letter-spacing: 0;
+    }
+
+    .value-card,
+    .team-member,
+    .timeline-content {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .value-card:hover,
+    .team-member:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.1);
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    }
+
+    .white-button {
+        border-radius: 8px;
+        font-weight: 800;
+    }
+
+    footer {
+        background: #0f172a;
     }
   </style>
 </head>

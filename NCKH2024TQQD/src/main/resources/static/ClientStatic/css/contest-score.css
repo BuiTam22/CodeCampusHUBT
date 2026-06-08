@@ -45,3 +45,62 @@
   max-width: 200px;
 }
 /* end section three */
+
+/* Modern contest score */
+body {
+  background: var(--color-bg, #f5f7fb);
+  color: var(--color-text, #111827);
+  font-family: var(--font, sans-serif);
+}
+
+.section-one {
+  margin-top: 64px;
+  padding: 36px 24px;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+}
+
+.section-one .inner-title {
+  max-width: 1180px;
+  margin: 0 auto;
+  color: #ffffff;
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.section-three {
+  max-width: 1180px;
+  margin: 28px auto 64px;
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.section-three table {
+  margin-top: 0;
+  font-family: var(--font, sans-serif);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.section-three th,
+.section-three td {
+  border: 0;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.section-three th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.section-three td {
+  color: #334155;
+}
+
+.section-three tr:hover {
+  background: #f8fafc;
+}
