@@ -3,17 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Score Contest</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
-      crossorigin="anonymous"
-    />
+    <title>Quản lý Chấm Điểm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" th:href="@{/ClientStatic/css/base.css}" />
     <link rel="stylesheet" th:href="@{/ClientStatic/css/footer.css}" />
     <link rel="stylesheet" th:href="@{/ClientStatic/css/header.css}" />
@@ -22,47 +14,148 @@
   <body>
     <div class="page-wrapper">
       <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
-      <div class="section-one">
-        <div class="inner-title">Quản lý Điểm</div>
-      </div>
-      <div class="section-three">
-        <div class="container">
-          <div class="row">
-            <table>
-              <tr>
-                <th>lesson title</th>
-                <th>User</th>
-                <th>Time</th>
-                <th>Score</th>
-                <th>Status</th>
-              </tr>
 
-              <!-- Lặp qua danh sách submissions -->
-              <tr th:each="submission : ${submissions}">
-                <td th:text="${submission.lessonTitle}">Lesson Title</td>
-                <td th:text="${submission.userName}">User</td>
-                <td th:text="${#temporals.format(submission.time, 'dd/MM/yyyy HH:mm')}">Time</td>
-                <td th:text="${submission.score}">Score</td>
-                <td th:text="${submission.status}">Status</td>
-              </tr>
-            </table>
+      <!-- Hero Section -->
+      <section class="score-hero">
+        <div class="container">
+          <div class="hero-content">
+            <span class="hero-badge">Administration</span>
+            <h1 class="hero-title">Quản Lý Điểm Số</h1>
+            <p class="hero-subtitle">Thực hiện chấm điểm chi tiết cho các bài tự luận (Essay) của học viên.</p>
           </div>
         </div>
-      </div>
+      </section>
+
+      <!-- Main Content -->
+      <main class="score-main">
+        <div class="container">
+
+          <!-- Essay Details Section (Only shows for essay lessons) -->
+          <div class="essay-grading-section" th:if="${lessonType != null and lessonType.equalsIgnoreCase('essay')}">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+               <h2 class="section-heading mb-0"><i class="fas fa-edit text-primary mr-2"></i>Chấm Điểm Chi Tiết (Tự Luận)</h2>
+            </div>
+            <p class="text-muted mb-4">Mở (Click) vào thẻ của từng sinh viên để xem chi tiết bài làm, nhận xét AI và thực hiện cập nhật điểm thật.</p>
+
+            <div class="essay-cards">
+              <!-- Lặp qua các bài nộp essay chi tiết -->
+              <div class="essay-card" th:each="detail, stat : ${essayDetails}">
+                
+                <!-- Card Header (Click to expand) -->
+                <div class="essay-card-header" data-toggle="collapse" th:data-target="'#collapse-' + ${stat.index}" aria-expanded="false" th:aria-controls="'collapse-' + ${stat.index}">
+                  <div class="header-left">
+                    <div class="student-avatar">
+                      <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="student-info">
+                      <h4 class="student-name" th:text="${detail.userName}">Tên Sinh Viên</h4>
+                      <span class="exercise-title" th:text="${detail.exerciseTitle}">Tên Bài Tập</span>
+                    </div>
+                  </div>
+                  <div class="header-right">
+                    <div class="submission-time text-muted mr-4">
+                      <i class="far fa-clock"></i> <span th:text="${#temporals.format(detail.submittedAt, 'dd/MM/yyyy HH:mm')}">Time</span>
+                    </div>
+                    <div class="current-score-badge">
+                      <span class="score-label">Điểm</span>
+                      <span class="score-value" th:id="'display-score-' + ${detail.submissionID}" th:text="${detail.score != null ? detail.score : 'N/A'}">N/A</span>
+                    </div>
+                    <i class="fas fa-chevron-down expand-icon"></i>
+                  </div>
+                </div>
+
+                <!-- Card Body (Collapsible) -->
+                <div th:id="'collapse-' + ${stat.index}" class="collapse essay-card-body">
+                  <div class="body-content">
+                    
+                    <div class="row">
+                      <!-- Left Column: Student Answer -->
+                      <div class="col-lg-7">
+                        <div class="content-box answer-box">
+                          <h5 class="box-title"><i class="fas fa-file-alt"></i> Bài làm của sinh viên</h5>
+                          <div class="box-inner text-content" th:text="${detail.answerText}">
+                            Nội dung bài làm...
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Right Column: AI Feedback & Grading -->
+                      <div class="col-lg-5">
+                        <div class="content-box feedback-box mb-4">
+                          <h5 class="box-title ai-title"><i class="fas fa-robot"></i> AI Feedback</h5>
+                          <div class="box-inner feedback-content" th:text="${detail.feedback != null ? detail.feedback : 'Không có nhận xét từ AI.'}">
+                            Nhận xét của AI...
+                          </div>
+                        </div>
+
+                        <!-- Grading Form -->
+                        <div class="grading-form-container" style="background: #f0fdf4; border: 2px solid #22c55e;">
+                          <h5 class="box-title" style="background: #dcfce7; color: #166534; border-bottom: 1px solid #bbf7d0;"><i class="fas fa-check-double"></i> Cập Nhật Điểm Chính Thức</h5>
+                          <form class="grading-form" th:onsubmit="'return updateScore(event, ' + ${detail.submissionID} + ')'">
+                            <div class="form-group mb-3">
+                              <label class="font-weight-bold" style="color: #166534;">Điểm số (0-10):</label>
+                              <input type="number" class="form-control score-input w-100" th:id="'input-score-' + ${detail.submissionID}" th:value="${detail.score}" step="0.5" min="0" max="10" required placeholder="Nhập điểm..." />
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block btn-save-score" th:id="'btn-save-' + ${detail.submissionID}" style="font-size: 1.1rem; padding: 12px; background-color: #22c55e; border-color: #16a34a;">
+                              <i class="fas fa-save mr-2"></i> <b>Cập Nhật Điểm</b>
+                            </button>
+                            <div th:id="'toast-msg-' + ${detail.submissionID}" class="save-toast mt-3" style="display: none;"></div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+
+              </div>
+              <div th:if="${essayDetails == null or essayDetails.isEmpty()}" class="text-center py-5 text-muted">
+                <i class="fas fa-inbox fa-3x mb-3"></i>
+                <p>Chưa có bài nộp tự luận nào.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- General Score Overview Table -->
+          <div class="overview-section">
+            <h2 class="section-heading mb-4"><i class="fas fa-table text-success mr-2"></i>Tổng Quan Điểm Lesson</h2>
+            <div class="table-responsive score-table-wrapper">
+              <table class="table table-hover score-table">
+                <thead>
+                  <tr>
+                    <th><i class="fas fa-book mr-1"></i> Lesson Title</th>
+                    <th><i class="fas fa-user mr-1"></i> User</th>
+                    <th><i class="fas fa-clock mr-1"></i> Thời gian nộp</th>
+                    <th><i class="fas fa-star mr-1"></i> Tổng Điểm</th>
+                    <th><i class="fas fa-info-circle mr-1"></i> Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="submission : ${submissions}">
+                    <td th:text="${submission.lessonTitle}">Lesson Title</td>
+                    <td class="font-weight-bold text-primary" th:text="${submission.userName}">User</td>
+                    <td th:text="${#temporals.format(submission.time, 'dd/MM/yyyy HH:mm')}">Time</td>
+                    <td><span class="badge badge-success px-3 py-2" th:text="${submission.score}">Score</span></td>
+                    <td><span class="badge badge-info px-3 py-2" th:text="${submission.status}">Status</span></td>
+                  </tr>
+                  <tr th:if="${submissions == null or submissions.isEmpty()}">
+                    <td colspan="5" class="text-center py-4 text-muted">Chưa có bài nộp nào.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </main>
+
       <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
     </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/ClientStatic/js/manage-edit-lesson.js}"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-      crossorigin="anonymous"
-    ></script>
-
     <script th:src="@{/ClientStatic/js/script.js}"></script>
+    <script th:src="@{/ClientStatic/js/contest-score.js}"></script>
   </body>
 </html>

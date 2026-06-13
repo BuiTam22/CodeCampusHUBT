@@ -11,6 +11,7 @@ import com.codecampushubt.NCKH2024TQQD.entity.CourseLesson;
 import com.codecampushubt.NCKH2024TQQD.service.CodingExerciseServices.CodingExerciseService;
 import com.codecampushubt.NCKH2024TQQD.service.CodingSubmissionServices.CodingSubmissionService;
 import com.codecampushubt.NCKH2024TQQD.service.EssayExerciseServices.EssayExerciseService;
+import com.codecampushubt.NCKH2024TQQD.service.EssaySubmissionServices.EssaySubmissionService;
 import com.codecampushubt.NCKH2024TQQD.service.LessonServices.LessonService;
 import com.codecampushubt.NCKH2024TQQD.service.LessonSubmissionServices.LessonSubmissionService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,18 +33,21 @@ public class ManagementController {
     private final LessonSubmissionService lessonSubmissionService;
     private final CodingExerciseService codingExerciseService;
     private final EssayExerciseService essayExerciseService;
+    private final EssaySubmissionService essaySubmissionService;
 
     @Autowired
     public ManagementController(LessonService lessonService,
                                 CodingSubmissionService codingSubmissionService,
                                 LessonSubmissionService lessonSubmissionService,
                                 CodingExerciseService codingExerciseService,
-                                EssayExerciseService essayExerciseService) {
+                                EssayExerciseService essayExerciseService,
+                                EssaySubmissionService essaySubmissionService) {
         this.lessonService = lessonService;
         this.codingSubmissionService = codingSubmissionService;
         this.lessonSubmissionService = lessonSubmissionService;
         this.codingExerciseService = codingExerciseService;
         this.essayExerciseService = essayExerciseService;
+        this.essaySubmissionService = essaySubmissionService;
     }
 
 
@@ -116,6 +120,11 @@ public class ManagementController {
         Long lessonID = lessonService.findLessonIdBySlug(theSlug);
         List<LessonSubmissionDTO> submissionDTOs = lessonSubmissionService.getLessonSubmissionsByLessonId(lessonID);
 
+        if ("essay".equalsIgnoreCase(lessonType)) {
+            model.addAttribute("essayDetails", essaySubmissionService.getEssayScoreDetailsByLessonId(lessonID));
+        }
+
+        model.addAttribute("lessonType", lessonType);
         model.addAttribute("submissions", submissionDTOs);
         model.addAttribute("activePage", request.getRequestURI());
         return "ClientTemplates/management/contest-score";
