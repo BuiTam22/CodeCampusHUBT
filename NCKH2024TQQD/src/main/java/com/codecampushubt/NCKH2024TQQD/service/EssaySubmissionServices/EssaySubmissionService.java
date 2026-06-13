@@ -9,5 +9,5 @@ public interface EssaySubmissionService {
     EssaySubmission save(EssaySubmission submission);
     
     List<EssayScoreDetailDTO> getEssayScoreDetailsByLessonId(Long lessonId);
-    void updateScoreBySubmissionId(Long submissionId, Double score);
+    void updateTeacherReviewBySubmissionId(Long submissionId, Double finalScore, String teacherFeedback);
 }

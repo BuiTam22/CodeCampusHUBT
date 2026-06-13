@@ -93,19 +93,20 @@ public interface EssaySubmissionRepository extends JpaRepository<EssaySubmission
             es.answerText,
             es.feedback,
             es.score,
-            es.submittedAt
+            es.submittedAt,
+            es.finalScore,
+            es.teacherFeedBack
         )
         FROM EssaySubmission es
         JOIN es.exercise e
         JOIN e.lesson l
         JOIN es.user u
-        WHERE l.lessonID = :lessonId
+        WHERE e.lesson.lessonID = :lessonId
         ORDER BY u.userName, es.submittedAt DESC
     """)
     List<com.codecampushubt.NCKH2024TQQD.dto.SubmissionDTO.EssayScoreDetailDTO> getEssayScoreDetailsByLessonId(@Param("lessonId") Long lessonId);
 
     @Modifying
-    @Query("UPDATE EssaySubmission es SET es.score = :score WHERE es.submissionID = :submissionId")
-    void updateScoreBySubmissionId(@Param("submissionId") Long submissionId, @Param("score") Double score);
+    @Query("UPDATE EssaySubmission es SET es.finalScore = :finalScore, es.teacherFeedBack = :teacherFeedback WHERE es.submissionID = :submissionId")
+    void updateTeacherReviewBySubmissionId(@Param("submissionId") Long submissionId, @Param("finalScore") Double finalScore, @Param("teacherFeedback") String teacherFeedback);
 }
-

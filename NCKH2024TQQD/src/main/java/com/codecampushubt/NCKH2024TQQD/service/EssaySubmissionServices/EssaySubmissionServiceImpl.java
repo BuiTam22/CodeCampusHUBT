@@ -30,7 +30,7 @@ public class EssaySubmissionServiceImpl implements EssaySubmissionService{
 
     @Override
     @Transactional
-    public void updateScoreBySubmissionId(Long submissionId, Double score) {
-        essaySubmissionRepository.updateScoreBySubmissionId(submissionId, score);
+    public void updateTeacherReviewBySubmissionId(Long submissionId, Double finalScore, String teacherFeedback) {
+        essaySubmissionRepository.updateTeacherReviewBySubmissionId(submissionId, finalScore, teacherFeedback);
     }
 }
