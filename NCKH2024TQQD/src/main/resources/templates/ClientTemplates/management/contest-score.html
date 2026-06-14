@@ -21,7 +21,6 @@
           <div class="hero-content">
             <span class="hero-badge">Administration</span>
             <h1 class="hero-title">Quản Lý Điểm Số</h1>
-<!--            <p class="hero-subtitle">Thực hiện chấm điểm chi tiết cho các bài tự luận (Essay) của học viên.</p>-->
           </div>
         </div>
       </section>
@@ -30,19 +29,29 @@
       <main class="score-main">
         <div class="container">
 
-          <!-- Essay Details Section (Only shows for essay lessons) -->
-          <div class="essay-grading-section" th:if="${lessonType != null and lessonType.equalsIgnoreCase('essay')}">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-               <h2 class="section-heading mb-0"><i class="fas fa-edit text-primary mr-2"></i>Chấm Điểm Chi Tiết (Tự Luận)</h2>
+          <!-- ===================================================== -->
+          <!-- PHẦN 1: CHẤM ĐIỂM CHI TIẾT (chỉ hiển thị cho essay)  -->
+          <!-- Hiển thị TẤT CẢ submissions.                          -->
+          <!-- - Chưa chấm  → hiện form nhập điểm + nhận xét        -->
+          <!-- - Đã chấm     → hiện kết quả giáo viên đã chấm        -->
+          <!-- ===================================================== -->
+          <div class="essay-grading-section mb-5" th:if="${lessonType != null and lessonType.equalsIgnoreCase('essay')}">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h2 class="section-heading mb-0">
+                <i class="fas fa-edit text-primary mr-2"></i>Chấm Điểm Chi Tiết (Tự Luận)
+              </h2>
             </div>
-            <p class="text-muted mb-4">Mở (Click) vào thẻ của từng sinh viên để xem chi tiết bài làm, nhận xét AI và thực hiện cập nhật điểm thật.</p>
+            <p class="text-muted mb-4">Click vào từng thẻ để xem bài làm, nhận xét AI và thực hiện chấm điểm.</p>
 
             <div class="essay-cards">
-              <!-- Lặp qua các bài nộp essay chi tiết -->
               <div class="essay-card" th:each="detail, stat : ${essayDetails}">
-                
-                <!-- Card Header (Click to expand) -->
-                <div class="essay-card-header" data-toggle="collapse" th:data-target="'#collapse-' + ${stat.index}" aria-expanded="false" th:aria-controls="'collapse-' + ${stat.index}">
+
+                <!-- Card Header -->
+                <div class="essay-card-header"
+                     data-toggle="collapse"
+                     th:data-target="'#collapse-' + ${stat.index}"
+                     aria-expanded="false"
+                     th:aria-controls="'collapse-' + ${stat.index}">
                   <div class="header-left">
                     <div class="student-avatar">
                       <i class="fas fa-user-graduate"></i>
@@ -54,11 +63,21 @@
                   </div>
                   <div class="header-right">
                     <div class="submission-time text-muted mr-4">
-                      <i class="far fa-clock"></i> <span th:text="${#temporals.format(detail.submittedAt, 'dd/MM/yyyy HH:mm')}">Time</span>
+                      <i class="far fa-clock"></i>
+                      <span th:text="${#temporals.format(detail.submittedAt, 'dd/MM/yyyy HH:mm')}">Time</span>
                     </div>
-                    <div class="current-score-badge">
-                      <span class="score-label">Điểm</span>
-                      <span class="score-value" th:id="'display-score-' + ${detail.submissionID}" th:text="${detail.score != null ? detail.score : 'N/A'}">N/A</span>
+                    <!-- Badge trạng thái: hiện điểm GV nếu đã chấm, hiện nút chấm nếu chưa -->
+                    <div th:if="${detail.finalScore != null}" class="current-score-badge" style="background:#e0f2fe; border-color:#bae6fd;">
+                      <span class="score-label" style="color:#0369a1;">Điểm GV</span>
+                      <span class="score-value" style="color:#0284c7;" th:text="${detail.finalScore}">N/A</span>
+                    </div>
+                    <div th:unless="${detail.finalScore != null}" class="d-flex align-items-center gap-2">
+                      <span class="badge badge-status-pending px-3 py-2">Chưa chấm</span>
+                      <button type="button" class="btn-grade-now"
+                              th:data-target="'#collapse-' + ${stat.index}"
+                              onclick="openCard(event, this)">
+                        <i class="fas fa-pen mr-1"></i> Chấm bài
+                      </button>
                     </div>
                     <i class="fas fa-chevron-down expand-icon"></i>
                   </div>
@@ -67,10 +86,10 @@
                 <!-- Card Body (Collapsible) -->
                 <div th:id="'collapse-' + ${stat.index}" class="collapse essay-card-body">
                   <div class="body-content">
-                    
                     <div class="row">
-                      <!-- Left Column: Student Answer -->
-                      <div class="col-lg-7">
+
+                      <!-- Cột trái: Bài làm của sinh viên -->
+                      <div class="col-md-7 mb-3">
                         <div class="content-box answer-box">
                           <h5 class="box-title"><i class="fas fa-file-alt"></i> Bài làm của sinh viên</h5>
                           <div class="box-inner text-content" th:text="${detail.answerText}">
@@ -79,36 +98,82 @@
                         </div>
                       </div>
 
-                      <!-- Right Column: AI Feedback & Grading -->
-                      <div class="col-lg-5">
-                        <div class="content-box feedback-box mb-4">
+                      <!-- Cột phải: AI Feedback + Chấm điểm -->
+                      <div class="col-md-5 mb-3">
+
+                        <!-- AI Feedback -->
+                        <div class="content-box feedback-box mb-3">
                           <h5 class="box-title ai-title"><i class="fas fa-robot"></i> AI Feedback</h5>
-                          <div class="box-inner feedback-content" th:text="${detail.feedback != null ? detail.feedback : 'Không có nhận xét từ AI.'}">
-                            Nhận xét của AI...
+                          <div class="box-inner feedback-content"
+                               th:text="${detail.feedback != null ? detail.feedback : 'Không có nhận xét từ AI.'}">
                           </div>
                         </div>
 
-                        <!-- Grading Form -->
-                        <div class="grading-form-container" style="background: #f0fdf4; border: 2px solid #22c55e;">
-                          <h5 class="box-title" style="background: #dcfce7; color: #166534; border-bottom: 1px solid #bbf7d0;"><i class="fas fa-check-double"></i> Cập Nhật Điểm Chính Thức</h5>
-                          <form class="grading-form" th:onsubmit="'return updateScore(event, ' + ${detail.submissionID} + ')'">
+                        <!-- ===== CHƯA CHẤM: Form chấm điểm đơn giản ===== -->
+                        <div th:if="${detail.finalScore == null}" class="grading-form-container">
+                          <h5 class="box-title">
+                            <i class="fas fa-pen-alt mr-1"></i> Chấm Điểm
+                          </h5>
+                          <form class="grading-form"
+                                th:data-submission-id="${detail.submissionID}"
+                                onsubmit="return submitGradingForm(event, this)">
                             <div class="form-group mb-3">
-                              <label class="font-weight-bold" style="color: #166534;">Điểm số (0-10):</label>
-                              <input type="number" class="form-control score-input w-100" th:id="'input-score-' + ${detail.submissionID}" th:value="${detail.score}" step="0.5" min="0" max="10" required placeholder="Nhập điểm..." />
+                              <label class="form-label-sm">Điểm số (0–10)</label>
+                              <input type="number"
+                                     class="form-control score-input"
+                                     th:id="'input-score-' + ${detail.submissionID}"
+                                     th:value="${detail.score}"
+                                     step="0.5" min="0" max="10" required
+                                     placeholder="Nhập điểm..." />
                             </div>
-                            <button type="submit" class="btn btn-success btn-block btn-save-score" th:id="'btn-save-' + ${detail.submissionID}" style="font-size: 1.1rem; padding: 12px; background-color: #22c55e; border-color: #16a34a;">
-                              <i class="fas fa-save mr-2"></i> <b>Cập Nhật Điểm</b>
+                            <div class="form-group mb-3">
+                              <label class="form-label-sm">Nhận xét</label>
+                              <textarea class="form-control"
+                                        th:id="'input-feedback-' + ${detail.submissionID}"
+                                        rows="3"
+                                        placeholder="Nhận xét bài làm của học viên..."></textarea>
+                            </div>
+                            <button type="submit"
+                                    class="btn btn-success btn-block"
+                                    th:id="'btn-save-' + ${detail.submissionID}">
+                              <i class="fas fa-save mr-1"></i> Lưu
                             </button>
-                            <div th:id="'toast-msg-' + ${detail.submissionID}" class="save-toast mt-3" style="display: none;"></div>
+                            <div th:id="'toast-msg-' + ${detail.submissionID}" class="save-toast mt-2" style="display:none;"></div>
                           </form>
                         </div>
-                      </div>
-                    </div>
-                    
-                  </div>
-                </div>
 
-              </div>
+                        <!-- ===== ĐÃ CHẤM: Hiện kết quả giáo viên đã chấm ===== -->
+                        <div th:if="${detail.finalScore != null}" class="content-box"
+                             style="border:2px solid #0ea5e9;">
+                          <h5 class="box-title" style="background:#e0f2fe; color:#0369a1; border-bottom:1px solid #bae6fd;">
+                            <i class="fas fa-clipboard-check"></i> Đánh Giá Của Giáo Viên
+                          </h5>
+                          <div class="box-inner">
+                            <div class="d-flex align-items-center mb-2">
+                              <span class="font-weight-bold mr-2" style="color:#0369a1;">Điểm chính thức:</span>
+                              <span class="badge px-3 py-2"
+                                    style="background:#0ea5e9; color:#fff; font-size:1.15rem;"
+                                    th:text="${detail.finalScore}">N/A</span>
+                            </div>
+                            <div th:if="${detail.teacherFeedback != null and !detail.teacherFeedback.isEmpty()}">
+                              <span class="font-weight-bold" style="color:#0369a1;">Nhận xét:</span>
+                              <p class="mt-1 mb-0" style="color:#334155; white-space:pre-wrap;"
+                                 th:text="${detail.teacherFeedback}"></p>
+                            </div>
+                            <div th:unless="${detail.teacherFeedback != null and !detail.teacherFeedback.isEmpty()}">
+                              <span class="text-muted font-italic">Chưa có nhận xét.</span>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div><!-- end col-lg-5 -->
+                    </div><!-- end row -->
+                  </div>
+                </div><!-- end card body -->
+
+              </div><!-- end essay-card loop -->
+
+              <!-- Empty state -->
               <div th:if="${essayDetails == null or essayDetails.isEmpty()}" class="text-center py-5 text-muted">
                 <i class="fas fa-inbox fa-3x mb-3"></i>
                 <p>Chưa có bài nộp tự luận nào.</p>
@@ -116,42 +181,98 @@
             </div>
           </div>
 
-          <!-- General Score Overview Table -->
+          <!-- ===================================================== -->
+          <!-- PHẦN 2: TỔNG QUAN — chỉ hiển thị bài đã được chấm    -->
+          <!-- Không có form, không có nút, chỉ đọc.                 -->
+          <!-- ===================================================== -->
           <div class="overview-section">
-            <h2 class="section-heading mb-4"><i class="fas fa-table text-success mr-2"></i>Tổng Quan Điểm Lesson</h2>
+            <h2 class="section-heading mb-1">
+              <i class="fas fa-table text-success mr-2"></i>Tổng Quan Điểm Lesson
+            </h2>
+            <p class="text-muted mb-4" th:if="${lessonType != null and lessonType.equalsIgnoreCase('essay')}">
+              Danh sách các bài nộp đã được giáo viên chấm điểm chính thức.
+            </p>
+
             <div class="table-responsive score-table-wrapper">
               <table class="table table-hover score-table">
                 <thead>
                   <tr>
-                    <th><i class="fas fa-book mr-1"></i> Lesson Title</th>
-                    <th><i class="fas fa-user mr-1"></i> User</th>
+                    <th><i class="fas fa-book mr-1"></i> Bài tập</th>
+                    <th><i class="fas fa-user mr-1"></i> Học viên</th>
                     <th><i class="fas fa-clock mr-1"></i> Thời gian nộp</th>
-                    <th><i class="fas fa-star mr-1"></i> Tổng Điểm</th>
-                    <th><i class="fas fa-info-circle mr-1"></i> Status</th>
+                    <th><i class="fas fa-robot mr-1"></i> Điểm AI</th>
+                    <th><i class="fas fa-star mr-1"></i> Điểm Chính Thức</th>
+                    <th><i class="fas fa-comment mr-1"></i> Nhận Xét GV</th>
+                    <th><i class="fas fa-check-circle mr-1"></i> Trạng Thái</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="submission : ${submissions}">
-                    <td th:text="${submission.lessonTitle}">Lesson Title</td>
-                    <td class="font-weight-bold text-primary" th:text="${submission.userName}">User</td>
-                    <td th:text="${#temporals.format(submission.time, 'dd/MM/yyyy HH:mm')}">Time</td>
-                    <td><span class="badge badge-success px-3 py-2" th:text="${submission.score}">Score</span></td>
-                    <td><span class="badge badge-info px-3 py-2" th:text="${submission.status}">Status</span></td>
-                  </tr>
-                  <tr th:if="${submissions == null or submissions.isEmpty()}">
-                    <td colspan="5" class="text-center py-4 text-muted">Chưa có bài nộp nào.</td>
-                  </tr>
+
+                  <!-- Essay: chỉ hiện bản ghi có finalScore -->
+                  <th:block th:if="${lessonType != null and lessonType.equalsIgnoreCase('essay')}">
+                    <tr th:each="detail : ${essayDetails}" th:if="${detail.finalScore != null}">
+                      <td th:text="${detail.exerciseTitle}">Bài Tập</td>
+                      <td class="font-weight-bold text-primary" th:text="${detail.userName}">Học Viên</td>
+                      <td th:text="${#temporals.format(detail.submittedAt, 'dd/MM/yyyy HH:mm')}">Time</td>
+                      <td>
+                        <span class="badge badge-secondary px-3 py-2"
+                              th:text="${detail.score != null ? detail.score : 'N/A'}">AI Score</span>
+                      </td>
+                      <td>
+                        <span class="badge px-3 py-2 badge-status-done"
+                              style="font-size:0.95rem;"
+                              th:text="${detail.finalScore}">Final Score</span>
+                      </td>
+                      <td>
+                        <span th:if="${detail.teacherFeedback != null and !detail.teacherFeedback.isEmpty()}"
+                              class="text-truncate d-inline-block"
+                              style="max-width:200px;"
+                              th:text="${detail.teacherFeedback}"
+                              th:title="${detail.teacherFeedback}">Feedback</span>
+                        <span th:unless="${detail.teacherFeedback != null and !detail.teacherFeedback.isEmpty()}"
+                              class="text-muted">—</span>
+                      </td>
+                      <td>
+                        <span class="badge px-3 py-2 badge-status-done">Đã chấm</span>
+                      </td>
+                    </tr>
+                    <tr th:if="${essayDetails == null or #lists.isEmpty(essayDetails.?[finalScore != null])}">
+                      <td colspan="7" class="text-center py-4 text-muted">
+                        <i class="fas fa-hourglass-half mr-2"></i>Chưa có bài nào được chấm điểm chính thức.
+                      </td>
+                    </tr>
+                  </th:block>
+
+                  <!-- Non-essay: giữ nguyên behavior cũ -->
+                  <th:block th:unless="${lessonType != null and lessonType.equalsIgnoreCase('essay')}">
+                    <tr th:each="submission : ${submissions}">
+                      <td th:text="${submission.lessonTitle}">Lesson Title</td>
+                      <td class="font-weight-bold text-primary" th:text="${submission.userName}">User</td>
+                      <td th:text="${#temporals.format(submission.time, 'dd/MM/yyyy HH:mm')}">Time</td>
+                      <td>
+                        <span class="badge badge-success px-3 py-2" th:text="${submission.score}">Score</span>
+                      </td>
+                      <td colspan="2">—</td>
+                      <td>
+                        <span class="badge badge-info px-3 py-2" th:text="${submission.status}">Status</span>
+                      </td>
+                    </tr>
+                    <tr th:if="${submissions == null or submissions.isEmpty()}">
+                      <td colspan="7" class="text-center py-4 text-muted">Chưa có bài nộp nào.</td>
+                    </tr>
+                  </th:block>
+
                 </tbody>
               </table>
             </div>
           </div>
-          
+
         </div>
       </main>
 
       <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/ClientStatic/js/manage-edit-lesson.js}"></script>

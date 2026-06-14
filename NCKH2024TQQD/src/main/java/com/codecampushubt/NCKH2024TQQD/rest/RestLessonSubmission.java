@@ -36,13 +36,21 @@ public class RestLessonSubmission {
     @PatchMapping("/essay/{submissionId}/score")
     public ResponseEntity<?> updateEssayScore(
             @PathVariable Long submissionId,
-            @RequestBody Map<String, Double> body) {
-        Double newScore = body.get("score");
-        if (newScore == null) {
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Score is required"));
+            @RequestBody Map<String, Object> body) {
+
+        Double finalScore = null;
+        if (body.get("finalScore") != null) {
+            finalScore = Double.valueOf(body.get("finalScore").toString());
         }
-        essaySubmissionService.updateScoreBySubmissionId(submissionId, newScore);
-        return ResponseEntity.ok(Map.of("success", true, "newScore", newScore));
+
+        String teacherFeedback = (String) body.get("teacherFeedback");
+
+        if (finalScore == null) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Điểm đánh giá (finalScore) là bắt buộc"));
+        }
+
+        essaySubmissionService.updateTeacherReviewBySubmissionId(submissionId, finalScore, teacherFeedback);
+        return ResponseEntity.ok(Map.of("success", true, "finalScore", finalScore, "teacherFeedback", teacherFeedback));
     }
 
 }

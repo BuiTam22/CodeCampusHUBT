@@ -126,7 +126,7 @@ body {
 .essay-cards {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .essay-card {
@@ -134,8 +134,9 @@ body {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--score-border);
-  overflow: hidden;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+  transition: box-shadow 0.3s ease;
 }
 
 .essay-card:hover {
@@ -233,10 +234,10 @@ body {
   transform: rotate(180deg);
 }
 
-/* Card Body */
 .essay-card-body {
   border-top: 1px solid var(--score-border);
   background: var(--score-light);
+  overflow: visible;
 }
 
 .body-content {
@@ -314,6 +315,16 @@ body {
 
 .grading-form {
   padding: 1.25rem;
+}
+
+.form-label-sm {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--score-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+  display: block;
 }
 
 .score-input {
@@ -410,6 +421,51 @@ body {
 
 .section-divider {
   border-top: 2px dashed var(--score-border);
+}
+
+/* Status Badges */
+.badge-status-done {
+  background: #22c55e;
+  color: #fff;
+}
+
+.badge-status-pending {
+  background: #f59e0b;
+  color: #fff;
+}
+
+/* Grade Now Button */
+.btn-grade-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #fff !important;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
+.btn-grade-now:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.4);
+  color: #fff !important;
+}
+
+/* Highlight ungraded rows */
+.table-row-pending {
+  border-left: 3px solid #f59e0b;
+  background-color: #fffbeb !important;
+}
+
+.table-row-pending:hover {
+  background-color: #fef3c7 !important;
 }
 
 @media (max-width: 991px) {

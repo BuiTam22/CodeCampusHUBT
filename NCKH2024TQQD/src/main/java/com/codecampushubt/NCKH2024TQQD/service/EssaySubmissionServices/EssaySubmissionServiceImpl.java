@@ -31,6 +31,10 @@ public class EssaySubmissionServiceImpl implements EssaySubmissionService{
     @Override
     @Transactional
     public void updateTeacherReviewBySubmissionId(Long submissionId, Double finalScore, String teacherFeedback) {
-        essaySubmissionRepository.updateTeacherReviewBySubmissionId(submissionId, finalScore, teacherFeedback);
+        EssaySubmission submission = essaySubmissionRepository.findById(submissionId)
+                .orElseThrow(() -> new RuntimeException("Submission not found: " + submissionId));
+        submission.setFinalScore(finalScore);
+        submission.setTeacherFeedBack(teacherFeedback);
+        essaySubmissionRepository.save(submission);
     }
 }
