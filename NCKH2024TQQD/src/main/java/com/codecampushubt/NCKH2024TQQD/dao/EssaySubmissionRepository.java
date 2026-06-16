@@ -106,6 +106,39 @@ public interface EssaySubmissionRepository extends JpaRepository<EssaySubmission
     """)
     List<com.codecampushubt.NCKH2024TQQD.dto.SubmissionDTO.EssayScoreDetailDTO> getEssayScoreDetailsByLessonId(@Param("lessonId") Long lessonId);
 
+    /**
+     * Lấy submission MỚI NHẤT của mỗi user trong một lesson.
+     * Mỗi user chỉ xuất hiện 1 lần (unique by userName).
+     * Dùng cho trang chấm điểm: 1 user = 1 lần chấm duy nhất.
+     */
+    @Query("""
+        SELECT new com.codecampushubt.NCKH2024TQQD.dto.SubmissionDTO.EssayScoreDetailDTO(
+            es.submissionID,
+            e.title,
+            u.userName,
+            es.answerText,
+            es.feedback,
+            es.score,
+            es.submittedAt,
+            es.finalScore,
+            es.teacherFeedBack
+        )
+        FROM EssaySubmission es
+        JOIN es.exercise e
+        JOIN e.lesson l
+        JOIN es.user u
+        WHERE e.lesson.lessonID = :lessonId
+          AND es.submittedAt = (
+              SELECT MAX(es2.submittedAt)
+              FROM EssaySubmission es2
+              JOIN es2.exercise e2
+              WHERE es2.user.userName = u.userName
+                AND e2.lesson.lessonID = :lessonId
+          )
+        ORDER BY u.userName ASC
+    """)
+    List<com.codecampushubt.NCKH2024TQQD.dto.SubmissionDTO.EssayScoreDetailDTO> getLatestEssayScoreDetailPerUserByLessonId(@Param("lessonId") Long lessonId);
+
     @Modifying
     @Query("UPDATE EssaySubmission es SET es.finalScore = :finalScore, es.teacherFeedBack = :teacherFeedback WHERE es.submissionID = :submissionId")
     void updateTeacherReviewBySubmissionId(@Param("submissionId") Long submissionId, @Param("finalScore") Double finalScore, @Param("teacherFeedback") String teacherFeedback);

@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import com.codecampushubt.NCKH2024TQQD.dto.SubmissionDTO.EssayScoreDetailDTO;
 
 @Controller
 @RequestMapping("/management")
@@ -121,7 +124,16 @@ public class ManagementController {
         List<LessonSubmissionDTO> submissionDTOs = lessonSubmissionService.getLessonSubmissionsByLessonId(lessonID);
 
         if ("essay".equalsIgnoreCase(lessonType)) {
-            model.addAttribute("essayDetails", essaySubmissionService.getEssayScoreDetailsByLessonId(lessonID));
+            List<EssayScoreDetailDTO> essayDetails =
+                    essaySubmissionService.getEssayScoreDetailsByLessonId(lessonID);
+            model.addAttribute("essayDetails", essayDetails);
+
+            // Set usernames đã có finalScore → khóa form chấm lại
+            Set<String> gradedUsers = essayDetails.stream()
+                    .filter(d -> d.getFinalScore() != null)
+                    .map(EssayScoreDetailDTO::getUserName)
+                    .collect(Collectors.toSet());
+            model.addAttribute("gradedUsers", gradedUsers);
         }
 
         model.addAttribute("lessonType", lessonType);

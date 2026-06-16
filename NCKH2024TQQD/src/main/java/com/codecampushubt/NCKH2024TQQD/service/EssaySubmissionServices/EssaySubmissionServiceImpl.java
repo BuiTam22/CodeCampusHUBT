@@ -29,6 +29,11 @@ public class EssaySubmissionServiceImpl implements EssaySubmissionService{
     }
 
     @Override
+    public List<EssayScoreDetailDTO> getLatestEssayScoreDetailPerUserByLessonId(Long lessonId) {
+        return essaySubmissionRepository.getLatestEssayScoreDetailPerUserByLessonId(lessonId);
+    }
+
+    @Override
     @Transactional
     public void updateTeacherReviewBySubmissionId(Long submissionId, Double finalScore, String teacherFeedback) {
         EssaySubmission submission = essaySubmissionRepository.findById(submissionId)

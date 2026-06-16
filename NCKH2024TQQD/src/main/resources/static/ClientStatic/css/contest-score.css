@@ -136,7 +136,13 @@ body {
   border: 1px solid var(--score-border);
   position: relative;
   z-index: 1;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, z-index 0s;
+}
+
+/* Khi card đang mở (Bootstrap collapse thêm class .show vào .essay-card-body),
+   nâng z-index của card cha lên để nội dung không bị card dưới che */
+.essay-card:has(.essay-card-body.show) {
+  z-index: 10;
 }
 
 .essay-card:hover {
@@ -238,6 +244,8 @@ body {
   border-top: 1px solid var(--score-border);
   background: var(--score-light);
   overflow: visible;
+  position: relative;
+  z-index: 10;
 }
 
 .body-content {
@@ -486,3 +494,92 @@ body {
     text-align: left !important;
   }
 }
+
+/* ===== Pagination ===== */
+.pagination-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 0 0.25rem;
+}
+
+.pagination-info {
+  font-size: 0.875rem;
+  color: var(--score-text-muted);
+  font-weight: 500;
+}
+
+.pagination-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.btn-page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--score-border);
+  background: var(--score-surface);
+  color: var(--score-text);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.btn-page:hover:not(:disabled) {
+  background: var(--score-primary);
+  color: #fff;
+  border-color: var(--score-primary);
+}
+
+.btn-page:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-page-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 6px;
+  border: 1px solid var(--score-border);
+  background: var(--score-surface);
+  color: var(--score-text);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-page-num:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.btn-page-num.active {
+  background: var(--score-primary);
+  color: #fff;
+  border-color: var(--score-primary);
+}
+
+.page-ellipsis {
+  padding: 0 4px;
+  color: var(--score-text-muted);
+  font-size: 0.875rem;
+}
+

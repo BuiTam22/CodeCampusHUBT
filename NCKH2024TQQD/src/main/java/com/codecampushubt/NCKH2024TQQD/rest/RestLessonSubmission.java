@@ -4,12 +4,7 @@ import com.codecampushubt.NCKH2024TQQD.Constant.Constants;
 import com.codecampushubt.NCKH2024TQQD.dto.SubmissionDTO.LessonSubmissionDTO;
 import com.codecampushubt.NCKH2024TQQD.service.LessonSubmissionServices.LessonSubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import com.codecampushubt.NCKH2024TQQD.service.EssaySubmissionServices.EssaySubmissionService;
 
@@ -33,7 +28,7 @@ public class RestLessonSubmission {
         return lessonSubmissionService.getLessonSubmissionsByLessonId(Constants.ID_MODULE_COMMON);
     }
 
-    @PatchMapping("/essay/{submissionId}/score")
+    @PostMapping("/essay/{submissionId}/score")
     public ResponseEntity<?> updateEssayScore(
             @PathVariable Long submissionId,
             @RequestBody Map<String, Object> body) {
