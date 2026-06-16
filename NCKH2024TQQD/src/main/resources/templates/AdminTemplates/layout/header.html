@@ -1,33 +1,49 @@
-<div th:fragment="header">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3">CODEHUBT</a>
+<!-- HEADER FRAGMENT -->
+<div th:fragment="header(pageTitle, activePage)">
+    <header class="admin-topbar">
+        <!-- Breadcrumb / Page Title -->
+        <div class="topbar-breadcrumb">
+            <a href="/admin/dashboard/show"><i class="fas fa-house"></i></a>
+            <span class="sep">/</span>
+            <span class="current" th:text="${pageTitle}">Dashboard</span>
+        </div>
 
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
+        <!-- Actions -->
+        <div class="topbar-actions">
+            <!-- Notification bell -->
+            <button class="topbar-btn" title="Thông báo">
+                <i class="fas fa-bell"></i>
+                <span class="topbar-badge"></span>
             </button>
 
-            <!-- Navbar Search -->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <span style="color: white;">WELCOME <span>Tên Người Dùng </span></span>
-                </div>
-            </form>
+            <div class="topbar-divider"></div>
 
-            <!-- Navbar -->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-user fa-fw"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Activity Log</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" >Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
+            <!-- User dropdown (Bootstrap 5) -->
+            <div class="dropdown">
+                <a class="topbar-user" href="#" id="userDropdown"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="topbar-user-avatar"
+                         th:text="${username != null ? username.substring(0,1).toUpperCase() : 'A'}">A</div>
+                    <span class="topbar-user-name" th:text="${username != null ? username : 'Admin'}">Admin</span>
+                    <i class="fas fa-chevron-down" style="font-size:10px;color:var(--text-muted);margin-left:2px"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0"
+                    style="border-radius:10px;min-width:160px;font-size:13px"
+                    aria-labelledby="userDropdown">
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center gap-2" href="#">
+                            <i class="fas fa-user-cog" style="width:16px;color:var(--text-muted)"></i>Cài đặt
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider my-1"></li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center gap-2 text-danger"
+                           href="/logout">
+                            <i class="fas fa-right-from-bracket" style="width:16px"></i>Đăng xuất
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
 </div>

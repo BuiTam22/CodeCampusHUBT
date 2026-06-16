@@ -77,6 +77,7 @@ public class RestCodingExercise {
         exercise.setCreatedAt(now);
         exercise.setUpdatedAt(now);
         exercise.setSlug(generateSlug(requestDTO.getTitle()));
+        exercise.setSlug(generateSlug(requestDTO.getTitle()));
         CodingExercise saved = codingExerciseService.save(exercise);
 
         // Tạo ExerciseTestCases nếu có

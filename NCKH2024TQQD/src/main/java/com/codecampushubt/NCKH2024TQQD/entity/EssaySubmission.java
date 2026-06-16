@@ -35,20 +35,28 @@ public class EssaySubmission {
     @Column(name = "Score", nullable = true)
     private Double score = 0.0;
 
-    // FEEDBACK CỦA GIẢNG VIÊN
+    // FEEDBACK CỦA AI
     @Column(name = "Feedback", nullable = true)
     private String feedback;
+
+    @Column(name = "FinalScore", nullable = true)
+    private Double finalScore;
+
+    @Column(name = "TeacherFeedBack", nullable = true)
+    private String teacherFeedBack;
 
     public EssaySubmission() {
     }
 
-    public EssaySubmission(EssayExercise exercise, User user, String answerText, LocalDateTime submittedAt, Double score, String feedback) {
+    public EssaySubmission(EssayExercise exercise, User user, String answerText, LocalDateTime submittedAt, Double score, String feedback, Double finalScore, String teacherFeedBack) {
         this.exercise = exercise;
         this.user = user;
         this.answerText = answerText;
         this.submittedAt = submittedAt;
         this.score = score;
         this.feedback = feedback;
+        this.finalScore = finalScore;
+        this.teacherFeedBack = teacherFeedBack;
     }
 
     public Long getSubmissionID() {
@@ -101,6 +109,22 @@ public class EssaySubmission {
 
     public void setFeedback(String feedback) {
         this.feedback = feedback;
+    }
+
+    public String getTeacherFeedBack() {
+        return teacherFeedBack;
+    }
+
+    public void setTeacherFeedBack(String teacherFeedBack) {
+        this.teacherFeedBack = teacherFeedBack;
+    }
+
+    public Double getFinalScore() {
+        return finalScore;
+    }
+
+    public void setFinalScore(Double finalScore) {
+        this.finalScore = finalScore;
     }
 
     @Override

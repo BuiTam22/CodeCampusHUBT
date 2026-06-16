@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.codecampushubt.NCKH2024TQQD.Constant.Constant;
+import com.codecampushubt.NCKH2024TQQD.Constant.Constants;
 import com.codecampushubt.NCKH2024TQQD.context.UserContext;
 import com.codecampushubt.NCKH2024TQQD.dao.ContestExerciseAttemptRepository;
 import com.codecampushubt.NCKH2024TQQD.dto.EssayExerciseDTO.EssayExerciseListShowDTO;
@@ -49,11 +49,11 @@ public class ContestController {
         this.attemptRepository = attemptRepository;
     }
 
-    @GetMapping("")
+    @GetMapping({"", "/"})
     public String showContest(Model model, HttpServletRequest request){
-        // fix cứng moduleId là 3
-        List<ContestShowDTO> contests = lessonService.getContestShowDTOByIsContest(Constant.ID_MODULE_COMMON);
+        List<ContestShowDTO> contests = lessonService.getContestShowDTOByIsContest(Constants.ID_MODULE_COMMON);
         model.addAttribute("contests", contests);
+        model.addAttribute("contestTab", "coding");
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/contest/contest";
     }
@@ -92,8 +92,9 @@ public class ContestController {
 
     @GetMapping("/type-essay")
     public String showEssayExercises(Model model, HttpServletRequest request){
-        List<ContestShowDTO> essayContests = lessonService.getEssayContestShowDTOByIsContest(Constant.ID_MODULE_COMMON);
+        List<ContestShowDTO> essayContests = lessonService.getEssayContestShowDTOByIsContest(Constants.ID_MODULE_COMMON);
         model.addAttribute("contests", essayContests);
+        model.addAttribute("contestTab", "essay");
         model.addAttribute("activePage", request.getRequestURI());
         return  "ClientTemplates/contest/contest";
     }

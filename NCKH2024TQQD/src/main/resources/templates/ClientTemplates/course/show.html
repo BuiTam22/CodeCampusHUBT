@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>CodeHubt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khóa học - CodeHubt</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link
             rel="stylesheet"
@@ -18,15 +19,14 @@
 </head>
 
 <body>
-<!-- Header -->
 <div class="page-wrapper">
     <div th:replace="~{ClientTemplates/layout/header :: header}"></div>
-    <!--Filter-->
-    <div th:replace="~{ClientTemplates/layout/filter :: filters(filterAction='/courses/show')}"></div>
+
+    <div th:replace="~{ClientTemplates/layout/filter :: filters(filterAction='/course')}"></div>
     <div class="banner">
         <div class="container-fluid px-3">
             <img
-                    src="https://codelearn.io/_next/image?url=https%3A%2F%2Fs3-sgn09.fptcloud.com%2Fcodelearnstorage%2Fevent%2Fbanner%2F30-4%2F30-4-vn.png%3Fv%3D1&w=1920&q=100"
+                    src="https://codelearn.io/images/training/bg-min.png"
                     alt=""
             />
         </div>
@@ -34,53 +34,50 @@
     <div class="content-wrapper">
         <div class="container">
             <div class="courses-container">
-                <div class="courses-grid">
-                    <!-- Sửa ở đây - thêm thẻ đóng </a> -->
+                <div th:if="${#lists.isEmpty(courses)}" class="text-center text-muted py-5">
+                    Chưa có khóa học nào.
+                </div>
+                <div class="courses-grid" th:unless="${#lists.isEmpty(courses)}">
                     <a th:each="course : ${courses}"
                        th:href="@{/course/{slug}(slug=${course.slug})}"
                        class="course-card">
-                        <!-- Hình ảnh khóa học -->
+
                         <div class="course-image">
-                            <img th:if="${course.imageUrl}" th:src="${course.imageUrl}" alt="Course image">
-                            <div th:unless="${course.imageUrl}" class="image-placeholder">
+                            <div class="image-placeholder" th:if="${course.imageUrl == null or course.imageUrl.isEmpty()}">
                                 <i class="fas fa-laptop-code"></i>
                             </div>
+                            <img th:unless="${course.imageUrl == null or course.imageUrl.isEmpty()}"
+                                 th:src="${course.imageUrl}"
+                                 alt="Course image"/>
                         </div>
 
-                        <!-- Nội dung khóa học -->
                         <div class="course-content">
                             <h3 class="course-title" th:text="${course.title}"></h3>
 
                             <div class="course-meta">
                                 <div class="course-instructor">
                                     <i class="fas fa-user-tie"></i>
-                                    <span th:text="${course.instructorUserName} ?: 'CodeHubt Team'"></span>
+                                    <span th:text="${course.instructorUserName != null ? course.instructorUserName : 'CodeHubt Team'}"></span>
                                 </div>
                                 <div class="course-rating">
                                     <i class="fas fa-star"></i>
-                                    <span th:text="${course.rating} ?: '0.00'"></span>
+                                    <span th:text="${course.rating != null ? course.rating : '0.00'}"></span>
                                 </div>
                             </div>
 
                             <div class="course-pricing">
-                                <!-- Giá gốc nếu có giảm giá -->
-                                <span th:if="${course.discountPrice != null}" class="original-price"
-                                      th:text="'₫' + ${#numbers.formatDecimal(course.price, 1, 2, 'COMMA')}"></span>
-
-                                <!-- Giá hiện tại (giảm hoặc thường) -->
-                                <span th:class="${course.discountPrice != null ? 'discounted-price' : 'current-price'}"
-                                      th:text="'₫' + ${#numbers.formatDecimal(course.discountPrice != null ? course.discountPrice : course.price, 1, 2, 'COMMA')}"></span>
-
-                                <!-- Miễn phí -->
-                                <span th:if="${course.price == 0}" class="free-badge">MIỄN PHÍ</span>
+                                <span th:if="${course.shortDescription != null and !course.shortDescription.isEmpty()}"
+                                      th:text="${course.shortDescription}"></span>
+                                <span th:if="${course.shortDescription == null or course.shortDescription.isEmpty()}"
+                                      th:text="${course.description}"></span>
                             </div>
                         </div>
-                    </a> <!-- Đây là thẻ đóng bị thiếu -->
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Footer -->
+
     <div th:replace="~{ClientTemplates/layout/footer :: footer}"></div>
 </div>
 <script th:src="@{/ClientStatic/js/script.js}"></script>

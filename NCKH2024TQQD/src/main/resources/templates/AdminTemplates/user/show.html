@@ -1,185 +1,197 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>CODEHUBT_ADMIN</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link th:href="@{/AdminStatic/css/style.css}" rel="stylesheet" />
-    <link th:href="@{/AdminStatic/css/style1.css}" rel="stylesheet" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Quản lý người dùng | CODEHUBT Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/AdminStatic/css/admin-theme.css}" rel="stylesheet"/>
 </head>
-<body class="sb-nav-fixed">
+<body>
 
-<!-- Header -->
-<div th:replace="~{AdminTemplates/layout/header :: header}"></div>
+<!-- Sidebar -->
+<div th:replace="~{AdminTemplates/layout/sidebar :: sidebar('user')}"></div>
 
-<div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            <div class="sb-sidenav-menu">
+<div class="admin-wrapper">
+    <!-- Header -->
+    <div th:replace="~{AdminTemplates/layout/header :: header('Quản lý người dùng', 'user')}"></div>
 
-                <!-- Sidebar -->
-                <div th:replace="~{AdminTemplates/layout/sidebar :: sidebar}"></div>
+    <main class="admin-content">
+        <!-- Page Header -->
+        <div class="page-header d-flex justify-between align-center">
+            <div>
+                <h1 class="page-title">Người dùng</h1>
+                <p class="page-subtitle">Quản lý tài khoản và phân quyền người dùng.</p>
             </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                CODEHUBT
-            </div>
-        </nav>
-    </div>
+            <button class="btn-admin btn-primary-admin" onclick="AdminNotify.openModal('modal-add-user')">
+                <i class="fas fa-plus"></i> Thêm người dùng
+            </button>
+        </div>
 
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-4">
-                <h1 class="mt-4" > Quản Lý Người Dùng  </h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">CẦN LẤY ĐƯỢC CÁC QUYỀN và Trả ra đây </li>
-                </ol>
-                <div class="container mt-5">
-                    <div class="d-flex justify-content-between mb-3 ">
-                        <h3>Table User</h3>
-                        <button onclick="showAddFormOnly()" class="btn btn-primary">Create a user</button>
-                    </div>
-                    <hr/>
-                    <div id="userList" style="display: block;" >
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>UserName</th>
-                                <th>Email</th>
-                                <th>RoleName</th>
-                            </tr>
-                            </thead>
-                            <tbody id="userTableBody">
-
-                            </tbody>
-                        </table>
-                    </div>
-
-
-                    <div id="userAddForm" style="display: none; margin-top: 20px;">
-                        <h3>Thêm người dùng</h3>
-                        <form id="addUserForm">
-                            <label>Tên Tài Khoản :
-                                <input type="text" name="userName" required pattern="[a-z0-9]+" title="Chỉ viết thường không dấu, không khoảng trắng">
-                                <small class="hint">(Chỉ dùng chữ thường và số, không dấu, không khoảng trắng)</small>
-                            </label>
-
-                            <label>Email:
-                                <input type="email" name="email" required>
-                            </label>
-
-                            <label>Mật khẩu:
-                                <div class="password-container">
-                                    <input type="password" name="password" required>
-                                    <button type="button" class="toggle-password">👁️</button>
-                                </div>
-                            </label>
-
-                            <label>Họ Và Tên :
-                                <input type="text" name="fullName" required>
-                            </label>
-
-                            <label>Sinh Nhật :
-                                <input type="date" name="dateOfBirth">
-                            </label>
-
-                            <label>Số Điện Thoại :
-                                <input type="text" name="phoneNumber">
-                            </label>
-
-                            <label>Địa Chỉ :
-                                <input type="text" name="address">
-                            </label>
-
-                            <label>Quyền:
-                                <select name="roleName">
-                                    <option value="ADMIN">ADMIN</option>
-                                    <option value="STUDENT">STUDENT</option>
-                                    <option value="TEACHER">TEACHER</option>
-                                </select>
-                            </label>
-
-                            <div class="button-group">
-                                <button type="button" onclick="showUserList()">Đóng</button>
-                                <button type="submit">Thêm Người Dùng</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Form Chi tiết -->
-                    <div id="userDetailForm" style="display: none; margin-top: 20px;">
-                        <h3>Chi tiết người dùng</h3>
-                        <p>ID: <span id="detailUserId">1</span></p>
-                        <p>Tên: <span id="detailUserName">Tên mẫu</span></p>
-                        <p>Email: <span id="detailEmail">email@example.com</span></p>
-                        <p>Quyền: <span id="detailUserRole">ADMIN</span></p>
-                        <button onclick="showUserList()">Đóng</button>
-                    </div>
-
-                    <!-- Form Sửa -->
-                    <div id="userEditForm" style="display: none; margin-top: 20px;">
-                        <h3>Sửa người dùng</h3>
-                        <form id="editUserForm" name="editUserForm" enctype="multipart/form-data">
-                            <input type="hidden" name="userId">
-                            <input type="text" name="userName" placeholder="Username">
-                            <input type="email" name="email" placeholder="Email">
-                            <input type="text" name="fullName" placeholder="Họ tên đầy đủ">
-                            <input type="date" name="dateOfBirth">
-                            <input type="text" name="phoneNumber" placeholder="Số điện thoại">
-                            <input type="text" name="address" placeholder="Địa chỉ">
-
-                            <!-- File ảnh -->
-                            <label for="image">Ảnh đại diện:</label>
-                            <input type="file" name="image" id="image">
-
-                            <!-- Nhiều quyền -->
-                            <div id="roleCheckboxes">
-                                <!-- Checkboxes sẽ được thêm ở đây bằng JS -->
-                            </div>
-                            <img id="preview" style="display:none; width:100px;" />
-                            <button type="button" onclick="submitEditForm()">Lưu</button>
-                            <button onclick="showUserList()">Đóng</button>
-
-                        </form>
-                    </div>
-                    <div class="pagination" id="pagination">
-                        <!-- Các nút phân trang sẽ được tạo ở đây -->
-                    </div>
-
-
-
-
-
+        <!-- Table Card -->
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <span class="admin-card-title">Danh sách tài khoản</span>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-user" placeholder="Tìm kiếm người dùng..." oninput="filterUsers(this.value)"/>
                 </div>
-
-
             </div>
-        </main>
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tài khoản</th>
+                            <th>Email</th>
+                            <th>Vai trò</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">
+                                <i class="fas fa-spinner fa-spin"></i> Đang tải...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div style="padding:12px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+                <span id="page-info" style="font-size:12px;color:var(--text-muted)"></span>
+                <div id="pagination" style="display:flex;gap:6px"></div>
+            </div>
+        </div>
 
-        <!-- Footer -->
         <div th:replace="~{AdminTemplates/layout/footer :: footer}"></div>
+    </main>
+</div>
+
+<!-- ============ MODAL: ADD USER ============ -->
+<div class="modal-overlay" id="modal-add-user">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-user-plus" style="color:var(--primary);margin-right:8px"></i>Thêm người dùng</span>
+            <button class="modal-close" onclick="AdminNotify.closeModal('modal-add-user')">×</button>
+        </div>
+        <div class="modal-body">
+            <form id="addUserForm" onsubmit="submitAddUser(event)">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Tên tài khoản *</label>
+                        <input class="form-control-admin" type="text" name="userName" required
+                               pattern="[a-z0-9]+" title="Chỉ dùng chữ thường và số, không dấu, không khoảng trắng"
+                               placeholder="vd: nguyenvana"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
+                        <input class="form-control-admin" type="email" name="email" required placeholder="email@example.com"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mật khẩu *</label>
+                        <input class="form-control-admin" type="password" name="password" required placeholder="••••••••"/>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Họ và tên *</label>
+                        <input class="form-control-admin" type="text" name="fullName" required placeholder="Nguyễn Văn A"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ngày sinh</label>
+                        <input class="form-control-admin" type="date" name="dateOfBirth"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại</label>
+                        <input class="form-control-admin" type="text" name="phoneNumber" placeholder="0901234567"/>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Địa chỉ</label>
+                        <input class="form-control-admin" type="text" name="address" placeholder="Hà Nội, Việt Nam"/>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Vai trò *</label>
+                        <select class="form-control-admin" name="roleName">
+                            <option value="STUDENT">STUDENT</option>
+                            <option value="TEACHER">TEACHER</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin btn-outline-admin" onclick="AdminNotify.closeModal('modal-add-user')">Hủy</button>
+            <button class="btn-admin btn-primary-admin" onclick="document.getElementById('addUserForm').requestSubmit()">
+                <i class="fas fa-save"></i> Lưu
+            </button>
+        </div>
     </div>
 </div>
 
-<!-- Định nghĩa apiBaseUrl trước khi gọi login.js -->
+<!-- ============ MODAL: EDIT USER ============ -->
+<div class="modal-overlay" id="modal-edit-user">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-user-pen" style="color:var(--primary);margin-right:8px"></i>Chỉnh sửa người dùng</span>
+            <button class="modal-close" onclick="AdminNotify.closeModal('modal-edit-user')">×</button>
+        </div>
+        <div class="modal-body">
+            <form id="editUserForm" enctype="multipart/form-data">
+                <input type="hidden" name="userId" id="edit-userId"/>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div class="form-group">
+                        <label class="form-label">Tên tài khoản</label>
+                        <input class="form-control-admin" type="text" name="userName" id="edit-userName" placeholder="username"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input class="form-control-admin" type="email" name="email" id="edit-email" placeholder="email@example.com"/>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Họ và tên</label>
+                        <input class="form-control-admin" type="text" name="fullName" id="edit-fullName" placeholder="Họ và tên đầy đủ"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ngày sinh</label>
+                        <input class="form-control-admin" type="date" name="dateOfBirth" id="edit-dob"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại</label>
+                        <input class="form-control-admin" type="text" name="phoneNumber" id="edit-phone"/>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Địa chỉ</label>
+                        <input class="form-control-admin" type="text" name="address" id="edit-address"/>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Ảnh đại diện</label>
+                        <input class="form-control-admin" type="file" name="image" id="edit-image" accept="image/*"/>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1">
+                        <label class="form-label">Vai trò</label>
+                        <div id="roleCheckboxes" style="display:flex;gap:12px;flex-wrap:wrap;padding:8px 0"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin btn-outline-admin" onclick="AdminNotify.closeModal('modal-edit-user')">Hủy</button>
+            <button class="btn-admin btn-primary-admin" onclick="submitEditUser()">
+                <i class="fas fa-save"></i> Cập nhật
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/AdminStatic/js/admin-notify.js}"></script>
 <script th:inline="javascript">
-    /*<![CDATA[*/
-    var apiBaseUrl = /*[[${@environment.getProperty('api.base.url')}]]*/ "http://localhost:3000";
-    /*]]>*/
+    var apiBaseUrl = /*[[${@environment.getProperty('api.base.url')}]]*/ "";
 </script>
 <script th:src="@{/AdminStatic/js/User.js}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script th:src="@{/AdminStatic/js/scripts.js}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<!--<script th:src="@{/AdminStatic/js/chart-area-demo.js}"></script>-->
-<!--<script th:src="@{/AdminStatic/js/chart-bar-demo.js}"></script>-->
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<!--<script  th:src="@{/AdminStatic/js/datatables-simple-demo.js}"></script>-->
 </body>
 </html>

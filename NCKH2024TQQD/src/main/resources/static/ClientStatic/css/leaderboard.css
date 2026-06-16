@@ -181,3 +181,141 @@
       font-size: 14px;
   }
   /*end status*/
+
+/* Modern leaderboard */
+body,
+.page-wrapper {
+  background: var(--color-bg, #f5f7fb);
+  color: var(--color-text, #111827);
+  font-family: var(--font, sans-serif);
+}
+
+.inner-head {
+  margin-top: 116px;
+  padding: 28px 0;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+}
+
+.inner-title {
+  margin-bottom: 0;
+  color: #ffffff;
+  font-size: 30px;
+  line-height: 1.25;
+}
+
+.section-one {
+  padding: 30px 0 64px;
+  background: var(--color-bg, #f5f7fb);
+}
+
+.inner-box,
+.inner-status {
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.inner-status {
+  padding: 20px;
+}
+
+.inner-status .inner-status {
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+.inner-status .inner-title {
+  color: var(--color-text, #111827);
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.custom-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.custom-table thead th {
+  padding: 14px 12px;
+  background: #f8fafc;
+  color: #475569;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.custom-table tbody td {
+  padding: 15px 12px;
+  border-top: 1px solid #edf2f7;
+  color: #334155;
+}
+
+.custom-table tbody tr:hover td {
+  background: #f8fafc;
+}
+
+.result-false,
+.result-true {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 112px;
+  padding: 5px 10px !important;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.result-true {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.result-false {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.checkmark {
+  background: #e2e8f0;
+}
+
+.checkbox-container input:checked + .checkmark {
+  background: var(--color-accent, #10b981);
+}
+
+.label-text {
+  color: #475569;
+  font-weight: 600;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background: var(--color-border, #e5e7eb);
+}
+
+.search-box {
+  background: #f8fafc;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+}
+
+.search-input {
+  color: var(--color-text, #111827);
+}
+
+.search-input::placeholder {
+  color: var(--color-muted, #64748b);
+}
+
+@media (max-width: 768px) {
+  .inner-box {
+    overflow-x: auto;
+  }
+}

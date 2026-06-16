@@ -1,68 +1,145 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>CODEHUBT_ADMIN</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link th:href="@{/AdminStatic/css/styleCourse.css}" rel="stylesheet" />
-    <link th:href="@{/AdminStatic/css/style.css}" rel="stylesheet" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Quản lý khóa học | CODEHUBT Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/AdminStatic/css/admin-theme.css}" rel="stylesheet"/>
 </head>
-<body class="sb-nav-fixed">
+<body>
 
-<!-- Header -->
-<div th:replace="AdminTemplates/layout/header :: header"></div>
+<div th:replace="~{AdminTemplates/layout/sidebar :: sidebar('course')}"></div>
 
-<div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            <div class="sb-sidenav-menu">
+<div class="admin-wrapper">
+    <div th:replace="~{AdminTemplates/layout/header :: header('Quản lý khóa học', 'course')}"></div>
 
-                <!-- Sidebar -->
-                <div th:replace="AdminTemplates/layout/sidebar :: sidebar"></div>
+    <main class="admin-content">
+        <div class="page-header d-flex justify-between align-center">
+            <div>
+                <h1 class="page-title">Khóa học</h1>
+                <p class="page-subtitle">Danh sách tất cả khóa học trong hệ thống.</p>
             </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                CODEHUBT
-            </div>
-        </nav>
-    </div>
+            <button class="btn-admin btn-primary-admin" onclick="AdminNotify.openModal('modal-add-course')">
+                <i class="fas fa-plus"></i> Thêm khóa học
+            </button>
+        </div>
 
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-4">
-                <h1 class="mt-4"Couse</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Couse</li>
-                </ol>
-
-
-                <h1>Danh sách khóa học</h1>
-                <div id="courseList">
-                    <p>Đang tải danh sách khóa học...</p>
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <span class="admin-card-title">Danh sách khóa học</span>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-course" placeholder="Tìm kiếm khóa học..." oninput="filterCourses(this.value)"/>
                 </div>
-
-
-
-
             </div>
-        </main>
+            <div id="courseList" class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tên khóa học</th>
+                            <th>Giá</th>
+                            <th>Giảm giá</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">
+                                <i class="fas fa-spinner fa-spin"></i> Đang tải...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        <!-- Footer -->
-        <div th:replace="AdminTemplates/layout/footer :: footer"></div>
+        <div th:replace="~{AdminTemplates/layout/footer :: footer}"></div>
+    </main>
+</div>
+
+<!-- MODAL: ADD COURSE -->
+<div class="modal-overlay" id="modal-add-course">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-plus-circle" style="color:var(--primary);margin-right:8px"></i>Thêm khóa học mới</span>
+            <button class="modal-close" onclick="AdminNotify.closeModal('modal-add-course')">×</button>
+        </div>
+        <div class="modal-body">
+            <form id="addCourseForm" onsubmit="submitAddCourse(event)">
+                <div class="form-group">
+                    <label class="form-label">Tên khóa học *</label>
+                    <input class="form-control-admin" type="text" name="title" required placeholder="Nhập tên khóa học"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mô tả</label>
+                    <textarea class="form-control-admin" name="description" rows="3" placeholder="Mô tả khóa học"></textarea>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div class="form-group">
+                        <label class="form-label">Giá</label>
+                        <input class="form-control-admin" type="number" name="price" min="0" value="0" placeholder="0"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Giá giảm</label>
+                        <input class="form-control-admin" type="number" name="discountPrice" min="0" placeholder="0"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin btn-outline-admin" onclick="AdminNotify.closeModal('modal-add-course')">Hủy</button>
+            <button class="btn-admin btn-primary-admin" onclick="document.getElementById('addCourseForm').requestSubmit()">
+                <i class="fas fa-save"></i> Lưu
+            </button>
+        </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<!-- MODAL: EDIT COURSE -->
+<div class="modal-overlay" id="modal-edit-course">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-graduation-cap" style="color:var(--primary);margin-right:8px"></i>Chỉnh sửa khóa học</span>
+            <button class="modal-close" onclick="AdminNotify.closeModal('modal-edit-course')">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-courseId"/>
+            <div class="form-group">
+                <label class="form-label">Tên khóa học *</label>
+                <input class="form-control-admin" type="text" id="edit-courseTitle" placeholder="Tên khóa học"/>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Mô tả</label>
+                <textarea class="form-control-admin" id="edit-courseDesc" rows="3" placeholder="Mô tả khóa học"></textarea>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div class="form-group">
+                    <label class="form-label">Giá</label>
+                    <input class="form-control-admin" type="number" id="edit-coursePrice" min="0" placeholder="0"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Giá giảm</label>
+                    <input class="form-control-admin" type="number" id="edit-courseDiscount" min="0" placeholder="0"/>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-admin btn-outline-admin" onclick="AdminNotify.closeModal('modal-edit-course')">Hủy</button>
+            <button class="btn-admin btn-primary-admin" onclick="submitEditCourse()">
+                <i class="fas fa-save"></i> Cập nhật
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/AdminStatic/js/admin-notify.js}"></script>
 <script th:src="@{/AdminStatic/js/scriptsCourse.js}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<!--<script th:src="@{/AdminStatic/js/chart-area-demo.js}"></script>-->
-<!--<script th:src="@{/AdminStatic/js/chart-bar-demo.js}"></script>-->
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script  th:src="@{/AdminStatic/js/datatables-simple-demo.js}"></script>
 </body>
 </html>

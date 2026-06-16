@@ -16,8 +16,21 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO(" +
             "c.courseID, c.title, c.slug, c.description, c.shortDescription, " +
             "c.instructor.userName, c.rating, c.price, c.discountPrice, c.imageUrl) " +
-            "FROM Course c WHERE c.isPublished = true")
+            "FROM Course c WHERE c.isPublished = true AND c.deletedAt IS NULL")
     List<CourseShowDTO> getCourseShowDTO();
+
+    @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO(" +
+            "c.courseID, c.title, c.slug, c.description, c.shortDescription, " +
+            "c.instructor.userName, c.rating, c.price, c.discountPrice, c.imageUrl) " +
+            "FROM Course c " +
+            "WHERE c.deletedAt IS NULL " +
+            "AND c.courseID NOT IN (" +
+            "  SELECT cm.course.courseID FROM CourseModule cm WHERE cm.moduleID = :commonModuleId" +
+            ") " +
+            "AND (:search IS NULL OR :search = '' OR LOWER(c.title) LIKE LOWER(CONCAT('%', :search, '%')))")
+    List<CourseShowDTO> getClientCourseShowDTO(
+            @Param("commonModuleId") Long commonModuleId,
+            @Param("search") String search);
 
     @Query("SELECT new com.codecampushubt.NCKH2024TQQD.dto.CourseDTO.CourseShowDTO(" +
             "c.courseID, c.title, c.slug, c.description, c.shortDescription, " +
@@ -46,7 +59,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             "FROM Course c " +
             "JOIN c.instructor.userRoles ur " +
             "JOIN ur.role r " +
-            "WHERE c.instructor.userID = :userId")
+            "WHERE c.instructor.userID = :userId AND c.deletedAt IS NULL")
     List<CourseShowithRolenameDTO> getCoursesShowDTOByUserId(@Param("userId") Long userId);
 
 
@@ -56,7 +69,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             "c.instructor.userName, c.rating, c.price, c.discountPrice, c.imageUrl, r.roleName) " +
             "FROM Course c " +
             "JOIN c.instructor.userRoles ur " +
-            "JOIN ur.role r")
+            "JOIN ur.role r " +
+            "WHERE c.deletedAt IS NULL")
     List<CourseShowithRolenameDTO> getAllCoursesShowDTOWithRole();
 
     }

@@ -1,346 +1,240 @@
-const apiShow = `${apiBaseUrl}/admin/api/user/show`;
-fetch(apiShow)
+/**
+ * User.js — CODEHUBT Admin User Management
+ * Refactored: uses AdminNotify instead of alert()/confirm()
+ */
 
-    .then(response => response.json())
-    .then(data => {
-        const tableBody = document.getElementById("userTableBody");
-        tableBody.innerHTML = ""; // Xóa dữ liệu cũ
+// ─── Load & render users ────────────────────────────────────────────────────
+const PAGE_SIZE = 8;
+let allUsers = [];
+let filteredUsers = [];
+let currentPage = 0;
 
-        data.forEach(user => {
-            const row = `
-                    <tr>
-                        <td>${user.userID}</td>
-                        <td>${user.userName}</td>
-                        <td>${user.email}</td>
-                        <td>${user.userRole}</td>
-                        <td>
-                        <button class="btn btn-success" onclick="showDetailFormOnly(${user.userID}, '${user.userName}', '${user.email}', '${user.userRole}')">Chi tiết</button>
-                        <button class="btn btn-warning mx-2" onclick="showEditFormOnly(${user.userID})">Sửa</button>
-                        <button class="btn btn-danger " onclick="softDeleteUser(${user.userID})">Xóa</button>
-
-                        </td>
-                    </tr>
-                `;
-            tableBody.innerHTML += row;
-        });
-    })
-    .catch(error => {
-        console.error("Lỗi khi lấy danh sách user:", error);
-    });
-
-// ẩn hiện form
-function hideAllForms() {
-    document.getElementById("userAddForm").style.display = "none";
-    document.getElementById("userDetailForm").style.display = "none";
-    document.getElementById("userEditForm").style.display = "none";
-    document.getElementById("userList").style.display = "none";
-}
-
-function showUserList() {
-    hideAllForms();
-    document.getElementById("userList").style.display = "block";
-}
-
-function showAddFormOnly() {
-    hideAllForms();
-    document.getElementById("userAddForm").style.display = "block";
-}
-
-function showDetailFormOnly() {
-    hideAllForms();
-    document.getElementById("userDetailForm").style.display = "block";
-}
-
-function showEditFormOnly() {
-    hideAllForms();
-    document.getElementById("userEditForm").style.display = "block";
-}
-
-
-// ẩn hiện form
-// thêm người DÙng
-document.getElementById("addUserForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-
-    const data = {
-        userName: formData.get("userName"),
-        email: formData.get("email"),
-        password: formData.get("password"),
-        fullName: formData.get("fullName"),
-        dateOfBirth: formData.get("dateOfBirth"),
-        phoneNumber: formData.get("phoneNumber"),
-        address: formData.get("address"),
-        roleName: formData.get("roleName") // nếu form chỉ chọn 1 quyền
-    };
-
-    fetch("/admin/api/user/add", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-    })
-        .then(res => {
-            if (res.ok) {
-                alert("Thêm thành công!");
-                location.reload()
-                document.getElementById("userAddForm").style.display = "none";
-            } else {
-                return res.text().then(errorMessage => {
-                    alert("Lỗi từ server: " + errorMessage);
-                    console.error("Chi tiết lỗi:", errorMessage);
-                });
-            }
-        })
-        .catch(error => {
-            alert("Lỗi khi gọi API: " + error.message);
-            console.error("Lỗi mạng hoặc lỗi khác:", error);
-        });
-});
-
-//end thêm người dùng
-
-//upload hình ảnh
-async function uploadImage(file) {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const res = await fetch("/admin/api/upload", {
-        method: "POST",
-        body: formData
-    });
-
-    const data = await res.json();
-    document.getElementById("avatarUrl").value = data.url;
-    document.getElementById("preview").src = data.url;
-    document.getElementById("preview").style.display = "block";
-}
-
-//end upluad hình ảnh
-
-//update người dùng
-
-// show edit form
-document.getElementById("image").addEventListener("change",function (){
-    const file = this.file[0];
-    if (file){
-        const reader = new FileReader()
-        reader.onload = function (e){
-            const preview = document.getElementById("preview");
-            preview.src = e.target.result;
-            preview.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-    }
-});
-// Hiển thị form sửa người dùng và đổ dữ liệu vào form
-async function showEditFormOnly(userId) {
+async function loadUsers() {
     try {
-        const response = await fetch(`/admin/api/user/showUpdate/${userId}`);
-
-        // Kiểm tra xem API có trả về thành công không
-
-
-        const user = await response.json();
-        // console.log(user)
-        // console.log("User Data:", user); // Kiểm tra dữ liệu người dùng
-
-        // Ẩn form danh sách và hiển thị form sửa
-        hideAllForms()// Ẩn các form khác
-        document.getElementById("userEditForm").style.display = "block"; // Hiển thị form sửa
-
-        // Điền dữ liệu vào form
-        const form = document.forms["editUserForm"];
-        form.userId.value = user.userId;
-        form.userName.value = user.userName;
-        form.email.value = user.email;
-        form.fullName.value = user.fullName || "";
-        form.dateOfBirth.value = user.dateOfBirth || "";
-        form.phoneNumber.value = user.phoneNumber || "";
-        form.address.value = user.address || "";
-
-        // console.log(form)
-
-        const allRoles = ["ADMIN", "STUDENT", "TEACHER"]; // Các quyền có sẵn
-        const checkboxContainer = document.getElementById("roleCheckboxes");
-        checkboxContainer.innerHTML = ""; // Xóa các checkbox cũ
-
-// Kiểm tra và lấy quyền từ API trả về
-        const userRoles = Array.isArray(user.roleName) ? user.roleName : [];
-
-// Kiểm tra dữ liệu
-//         console.log("Quyền của user (mảng):", userRoles);
-
-// Tạo checkbox cho mỗi quyền
-        allRoles.forEach(role => {
-            const label = document.createElement("label");
-            label.style.display = "block";
-
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.name = "roleNames"; // để backend nhận nhiều quyền
-            checkbox.value = role;
-
-            // Tích sẵn nếu user đang có quyền này
-            if (userRoles.includes(role)) {
-                checkbox.checked = true;
-            }
-
-            label.appendChild(checkbox);
-            label.append(" " + role);
-            checkboxContainer.appendChild(label);
-        });
-
-
-
-
-
-
-        // Hiển thị ảnh đại diện nếu có
-        const preview = document.getElementById("preview");
-        if (user.image) {
-            preview.src = user.image; // Đặt src của ảnh bằng URL từ Cloudinary
-            preview.style.display = "block"; // Hiển thị ảnh
-        }
-
-    } catch (error) {
-
-
+        const res = await fetch('/admin/api/user/show');
+        allUsers = await res.json();
+        filteredUsers = [...allUsers];
+        renderPage(0);
+    } catch (e) {
+        AdminNotify.error('Không thể tải danh sách người dùng.');
+        console.error(e);
     }
 }
 
-// end show edit fom
-// update
-async function submitEditForm() {
-    const btn = document.getElementById("submitBtn");
-    const form = document.forms["editUserForm"];
-    const userId = form.userId.value;
-    // console.log(userId)
-    // Kiểm tra userId hợp lệ
-    if (!userId) {
-        alert("User ID không hợp lệ!");
+function renderPage(page) {
+    currentPage = page;
+    const start = page * PAGE_SIZE;
+    const slice = filteredUsers.slice(start, start + PAGE_SIZE);
+    const tbody = document.getElementById('userTableBody');
+
+    if (slice.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">Không có người dùng nào.</td></tr>`;
+        document.getElementById('page-info').textContent = '';
+        document.getElementById('pagination').innerHTML = '';
         return;
     }
 
-    // Lấy ảnh nếu có
-    const file = form.image.files[0];
-    let imageUrl = document.getElementById("preview").src;
+    const roleBadge = (role) => {
+        const map = { ADMIN: 'badge-red', TEACHER: 'badge-blue', STUDENT: 'badge-green' };
+        return `<span class="badge-admin ${map[role] || 'badge-gray'}">${role}</span>`;
+    };
 
-    // Nếu có file ảnh mới, upload lên server
+    tbody.innerHTML = slice.map((u, i) => `
+        <tr>
+            <td style="color:var(--text-muted)">${start + i + 1}</td>
+            <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;flex-shrink:0">
+                        ${(u.userName || 'U')[0].toUpperCase()}
+                    </div>
+                    <span style="font-weight:500">${u.userName}</span>
+                </div>
+            </td>
+            <td style="color:var(--text-secondary)">${u.email}</td>
+            <td>${roleBadge(u.userRole)}</td>
+            <td>
+                <div style="display:flex;gap:6px">
+                    <button class="btn-admin btn-sm-admin btn-outline-admin btn-icon-admin"
+                            onclick="openEditModal(${u.userID})" title="Chỉnh sửa">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="btn-admin btn-sm-admin btn-danger-admin btn-icon-admin"
+                            onclick="deleteUser(${u.userID})" title="Xóa">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+
+    // Pagination info
+    const total = filteredUsers.length;
+    const totalPages = Math.ceil(total / PAGE_SIZE);
+    document.getElementById('page-info').textContent =
+        `Hiển thị ${start + 1}–${Math.min(start + PAGE_SIZE, total)} / ${total} người dùng`;
+
+    const pg = document.getElementById('pagination');
+    pg.innerHTML = '';
+    for (let p = 0; p < totalPages; p++) {
+        const btn = document.createElement('button');
+        btn.className = 'btn-admin btn-sm-admin ' + (p === page ? 'btn-primary-admin' : 'btn-outline-admin');
+        btn.textContent = p + 1;
+        btn.onclick = () => renderPage(p);
+        pg.appendChild(btn);
+    }
+}
+
+function filterUsers(query) {
+    const q = query.toLowerCase();
+    filteredUsers = allUsers.filter(u =>
+        (u.userName || '').toLowerCase().includes(q) ||
+        (u.email || '').toLowerCase().includes(q) ||
+        (u.userRole || '').toLowerCase().includes(q)
+    );
+    renderPage(0);
+}
+
+// ─── Add User ────────────────────────────────────────────────────────────────
+async function submitAddUser(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = {
+        userName:    formData.get('userName'),
+        email:       formData.get('email'),
+        password:    formData.get('password'),
+        fullName:    formData.get('fullName'),
+        dateOfBirth: formData.get('dateOfBirth'),
+        phoneNumber: formData.get('phoneNumber'),
+        address:     formData.get('address'),
+        roleName:    formData.get('roleName'),
+    };
+    try {
+        const res = await fetch('/admin/api/user/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        if (res.ok) {
+            AdminNotify.success('Thêm người dùng thành công!');
+            AdminNotify.closeModal('modal-add-user');
+            event.target.reset();
+            await loadUsers();
+        } else {
+            const msg = await res.text();
+            AdminNotify.error('Lỗi từ server: ' + msg);
+        }
+    } catch (e) {
+        AdminNotify.error('Lỗi kết nối: ' + e.message);
+    }
+}
+
+// ─── Edit User ───────────────────────────────────────────────────────────────
+async function openEditModal(userId) {
+    try {
+        const res = await fetch(`/admin/api/user/showUpdate/${userId}`);
+        const user = await res.json();
+
+        document.getElementById('edit-userId').value    = user.userId;
+        document.getElementById('edit-userName').value  = user.userName  || '';
+        document.getElementById('edit-email').value     = user.email     || '';
+        document.getElementById('edit-fullName').value  = user.fullName  || '';
+        document.getElementById('edit-dob').value       = user.dateOfBirth || '';
+        document.getElementById('edit-phone').value     = user.phoneNumber || '';
+        document.getElementById('edit-address').value   = user.address   || '';
+
+        // Role checkboxes
+        const allRoles = ['ADMIN', 'STUDENT', 'TEACHER'];
+        const userRoles = Array.isArray(user.roleName) ? user.roleName : [];
+        const container = document.getElementById('roleCheckboxes');
+        container.innerHTML = allRoles.map(role => `
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+                <input type="checkbox" name="roleNames" value="${role}"
+                       ${userRoles.includes(role) ? 'checked' : ''}
+                       style="accent-color:var(--primary)"/>
+                ${role}
+            </label>
+        `).join('');
+
+        AdminNotify.openModal('modal-edit-user');
+    } catch (e) {
+        AdminNotify.error('Không thể tải thông tin người dùng.');
+        console.error(e);
+    }
+}
+
+async function submitEditUser() {
+    const userId = document.getElementById('edit-userId').value;
+    if (!userId) { AdminNotify.warn('Không tìm thấy User ID!'); return; }
+
+    const form = document.getElementById('editUserForm');
+    const file = document.getElementById('edit-image').files[0];
+    let imageUrl = '';
+
     if (file) {
         try {
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const res = await fetch("/admin/api/upload", {
-                method: "POST",
-                body: formData
-            });
-
-            if (!res.ok) {
-                const error = await res.text();
-                alert("Lỗi khi tải ảnh lên: " + error);
-                return;
-            }
-
-            const data = await res.json();
-            imageUrl = data.url;
-        } catch (error) {
-            alert("Lỗi khi upload ảnh: " + error.message);
+            const fd = new FormData();
+            fd.append('file', file);
+            const r = await fetch('/admin/api/upload', { method: 'POST', body: fd });
+            if (!r.ok) { AdminNotify.error('Lỗi tải ảnh lên.'); return; }
+            imageUrl = (await r.json()).url;
+        } catch (e) {
+            AdminNotify.error('Lỗi upload ảnh: ' + e.message);
             return;
         }
     }
 
-    // Lấy danh sách role đã chọn
-    const roleNames = Array.from(document.querySelectorAll("#roleCheckboxes input[type='checkbox']:checked"))
-        .map(cb => cb.value);
+    const roleNames = Array.from(
+        form.querySelectorAll("input[name='roleNames']:checked")
+    ).map(cb => cb.value);
 
-    // Tạo DTO gửi lên backend
-    const userUpdateDTO = {
-        userName: form.userName.value,
-        email: form.email.value,
-        fullName: form.fullName.value,
-        dateOfBirth: form.dateOfBirth.value,
-        phoneNumber: form.phoneNumber.value,
-        address: form.address.value,
-        image: imageUrl,
-        roleName: roleNames
+    const dto = {
+        userName:    document.getElementById('edit-userName').value,
+        email:       document.getElementById('edit-email').value,
+        fullName:    document.getElementById('edit-fullName').value,
+        dateOfBirth: document.getElementById('edit-dob').value,
+        phoneNumber: document.getElementById('edit-phone').value,
+        address:     document.getElementById('edit-address').value,
+        image:       imageUrl || undefined,
+        roleName:    roleNames,
     };
-    // console.log(userUpdateDTO)
 
     try {
         const res = await fetch(`/admin/api/user/update/${userId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(userUpdateDTO)
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dto),
         });
-
         if (res.ok) {
-            alert("Cập nhật thành công!");
-            location.reload()
-            showUserList(); // Hiển thị lại danh sách user
+            AdminNotify.success('Cập nhật người dùng thành công!');
+            AdminNotify.closeModal('modal-edit-user');
+            await loadUsers();
         } else {
-            const error = await res.text();
-            alert("Lỗi khi cập nhật: " + error);
+            AdminNotify.error('Lỗi cập nhật: ' + await res.text());
         }
-    } catch (err) {
-        alert("Lỗi kết nối server: " + err.message);
+    } catch (e) {
+        AdminNotify.error('Lỗi kết nối: ' + e.message);
     }
 }
 
-
-
-
-
-// end edit form
-
-
-
-//end update nguời dùng
-
-
-//xóa mềm
-
-
-
-function softDeleteUser(userId) {
-    if (confirm("Bạn có chắc muốn xóa người dùng này không?")) {
-        const a = "/admin/api/user/delete/${userId}"
-        console.log(userId , a)
-        fetch(`/admin/api/user/delete/${userId}`, {
-            method: 'DELETE',
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert("Đã xóa người dùng (mềm) thành công!");
-                    location.reload()
-                    // Có thể load lại danh sách người dùng nếu muốn:
-                    // loadUserList();
+// ─── Delete User ─────────────────────────────────────────────────────────────
+function deleteUser(userId) {
+    AdminNotify.confirm(
+        'Bạn có chắc muốn xóa người dùng này không?',
+        async () => {
+            try {
+                const res = await fetch(`/admin/api/user/delete/${userId}`, { method: 'DELETE' });
+                if (res.ok) {
+                    AdminNotify.success('Đã xóa người dùng thành công!');
+                    await loadUsers();
                 } else {
-                    alert("Xóa thất bại!");
+                    AdminNotify.error('Xóa thất bại!');
                 }
-            })
-            .catch(error => {
-                console.error("Lỗi khi gọi API:", error);
-                alert("Đã xảy ra lỗi!");
-            });
-    }
+            } catch (e) {
+                AdminNotify.error('Lỗi kết nối: ' + e.message);
+            }
+        }
+    );
 }
-//Xóa Mềm
 
-//Phân Trang
-let currentPage =  0
-let totalPage = 0
-function loadUsers(page){
-    fetch(`/admin/api/user?page=${page}&size=4`)
-        .then(res => res.json())
-        .then(data =>{
-            totalPage = data.totalPage;
-            displayUser(data.conten)
-        })
-}
-//phân Trang
+// Init
+loadUsers();

@@ -26,6 +26,11 @@ public class CodingSubmissionServiceImpl implements CodingSubmissionService{
     }
 
     @Override
+    public CodingSubmission findById(Long submissionId) {
+        return codingSubmissionRepository.findById(submissionId).orElse(null);
+    }
+
+    @Override
     public List<CodingSubmissionShow> getCodingSubmissionShowByUserName(String theUserName, String theSlug) {
         return codingSubmissionRepository.getCodingSubmissionShowByUserName(theUserName, theSlug);
     }

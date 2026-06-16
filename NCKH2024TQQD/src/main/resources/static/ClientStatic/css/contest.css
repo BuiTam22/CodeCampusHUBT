@@ -46,11 +46,16 @@
   font-size: 20px;
   position: relative;
   padding: 5px 0;
-  transition: color 0.3s;
+  text-decoration: none;
+  transition: color 0.3s, border-color 0.3s;
 }
-.section-two .inner-classify ul li a:focus,
-.section-two .inner-classify ul li a:active{
+.section-two .inner-classify ul li a.active{
+  color: #007bff;
+  font-weight: 700;
   border-bottom: 2px solid #007bff;
+}
+.section-two .inner-classify ul li a:hover{
+  color: #007bff;
 }
 .section-two .inner-search input{
   padding: 10px;
@@ -137,4 +142,150 @@
   margin-left: 5px;
   color: gray;
   font-size: 14px;
+}
+
+/* Modern contest pages */
+body {
+  background: var(--color-bg, #f5f7fb);
+  color: var(--color-text, #111827);
+  font-family: var(--font, sans-serif);
+}
+
+.section-one {
+  margin-top: 64px;
+  padding: 28px 0 0;
+  background: var(--color-bg, #f5f7fb);
+}
+
+.section-one img {
+  height: 280px;
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.section-one .inner-box {
+  margin-top: 18px;
+  padding: 18px 22px;
+  align-items: center;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.section-one .inner-box p {
+  color: #334155;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.section-one .inner-box span {
+  color: #dc2626;
+  font-weight: 800;
+}
+
+.section-two,
+.section-three {
+  background: var(--color-bg, #f5f7fb);
+}
+
+.section-two {
+  padding: 28px 0;
+}
+
+.section-two .inner-classify {
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+}
+
+.section-two .inner-classify ul {
+  gap: 8px;
+  padding: 10px;
+}
+
+.section-two .inner-classify ul li a {
+  display: inline-flex;
+  padding: 9px 14px;
+  border-radius: 8px;
+  color: #475569;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.section-two .inner-classify ul li a.active,
+.section-two .inner-classify ul li a:hover {
+  border-bottom: 0;
+  background: #eff6ff;
+  color: var(--color-primary, #2563eb);
+}
+
+.section-two .inner-search input {
+  width: min(100%, 380px);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  outline: none;
+}
+
+.section-three {
+  padding-bottom: 56px;
+}
+
+.section-three .inner-box {
+  margin-bottom: 14px;
+  justify-content: space-between;
+  gap: 24px;
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-card, 8px);
+  box-shadow: var(--shadow-soft, 0 14px 35px rgba(15, 23, 42, 0.08));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section-three .inner-box:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card, 0 10px 26px rgba(15, 23, 42, 0.1));
+}
+
+.section-three .inner-box .inner-left .inner-main-content .inner-title {
+  color: var(--color-text, #111827);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.section-three .inner-box .inner-left .inner-main-content .inner-desc,
+.section-three .inner-box .inner-right .inner-Participants,
+.section-three .inner-box .inner-right .inner-Completion-time {
+  color: var(--color-muted, #64748b);
+}
+
+.section-three .inner-box .inner-left .inner-main-content .inner-image {
+  overflow: hidden;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: #e2e8f0;
+}
+
+.section-three .inner-box .inner-left .inner-main-content .inner-image img {
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .section-one .container-fluid,
+  .section-two .container-fluid,
+  .section-three .container-fluid {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .section-three .inner-box,
+  .section-three .inner-box .inner-left .inner-main-content {
+    flex-direction: column;
+  }
+
+  .section-three .inner-box .inner-left .inner-main-content .inner-content {
+    margin-left: 0;
+  }
 }

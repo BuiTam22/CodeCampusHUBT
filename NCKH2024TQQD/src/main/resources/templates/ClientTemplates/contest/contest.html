@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contest</title>
     <link
       rel="stylesheet"
@@ -42,8 +43,14 @@
         <div class="container-fluid px-5">
           <div class="inner-classify">
             <ul>
-              <li><a href="/contest">Coding</a></li>
-              <li><a href="/contest/type-essay">Tự luận</a></li>
+              <li>
+                <a th:href="@{/contest}"
+                   th:classappend="${contestTab == 'coding'} ? 'active'">Coding</a>
+              </li>
+              <li>
+                <a th:href="@{/contest/type-essay}"
+                   th:classappend="${contestTab == 'essay'} ? 'active'">Tự luận</a>
+              </li>
             </ul>
           </div>
           <div class="inner-search">
